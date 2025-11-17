@@ -1,0 +1,35 @@
+public class AttackFieldPresenter : FieldPresenter
+{
+    public AttackFieldPresenter(IFieldView view,
+                                FieldUIDesigner designer,
+                                TurnManager turn_manager,
+                                ThrowPresenter throw_presenter) : base(view, designer, turn_manager, throw_presenter) {}
+
+    public override bool InstantiateCard()
+    {
+        if(m_card_list.Count >= m_designer.ATKLimit)
+        {
+            m_view.PrintNotice("<color=red>공격 필드가 이미 가득 차 있습니다.</color>");
+            return false;
+        }
+
+        var card_view = m_view.InstantiateCardView();
+        m_card_list.Add(card_view);
+
+        var card_presenter = new FieldCardPresenter(card_view);
+        m_card_dict.TryAdd(card_view, card_presenter);
+
+        return true;
+    }
+
+    public override void ToggleManual(bool active)
+    {
+        if(!m_is_active)
+            return;
+
+        if(active && m_card_list.Count < m_designer.ATKLimit)
+            m_view.ToggleManual(true);
+        else if(!active)
+            m_view.ToggleManual(false);
+    }
+}
