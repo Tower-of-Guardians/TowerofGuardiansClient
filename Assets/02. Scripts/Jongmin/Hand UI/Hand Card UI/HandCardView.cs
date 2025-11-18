@@ -46,16 +46,12 @@ public class HandCardView : MonoBehaviour, IHandCardView
     }
 
     public void ToggleRaycast(bool active)
-    {
-        m_canvas_group.blocksRaycasts = active;
-    }
+        => m_canvas_group.blocksRaycasts = active;
 
     public void Return()
     {
-        //TODO: Object Pool을 통한 제거
-
         transform.DOKill();
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.Return(gameObject);
     }
 
 #region Events

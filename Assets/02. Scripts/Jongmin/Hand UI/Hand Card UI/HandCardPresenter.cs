@@ -1,23 +1,20 @@
 public class HandCardPresenter
 {
     private readonly IHandCardView m_view;
-    private string m_card_id;
+    private readonly CardData m_card_data;
 
-    public HandCardPresenter(IHandCardView view)
+    public CardData CardData => m_card_data;
+
+    public HandCardPresenter(IHandCardView view,
+                             CardData card_data)
     {
         m_view = view;
+        m_card_data = card_data;
 
         m_view.Inject(this);
-    }
-
-    public void InitUI(CardData card_data)
-    {
-        m_card_id = card_data.Id;
         m_view.InitUI(card_data);
     }
 
     public void Return()
-    {
-        m_view.Return();
-    }
+        => m_view.Return();
 }

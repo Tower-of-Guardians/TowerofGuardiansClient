@@ -27,8 +27,7 @@ public class DeckStatusView : MonoBehaviour, IDeckStatusView
     [Header("교체 카드 덱 버튼 텍스트")]
     [SerializeField] private TMP_Text m_throw_card_label;
 
-
-    [Space(30f), Header("에디터 테스트 옵션")]
+    [Space(30f), Header("의존성 목록")]
     [Header("덱 상태 카드 프리펩")]
     [SerializeField] private GameObject m_deck_status_card_prefab;
 
@@ -66,22 +65,20 @@ public class DeckStatusView : MonoBehaviour, IDeckStatusView
 
     public IDeckStatusCardView InstantiateCardView()
     {
-        // TODO: Object Pool을 통한 생성
-
-        var deck_status_card_obj = Instantiate(m_deck_status_card_prefab, m_slot_root);
+        var deck_status_card_obj = ObjectPoolManager.Instance.Get(m_deck_status_card_prefab);
+        deck_status_card_obj.transform.SetParent(m_slot_root, false);
 
         return deck_status_card_obj.GetComponent<IDeckStatusCardView>();
     }
 
     public void ReturnCards()
     {
-        // TODO: Object Pool을 통한 제거
-
         var card_views = m_slot_root.GetComponentsInChildren<IDeckStatusCardView>();
+
         foreach(var card_view in card_views)
         {
             var card_obj = (card_view as DeckStatusCardView).gameObject;
-            Destroy(card_obj);
+            ObjectPoolManager.Instance.Return(card_obj);
         }
     }
 }

@@ -42,12 +42,13 @@ public class HandPresenter
         throw_presenter.Inject(this);
     }
 
-    public void InstantiateCard()
+    public void InstantiateCard(CardData card_data)
     {
         var card_view = m_view.InstantiateCardView();
         m_card_list.Add(card_view);
 
-        var card_presenter = new HandCardPresenter(card_view);
+        var card_presenter = new HandCardPresenter(card_view,
+                                                   card_data);
         m_card_dict.TryAdd(card_view, card_presenter);
 
         m_view.UpdateUI();
@@ -68,12 +69,19 @@ public class HandPresenter
     public void OpenUI() => m_view.OpenUI();
     public void CloseUI() => m_view.CloseUI();
 
-
     public void ToggleFieldPreview(bool active)
     {
         m_attack_field_presenter.ToggleManual(active);
         m_defend_field_presenter.ToggleManual(active);
         m_throw_presenter.ToggleManual(active);
+    }
+
+    public CardData GetCardData(IHandCardView card_view)
+    {
+        if(m_card_dict.TryGetValue(card_view, out var card_presenter))
+            return card_presenter.CardData;
+        
+        return null;
     }
 
 #region Events

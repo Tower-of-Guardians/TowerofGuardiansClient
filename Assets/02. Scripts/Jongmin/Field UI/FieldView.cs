@@ -10,7 +10,7 @@ public class FieldView : MonoBehaviour, IFieldView
     [Header("프리뷰 오브젝트")]
     [SerializeField] private GameObject m_preview_object;
 
-    [Space(30f), Header("에디터 테스트 옵션")]
+    [Space(30f), Header("의존성 목록")]
     [Header("필드 카드 프리펩")]
     [SerializeField] private GameObject m_card_prefab; 
 
@@ -29,16 +29,15 @@ public class FieldView : MonoBehaviour, IFieldView
 
     public IFieldCardView InstantiateCardView()
     {
-        // TODO: Object Pool을 통한 카드 생성
-
-        var card_obj = Instantiate(m_card_prefab, m_slot_root, false);
+        var card_obj = ObjectPoolManager.Instance.Get(m_card_prefab);
+        card_obj.transform.SetParent(m_slot_root, false);
         
         return card_obj.GetComponent<IFieldCardView>();
     }
 
     public void PrintNotice(string notice_text)
     {
-        var popup_notice_obj = Instantiate(m_popup_notice_prefab, Vector3.zero, Quaternion.identity);
+        var popup_notice_obj = ObjectPoolManager.Instance.Get(m_popup_notice_prefab);
         
         var popup_notice_ui = popup_notice_obj.GetComponent<IPopupNoticeView>();
         popup_notice_ui.OpenUI(notice_text);
@@ -46,13 +45,12 @@ public class FieldView : MonoBehaviour, IFieldView
 
     public void ReturnCards()
     {
-        // TODO: Object Pool을 통한 카드 제거
-
         var card_views = m_slot_root.GetComponentsInChildren<IFieldCardView>();
+
         foreach(var card_view in card_views)
         {
             var card_obj = (card_view as FieldCardView).gameObject;
-            Destroy(card_obj);
+            ObjectPoolManager.Instance.Return(card_obj);
         }
     }
 

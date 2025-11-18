@@ -14,24 +14,14 @@ public class PopupNoticeView : MonoBehaviour, IPopupNoticeView
     private Animator m_animator;
 
     private void Awake()
-    {
-        m_animator = GetComponent<Animator>();
-    }
+        => m_animator = GetComponent<Animator>();
 
     private void OnEnable()
-    {
-        m_animator.SetTrigger("Popup");
-    }
+        => m_animator.SetTrigger("Popup");
 
     public void OpenUI(string notice_text)
-    {
-        m_notice_label.text = notice_text;
-    }
+        => m_notice_label.text = notice_text;
 
     public void CloseUI()
-    {
-        // TODO: Object Pool을 통한 제거
-
-        Destroy(gameObject);
-    }
+        => ObjectPoolManager.Instance.Return(gameObject);
 }

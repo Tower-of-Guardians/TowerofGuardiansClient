@@ -20,6 +20,7 @@ public class HandView : MonoBehaviour, IHandView
     [Header("테스트 제거 버튼")]
     [SerializeField] private Button m_remove_button;
 
+    [Space(30f), Header("의존성 목록")]
     [Header("카드 프리펩")]
     [SerializeField] private GameObject m_card_prefab;
 
@@ -27,9 +28,8 @@ public class HandView : MonoBehaviour, IHandView
 
     public IHandCardView InstantiateCardView()
     {
-        // TODO: Object Pool을 통한 카드 생성
-        
-        var card_obj = Instantiate(m_card_prefab, transform, false);
+        var card_obj = ObjectPoolManager.Instance.Get(m_card_prefab);
+        card_obj.transform.SetParent(transform, false);
         
         var card_view = card_obj.GetComponent<IHandCardView>();
         card_view.OnPointerEnterAction  += ()           => { OnPointerEnterInCard(card_view); };
@@ -45,7 +45,7 @@ public class HandView : MonoBehaviour, IHandView
     {
         m_presenter = presenter;
 
-        m_add_button.onClick.AddListener(m_presenter.InstantiateCard);
+        m_add_button.onClick.AddListener(() => { m_presenter.InstantiateCard(null); });
         m_remove_button.onClick.AddListener(Test_RemoveCard);
     }
 
@@ -213,7 +213,7 @@ public class HandView : MonoBehaviour, IHandView
         if(concrete_target != null)
         {
             concrete_target.transform.DOKill();
-            DestroyImmediate(concrete_target.gameObject);
+            ObjectPoolManager.Instance.Return(concrete_target.gameObject);
         }
 
         UpdateUI();

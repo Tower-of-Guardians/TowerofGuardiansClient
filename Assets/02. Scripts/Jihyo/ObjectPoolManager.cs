@@ -10,7 +10,7 @@ public class PoolConfig
     public bool expandable = true;
 }
 
-public class ObjectPoolManager : MonoBehaviour
+public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
     [Header("Pool Configurations")]
     [SerializeField] private List<PoolConfig> poolConfigs = new List<PoolConfig>();
@@ -19,8 +19,10 @@ public class ObjectPoolManager : MonoBehaviour
     private Dictionary<GameObject, GameObject> instanceToPrefab = new Dictionary<GameObject, GameObject>();
     private Transform poolParent;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
+
         poolParent = new GameObject("ObjectPools").transform;
         poolParent.SetParent(transform);
 
@@ -171,9 +173,11 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         Clear();
+
+        base.OnDestroy();
     }
 }
 
