@@ -29,8 +29,6 @@ public class TemporaryCardAnimator : MonoBehaviour
 
     private void ReturnCard(GameObject temp_card)
     {
-        // TODO: Object Pool을 통한 제거
-
-        Destroy(temp_card);
+        ObjectPoolManager.Instance.Return(temp_card);
     }
 }

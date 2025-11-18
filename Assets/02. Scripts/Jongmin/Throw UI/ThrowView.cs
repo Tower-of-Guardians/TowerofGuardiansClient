@@ -24,7 +24,7 @@ public class ThrowView : MonoBehaviour, IThrowView
     [Header("버리기 버튼")]
     [SerializeField] private Button m_throw_button;
 
-    [Space(30f), Header("에디터 테스트 옵션")]
+    [Space(30f), Header("의존성 목록")]
     [Header("임시 카드 컨트롤러")]
     [SerializeField] private TemporaryCardController m_temp_card_controller;
 
@@ -97,16 +97,14 @@ public class ThrowView : MonoBehaviour, IThrowView
 
     public IThrowCardView InstantiateCardView()
     {
-        // TODO: Object Pool을 통한 생성 
-
-        var card_obj = Instantiate(m_throw_card_prefab, m_slot_root, false);
+        var card_obj = ObjectPoolManager.Instance.Get(m_throw_card_prefab);
+        card_obj.transform.SetParent(m_slot_root, false); 
         
         return card_obj.GetComponent<IThrowCardView>();
     }
 
     public void ReturnCard(IThrowCardView card_view, CardData card_data)
     {
-        // TODO: Object Pool을 통한 카드 제거
         var concrete_card = card_view as ThrowCardView;
         
         m_temp_card_controller.PlayAnime(card_data,
@@ -116,24 +114,22 @@ public class ThrowView : MonoBehaviour, IThrowView
                                          50f,
                                          0.75f);  
 
-        Destroy(concrete_card.gameObject);
+        ObjectPoolManager.Instance.Return(concrete_card.gameObject);
     }
 
     public void ReturnCards()
     {
-        // TODO: Object Pool을 통한 카드 제거
-
         var card_views = m_slot_root.GetComponentsInChildren<IThrowCardView>();
         foreach(var card_view in card_views)
         {
             var card_obj = (card_view as ThrowCardView).gameObject;
-            Destroy(card_obj);
+            ObjectPoolManager.Instance.Return(card_obj);
         }        
     }
 
     public void PrintNotice(string notice_text)
     {
-        var popup_notice_obj = Instantiate(m_popup_notice_prefab, Vector3.zero, Quaternion.identity);
+        var popup_notice_obj = ObjectPoolManager.Instance.Get(m_popup_notice_prefab);
 
         var popup_notice_ui = popup_notice_obj.GetComponent<IPopupNoticeView>();
         popup_notice_ui.OpenUI(notice_text);

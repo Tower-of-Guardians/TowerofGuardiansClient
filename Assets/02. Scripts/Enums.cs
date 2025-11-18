@@ -15,3 +15,9 @@ public enum BattleResultType
     Victory = 1,
     Defeat = 2,
 }
+
+public enum DeckType
+{
+    Draw = 1,
+    Throw = 2,
+}
