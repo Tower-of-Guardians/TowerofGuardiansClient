@@ -2,11 +2,11 @@ using UnityEngine;
 
 public static class CardLayoutCalculator
 {
-    public static CardLayoutData CalculatedTransform(int index, 
-                                                     int card_count,
-                                                     float target_radius,
-                                                     float arc_angle,
-                                                     float depth_multiplier)
+    public static CardLayoutData CalculatedHandCardTransform(int index, 
+                                                             int card_count,
+                                                             float target_radius,
+                                                             float arc_angle,
+                                                             float depth_multiplier)
     {
         var step_count  =   card_count > 1 ? card_count - 1 : 1f;
         var start_angle =   card_count > 1 ? -arc_angle / 2f : 0f;
@@ -25,5 +25,17 @@ public static class CardLayoutCalculator
         return new CardLayoutData(target_position,
                                   target_rotation,
                                   target_scale);
+    }
+
+    public static Vector2 CalculatedThrowCardPosition(int index,
+                                                      int card_count,
+                                                      float space)
+    {
+        var total_width = (card_count - 1) * space;
+        var start_x = -total_width * 0.5f;
+
+        var target_x = start_x + (space * index);
+
+        return new Vector2(target_x, 0f);
     }
 }

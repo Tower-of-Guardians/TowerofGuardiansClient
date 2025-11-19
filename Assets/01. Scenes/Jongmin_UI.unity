@@ -1722,7 +1722,6 @@ GameObject:
   - component: {fileID: 361271405}
   - component: {fileID: 361271407}
   - component: {fileID: 361271408}
-  - component: {fileID: 361271409}
   - component: {fileID: 361271410}
   m_Layer: 5
   m_Name: Throw UI
@@ -1824,29 +1823,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &361271409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361271403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac1a70c91093d9b47a98fe452a5f179f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_canvas_group: {fileID: 361271407}
-  m_slot_root: {fileID: 1065016973}
-  m_preview_object: {fileID: 379494776}
-  m_open_button: {fileID: 1929343480}
-  m_close_button: {fileID: 596579299}
-  m_throw_button: {fileID: 2062975412}
-  m_temp_card_controller: {fileID: 361271410}
-  m_throw_card_prefab: {fileID: 8433984462780172590, guid: caeb2e02faebcb84fb3797f5ddf19040, type: 3}
-  m_popup_notice_prefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
-  m_hand_view_transform: {fileID: 114737534}
-  m_throw_button_transform: {fileID: 1066207027}
 --- !u!114 &361271410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2152,9 +2128,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1065016973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500, y: -120}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 180, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &379494778
@@ -3233,7 +3209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79b6d0980676dd4b8dc20189a85c802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_throw_view: {fileID: 361271409}
+  m_throw_view: {fileID: 1936710987}
+  m_layout_throw_view: {fileID: 1936710986}
 --- !u!1 &584538473
 GameObject:
   m_ObjectHideFlags: 0
@@ -5414,7 +5391,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1950586836}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99974954
+  m_Size: 0.99999696
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5798,7 +5775,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1065016972}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
@@ -6927,7 +6904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000020074243}
+  m_AnchoredPosition: {x: 0, y: -0.000008005443}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -9560,6 +9537,8 @@ GameObject:
   - component: {fileID: 1936710983}
   - component: {fileID: 1936710985}
   - component: {fileID: 1936710984}
+  - component: {fileID: 1936710986}
+  - component: {fileID: 1936710987}
   m_Layer: 5
   m_Name: Throw Panel
   m_TagString: Untagged
@@ -9627,6 +9606,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936710982}
   m_CullTransparentMesh: 1
+--- !u!114 &1936710986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936710982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0acf97edbaf6145aaa52c53e0d20ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_designer: {fileID: 11400000, guid: 2d2e1ce2b7175714a88d2412d679da6e, type: 2}
+  m_slot_root: {fileID: 1065016973}
+  m_preview_object: {fileID: 379494776}
+  m_open_button: {fileID: 1929343480}
+  m_close_button: {fileID: 596579299}
+  m_throw_button: {fileID: 2062975412}
+  m_animator: {fileID: 361271408}
+  m_temp_card_controller: {fileID: 361271410}
+  m_throw_card_prefab: {fileID: 8433984462780172590, guid: caeb2e02faebcb84fb3797f5ddf19040, type: 3}
+  m_popup_notice_prefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
+  m_hand_view_transform: {fileID: 114737534}
+  m_throw_button_transform: {fileID: 1066207027}
+--- !u!114 &1936710987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936710982}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1a70c91093d9b47a98fe452a5f179f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_slot_root: {fileID: 1065016973}
+  m_preview_object: {fileID: 379494776}
+  m_open_button: {fileID: 1929343480}
+  m_close_button: {fileID: 596579299}
+  m_throw_button: {fileID: 2062975412}
+  m_animator: {fileID: 361271408}
+  m_temp_card_controller: {fileID: 361271410}
+  m_throw_card_prefab: {fileID: 8433984462780172590, guid: caeb2e02faebcb84fb3797f5ddf19040, type: 3}
+  m_popup_notice_prefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
+  m_hand_view_transform: {fileID: 114737534}
+  m_throw_button_transform: {fileID: 1066207027}
 --- !u!1 &1946078233
 GameObject:
   m_ObjectHideFlags: 0

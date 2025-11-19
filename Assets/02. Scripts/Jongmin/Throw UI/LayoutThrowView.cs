@@ -1,10 +1,14 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ThrowView : MonoBehaviour, IThrowView
+public class LayoutThrowView : MonoBehaviour, IThrowView
 {
-    [Header("UI 관련 컴포넌트")]
+    [Header("디자이너")]
+    [SerializeField] private ThrowUIDesigner m_designer;
+
+    [Space(30f), Header("UI 관련 컴포넌트")]
     [Header("슬롯의 부모 트랜스폼")]
     [SerializeField] private Transform m_slot_root;
 
@@ -42,10 +46,7 @@ public class ThrowView : MonoBehaviour, IThrowView
     private ThrowPresenter m_presenter;
 
     private void OnDestroy()
-    {
-        if(m_temp_card_controller != null && m_presenter != null)
-            m_temp_card_controller.OnAnimationEnd -= m_presenter.OnTempCardAnimeEnd;
-    }
+        => m_temp_card_controller.OnAnimationEnd -= m_presenter.OnTempCardAnimeEnd;
 
     public void Inject(ThrowPresenter presenter)
     {
@@ -91,12 +92,17 @@ public class ThrowView : MonoBehaviour, IThrowView
         => m_animator.SetBool("Open", active);
 
     public void ToggleManual(bool active)
-        => m_preview_object.SetActive(active);
+    {
+        UpdateLayout(active, !active);
+        m_preview_object.SetActive(active);
+    }
 
     public IThrowCardView InstantiateCardView()
     {
         var card_obj = ObjectPoolManager.Instance.Get(m_throw_card_prefab);
         card_obj.transform.SetParent(m_slot_root, false); 
+
+        UpdateLayout(false, false);
         
         return card_obj.GetComponent<IThrowCardView>();
     }
@@ -113,6 +119,8 @@ public class ThrowView : MonoBehaviour, IThrowView
                                          0.75f);  
 
         ObjectPoolManager.Instance.Return(concrete_card.gameObject);
+
+        UpdateLayout(false, true);
     }
 
     public void ReturnCards()
@@ -133,6 +141,44 @@ public class ThrowView : MonoBehaviour, IThrowView
         popup_notice_ui.OpenUI(notice_text);
     }
 
+    private void UpdateLayout(bool include_preview, bool is_removing)
+    {
+        var card_views = m_slot_root.GetComponentsInChildren<IThrowCardView>();
+        var card_count = include_preview ? card_views.Length + 1
+                                         : card_views.Length;
+
+        if(card_count == 0)
+            return;
+
+        var prev_preview_position = card_views.Length > 0 ? ((card_views[^1] as ThrowCardView).transform as RectTransform).anchoredPosition
+                                                          : Vector2.zero; 
+
+        var total_width = (card_count - 1) * m_designer.Space;
+        for(int i = 0; i < card_views.Length; i++)
+        {
+            var target_position = CardLayoutCalculator.CalculatedThrowCardPosition(i, card_count, m_designer.Space);
+            var concrete_card = (card_views[i] as ThrowCardView).transform as RectTransform;
+
+            if(!is_removing)
+                if(card_count - i > 1)
+                    concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
+                else
+                    concrete_card.anchoredPosition = target_position;
+            else
+                concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
+
+        }
+
+        if(include_preview)
+        {
+            var preview_rect = m_preview_object.transform as RectTransform; 
+            preview_rect.anchoredPosition = prev_preview_position;
+            
+            var preview_position = CardLayoutCalculator.CalculatedThrowCardPosition(card_count - 1, card_count, m_designer.Space);
+            preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);
+        }
+    }
+
 #region Events
     public void OnDrop(PointerEventData eventData)
     {
@@ -145,7 +191,7 @@ public class ThrowView : MonoBehaviour, IThrowView
         }
 
         ToggleManual(false);
-        m_preview_object.transform.SetAsLastSibling();
+        m_preview_object.transform.SetAsFirstSibling();
     }
     #endregion Events
 }
