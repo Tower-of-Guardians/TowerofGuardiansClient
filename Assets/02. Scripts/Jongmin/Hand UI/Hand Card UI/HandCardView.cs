@@ -40,6 +40,9 @@ public class HandCardView : MonoBehaviour, IHandCardView
     {
         // TODO: 카드 테두리 이미지 설정
         // TODO: 카드 초상화 이미지 설정
+        
+        if(card_data == null)
+            return;
 
         m_name_label.text = card_data.Name;
         m_description_label.text = card_data.Description;

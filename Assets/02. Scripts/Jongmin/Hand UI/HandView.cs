@@ -87,11 +87,11 @@ public class HandView : MonoBehaviour, IHandView
         {
             var card_view = m_presenter.Cards[i];
 
-            var target_transform = CardLayoutCalculator.CalculatedTransform(i, 
-                                                                            card_count,
-                                                                            m_designer.Radius,
-                                                                            m_designer.Angle,
-                                                                            m_designer.Depth);
+            var target_transform = CardLayoutCalculator.CalculatedHandCardTransform(i, 
+                                                                                    card_count,
+                                                                                    m_designer.Radius,
+                                                                                    m_designer.Angle,
+                                                                                    m_designer.Depth);
 
             ApplyHoverEffect(target_transform, card_view, i);
             AnimateCardTransform(target_transform, card_view);
@@ -148,7 +148,8 @@ public class HandView : MonoBehaviour, IHandView
         UpdateLayout();
     }
 
-    private void OnBeginDragCard() {}
+    private void OnBeginDragCard()
+        => m_presenter.ToggleFieldPreview(true);
 
     private void OnDragCard(Vector2 position)
     {
@@ -163,8 +164,6 @@ public class HandView : MonoBehaviour, IHandView
             target_card.transform.DOScale(0.75f, m_designer.AnimeSPD);
         else
             target_card.transform.DOScale(m_designer.Scale, m_designer.AnimeSPD);
-
-        m_presenter.ToggleFieldPreview(true);
         
         target_card.transform.position = position;
     }

@@ -12,7 +12,7 @@ public abstract class FieldPresenter : IDisposable
     protected List<IFieldCardView> m_card_list;
     protected Dictionary<IFieldCardView, FieldCardPresenter> m_card_dict;
 
-    protected bool m_is_active;
+    protected bool m_is_active = true;
 
     public FieldPresenter(IFieldView view,
                           FieldUIDesigner designer,
