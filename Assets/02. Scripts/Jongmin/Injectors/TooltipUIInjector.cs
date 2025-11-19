@@ -15,6 +15,23 @@ public class TooltipUIInjector : MonoBehaviour, IInjector
     [Header("몬스터")]
     [SerializeField] private MonsterDescriptor[] m_monster_descriptors;
 
+    [Header("턴 규칙 관리자")]
+    [SerializeField] private TurnManager m_turn_manager;
+
+    [Header("행동 메뉴얼 툴팁")]
+    [SerializeField] private ActionManualDescriptableUI m_action_manual_tooltip;
+
+    [Header("교체 버튼 툴팁")]
+    [SerializeField] private ThrowButtonDescriptableUI m_throw_button_tooltip;
+
+    [Header("교체 메뉴얼 툴팁")]
+    [SerializeField] private ThrowManualDescriptableUI m_throw_manual_tooltip;
+
+    [Header("후보 카드 덱 툴팁")]
+    [SerializeField] private DrawButtonDescriptableUI m_draw_button_tooltip;
+
+    private TooltipPresenter m_tooltip_presenter;
+
     private IDescriptableUI[] m_descriptables;
 
     private void Awake()
@@ -26,14 +43,30 @@ public class TooltipUIInjector : MonoBehaviour, IInjector
     {
         InstallTooltip();
         InjectTooltip();
+        InjectBattleTooltip();
     }
 
     private void InstallTooltip()
     {
         DIContainer.Register<ITooltipView>(m_tooltip_view);
 
-        var tooltip_presenter = new TooltipPresenter(m_tooltip_view);
-        DIContainer.Register<TooltipPresenter>(tooltip_presenter);
+        m_tooltip_presenter = new TooltipPresenter(m_tooltip_view);
+        DIContainer.Register<TooltipPresenter>(m_tooltip_presenter);
+    }
+
+    private void InjectBattleTooltip()
+    {
+        m_action_manual_tooltip.Inject(m_turn_manager,
+                                       m_tooltip_presenter);
+
+        m_throw_button_tooltip.Inject(m_turn_manager,
+                                      m_tooltip_presenter);
+
+        m_throw_manual_tooltip.Inject(m_turn_manager,
+                                      m_tooltip_presenter);
+
+        m_draw_button_tooltip.Inject(m_turn_manager,
+                                     m_tooltip_presenter);
     }
 
     private void InjectTooltip()

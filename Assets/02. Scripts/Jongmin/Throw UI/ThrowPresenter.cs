@@ -109,7 +109,7 @@ public class ThrowPresenter
     public void OnTempCardAnimeEnd(CardData card_data)
     {
         if(!m_is_throwed)
-            m_hand_presenter.InstantiateCard();
+            m_hand_presenter.InstantiateCard(card_data);
     }
 
     public void OnDroped(IHandCardView card_view)
