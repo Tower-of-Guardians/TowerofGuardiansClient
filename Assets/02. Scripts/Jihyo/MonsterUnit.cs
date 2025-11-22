@@ -133,6 +133,12 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // UI 위에 포인터가 있으면 몬스터 클릭 무시
+        if (IsPointerOverUI(eventData))
+        {
+            return;
+        }
+
         if (!IsAlive)
         {
             return;
@@ -143,12 +149,57 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
     private void OnMouseDown()
     {
+        // UI 위에 포인터가 있으면 몬스터 클릭 무시
+        if (IsPointerOverUI())
+        {
+            return;
+        }
+
         if (!IsAlive)
         {
             return;
         }
 
         Clicked?.Invoke(this);
+    }
+
+    /// <summary>
+    /// 포인터가 UI 위에 있는지 확인 (PointerEventData 사용)
+    /// </summary>
+    private bool IsPointerOverUI(PointerEventData eventData)
+    {
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        // UI 요소가 있으면 true 반환
+        return results.Count > 0;
+    }
+
+    /// <summary>
+    /// 포인터가 UI 위에 있는지 확인
+    /// </summary>
+    private bool IsPointerOverUI()
+    {
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        if (Input.touchCount > 0)
+        {
+            // 터치 입력
+            return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+        }
+        else
+        {
+            // 마우스 입력
+            return EventSystem.current.IsPointerOverGameObject();
+        }
     }
 
     private void InitializeData()

@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 using TMPro;
 
-public class CardInventoryPanel : MonoBehaviour, IPointerClickHandler
+public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
 {
+
+    [Header("Test Button")]
+    public Button testButton;
+
     [Header("Left UI Tabs")]
     public Button cardTabButton;
     public Button otherTabButton;
@@ -13,21 +18,25 @@ public class CardInventoryPanel : MonoBehaviour, IPointerClickHandler
     public Button sortByAcquisitionButton;
     public Button sortByGradeButton;
     public Button sortByStrengthButton;
-
-    [Header("Navigation")]
     public Button nextButton;
 
     [Header("Enhancement UI")]
+    [SerializeField] private GameObject cardInventoryPanel;
     [SerializeField] private GameObject enhancementPanel;
     [SerializeField] private Toggle enhancementPreviewToggle;
     [SerializeField] private TMP_Text cardNameText;
     [SerializeField] private TMP_Text cardDescriptionText;
     [SerializeField] private GameObject cardGridParent;
 
+    [Header("Card UI")]
+    [SerializeField] private GameObject cardInventoryContent;
+    //[SerializeField] private GameObject cardUIPrefab;
+    //[SerializeField] private List<GameObject> instantiatedCards = new List<GameObject>();
+    private CardData selectedCardData;
+
     private bool isAcquisitionAscending = true;
     private bool isGradeAscending = false;
     private bool isStrengthAscending = true;
-    private CardData selectedCardData;
 
     void Start()
     {
@@ -37,6 +46,13 @@ public class CardInventoryPanel : MonoBehaviour, IPointerClickHandler
 
     private void InitializeEnhancementUI()
     {
+
+        if (testButton != null)
+        {
+            // Test 기능 : 패널 열기
+            testButton.onClick.AddListener(OpenPanel);
+        }
+
         if (enhancementPanel != null)
         {
             enhancementPanel.SetActive(false);
@@ -131,26 +147,63 @@ public class CardInventoryPanel : MonoBehaviour, IPointerClickHandler
     // 패널 열기
     public void OpenPanel()
     {
-        gameObject.SetActive(true);
+        cardInventoryPanel.SetActive(true);
+        SetupCardClickHandlers();
+    }
+
+    /// Content 안의 게임오브젝트들에 OnCardClicked를 AddListener로 연결
+    /// TODO: 추후 CardUI 스크립트 생성 시 변경 예정
+    private void SetupCardClickHandlers()
+    {
+        if (cardInventoryContent == null)
+        {
+            return;
+        }
+
+        // Content 안의 모든 자식 게임오브젝트 찾기
+        for (int i = 0; i < cardInventoryContent.transform.childCount; i++)
+        {
+            GameObject cardObject = cardInventoryContent.transform.GetChild(i).gameObject;
+            
+            Button button = cardObject.GetComponent<Button>();
+            if (button == null)
+            {
+                button = cardObject.AddComponent<Button>();
+            }
+
+            // 기존 리스너 제거 후 새로 추가
+            button.onClick.RemoveAllListeners();
+            
+            // 클릭 핸들러 추가 (CardData는 GetClickedCardData로 가져오기)
+            button.onClick.AddListener(() =>
+            {
+                CardData cardData = GetClickedCardData(cardObject);
+                OnCardClicked(/*cardData*/);
+            });
+        }
     }
 
     // 패널 닫기
     public void ClosePanel()
     {
-        gameObject.SetActive(false);
+        HideEnhancementPanel();
+        cardInventoryPanel.SetActive(false);
     }
 
     // 카드 클릭 시 호출되는 메서드
-    public void OnCardClicked(CardData cardData)
+    public void OnCardClicked(/*CardData cardData*/)
     {
-        if (cardData == null)
-        {
-            return;
-        }
+        // if (cardData == null)
+        // {
+        //     return;
+        // }
 
-        selectedCardData = cardData;
+        //selectedCardData = cardData;
         ShowEnhancementPanel();
         UpdateEnhancementUI();
+        
+        // TODO: 클릭한 카드 데이터를 CardEnhancementUI에 적용
+        // CardEnhancementUI에 선택된 카드 데이터를 전달하여 UI 업데이트
     }
 
     private void ShowEnhancementPanel()
@@ -258,7 +311,18 @@ public class CardInventoryPanel : MonoBehaviour, IPointerClickHandler
     // TODO: 클릭한 카드의 정보를 받아오기
     private CardData GetClickedCardData(GameObject clickedCard)
     {
-        // 클릭된 카드 GameObject에서 CardData를 추출하는 로직 구현
+        if (clickedCard == null)
+        {
+            return null;
+        }
+
+        // TODO: CardUI 스크립트 생성 시 변경 예정
+        // 임시: DataCenter에서 첫 번째 카드 데이터 반환 (테스트용)
+        if (DataCenter.Instance != null && DataCenter.Instance.cardDatas != null && DataCenter.Instance.cardDatas.Count > 0)
+        {
+            return DataCenter.Instance.cardDatas[0];
+        }
+
         return null;
     }
 
