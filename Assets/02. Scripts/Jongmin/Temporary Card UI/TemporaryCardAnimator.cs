@@ -18,7 +18,7 @@ public class TemporaryCardAnimator : MonoBehaviour
     {
         var temp_card = m_factory.InstantiateCard(card_data);
         temp_card.transform.position = start_position;
-        temp_card.transform.localScale = Vector3.forward;
+        //temp_card.transform.localScale = Vector3.forward;
 
         var sequence_animator = DOTween.Sequence();
         sequence_animator.Append(temp_card.transform.DOScale(scale, duration).SetEase(Ease.OutBack));

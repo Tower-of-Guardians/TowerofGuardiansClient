@@ -22,7 +22,8 @@ public class ThrowButtonDescriptableUI : MonoBehaviour, IDescriptableUI
     public TooltipData GetTooltipData()
         => new()
            {
-                Description = $"매 턴마다 최대 <color=#99CCFF>{m_turn_manager.MaxActionCount}</color>장의 카드를 교체할 수 있습니다.",
+                Description = m_turn_manager.CanThrow() ? $"매 턴마다 최대 <color=#99CCFF>{m_turn_manager.MaxActionCount}</color>장의 카드를 <color=#99CCFF>1</color>회 교체할 수 있습니다."
+                                                        : $"매 턴마다 최대 <color=#99CCFF>{m_turn_manager.MaxActionCount}</color>장의 카드를 <color=#99CCFF>1</color>회 교체할 수 있습니다.\n\n<color=#99CCFF>이 턴에 이미 교체를 했습니다.</color>",
                 Position = m_tooltip_position
            };
 

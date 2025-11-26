@@ -45,6 +45,8 @@ public class ThrowView : MonoBehaviour, IThrowView
     {
         if(m_temp_card_controller != null && m_presenter != null)
             m_temp_card_controller.OnAnimationEnd -= m_presenter.OnTempCardAnimeEnd;
+
+        m_presenter?.Dispose();
     }
 
     public void Inject(ThrowPresenter presenter)
@@ -63,7 +65,7 @@ public class ThrowView : MonoBehaviour, IThrowView
 
     public void CloseUI()
     {
-        ToggleAnime(false);
+        //ToggleAnime(false);
         
         m_temp_card_controller.PlayAnime(m_presenter.GetCardDatas(),
                                          m_open_button.transform.position,
@@ -74,17 +76,23 @@ public class ThrowView : MonoBehaviour, IThrowView
                                          0.1f);
     }
 
+    public void UpdateUI(bool open_active, bool throw_active)
+    {
+        m_open_button.interactable = open_active;
+        m_throw_button.interactable = throw_active;
+    }
+
     public void ThrowUI()
     {
-        ToggleAnime(false);
+        //ToggleAnime(false);
         
         m_temp_card_controller.PlayAnime(m_presenter.GetCardDatas(),
                                          m_open_button.transform.position,
                                          m_throw_button_transform.position,
                                          0.3f,
-                                         50f,
+                                         250f,
                                          0.75f,
-                                         0.1f);        
+                                         1f);        
     }
 
     private void ToggleAnime(bool active)
