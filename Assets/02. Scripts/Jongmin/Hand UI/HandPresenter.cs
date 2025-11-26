@@ -87,6 +87,12 @@ public class HandPresenter
 #region Events
     public void OnPointerEnter(IHandCardView card_view) => m_hover_card = card_view;
     public void OnPointerExit() => m_hover_card = null;
+
+    public void OnDroped(IThrowCardView card_view)
+    {
+        // TODO: GameData에 카드 데이터를 전달
+        m_throw_presenter.RemoveCard(card_view);
+    }
 #endregion Events
 
 #region Test

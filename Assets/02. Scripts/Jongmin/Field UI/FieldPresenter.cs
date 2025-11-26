@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public abstract class FieldPresenter : IDisposable
 {
@@ -56,6 +57,9 @@ public abstract class FieldPresenter : IDisposable
 #region Events
     public void OnDroped(IHandCardView card_view)
     {
+        if(!m_is_active)
+            return;
+
         if(!m_turn_manager.CanAction())
         {
             m_view.PrintNotice("<color=red>더 이상 행동할 수 없습니다.</color>");

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d90cb0c02dab246aa95230ebd244cc, type: 3}
   m_Name: Throw UI Designer
   m_EditorClassIdentifier: 
-  m_space: 240
+  m_space: 200
   m_anime_duration: 0.3

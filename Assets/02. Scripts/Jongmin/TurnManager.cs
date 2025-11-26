@@ -5,6 +5,8 @@ public class TurnManager : MonoBehaviour
 {
     private ITurnRuleService m_turn_rule_service;
     private int m_current_action_count;
+    private int m_current_throw_count;
+    private bool m_is_can_throw;
 
     [Header("에디터 테스트 옵션")]
     [Header("현재 보유 중인 카드의 수")]
@@ -16,10 +18,20 @@ public class TurnManager : MonoBehaviour
         private set => m_current_action_count = value;
     }
 
+    public int CurrentThrowCount
+    {
+        get => m_current_throw_count;
+        private set => m_current_throw_count = value;
+    }
+
+    public int MaxThrowCount => MaxActionCount;
+
     public int MaxActionCount => m_turn_rule_service.GetRule(m_card_count).MaxUseCount;
     public int MaxHandCount => m_turn_rule_service.GetRule(m_card_count).MaxHandCount;
 
     public event Action<ActionData> OnUpdatedActionCount;
+    public event Action<ActionData> OnUpdatedThrowCount;
+    public event Action<bool> OnUpdatedThrowActionState;
 
     public void Inject(ITurnRuleService turn_rule_service)
     {
@@ -28,14 +40,20 @@ public class TurnManager : MonoBehaviour
         Initialize();
     }
 
-    public void Alert()
+    public void AlertToUpdateActionCount()
         => OnUpdatedActionCount?.Invoke(new ActionData(CurrentActionCount, MaxActionCount));
+
+    public void AlertToUpdateThrowCount()
+        => OnUpdatedThrowCount?.Invoke(new ActionData(CurrentThrowCount, MaxThrowCount));
 
     public void Initialize()
     {
         CurrentActionCount = 0;
+        CurrentThrowCount = 0;
+        UpdateThrowAction(true);
 
-        Alert();
+        AlertToUpdateActionCount();
+        AlertToUpdateThrowCount();
     }
 
     public void UpdateActionCount(int count)
@@ -43,9 +61,26 @@ public class TurnManager : MonoBehaviour
         CurrentActionCount += count;
         CurrentActionCount = Mathf.Clamp(CurrentActionCount, 0, MaxActionCount);
 
-        Alert();
+        AlertToUpdateActionCount();
+    }
+
+    public void UpdateThrowCount(int count)
+    {
+        CurrentThrowCount += count;
+        CurrentThrowCount = Mathf.Clamp(CurrentThrowCount, 0, MaxThrowCount);
+
+        AlertToUpdateThrowCount();
+    }
+
+    public void UpdateThrowAction(bool active)
+    {
+        m_is_can_throw = active;
+        OnUpdatedThrowActionState?.Invoke(m_is_can_throw);
     }
 
     public bool CanAction() 
         => CurrentActionCount < MaxActionCount;
+
+    public bool CanThrow()
+        => m_is_can_throw && CurrentThrowCount < MaxThrowCount;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HandView : MonoBehaviour, IHandView
+public class HandView : MonoBehaviour, IHandView, IDropHandler
 {
     [Header("디자이너")]
     [SerializeField] private HandUIDesigner m_designer;
@@ -127,6 +127,7 @@ public class HandView : MonoBehaviour, IHandView
     {
         var concrete_card = card as HandCardView; 
 
+        concrete_card.transform.DOKill();
         concrete_card.transform.DOLocalMove(new Vector3(target.Position.x, 
                                                         card == m_presenter.HoverCard ? m_designer.HoverY 
                                                                                       : target.Position.y, 
@@ -149,7 +150,10 @@ public class HandView : MonoBehaviour, IHandView
     }
 
     private void OnBeginDragCard()
-        => m_presenter.ToggleFieldPreview(true);
+    {
+        (m_presenter.HoverCard as HandCardView).transform.DOKill();
+        m_presenter.ToggleFieldPreview(true);
+    }
 
     private void OnDragCard(Vector2 position)
     {
@@ -181,6 +185,19 @@ public class HandView : MonoBehaviour, IHandView
         m_presenter.ToggleFieldPreview(false);
 
         UpdateLayout();
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        var dropped_object = eventData.pointerDrag;
+        if(dropped_object != null)
+        {
+            var throw_card_view = dropped_object.GetComponent<IThrowCardView>();
+            if(throw_card_view != null)
+                m_presenter.OnDroped(throw_card_view);
+
+            // TODO: 필드 카드에 대한 처리
+        }
     }
 
     private RaycastResult? CheckField(out PointerEventData pointer_data)
@@ -217,5 +234,5 @@ public class HandView : MonoBehaviour, IHandView
 
         UpdateUI();
     }
-#endregion
+    #endregion
 }

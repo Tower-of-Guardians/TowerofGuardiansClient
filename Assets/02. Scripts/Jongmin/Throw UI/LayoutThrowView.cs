@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,9 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     [SerializeField] private ThrowUIDesigner m_designer;
 
     [Space(30f), Header("UI 관련 컴포넌트")]
+    [Header("캔버스")]
+    [SerializeField] private Canvas m_canvas;
+
     [Header("슬롯의 부모 트랜스폼")]
     [SerializeField] private Transform m_slot_root;
 
@@ -46,7 +50,12 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     private ThrowPresenter m_presenter;
 
     private void OnDestroy()
-        => m_temp_card_controller.OnAnimationEnd -= m_presenter.OnTempCardAnimeEnd;
+    {
+        if(m_temp_card_controller != null && m_presenter != null)
+            m_temp_card_controller.OnAnimationEnd -= m_presenter.OnTempCardAnimeEnd;
+
+        m_presenter?.Dispose();
+    }
 
     public void Inject(ThrowPresenter presenter)
     {
@@ -65,27 +74,43 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     public void CloseUI()
     {
         ToggleAnime(false);
-        
-        m_temp_card_controller.PlayAnime(m_presenter.GetCardDatas(),
-                                         m_open_button.transform.position,
-                                         m_hand_view_transform.position,
-                                         0.5f,
-                                         200f,
-                                         0.75f,
-                                         0.1f);
+
+        var throw_cards = m_slot_root.GetComponentsInChildren<IThrowCardView>();
+        var throw_card_positions = new List<Vector3>();
+        foreach(var throw_card in throw_cards)
+            throw_card_positions.Add((throw_card as ThrowCardView).transform.position);
+
+        m_temp_card_controller.PlayAnimeFromThis(m_presenter.GetCardDatas(),
+                                                 throw_card_positions.ToArray(),
+                                                 m_hand_view_transform.position,
+                                                 0.75f,
+                                                 100f,
+                                                 0.5f,
+                                                 0.1f);
+    }
+
+    public void UpdateUI(bool open_active, bool throw_active)
+    {
+        m_open_button.interactable = open_active;
+        m_throw_button.interactable = throw_active;
     }
 
     public void ThrowUI()
     {
-        ToggleAnime(false);
-        
-        m_temp_card_controller.PlayAnime(m_presenter.GetCardDatas(),
-                                         m_open_button.transform.position,
-                                         m_throw_button_transform.position,
-                                         0.3f,
-                                         50f,
-                                         0.75f,
-                                         0.1f);        
+        ToggleAnime(false); 
+
+        var throw_cards = m_slot_root.GetComponentsInChildren<IThrowCardView>();
+        var throw_card_positions = new List<Vector3>();
+        foreach(var throw_card in throw_cards)
+            throw_card_positions.Add((throw_card as ThrowCardView).transform.position);
+
+        m_temp_card_controller.PlayAnimeFromThis(m_presenter.GetCardDatas(),
+                                                 throw_card_positions.ToArray(),
+                                                 m_throw_button_transform.position,
+                                                 0.35f,
+                                                 0f,
+                                                 0.75f,
+                                                 0.1f);    
     }
 
     private void ToggleAnime(bool active)
@@ -101,10 +126,16 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     {
         var card_obj = ObjectPoolManager.Instance.Get(m_throw_card_prefab);
         card_obj.transform.SetParent(m_slot_root, false); 
+        card_obj.transform.localScale = Vector3.one;
+
+        var card_view = card_obj.GetComponent<IThrowCardView>();
+        card_view.OnBeginDragAction     += ()           => { OnBeginDragCard(card_view); };
+        card_view.OnDragAction          += (position)   => { OnDragCard(position); };
+        card_view.OnEndDragAction       += ()           => { OnEndDragCard(); };        
 
         UpdateLayout(false, false);
         
-        return card_obj.GetComponent<IThrowCardView>();
+        return card_view;
     }
 
     public void ReturnCard(IThrowCardView card_view, CardData card_data)
@@ -114,9 +145,9 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
         m_temp_card_controller.PlayAnime(card_data,
                                          concrete_card.transform.position,
                                          m_hand_view_transform.position,
-                                         0.75f,
-                                         50f,
-                                         0.75f);  
+                                         1f,
+                                         0f,
+                                         0f);  
 
         ObjectPoolManager.Instance.Return(concrete_card.gameObject);
 
@@ -180,6 +211,41 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     }
 
 #region Events
+    public void OnBeginDragCard(IThrowCardView card_view)
+    {
+        m_presenter.HoverCard = card_view;
+        
+        var target_card = card_view as ThrowCardView;
+        target_card.transform.DOKill();
+        target_card.transform.SetParent(m_canvas.transform, false);
+    }
+
+    public void OnDragCard(Vector2 position)
+    {
+        if(m_presenter.HoverCard == null)
+            return;
+
+        var target_card = m_presenter.HoverCard as ThrowCardView;
+        target_card.transform.position = position;
+    }
+
+    public void OnEndDragCard()
+    {
+        if(m_presenter.HoverCard == null)
+            return;
+
+        var target_card = m_presenter.HoverCard as ThrowCardView;
+        target_card.transform.SetParent(m_slot_root, false);
+
+        var hit = CheckField(out var pointer_data);
+        var drop_handler = hit?.gameObject.GetComponent<IDropHandler>();
+        if(drop_handler != null)
+            ExecuteEvents.Execute(hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
+
+        UpdateLayout(false, true);
+    }
+
+
     public void OnDrop(PointerEventData eventData)
     {
         var dropped_object = eventData.pointerDrag;
@@ -192,6 +258,25 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
 
         ToggleManual(false);
         m_preview_object.transform.SetAsFirstSibling();
+    }
+
+    private RaycastResult? CheckField(out PointerEventData pointer_data)
+    {
+        pointer_data = new PointerEventData(EventSystem.current);
+        pointer_data.position = Input.mousePosition;
+        pointer_data.pointerDrag = (m_presenter.HoverCard as ThrowCardView).gameObject;
+
+        var ray_hits = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer_data, ray_hits);
+
+        foreach(var hit in ray_hits)
+        {
+            var drop_handler = hit.gameObject.GetComponent<IDropHandler>();
+            if(drop_handler != null)
+                return hit; 
+        } 
+
+        return null;
     }
     #endregion Events
 }
