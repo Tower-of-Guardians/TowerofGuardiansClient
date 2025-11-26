@@ -6,7 +6,7 @@ public class ThrowCardPresenter
     
     public CardData Data { get; private set; }
 
-    public ThrowCardPresenter(IThrowCardView view)
+    public ThrowCardPresenter(IThrowCardView view, CardData card_data)
     {
         m_view = view;
         // TODO: 카드 데이터 주입

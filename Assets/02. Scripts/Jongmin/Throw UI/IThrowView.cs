@@ -1,6 +1,4 @@
-using UnityEngine.EventSystems;
-
-public interface IThrowView : IDropHandler
+public interface IThrowView
 {
     void Inject(ThrowPresenter presenter);
 
@@ -10,8 +8,4 @@ public interface IThrowView : IDropHandler
     void CloseUI();
 
     void ToggleManual(bool active);
-    IThrowCardView InstantiateCardView();
-    void ReturnCard(IThrowCardView card_view, CardData card_data);
-    void ReturnCards();
-    void PrintNotice(string notice_text);
 }
