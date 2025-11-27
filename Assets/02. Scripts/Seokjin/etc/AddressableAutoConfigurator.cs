@@ -1,0 +1,67 @@
+using UnityEngine;
+using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
+using System.IO;
+using System.Linq;
+
+public class AddressableAutoConfigurator : Editor
+{
+    // ScriptableObject 에셋이 저장된 폴더 경로 (Addressable로 만들 대상)
+    private const string SO_FOLDER_PATH = "Assets/Datas";
+    private const string GROUP_NAME = "ItemDataGroup";
+
+    [MenuItem("Tools/Addressables/Configure Item SOs for Addressables")]
+    public static void ConfigureItemSOsAsAddressable()
+    {
+        // 1. Addressable Settings 시스템 로드
+        AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+        if (settings == null)
+        {
+            Debug.LogError("Addressable Settings를 찾을 수 없습니다. Addressable 시스템을 초기화했는지 확인하세요.");
+            return;
+        }
+
+        // 2. 사용할 Addressable 그룹을 찾거나 생성합니다.
+        AddressableAssetGroup group = settings.FindGroup(GROUP_NAME);
+        if (group == null)
+        {
+            group = settings.CreateGroup(GROUP_NAME, false, false, true, null);
+            Debug.Log($"Addressable 그룹 '{GROUP_NAME}'을(를) 새로 생성했습니다.");
+        }
+
+        // 3. ScriptableObject 파일 경로 목록 가져오기
+        string[] assetGuids = AssetDatabase.FindAssets("", new[] { SO_FOLDER_PATH });
+
+        int configuredCount = 0;
+
+        // 4. 모든 에셋에 대해 Addressable 등록 및 주소 설정
+        foreach (string guid in assetGuids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+            // ItemData 타입의 ScriptableObject인지 확인
+            if (assetPath.EndsWith(".asset"))
+            {
+                Object assetObject = AssetDatabase.LoadAssetAtPath<ItemData>(assetPath);
+                if (assetObject == null) continue;
+
+                // 주소로 사용할 이름 결정 (예: 파일 이름에서 확장자 제거)
+                string assetName = Path.GetFileNameWithoutExtension(assetPath);
+
+                // 5. Addressable 에셋 엔트리 생성 또는 업데이트
+                AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
+
+                // 주소 할당 (코드에서 사용할 키)
+                entry.SetAddress(assetName);
+
+                configuredCount++;
+            }
+        }
+
+        EditorUtility.SetDirty(settings); // 변경 사항 저장
+        AssetDatabase.SaveAssets();
+
+        Debug.Log($"성공적으로 {configuredCount}개의 Item ScriptableObject를 Addressable 그룹 '{GROUP_NAME}'에 등록하고 주소를 설정했습니다.");
+    }
+}
