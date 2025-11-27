@@ -7,10 +7,6 @@ using UnityEngine;
 // 에디터 폴더에 위치해야 함
 public class CSVToScriptableObject
 {
-    // 1. CSV 파일 경로 설정 (Resources 폴더에 두거나, Assets 내의 특정 경로 지정)
-    static string csvFilePath = Application.dataPath + "/Datas/CSV/" + csv_name + ".csv"; // 예시 경로
-    static string soFolderPath = "Assets/Datas/" + csv_name; // ScriptableObject를 저장할 폴더
-    static string imageResourcesPath = "Assets/04. Images/Test/Icons/"; // Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
     static string csv_name;
     // Unity 에디터 메뉴에 항목 추가 (예: Tools/Create Item SOs)
     [MenuItem("Tools/Generate Data/CardDataCreate")]
@@ -29,6 +25,10 @@ public class CSVToScriptableObject
 
     public static void GenerateItemSOs()
     {
+        // 1. CSV 파일 경로 설정 (Resources 폴더에 두거나, Assets 내의 특정 경로 지정)
+        string csvFilePath = Application.dataPath + "/Datas/CSV/" + csv_name + ".csv"; // 예시 경로
+        string soFolderPath = "Assets/Datas/" + csv_name; // ScriptableObject를 저장할 폴더
+        string imageResourcesPath = "Assets/04. Images/Test/Icons/"; // Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
         if (!File.Exists(csvFilePath))
         {
             Debug.LogError("CSV 파일을 찾을 수 없습니다: " + csvFilePath);

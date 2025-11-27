@@ -7,6 +7,7 @@ public class ButtonEventSetting : MonoBehaviour
     [SerializeField] Button saveButton;
     [SerializeField] Button loadButton;
     [SerializeField] Button loadtableButton;
+    public ItemData getdata;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,7 +24,7 @@ public class ButtonEventSetting : MonoBehaviour
         });
         loadtableButton.onClick.AddListener(() =>
         {
-            DataCenter.Instance.LoadCardDataTable();
+            DataCenter.GetItemData("11000001", (data) => { getdata = data; });
         });
     }
 }

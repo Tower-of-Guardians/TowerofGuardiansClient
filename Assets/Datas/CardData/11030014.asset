@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f2c35cf3af831e46afbe33c0c233135, type: 3}
+  m_Name: 11030014
+  m_EditorClassIdentifier: 
+  id: 11030014
+  itemName: "\uC751\uC9D5"
+  image: {fileID: 0}
+  grade: 3
+  star: 0
+  synergy1: "\uC815\uC9C1"
+  synergy2: "\uAC00\uB514\uC5B8\uC758 \uBB34\uAE30"
+  synergy3: 
+  synergy1ID: 210001
+  synergy2ID: 210010
+  synergy3ID: 
+  effectDescription: "\uC774\uBC88 \uD134\uC5D0\uB9CC \uAE30\uBCF8 \uACF5\uACA9\uB825\uC774
+    2\uBC30\uAC00 \uB429\uB2C8\uB2E4."
+  ATK: 6
+  DEF: 8
+  effect1ID: 1110023
+  effect2ID: 
+  effect1Value: 2
+  effect2Value: 
