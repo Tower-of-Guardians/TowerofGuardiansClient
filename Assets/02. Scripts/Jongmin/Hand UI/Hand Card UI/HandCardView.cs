@@ -44,8 +44,9 @@ public class HandCardView : MonoBehaviour, IHandCardView
         if(card_data == null)
             return;
 
-        m_name_label.text = card_data.Name;
-        m_description_label.text = card_data.Description;
+        m_card_image.sprite = card_data.image;
+        m_name_label.text = card_data.itemName;
+        m_description_label.text = card_data.effectDescription;
     }
 
     public void ToggleRaycast(bool active)

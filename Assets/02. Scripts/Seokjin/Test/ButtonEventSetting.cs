@@ -27,9 +27,9 @@ public class ButtonEventSetting : MonoBehaviour
         });
 
         //firstDeckButton.onClick.AddListener(() => { GameData.Instance.FirstDeckSet(); });
-        //useDeckButton.onClick.AddListener(() => { GameData.Instance.NextDeckSet(1); });
+        useDeckButton.onClick.AddListener(() => { GameData.Instance.NextDeckSet(1); });
 
-        loadtableButton.onClick.AddListener(() =>
+        /*loadtableButton.onClick.AddListener(() =>
         {
             //DataCenter.GetItemData("11000001", (data) => {  });
             DataCenter.Instance.GetCardData("11000002", (data) =>
@@ -40,13 +40,13 @@ public class ButtonEventSetting : MonoBehaviour
                 Debug.Log(data.effectDescription);
             });
 
-            DataCenter.Instance.GetCardData("11000001", (data) =>
+            DataCenter.Instance.GetCardData("11000003", (data) =>
             {
                 if (data == null) return;
                 Debug.Log(data.itemName);
                 Debug.Log(data.image.name);
                 Debug.Log(data.effectDescription);
             });
-        });
+        });*/
     }
 }

@@ -45,7 +45,7 @@ public class HandView : MonoBehaviour, IHandView, IDropHandler
     {
         m_presenter = presenter;
 
-        m_add_button.onClick.AddListener(() => { m_presenter.InstantiateCard(null); });
+        m_add_button.onClick.AddListener(() => { m_presenter.InstantiateCard(); });
         m_remove_button.onClick.AddListener(Test_RemoveCard);
     }
 

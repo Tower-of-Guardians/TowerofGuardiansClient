@@ -30,9 +30,9 @@ public class GameData : Singleton<GameData>
         Shuffle();
     }
 
-    public string NextDeckSet(int count)
+    public CardData NextDeckSet(int count)
     {
-        string usedeckId = string.Empty;
+        CardData getdata = null;
         for (int i = 0; i < count; i++)
         {
             if (notuseDeck.Count <= 0)
@@ -41,11 +41,17 @@ public class GameData : Singleton<GameData>
                 Shuffle();
                 useDeck.Clear();
             }
-            usedeckId = notuseDeck[0];
+
+            DataCenter.Instance.GetCardData(notuseDeck[0], (data) =>
+            {
+                getdata = data;
+            });
             useDeck.Add(notuseDeck[0]);
             notuseDeck.RemoveAt(0);
         }
-        return usedeckId;
+
+        Debug.LogFormat("ID : {0} , [{1}] 로드 성공.",getdata.id,getdata.itemName);
+        return getdata;
     }
 
     public void Shuffle()

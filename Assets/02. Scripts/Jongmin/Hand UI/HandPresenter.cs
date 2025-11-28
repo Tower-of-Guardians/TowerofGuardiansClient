@@ -42,13 +42,13 @@ public class HandPresenter
         throw_presenter.Inject(this);
     }
 
-    public void InstantiateCard(CardData card_data)
+    public void InstantiateCard()
     {
         var card_view = m_view.InstantiateCardView();
         m_card_list.Add(card_view);
 
         var card_presenter = new HandCardPresenter(card_view,
-                                                   card_data);
+                                                   GameData.Instance.NextDeckSet(1));
         m_card_dict.TryAdd(card_view, card_presenter);
 
         m_view.UpdateUI();
