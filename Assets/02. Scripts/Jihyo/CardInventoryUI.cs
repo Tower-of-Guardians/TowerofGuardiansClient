@@ -24,15 +24,21 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject cardInventoryPanel;
     [SerializeField] private GameObject enhancementPanel;
     [SerializeField] private Toggle enhancementPreviewToggle;
+    [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text cardNameText;
     [SerializeField] private TMP_Text cardDescriptionText;
     [SerializeField] private GameObject cardGridParent;
 
     [Header("Card UI")]
     [SerializeField] private GameObject cardInventoryContent;
-    //[SerializeField] private GameObject cardUIPrefab;
-    //[SerializeField] private List<GameObject> instantiatedCards = new List<GameObject>();
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private List<GameObject> instantiatedCards = new List<GameObject>();
     private CardData selectedCardData;
+
+    private const int CARDS_PER_ROW = 6;
+    private const int INITIAL_HEIGHT = 800;
+    private const int HEIGHT_INCREMENT = 300;
+    private const int INITIAL_CARD_COUNT = 18;
 
     private bool isAcquisitionAscending = true;
     private bool isGradeAscending = false;
@@ -46,7 +52,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
 
     private void InitializeEnhancementUI()
     {
-
         if (testButton != null)
         {
             // Test 기능 : 패널 열기
@@ -61,6 +66,8 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         if (enhancementPreviewToggle != null)
         {
             enhancementPreviewToggle.onValueChanged.AddListener(OnEnhancementPreviewToggleChanged);
+            // 평소에는 토글 해제
+            enhancementPreviewToggle.isOn = false;
         }
     }
 
@@ -148,39 +155,156 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     public void OpenPanel()
     {
         cardInventoryPanel.SetActive(true);
-        SetupCardClickHandlers();
+        RefreshCardInventory();
     }
 
-    /// Content 안의 게임오브젝트들에 OnCardClicked를 AddListener로 연결
-    /// TODO: 추후 CardUI 스크립트 생성 시 변경 예정
-    private void SetupCardClickHandlers()
+    /// 인벤토리 열 때마다 카드 목록을 새로고침
+    private void RefreshCardInventory()
+    {
+        if (cardInventoryContent == null)
+        {
+            Debug.LogWarning("CardInventoryUI: cardInventoryContent가 설정되지 않았습니다.");
+            return;
+        }
+
+        if (cardPrefab == null)
+        {
+            Debug.LogWarning("CardInventoryUI: cardPrefab이 설정되지 않았습니다.");
+            return;
+        }
+
+        if (DataCenter.Instance == null || !DataCenter.IsDataLoaded)
+        {
+            Debug.LogWarning("CardInventoryUI: DataCenter가 아직 데이터를 로드하지 않았습니다.");
+            return;
+        }
+
+        ClearCards();
+
+        // 덱에서 카드 가져오기
+        Dictionary<string, CardData> displayCard = GetUserCards();
+
+        foreach (var kvp in displayCard)
+        {
+            string cardId = kvp.Key;
+            CardData cardData = kvp.Value;
+
+            if (cardData == null)
+            {
+                continue;
+            }
+
+            GameObject cardObject = Instantiate(cardPrefab, cardInventoryContent.transform);
+            instantiatedCards.Add(cardObject);
+
+            SetupCardData(cardObject, cardData, cardId);
+
+            SetupCardClickHandler(cardObject);
+        }
+
+        // Content Height 동적 조정
+        UpdateContentHeight(displayCard.Count);
+    }
+
+    /// 사용자가 보유한 카드 목록 가져오기
+    private Dictionary<string, CardData> GetUserCards()
+    {
+        Dictionary<string, CardData> cards = new Dictionary<string, CardData>();
+
+        if (DataCenter.Instance == null || DataCenter.Instance.userDeck == null)
+        {
+            return cards;
+        }
+
+        foreach (string cardId in DataCenter.Instance.userDeck)
+        {
+            if (DataCenter.card_datas.TryGetValue(cardId, out CardData cardData))
+            {
+                cards[cardId] = cardData;
+            }
+        }
+
+        return cards;
+    }
+
+    /// 카드 오브젝트에 데이터 설정
+    private void SetupCardData(GameObject cardObject, CardData cardData, string cardId)
+    {
+        if (cardObject == null || cardData == null)
+        {
+            return;
+        }
+
+        // 카드 오브젝트 이름에 카드 ID 저장
+        cardObject.name = $"Card_{cardId}";
+
+        InventoryCard inventoryCard = cardObject.GetComponent<InventoryCard>();
+        if (inventoryCard == null)
+        {
+            inventoryCard = cardObject.AddComponent<InventoryCard>();
+        }
+
+        inventoryCard.InitUI(cardData);
+    }
+
+    /// 카드 클릭 핸들러 설정
+    private void SetupCardClickHandler(GameObject cardObject)
+    {
+        if (cardObject == null)
+        {
+            return;
+        }
+
+        Button button = cardObject.GetComponent<Button>();
+        if (button == null)
+        {
+            button = cardObject.AddComponent<Button>();
+        }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() =>
+        {
+            CardData cardData = GetClickedCardData(cardObject);
+            OnCardClicked(cardData);
+        });
+    }
+
+    /// 기존 카드 제거
+    private void ClearCards()
+    {
+        foreach (GameObject card in instantiatedCards)
+        {
+            if (card != null)
+            {
+                Destroy(card);
+            }
+        }
+        instantiatedCards.Clear();
+    }
+
+    /// Content Height 동적 조정
+    private void UpdateContentHeight(int cardCount)
     {
         if (cardInventoryContent == null)
         {
             return;
         }
 
-        // Content 안의 모든 자식 게임오브젝트 찾기
-        for (int i = 0; i < cardInventoryContent.transform.childCount; i++)
+        RectTransform contentRect = cardInventoryContent.GetComponent<RectTransform>();
+        if (contentRect == null)
         {
-            GameObject cardObject = cardInventoryContent.transform.GetChild(i).gameObject;
-            
-            Button button = cardObject.GetComponent<Button>();
-            if (button == null)
-            {
-                button = cardObject.AddComponent<Button>();
-            }
-
-            // 기존 리스너 제거 후 새로 추가
-            button.onClick.RemoveAllListeners();
-            
-            // 클릭 핸들러 추가 (CardData는 GetClickedCardData로 가져오기)
-            button.onClick.AddListener(() =>
-            {
-                CardData cardData = GetClickedCardData(cardObject);
-                OnCardClicked(/*cardData*/);
-            });
+            return;
         }
+
+        float newHeight = INITIAL_HEIGHT;
+        
+        if (cardCount > INITIAL_CARD_COUNT)
+        {
+            int extraRows = Mathf.CeilToInt((float)(cardCount - INITIAL_CARD_COUNT) / CARDS_PER_ROW);
+            newHeight = INITIAL_HEIGHT + (extraRows * HEIGHT_INCREMENT);
+        }
+
+        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, newHeight);
     }
 
     // 패널 닫기
@@ -191,14 +315,14 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     }
 
     // 카드 클릭 시 호출되는 메서드
-    public void OnCardClicked(/*CardData cardData*/)
+    public void OnCardClicked(CardData cardData)
     {
-        // if (cardData == null)
-        // {
-        //     return;
-        // }
+        if (cardData == null)
+        {
+            return;
+        }
 
-        //selectedCardData = cardData;
+        selectedCardData = cardData;
         ShowEnhancementPanel();
         UpdateEnhancementUI();
         
@@ -231,13 +355,10 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        cardImage.sprite = selectedCardData.image;
+        cardNameText.text = selectedCardData.itemName;
+
         bool isPreviewMode = enhancementPreviewToggle != null && enhancementPreviewToggle.isOn;
-
-        if (cardNameText != null)
-        {
-            cardNameText.text = selectedCardData.Name;
-        }
-
         if (cardDescriptionText != null)
         {
             if (isPreviewMode)
@@ -246,13 +367,16 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             }
             else
             {
-                cardDescriptionText.text = selectedCardData.Description;
+                cardDescriptionText.text = selectedCardData.effectDescription;
             }
         }
+
+        // TODO: 강화가 되어있으면 토글 체크
     }
 
     private void OnEnhancementPreviewToggleChanged(bool isOn)
     {
+        // TODO: 토글을 체크하면 설명이 강화된 효과로 바뀜
         UpdateEnhancementUI();
     }
 
@@ -308,7 +432,7 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // TODO: 클릭한 카드의 정보를 받아오기
+    // 클릭한 카드의 정보를 받아오기
     private CardData GetClickedCardData(GameObject clickedCard)
     {
         if (clickedCard == null)
@@ -316,11 +440,21 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             return null;
         }
 
-        // TODO: CardUI 스크립트 생성 시 변경 예정
-        // 임시: DataCenter에서 첫 번째 카드 데이터 반환 (테스트용)
-        if (DataCenter.Instance != null && DataCenter.Instance.cardDatas != null && DataCenter.Instance.cardDatas.Count > 0)
+        string cardName = clickedCard.name;
+        if (string.IsNullOrEmpty(cardName) || !cardName.StartsWith("Card_"))
         {
-            return DataCenter.Instance.cardDatas[0];
+            return null;
+        }
+
+        string cardId = cardName.Substring(5); // "Card_" 제거
+
+        // DataCenter에서 카드 데이터 가져오기
+        if (DataCenter.Instance != null && DataCenter.IsDataLoaded)
+        {
+            if (DataCenter.card_datas.TryGetValue(cardId, out CardData cardData))
+            {
+                return cardData;
+            }
         }
 
         return null;
@@ -329,9 +463,15 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     // TODO: 강화했을 때 효과로 설명 바꾸기
     private string GetEnhancedDescription(CardData cardData)
     {
+        if (cardData == null)
+        {
+            return string.Empty;
+        }
+
         // 카드 강화 시 변경될 설명을 반환하는 로직 구현
         // 예: 강화 레벨에 따라 Description을 수정하거나 강화 효과를 추가
-        return cardData.Description;
+        // TODO: 현재는 기본 설명 반환 (추후 강화 로직 구현 시 수정 필요)
+        return cardData.effectDescription;
     }
 
     void OnDestroy()

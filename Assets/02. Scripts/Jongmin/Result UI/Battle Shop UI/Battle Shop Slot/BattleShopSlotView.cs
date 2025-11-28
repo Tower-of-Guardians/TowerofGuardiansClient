@@ -48,8 +48,8 @@ public class BattleShopSlotView : MonoBehaviour, IBattleShopSlotView
         // TODO: 카드 테두리 이미지 설정
         // TODO: 카드 초상화 이미지 설정
 
-        m_name_label.text = slot_data.Card.Name;
-        m_description_label.text = slot_data.Card.Description;
+        m_name_label.text = slot_data.Card.itemName;
+        m_description_label.text = slot_data.Card.effectDescription;
         
         m_cost_label.text = can_purchase ? slot_data.Cost.ToString()
                                          : $"<color=red>{slot_data.Cost}</color>";
