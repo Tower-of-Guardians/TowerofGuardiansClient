@@ -1,5 +1,4 @@
-﻿using NUnit.Framework.Interfaces;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -57,7 +56,7 @@ public class CSVToScriptableObject
             string[] values = line.Split(',');
 
             // 3. ScriptableObject 인스턴스 생성 및 데이터 할당
-            ItemData newItem = ScriptableObject.CreateInstance<ItemData>();
+            CardData newItem = ScriptableObject.CreateInstance<CardData>();
 
             // CSV 열 순서에 맞게 데이터 파싱 및 할당
             // 오류 처리는 생략, 실제 사용 시에는 예외 처리 필요
@@ -117,9 +116,9 @@ public class CSVToScriptableObject
 
             // 4. 에셋 파일로 저장
             string fileName = newItem.id + ".asset";
-            string fullPath = Path.Combine(soFolderPath, fileName);
+            //string fullPath = Path.Combine(soFolderPath, fileName);
 
-            AssetDatabase.CreateAsset(newItem, fullPath);
+            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }
 
         // 에셋 데이터베이스를 새로고침하여 Unity 에디터에 반영

@@ -9,7 +9,7 @@ public class AddressableAutoConfigurator : Editor
 {
     // ScriptableObject 에셋이 저장된 폴더 경로 (Addressable로 만들 대상)
     private const string SO_FOLDER_PATH = "Assets/Datas";
-    private const string GROUP_NAME = "ItemDataGroup";
+    private const string GROUP_NAME = "CardData";
 
     [MenuItem("Tools/Addressables/Configure Item SOs for Addressables")]
     public static void ConfigureItemSOsAsAddressable()
@@ -43,7 +43,7 @@ public class AddressableAutoConfigurator : Editor
             // ItemData 타입의 ScriptableObject인지 확인
             if (assetPath.EndsWith(".asset"))
             {
-                Object assetObject = AssetDatabase.LoadAssetAtPath<ItemData>(assetPath);
+                Object assetObject = AssetDatabase.LoadAssetAtPath<CardData>(assetPath);
                 if (assetObject == null) continue;
 
                 // 주소로 사용할 이름 결정 (예: 파일 이름에서 확장자 제거)
@@ -54,6 +54,7 @@ public class AddressableAutoConfigurator : Editor
 
                 // 주소 할당 (코드에서 사용할 키)
                 entry.SetAddress(assetName);
+                entry.SetLabel(GROUP_NAME,true);
 
                 configuredCount++;
             }

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // CSV의 한 행에 대응하는 데이터 구조
-[CreateAssetMenu(fileName = "NewItemData", menuName = "Data/Item Data")]
-public class ItemData : ScriptableObject
+[CreateAssetMenu(fileName = "CardData", menuName = "Data/CardData")]
+public class CardData : ScriptableObject
 {
     public string id;
     public string itemName;
