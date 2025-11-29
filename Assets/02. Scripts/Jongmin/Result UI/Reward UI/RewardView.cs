@@ -18,14 +18,10 @@ public class RewardView : MonoBehaviour, IRewardView
     private RewardPresenter m_presenter;
 
     private void Awake()
-    {
-        m_animator = GetComponent<Animator>();
-    }
+        => m_animator = GetComponent<Animator>();
 
     public void Inject(RewardPresenter presenter)
-    {
-        m_presenter = presenter;
-    }
+        => m_presenter = presenter;
 
     public void OpenUI(int gold, int exp, bool is_level_up)
     {
@@ -36,14 +32,10 @@ public class RewardView : MonoBehaviour, IRewardView
     }
 
     public void CloseUI()
-    {
-        ToggleActive(false);
-    }
+        => ToggleActive(false);
 
     private void ToggleActive(bool active)
-    {
-        m_animator.SetBool("Open", active);
-    }
+        => m_animator.SetBool("Open", active);
 
     public void CallbackToLevelUpAnimator(int active_flag)
     {
