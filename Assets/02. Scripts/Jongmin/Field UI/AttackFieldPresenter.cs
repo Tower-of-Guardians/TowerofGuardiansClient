@@ -5,7 +5,7 @@ public class AttackFieldPresenter : FieldPresenter
                                 TurnManager turn_manager,
                                 ThrowPresenter throw_presenter) : base(view, designer, turn_manager, throw_presenter) {}
 
-    public override bool InstantiateCard()
+    public override bool InstantiateCard(CardData card_data)
     {
         if(m_card_list.Count >= m_designer.ATKLimit)
         {
@@ -16,7 +16,8 @@ public class AttackFieldPresenter : FieldPresenter
         var card_view = m_view.InstantiateCardView();
         m_card_list.Add(card_view);
 
-        var card_presenter = new FieldCardPresenter(card_view);
+        var card_presenter = new FieldCardPresenter(card_view,
+                                                    card_data);
         m_card_dict.TryAdd(card_view, card_presenter);
 
         return true;

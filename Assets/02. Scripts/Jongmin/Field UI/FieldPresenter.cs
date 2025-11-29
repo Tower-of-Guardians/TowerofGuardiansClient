@@ -36,7 +36,7 @@ public abstract class FieldPresenter : IDisposable
     public void Inject(HandPresenter hand_presenter)
         => m_hand_presenter = hand_presenter;
 
-    public abstract bool InstantiateCard();
+    public abstract bool InstantiateCard(CardData card_data);
 
     public abstract void ToggleManual(bool active);
 
@@ -66,7 +66,8 @@ public abstract class FieldPresenter : IDisposable
             return;
         }
 
-        if(InstantiateCard())
+        var card_data = m_hand_presenter.GetCardData(card_view);
+        if(InstantiateCard(card_data))
         {
             m_hand_presenter.RemoveCard(card_view);
             m_turn_manager.UpdateActionCount(1);

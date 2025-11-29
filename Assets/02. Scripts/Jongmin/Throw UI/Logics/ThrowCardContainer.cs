@@ -28,10 +28,10 @@ public class ThrowCardContainer
     }
 
     public CardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.Data)
+        => m_card_dict.Values.Select(x => x.CardData)
                              .ToArray();
 
     public CardData GetData(IThrowCardView card_view)
-        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.Data
+        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
                                                                  : null;
 }

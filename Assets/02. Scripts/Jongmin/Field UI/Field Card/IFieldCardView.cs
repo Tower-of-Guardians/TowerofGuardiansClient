@@ -1,5 +1,3 @@
-using UnityEngine;
 
-public interface IFieldCardView
-{
-}
+public interface IFieldCardView : ICardView
+{}

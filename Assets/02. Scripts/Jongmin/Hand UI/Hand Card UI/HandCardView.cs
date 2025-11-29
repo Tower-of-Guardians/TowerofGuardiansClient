@@ -1,29 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.EventSystems;
 using System;
 using DG.Tweening;
 
-public class HandCardView : MonoBehaviour, IHandCardView
+public class HandCardView : CardView, IHandCardView
 {
-    [Header("UI 관련 컴포넌트")]
+    [Space(30f), Header("추가 UI 관련 컴포넌트")]
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
-
-    [Header("카드 테두리 이미지")]
-    [SerializeField] private Image m_outline_image;
-
-    [Header("카드 이미지")]
-    [SerializeField] private Image m_card_image;
-
-    [Header("카드 이름 텍스트")]
-    [SerializeField] private TMP_Text m_name_label;
-
-    [Header("카드 설명 텍스트")]
-    [SerializeField] private TMP_Text m_description_label;
-
-    private HandCardPresenter m_presenter;
 
     public event Action OnPointerEnterAction;
     public event Action OnPointerExitAction;
@@ -31,32 +15,14 @@ public class HandCardView : MonoBehaviour, IHandCardView
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
 
-    public void Inject(HandCardPresenter presenter)
-    {
-        m_presenter = presenter;
-    }
-
-    public void InitUI(CardData card_data)
-    {
-        // TODO: 카드 테두리 이미지 설정
-        // TODO: 카드 초상화 이미지 설정
-        
-        if(card_data == null)
-            return;
-
-        m_card_image.sprite = card_data.image;
-        m_name_label.text = card_data.itemName;
-        m_description_label.text = card_data.effectDescription;
-    }
-
-    public void ToggleRaycast(bool active)
-        => m_canvas_group.blocksRaycasts = active;
-
-    public void Return()
+    public override void Return()
     {
         transform.DOKill();
-        ObjectPoolManager.Instance.Return(gameObject);
+        base.Return();
     }
+
+    private void ToggleRaycast(bool active)
+        => m_canvas_group.blocksRaycasts = active;
 
 #region Events
     public void OnPointerEnter(PointerEventData eventData)

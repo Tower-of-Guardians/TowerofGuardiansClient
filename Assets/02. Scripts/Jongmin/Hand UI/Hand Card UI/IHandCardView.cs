@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public interface IHandCardView : IPointerEnterHandler, 
+public interface IHandCardView : ICardView,
+                                 IPointerEnterHandler, 
                                  IPointerExitHandler,
                                  IBeginDragHandler,
                                  IDragHandler,
@@ -13,9 +14,4 @@ public interface IHandCardView : IPointerEnterHandler,
     public event Action OnBeginDragAction;
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
-
-    void Inject(HandCardPresenter presenter);
-    void InitUI(CardData card_data);
-    void ToggleRaycast(bool active);
-    void Return();
 }
