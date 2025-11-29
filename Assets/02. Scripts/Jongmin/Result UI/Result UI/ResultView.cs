@@ -42,12 +42,8 @@ public class ResultView : MonoBehaviour, IResultView
     }
 
     public void CloseUI()
-    {
-        ToggleUI(false);
-    }
+        => ToggleUI(false);
 
     private void ToggleUI(bool active)
-    {
-        m_animator.SetBool("Open", active);
-    }
+        => m_animator.SetBool("Open", active);
 }

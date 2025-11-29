@@ -18,7 +18,5 @@ public class RewardPresenter
     }
 
     public void CloseUI()
-    {
-        m_view.CloseUI();
-    }
+        => m_view.CloseUI();
 }

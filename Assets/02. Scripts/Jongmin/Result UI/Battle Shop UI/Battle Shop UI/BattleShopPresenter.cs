@@ -1,18 +1,16 @@
 public class BattleShopPresenter
 {
     private readonly IBattleShopView m_view;
+    private readonly BattleShopCardFactory m_factory;
     // TOOD: 카드에 필요한 의존성 변수
 
-    public BattleShopPresenter(IBattleShopView view)
+    public BattleShopPresenter(IBattleShopView view,
+                               BattleShopCardFactory factory)
     {
         m_view = view;
+        m_factory = factory;
+        
         m_view.Inject(this);
-    }
-
-    public void InstantiateSlot()
-    {
-        var slot_view = m_view.InstantiateSlotView();
-        var slot_presenter = new BattleShopSlotPresenter(slot_view);
     }
 
     public void OpenUI()
@@ -22,7 +20,14 @@ public class BattleShopPresenter
     }
 
     public void CloseUI()
+        => m_view.CloseUI();
+
+    public void InstantiateCard()
     {
-        m_view.CloseUI();
+        var slot_view = m_factory.InstantiateCardView();
+        var slot_presenter = new BattleShopSlotPresenter(slot_view);
     }
+
+    public void RemoveCards()
+        => m_factory.RemoveCards();
 }

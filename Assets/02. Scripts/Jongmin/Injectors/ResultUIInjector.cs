@@ -10,7 +10,10 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     [SerializeField] private BattleShopView m_shop_view;
 
     [Header("결과 뷰")]
-    [SerializeField] private ResultView m_result_view; 
+    [SerializeField] private ResultView m_result_view;
+
+    [Header("전투 상점 카드 팩토리")]
+    [SerializeField] private BattleShopCardFactory m_battle_shop_card_factory;
 
     public void Inject()
     {
@@ -31,7 +34,8 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     {
         DIContainer.Register<IBattleShopView>(m_shop_view);
 
-        var shop_presenter = new BattleShopPresenter(m_shop_view);
+        var shop_presenter = new BattleShopPresenter(m_shop_view,
+                                                     m_battle_shop_card_factory);
         DIContainer.Register<BattleShopPresenter>(shop_presenter);
     }
 
