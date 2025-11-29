@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: PlayerStat, PlayerController, PlayerAnimation으로 분리, Player가 통합 관리
 public class PlayerUnit : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
@@ -19,6 +20,11 @@ public class PlayerUnit : MonoBehaviour, IDamageable
     [SerializeField] private GameObject defenseIcon;
     [SerializeField] private Color defaultHpColor = Color.red;
     [SerializeField] private Color defenseHpColor = Color.white;
+
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string attackTriggerName = "Attack";
+    [SerializeField] private string attackStateName = "Player1_Attack";
 
     [Header("Sprite")]
     [SerializeField] private Transform spriteTransform;
@@ -39,6 +45,7 @@ public class PlayerUnit : MonoBehaviour, IDamageable
     private void Awake()
     {
         InitializeStats();
+        InitializeAnimator();
         CacheSpriteOrigin();
         ClampHealth(forceMaxIfZero: true);
         RefreshUI();
@@ -92,8 +99,12 @@ public class PlayerUnit : MonoBehaviour, IDamageable
                 attackPosition.x = initialSpriteLocalPosition.x - Mathf.Abs(singleTargetAttackOffset);
             }
 
+            // 공격 위치로 이동
             yield return StartCoroutine(MoveSpriteToPosition(attackPosition, attackMoveDuration));
         }
+
+        // 공격 애니메이션 재생
+        PlayAttackAnimation();
 
         // 공격 실행
         if (targets != null)
@@ -107,13 +118,10 @@ public class PlayerUnit : MonoBehaviour, IDamageable
             }
         }
 
-        // 공격 모션 대기
-        if (attackMotionDuration > 0f)
-        {
-            yield return new WaitForSeconds(attackMotionDuration);
-        }
+        // 공격 애니메이션이 끝날 때까지 대기
+        yield return StartCoroutine(WaitForAttackAnimationComplete());
 
-        // 부드럽게 원래 위치로 복귀
+        // 제자리로 복귀
         if (spriteTransform != null)
         {
             yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, returnMoveDuration));
@@ -163,6 +171,67 @@ public class PlayerUnit : MonoBehaviour, IDamageable
         if (stats == null)
         {
             stats = new CharacterStats();
+        }
+    }
+
+    private void InitializeAnimator()
+    {
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+    }
+
+    private void PlayAttackAnimation()
+    {
+        if (animator != null && !string.IsNullOrEmpty(attackTriggerName))
+        {
+            animator.SetTrigger(attackTriggerName);
+        }
+    }
+
+    private IEnumerator WaitForAttackAnimationComplete()
+    {
+        if (animator == null || string.IsNullOrEmpty(attackStateName))
+        {
+            if (attackMotionDuration > 0f)
+            {
+                yield return new WaitForSeconds(attackMotionDuration);
+            }
+            yield break;
+        }
+
+        int attackStateHash = Animator.StringToHash(attackStateName);
+        
+        // Attack 상태로 전환될 때까지 대기
+        while (true)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            
+            if (stateInfo.shortNameHash == attackStateHash)
+            {
+                break;
+            }
+            
+            yield return null;
+        }
+        
+        // Attack 상태가 끝날 때까지 대기
+        while (true)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            
+            if (stateInfo.shortNameHash != attackStateHash)
+            {
+                break;
+            }
+            
+            if (stateInfo.normalizedTime >= 1.0f)
+            {
+                break;
+            }
+            
+            yield return null;
         }
     }
 

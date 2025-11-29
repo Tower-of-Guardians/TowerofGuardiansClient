@@ -66,7 +66,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         if (enhancementPreviewToggle != null)
         {
             enhancementPreviewToggle.onValueChanged.AddListener(OnEnhancementPreviewToggleChanged);
-            // 평소에는 토글 해제
             enhancementPreviewToggle.isOn = false;
         }
     }
@@ -325,9 +324,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         selectedCardData = cardData;
         ShowEnhancementPanel();
         UpdateEnhancementUI();
-        
-        // TODO: 클릭한 카드 데이터를 CardEnhancementUI에 적용
-        // CardEnhancementUI에 선택된 카드 데이터를 전달하여 UI 업데이트
     }
 
     private void ShowEnhancementPanel()
@@ -393,7 +389,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         var results = new System.Collections.Generic.List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
-        // 카드 그리드를 클릭한 경우는 무시
         foreach (var result in results)
         {
             if (result.gameObject == cardGridParent || 
@@ -403,7 +398,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // 강화 패널 내부를 클릭한 경우
         bool isClickedOnEnhancementPanel = false;
         bool isClickedOnToggle = false;
 
@@ -414,7 +408,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             {
                 isClickedOnEnhancementPanel = true;
 
-                // 토글을 클릭한 경우인지 확인
                 if (enhancementPreviewToggle != null &&
                     (result.gameObject == enhancementPreviewToggle.gameObject ||
                      result.gameObject.transform.IsChildOf(enhancementPreviewToggle.transform)))
@@ -425,7 +418,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        // 강화 패널 내부를 클릭했지만 토글이 아닌 경우, 또는 배경을 클릭한 경우 창 닫기
         if (!isClickedOnEnhancementPanel || (isClickedOnEnhancementPanel && !isClickedOnToggle))
         {
             HideEnhancementPanel();

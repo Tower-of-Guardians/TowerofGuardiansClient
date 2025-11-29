@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 7896879507418422366, guid: 9e1c83e11b1903047807fc5e9b874f47, type: 3}
+  m_Sprite: {fileID: -8104565290056944633, guid: 9e1c83e11b1903047807fc5e9b874f47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1, y: 0.96}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -153,6 +153,8 @@ MonoBehaviour:
   defenseIcon: {fileID: 6938776382912519995}
   defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
   defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
+  animator: {fileID: 0}
+  attackTriggerName: Attack
   spriteTransform: {fileID: 5132067724293868386}
   singleTargetAttackOffset: 1
   attackMoveDuration: 0.2
