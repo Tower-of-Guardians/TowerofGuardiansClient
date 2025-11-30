@@ -1,7 +1,6 @@
-public class DeckStatusCardPresenter
+public class DeckStatusCardPresenter : CardPresenter
 {
     private readonly IDeckStatusCardView m_view;
-    private readonly CardData m_card_data;
 
     public DeckStatusCardPresenter(IDeckStatusCardView view,
                                    CardData card_data)
@@ -9,4 +8,7 @@ public class DeckStatusCardPresenter
         m_view = view;
         m_card_data = card_data;
     }
+
+    public override void Return()
+        => m_view.Return();
 }

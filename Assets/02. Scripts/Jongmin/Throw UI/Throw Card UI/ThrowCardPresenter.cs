@@ -1,16 +1,15 @@
-using UnityEngine;
-
-public class ThrowCardPresenter
+public class ThrowCardPresenter : CardPresenter
 {
     private readonly IThrowCardView m_view;
-    
-    public CardData Data { get; private set; }
 
     public ThrowCardPresenter(IThrowCardView view, CardData card_data)
     {
         m_view = view;
-        // TODO: 카드 데이터 주입
+        m_card_data = card_data;
 
-        m_view.Inject(this);
+        m_view.InitUI(m_card_data);
     }
+
+    public override void Return()
+        => m_view.Return();
 }

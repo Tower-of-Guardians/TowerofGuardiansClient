@@ -30,15 +30,6 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
 
     private ThrowAnimeController m_anime_controller;
     private ThrowCardLayoutController m_layout_controller;
-    private ThrowCardEventController m_event_controller;
-    private ThrowCardFactory m_factory;
-
-    private void Awake()
-    {
-        m_anime_controller = GetComponent<ThrowAnimeController>();
-        m_layout_controller = GetComponent<ThrowCardLayoutController>();
-        m_event_controller = GetComponent<ThrowCardEventController>();
-    }
 
     private void OnDestroy()
     {
@@ -55,11 +46,9 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     {
         m_anime_controller = anime_controller;
         m_layout_controller = layout_controller;
-        m_event_controller = event_controller;
-        m_factory = card_factory;
 
-        m_event_controller.Inject(this, m_presenter, m_layout_controller);
-        m_factory.Inject(m_event_controller, m_layout_controller, m_anime_controller);
+        event_controller.Inject(this, m_presenter, m_layout_controller);
+        card_factory.Inject(event_controller, m_layout_controller, m_anime_controller);
     }
 
     public void Inject(ThrowPresenter presenter)

@@ -14,7 +14,9 @@ public class TemporaryCardFactory : MonoBehaviour
         var m_temp_card_obj = ObjectPoolManager.Instance.Get(m_temp_card_prefab);
         m_temp_card_obj.transform.SetParent(m_canvas.transform);
 
-        // TODO: 카드 데이터 주입
+        var temp_card_view = m_temp_card_obj.GetComponent<TemporaryCardView>();
+        var temp_card_presenter = new TemporaryCardPresenter(temp_card_view,
+                                                             card_data);
 
         return m_temp_card_obj;
     }
