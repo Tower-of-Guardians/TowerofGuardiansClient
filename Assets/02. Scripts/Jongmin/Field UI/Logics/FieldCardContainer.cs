@@ -37,6 +37,15 @@ public class FieldCardContainer
         return from_index < to_index;
     }
 
+    public bool IsExist(IFieldCardView target_card_view)
+    {
+        foreach(var card_view in m_card_list)
+            if(card_view == target_card_view)
+                return true;
+        
+        return false;
+    }
+
     public int GetIndex(IFieldCardView card_view)
         => m_card_list.IndexOf(card_view);
 

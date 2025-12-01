@@ -21,6 +21,8 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     private FieldCardContainer m_container;
     private FieldUIDesigner m_designer;
 
+    private readonly Dictionary<IFieldCardView, FieldCardEventBundle> m_event_dict = new();
+
     public void Inject(IFieldView view,
                        FieldPresenter presenter,
                        FieldCardLayoutController layout_controller,
@@ -36,10 +38,30 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
     public void Subscribe(IFieldCardView card_view)
     {
-        card_view.OnBeginDragAction +=      () => OnBeginDragCard(card_view);
-        card_view.OnDragAction +=           (position) => OnDragCard(position);
-        card_view.OnEndDragAction +=        () => OnEndDragCard();
-        card_view.OnDropAction +=           () => OnDropCard(); 
+        var new_bundle = new FieldCardEventBundle
+        {
+            OnBeginDrag =   ()          => OnBeginDragCard(card_view),
+            OnDrag =        (position)  => OnDragCard(position),
+            OnEndDrag =     ()          => OnEndDragCard()
+        };
+
+        m_event_dict[card_view] = new_bundle;
+
+        card_view.OnBeginDragAction += new_bundle.OnBeginDrag;
+        card_view.OnDragAction += new_bundle.OnDrag;
+        card_view.OnEndDragAction += new_bundle.OnEndDrag;        
+    }
+
+    public void Unsubscribe(IFieldCardView card_view)
+    {
+        if(m_event_dict.TryGetValue(card_view, out var bundle))
+        {
+            card_view.OnBeginDragAction -= bundle.OnBeginDrag;
+            card_view.OnDragAction -= bundle.OnDrag;
+            card_view.OnEndDragAction -= bundle.OnEndDrag;
+
+            m_event_dict.Remove(card_view);
+        }
     }
 
     public void OnBeginDragCard(IFieldCardView card_view)
@@ -49,7 +71,10 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         var target_card = m_presenter.HoverCard as FieldCardView;
 
         m_preview_object.SetActive(true);
-        m_preview_object.transform.position = target_card.transform.position;
+        (m_preview_object.transform as RectTransform).anchoredPosition
+            = CardLayoutCalculator.CalculatedFieldCardPosition(m_container.GetIndex(m_presenter.HoverCard),
+                                                               m_designer.ATKLimit,
+                                                               m_designer.Space);
 
         target_card.transform.DOKill();
         target_card.transform.SetParent(m_canvas.transform, false);
@@ -98,6 +123,9 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
     public void OnEndDragCard()
     {
+        if(m_presenter.HoverCard == null)
+            return;
+
         var target_card = m_presenter.HoverCard as FieldCardView;
 
         var world_position = target_card.transform.position;
@@ -106,15 +134,15 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         var local_position = target_card.transform.parent.InverseTransformPoint(world_position);
         target_card.transform.localPosition = local_position;
 
+        var hit = CheckField(out var pointer_data);
+        var drop_handler = hit?.gameObject.GetComponent<HandView>();
+        if(drop_handler != null)
+            ExecuteEvents.Execute(hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
+        
         m_presenter.HoverCard = null;
 
         m_preview_object.SetActive(false);
         m_layout_controller.UpdateLayout(false);
-    }
-
-    public void OnDropCard()
-    {
-
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -126,9 +154,6 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
             if(card_view != null)
                 m_presenter.OnDroped(card_view);
         }
-
-        m_presenter.ToggleManual(false);
-        m_preview_object.transform.SetAsFirstSibling();
     }
 
     private RaycastResult? CheckField(out PointerEventData pointer_data)

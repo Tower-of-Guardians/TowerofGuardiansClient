@@ -23,14 +23,10 @@ public class FieldCardLayoutController : MonoBehaviour
     public void UpdateLayout(bool include_preview, bool is_anime = true, bool is_sorting = true)
     {
         var card_views = m_container.Cards;
-        var card_count = include_preview ? card_views.Count + 1
-                                         : card_views.Count;
+        var card_count = card_views.Count;
 
-        if(card_count == 0)
-            return;
-
-        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as FieldCardView).transform as RectTransform).anchoredPosition
-                                                          : CardLayoutCalculator.CalculatedFieldCardPosition(0, m_designer.ATKLimit, m_designer.Space); 
+        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as FieldCardView).transform as RectTransform).anchoredPosition 
+                                                         : CardLayoutCalculator.CalculatedFieldCardPosition(0, m_designer.ATKLimit, m_designer.Space); 
         
         for(int i = 0; i < card_views.Count; i++)
         {
@@ -55,10 +51,14 @@ public class FieldCardLayoutController : MonoBehaviour
 
         if(include_preview)
         {
+            if(card_views.Count == m_designer.ATKLimit)
+                return;
+
             var preview_rect = m_preview_object.transform as RectTransform; 
             preview_rect.anchoredPosition = prev_preview_position;
-            
-            var preview_position = CardLayoutCalculator.CalculatedFieldCardPosition(card_count - 1, m_designer.ATKLimit, m_designer.Space);
+
+            var preview_position = CardLayoutCalculator.CalculatedFieldCardPosition(card_count, m_designer.ATKLimit, m_designer.Space);
+            preview_rect.transform.DOKill();
             preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);            
         }
     }

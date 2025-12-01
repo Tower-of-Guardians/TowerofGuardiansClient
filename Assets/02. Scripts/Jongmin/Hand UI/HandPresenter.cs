@@ -93,6 +93,17 @@ public class HandPresenter
         // TODO: GameData에 카드 데이터를 전달
         m_throw_presenter.RemoveCard(card_view);
     }
+
+    public void OnDroped(IFieldCardView card_view)
+    {
+        // TODO: GameData에 카드 데이터를 전달
+        if(m_attack_field_presenter.IsExist(card_view))
+            m_attack_field_presenter.Remove(card_view);
+        else
+            m_defend_field_presenter.Remove(card_view);
+
+        InstantiateCard();
+    }
 #endregion Events
 
 #region Test

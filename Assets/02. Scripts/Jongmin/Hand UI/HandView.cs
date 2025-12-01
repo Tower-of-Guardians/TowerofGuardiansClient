@@ -197,6 +197,9 @@ public class HandView : MonoBehaviour, IHandView, IDropHandler
                 m_presenter.OnDroped(throw_card_view);
 
             // TODO: 필드 카드에 대한 처리
+            var field_card_view = dropped_object.GetComponent<IFieldCardView>();
+            if(field_card_view != null)
+                m_presenter.OnDroped(field_card_view);
         }
     }
 

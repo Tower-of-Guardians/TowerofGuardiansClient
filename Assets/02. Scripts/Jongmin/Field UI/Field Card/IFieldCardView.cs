@@ -6,11 +6,9 @@ using UnityEngine.EventSystems;
 public interface IFieldCardView : ICardView,
                                   IBeginDragHandler,
                                   IDragHandler,
-                                  IEndDragHandler,
-                                  IDropHandler
+                                  IEndDragHandler
 {
     event Action OnBeginDragAction;
     event Action<Vector2> OnDragAction;
     event Action OnEndDragAction;
-    event Action OnDropAction;
 }

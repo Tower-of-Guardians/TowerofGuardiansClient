@@ -11,7 +11,6 @@ public class FieldCardView : CardView, IFieldCardView
     public event Action OnBeginDragAction;
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
-    public event Action OnDropAction;
 
     public void OnBeginDrag(PointerEventData eventData)
         => OnBeginDragAction?.Invoke();
@@ -24,10 +23,11 @@ public class FieldCardView : CardView, IFieldCardView
     }
 
     public void OnEndDrag(PointerEventData eventData)
-        => OnEndDragAction?.Invoke();
-
-    public void OnDrop(PointerEventData eventData)
-        => OnDropAction?.Invoke();
+    {
+        ToggleRaycast(false);
+        OnEndDragAction?.Invoke();
+        ToggleRaycast(true);
+    }
 
     private void ToggleRaycast(bool active)
         => m_canvas_group.blocksRaycasts = active;

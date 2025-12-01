@@ -58,8 +58,14 @@ public abstract class FieldPresenter : IDisposable
             m_controller.ToggleManual(false);
     }
 
-    public void Return()
+    public bool IsExist(IFieldCardView card_view)
+        => m_container.IsExist(card_view);
+
+    public void RemoveAll()
         => m_service.RemoveAll();
+
+    public void Remove(IFieldCardView card_view)
+        => m_service.Remove(card_view);
 
     public CardData[] GetCardDatas()
         => m_container.GetDatas();
@@ -80,10 +86,7 @@ public abstract class FieldPresenter : IDisposable
 
         var card_data = m_hand_presenter.GetCardData(card_view);
         if(InstantiateCard(card_data))
-        {
             m_hand_presenter.RemoveCard(card_view);
-            m_turn_manager.UpdateActionCount(1);
-        }
     }
 
     public void Dispose()

@@ -28,7 +28,8 @@ public class FieldView : MonoBehaviour, IFieldView
 
     public void ToggleManual(bool active)
     {
-        m_layout_controller.UpdateLayout(true);
+        m_layout_controller.UpdateLayout(active);
         m_preview_object.SetActive(active);
+        m_preview_object.transform.SetAsFirstSibling();
     }
 }

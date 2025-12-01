@@ -35,7 +35,7 @@ public class FieldCardService
 
         m_container.Add(view, presenter);
         m_layout_controller.UpdateLayout(false, false, false);
-        m_turn_manager.UpdateThrowCount(1);
+        m_turn_manager.UpdateActionCount(1);
     }
 
     public void Remove(IFieldCardView card_view)
@@ -44,13 +44,13 @@ public class FieldCardService
         {
             m_container.Remove(card_view);
             m_factory.ReturnCard(card_view);
-            m_turn_manager.UpdateThrowCount(-1);
+            m_turn_manager.UpdateActionCount(-1);
         }
     }
 
     public void RemoveAll()
     {   
-        m_turn_manager.UpdateThrowCount(-Count);
+        m_turn_manager.UpdateActionCount(-Count);
         m_container.Clear();
         m_factory.ReturnCards();
     }

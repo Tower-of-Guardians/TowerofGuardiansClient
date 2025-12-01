@@ -31,6 +31,8 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
     public void ReturnCard(IFieldCardView card_view)
     {
         var target_card = card_view as FieldCardView;
+        
+        m_event_controller.Unsubscribe(card_view);
         ObjectPoolManager.Instance.Return(target_card.gameObject);
     }
 
@@ -39,6 +41,8 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
         var card_views = m_slot_root.GetComponentsInChildren<IFieldCardView>();
         foreach(var card_view in card_views)
         {
+            m_event_controller.Unsubscribe(card_view);
+            
             var card_obj = (card_view as FieldCardView).gameObject;
             ObjectPoolManager.Instance.Return(card_obj);
         }              
