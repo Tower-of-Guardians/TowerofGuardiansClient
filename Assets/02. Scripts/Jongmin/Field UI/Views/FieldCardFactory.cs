@@ -12,7 +12,9 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
     private FieldCardEventController m_event_controller;
 
     public void Inject(FieldCardEventController event_controller)
-        => m_event_controller = event_controller;
+    {
+        m_event_controller = event_controller;
+    }
 
     public IFieldCardView InstantiateCardView()
     {
@@ -21,8 +23,7 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
         card_obj.transform.localScale = Vector3.one;
 
         var card_view = card_obj.GetComponent<IFieldCardView>();
-        // TODO: 이벤트 등록
-        // TODO: 레이아웃 재설정
+        m_event_controller.Subscribe(card_view);
 
         return card_view;
     }

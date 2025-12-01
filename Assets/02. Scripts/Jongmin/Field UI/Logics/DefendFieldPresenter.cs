@@ -3,10 +3,11 @@ public class DefendFieldPresenter : FieldPresenter
     public DefendFieldPresenter(IFieldView view,
                                 FieldCardContainer container,
                                 IFieldCardFactory factory,
+                                FieldCardLayoutController layout_controller,
                                 INotice notice,
                                 FieldUIDesigner designer,
                                 TurnManager turn_manager,
-                                ThrowPresenter throw_presenter) : base(view, container, factory, notice, designer, turn_manager, throw_presenter, false) {}
+                                ThrowPresenter throw_presenter) : base(view, container, factory, layout_controller, notice, designer, turn_manager, throw_presenter, false) {}
 
     public override bool InstantiateCard(CardData card_data)
     {

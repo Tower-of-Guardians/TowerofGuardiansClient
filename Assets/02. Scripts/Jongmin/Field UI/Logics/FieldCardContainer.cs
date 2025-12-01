@@ -21,6 +21,25 @@ public class FieldCardContainer
         m_card_dict.Remove(card_view);
     }
 
+    public void Swap(IFieldCardView from_card_view, IFieldCardView to_card_view)
+    {
+        var index = m_card_list.IndexOf(to_card_view);
+        
+        m_card_list.Remove(from_card_view);
+        m_card_list.Insert(index, from_card_view);
+    }
+
+    public bool IsPriority(IFieldCardView from_card_view, IFieldCardView to_card_view)
+    {
+        var from_index = m_card_list.IndexOf(from_card_view);
+        var to_index = m_card_list.IndexOf(to_card_view);
+
+        return from_index < to_index;
+    }
+
+    public int GetIndex(IFieldCardView card_view)
+        => m_card_list.IndexOf(card_view);
+
     public void Clear()
     {
         m_card_list.Clear();

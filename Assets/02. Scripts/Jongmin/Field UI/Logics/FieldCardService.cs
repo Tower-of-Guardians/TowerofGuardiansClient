@@ -2,6 +2,7 @@ public class FieldCardService
 {
     private readonly IFieldCardFactory m_factory;
     private readonly FieldCardContainer m_container;
+    private readonly FieldCardLayoutController m_layout_controller;
 
     private readonly TurnManager m_turn_manager;
 
@@ -15,12 +16,14 @@ public class FieldCardService
     public FieldCardService(IFieldCardFactory factory,
                             FieldCardContainer container,
                             TurnManager turn_manager,
+                            FieldCardLayoutController layout_controller,
                             FieldUIDesigner designer,
                             bool is_atk)
     {
         m_factory = factory;
         m_container = container;
         m_turn_manager = turn_manager;
+        m_layout_controller = layout_controller;
         m_designer = designer;
         m_is_atk = is_atk;
     }
@@ -31,6 +34,7 @@ public class FieldCardService
         var presenter = new FieldCardPresenter(view, card_data);
 
         m_container.Add(view, presenter);
+        m_layout_controller.UpdateLayout(false, false, false);
         m_turn_manager.UpdateThrowCount(1);
     }
 

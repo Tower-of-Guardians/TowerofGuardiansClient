@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 1145360186637390165}
   - component: {fileID: 7413503919176822214}
   - component: {fileID: 2115527134052092287}
+  - component: {fileID: 4229501210860241730}
   m_Layer: 5
   m_Name: Field Card
   m_TagString: Untagged
@@ -601,7 +602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137, y: -225}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 120, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1145360186637390165
@@ -660,6 +661,19 @@ MonoBehaviour:
   m_card_description_label: {fileID: 1316816473014287165}
   m_card_atk_label: {fileID: 7747395038244367814}
   m_card_def_label: {fileID: 5262623371094854513}
+  m_canvas_group: {fileID: 4229501210860241730}
+--- !u!225 &4229501210860241730
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154318988373132520}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8403624115399355013
 GameObject:
   m_ObjectHideFlags: 0

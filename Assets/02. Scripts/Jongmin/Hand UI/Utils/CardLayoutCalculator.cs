@@ -38,4 +38,14 @@ public static class CardLayoutCalculator
 
         return new Vector2(target_x, 0f);
     }
+
+    public static Vector2 CalculatedFieldCardPosition(int index,
+                                                      int max_card_count,
+                                                      float space)
+    {
+        var start_x = -(max_card_count - 1) * space * 0.5f;
+        var target_x = start_x + index * space;
+
+        return new Vector2(target_x, 0f);
+    }
 }
