@@ -18,6 +18,9 @@ public class ThrowUIInjector : MonoBehaviour, IInjector
     [Header("교체 카드 팩토리")]
     [SerializeField] private ThrowCardFactory m_throw_card_factory;
 
+    [Header("교체 뷰 디자이너")]
+    [SerializeField] private ThrowUIDesigner m_throw_ui_designer;
+
     [Header("알리미")]
     [SerializeField] private Notice m_notice;
 
@@ -41,8 +44,12 @@ public class ThrowUIInjector : MonoBehaviour, IInjector
         DIContainer.Register<ThrowPresenter>(throw_presenter);
 
         m_layout_throw_view.Inject(m_anime_controller,
+                                   throw_card_container,
+                                   m_throw_ui_designer,
                                    m_layout_controller,
                                    m_event_controller,
                                    m_throw_card_factory);
+
+        m_anime_controller.Inject(throw_card_container);
     }
 }

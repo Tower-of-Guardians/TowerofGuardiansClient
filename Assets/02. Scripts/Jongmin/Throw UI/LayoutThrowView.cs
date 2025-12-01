@@ -4,9 +4,6 @@ using UnityEngine.UI;
 public class LayoutThrowView : MonoBehaviour, IThrowView
 {
     [Space(30f), Header("UI 관련 컴포넌트")]
-    [Header("슬롯의 부모 트랜스폼")]
-    [SerializeField] private Transform m_slot_root;
-
     [Header("프리뷰 카드")]
     [SerializeField] private GameObject m_preview_object;
 
@@ -40,6 +37,8 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     }
 
     public void Inject(ThrowAnimeController anime_controller,
+                       ThrowCardContainer container,
+                       ThrowUIDesigner designer,
                        ThrowCardLayoutController layout_controller,
                        ThrowCardEventController event_controller,
                        ThrowCardFactory card_factory)
@@ -47,7 +46,8 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
         m_anime_controller = anime_controller;
         m_layout_controller = layout_controller;
 
-        event_controller.Inject(this, m_presenter, m_layout_controller);
+        layout_controller.Inject(m_presenter, container);
+        event_controller.Inject(this, m_presenter, designer, container, m_layout_controller);
         card_factory.Inject(event_controller, m_layout_controller, m_anime_controller);
     }
 
@@ -68,7 +68,7 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     public void CloseUI()
     {
         ToggleAnime(false);
-        m_anime_controller.PlayRemoveAll(m_slot_root, m_presenter.GetCardDatas());
+        m_anime_controller.PlayRemoveAll(m_presenter.GetCardDatas());
     }
 
     public void UpdateUI(bool open_active, bool throw_active)
@@ -80,7 +80,7 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
     public void ThrowUI()
     {
         ToggleAnime(false);
-        m_anime_controller.PlayThrowAll(m_slot_root, m_presenter.GetCardDatas());
+        m_anime_controller.PlayThrowAll(m_presenter.GetCardDatas());
     }
 
     private void ToggleAnime(bool active)
@@ -88,7 +88,8 @@ public class LayoutThrowView : MonoBehaviour, IThrowView
 
     public void ToggleManual(bool active)
     {
-        m_layout_controller.UpdateLayout(m_slot_root, active, !active);
+        m_layout_controller.UpdateLayout(active, active, active);
         m_preview_object.SetActive(active);
+        m_preview_object.transform.SetAsFirstSibling();
     }
 }

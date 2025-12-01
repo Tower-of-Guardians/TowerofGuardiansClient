@@ -30,7 +30,7 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
 
         var card_view = card_obj.GetComponent<IThrowCardView>();
         m_event_controller.Subscribe(card_view);    
-        m_layout_controller.UpdateLayout(m_slot_root, false, false);
+        m_layout_controller.UpdateLayout(false, false);
         
         return card_view;
     }
@@ -38,7 +38,8 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
     public void ReturnCard(IThrowCardView card_view, CardData card_data)
     {
         m_anime_controller.PlayRemove(card_view, card_data);
-        m_layout_controller.UpdateLayout(m_slot_root, false, true);
+        m_event_controller.Unsubscribe(card_view);
+        m_layout_controller.UpdateLayout(false, true);
     }
 
     public void ReturnCards()
@@ -46,6 +47,8 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
         var card_views = m_slot_root.GetComponentsInChildren<IThrowCardView>();
         foreach(var card_view in card_views)
         {
+            m_event_controller.Unsubscribe(card_view);
+
             var card_obj = (card_view as ThrowCardView).gameObject;
             ObjectPoolManager.Instance.Return(card_obj);
         }        

@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 
 public class ThrowCardView : CardView, IThrowCardView
 {
+    [Space(30f), Header("추가 UI 관련 컴포넌트")]
+    [Header("캔버스 그룹")]
+    [SerializeField] private CanvasGroup m_canvas_group;
+
     public event Action OnBeginDragAction;
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
@@ -12,8 +16,19 @@ public class ThrowCardView : CardView, IThrowCardView
         => OnBeginDragAction?.Invoke();
 
     public void OnDrag(PointerEventData eventData)
-        => OnDragAction?.Invoke(eventData.position);
+    {
+        ToggleRaycast(false);
+        OnDragAction?.Invoke(eventData.position);
+        ToggleRaycast(true);
+    }
 
     public void OnEndDrag(PointerEventData eventData)
-        => OnEndDragAction?.Invoke();
+    {
+        ToggleRaycast(false);
+        OnEndDragAction?.Invoke();
+        ToggleRaycast(true);
+    }
+
+    private void ToggleRaycast(bool active)
+        => m_canvas_group.blocksRaycasts = active;
 }
