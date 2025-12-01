@@ -12,7 +12,9 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
     private FieldCardEventController m_event_controller;
 
     public void Inject(FieldCardEventController event_controller)
-        => m_event_controller = event_controller;
+    {
+        m_event_controller = event_controller;
+    }
 
     public IFieldCardView InstantiateCardView()
     {
@@ -21,8 +23,7 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
         card_obj.transform.localScale = Vector3.one;
 
         var card_view = card_obj.GetComponent<IFieldCardView>();
-        // TODO: 이벤트 등록
-        // TODO: 레이아웃 재설정
+        m_event_controller.Subscribe(card_view);
 
         return card_view;
     }
@@ -30,6 +31,8 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
     public void ReturnCard(IFieldCardView card_view)
     {
         var target_card = card_view as FieldCardView;
+        
+        m_event_controller.Unsubscribe(card_view);
         ObjectPoolManager.Instance.Return(target_card.gameObject);
     }
 
@@ -38,6 +41,8 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
         var card_views = m_slot_root.GetComponentsInChildren<IFieldCardView>();
         foreach(var card_view in card_views)
         {
+            m_event_controller.Unsubscribe(card_view);
+            
             var card_obj = (card_view as FieldCardView).gameObject;
             ObjectPoolManager.Instance.Return(card_obj);
         }              

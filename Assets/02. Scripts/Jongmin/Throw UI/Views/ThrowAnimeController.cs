@@ -13,11 +13,15 @@ public class ThrowAnimeController : MonoBehaviour
     [Header("교체 패 위치")]
     [SerializeField] private Transform m_throw_deck_transform;
 
-    public void PlayThrowAll(Transform root, CardData[] card_datas)
+    private ThrowCardContainer m_container;
+
+    public void Inject(ThrowCardContainer container)
+        => m_container = container;
+
+    public void PlayThrowAll(CardData[] card_datas)
     {
-        var throw_cards = root.GetComponentsInChildren<IThrowCardView>();
         var throw_card_positions = new List<Vector3>();
-        foreach(var throw_card in throw_cards)
+        foreach(var throw_card in m_container.Cards)
             throw_card_positions.Add((throw_card as ThrowCardView).transform.position);
 
         m_temp_card_controller.PlayAnimeFromThis(card_datas,
@@ -43,11 +47,10 @@ public class ThrowAnimeController : MonoBehaviour
         ObjectPoolManager.Instance.Return(target_card.gameObject);     
     }
 
-    public void PlayRemoveAll(Transform root, CardData[] card_datas)
+    public void PlayRemoveAll(CardData[] card_datas)
     {
-        var throw_cards = root.GetComponentsInChildren<IThrowCardView>();
         var throw_card_positions = new List<Vector3>();
-        foreach(var throw_card in throw_cards)
+        foreach(var throw_card in m_container.Cards)
             throw_card_positions.Add((throw_card as ThrowCardView).transform.position);
 
         m_temp_card_controller.PlayAnimeFromThis(card_datas,

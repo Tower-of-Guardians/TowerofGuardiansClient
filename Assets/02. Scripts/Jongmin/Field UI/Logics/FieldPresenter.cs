@@ -11,11 +11,19 @@ public abstract class FieldPresenter : IDisposable
     private HandPresenter m_hand_presenter;
     private readonly ThrowPresenter m_throw_presenter;
 
+    private IFieldCardView m_hover_card;
+
     protected bool Active { get; private set; } = true;
+    public IFieldCardView HoverCard
+    {
+        get => m_hover_card;
+        set => m_hover_card = value;
+    }
 
     public FieldPresenter(IFieldView view,
                           FieldCardContainer container,
                           IFieldCardFactory factory,
+                          FieldCardLayoutController layout_controller,
                           INotice notice,
                           FieldUIDesigner designer,
                           TurnManager turn_manager,
@@ -25,7 +33,7 @@ public abstract class FieldPresenter : IDisposable
         m_view = view;
         m_container = container;
         m_controller = new FieldViewController(view, notice);
-        m_service = new FieldCardService(factory, container, turn_manager, designer, is_atk);
+        m_service = new FieldCardService(factory, container, turn_manager, layout_controller, designer, is_atk);
         m_turn_manager = turn_manager;
         m_throw_presenter = throw_presenter;
 
@@ -50,8 +58,14 @@ public abstract class FieldPresenter : IDisposable
             m_controller.ToggleManual(false);
     }
 
-    public void Return()
+    public bool IsExist(IFieldCardView card_view)
+        => m_container.IsExist(card_view);
+
+    public void RemoveAll()
         => m_service.RemoveAll();
+
+    public void Remove(IFieldCardView card_view)
+        => m_service.Remove(card_view);
 
     public CardData[] GetCardDatas()
         => m_container.GetDatas();
@@ -72,10 +86,7 @@ public abstract class FieldPresenter : IDisposable
 
         var card_data = m_hand_presenter.GetCardData(card_view);
         if(InstantiateCard(card_data))
-        {
             m_hand_presenter.RemoveCard(card_view);
-            m_turn_manager.UpdateActionCount(1);
-        }
     }
 
     public void Dispose()

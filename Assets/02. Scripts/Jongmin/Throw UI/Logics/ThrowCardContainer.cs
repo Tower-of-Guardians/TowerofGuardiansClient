@@ -21,6 +21,34 @@ public class ThrowCardContainer
         m_card_dict.Remove(card_view);
     }
 
+    public void Swap(IThrowCardView from_card_view, IThrowCardView to_card_view)
+    {
+        var index = m_card_list.IndexOf(to_card_view);
+        
+        m_card_list.Remove(from_card_view);
+        m_card_list.Insert(index, from_card_view);
+    }
+
+    public bool IsPriority(IThrowCardView from_card_view, IThrowCardView to_card_view)
+    {
+        var from_index = m_card_list.IndexOf(from_card_view);
+        var to_index = m_card_list.IndexOf(to_card_view);
+
+        return from_index < to_index;
+    }
+
+    public bool IsExist(IThrowCardView target_card_view)
+    {
+        foreach(var card_view in m_card_list)
+            if(card_view == target_card_view)
+                return true;
+        
+        return false;
+    }
+
+    public int GetIndex(IThrowCardView card_view)
+        => m_card_list.IndexOf(card_view);
+
     public void Clear()
     {
         m_card_list.Clear();

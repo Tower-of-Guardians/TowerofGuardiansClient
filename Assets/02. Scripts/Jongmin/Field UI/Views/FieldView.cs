@@ -7,20 +7,29 @@ public class FieldView : MonoBehaviour, IFieldView
     [SerializeField] private GameObject m_preview_object;
 
     private FieldPresenter m_presenter;
+    private FieldCardLayoutController m_layout_controller;
 
     private void OnDestroy()
         => m_presenter?.Dispose();
 
     public void Inject(FieldCardEventController event_controller,
-                       FieldCardFactory factory)
+                       FieldCardFactory factory,
+                       FieldCardLayoutController layout_controller,
+                       FieldCardContainer container,
+                       FieldUIDesigner designer)
     {
-        event_controller.Inject(this, m_presenter);
+        event_controller.Inject(this, m_presenter, layout_controller, container, designer);
         factory.Inject(event_controller);
+        m_layout_controller = layout_controller;
     }
 
     public void Inject(FieldPresenter presenter)
         => m_presenter = presenter;
 
     public void ToggleManual(bool active)
-        => m_preview_object.SetActive(active);
+    {
+        m_layout_controller.UpdateLayout(active);
+        m_preview_object.SetActive(active);
+        m_preview_object.transform.SetAsFirstSibling();
+    }
 }
