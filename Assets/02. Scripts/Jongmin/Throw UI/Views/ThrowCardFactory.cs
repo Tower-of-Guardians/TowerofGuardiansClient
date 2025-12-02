@@ -35,7 +35,7 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
         return card_view;
     }
 
-    public void ReturnCard(IThrowCardView card_view, CardData card_data)
+    public void ReturnCard(IThrowCardView card_view, BattleCardData card_data)
     {
         m_anime_controller.PlayRemove(card_view, card_data);
         m_event_controller.Unsubscribe(card_view);

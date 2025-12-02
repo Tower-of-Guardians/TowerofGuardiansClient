@@ -76,7 +76,7 @@ public class HandPresenter
         m_throw_presenter.ToggleManual(active);
     }
 
-    public CardData GetCardData(IHandCardView card_view)
+    public BattleCardData GetCardData(IHandCardView card_view)
     {
         if(m_card_dict.TryGetValue(card_view, out var card_presenter))
             return card_presenter.CardData;

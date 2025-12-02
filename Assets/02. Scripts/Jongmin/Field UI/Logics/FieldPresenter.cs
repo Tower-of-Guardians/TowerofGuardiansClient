@@ -45,7 +45,7 @@ public abstract class FieldPresenter : IDisposable
     public void Inject(HandPresenter hand_presenter)
         => m_hand_presenter = hand_presenter;
 
-    public abstract bool InstantiateCard(CardData card_data);
+    public abstract bool InstantiateCard(BattleCardData card_data);
 
     public void ToggleManual(bool active)
     {

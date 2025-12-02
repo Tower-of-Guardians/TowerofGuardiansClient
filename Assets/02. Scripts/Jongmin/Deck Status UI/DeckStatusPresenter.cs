@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-public class DeckStatusPresenter
+public class DeckStatusPresenter : IDisposable
 {
     private readonly IDeckStatusView m_view;
     // TODO: GameData 의존
@@ -18,6 +19,9 @@ public class DeckStatusPresenter
         m_view = view;
         m_view.Inject(this);
 
+        GameData.Instance.DeckChange += UpdateCardCount;
+        GameData.Instance.InvokeDeckCountChange(DeckType.Draw);
+        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
         // TODO: 카드의 수 변화 이벤트에 UpdateCardCount를 연결합니다.
     }
 
@@ -42,7 +46,7 @@ public class DeckStatusPresenter
     /// <summary>
     /// GameData의 NotUseDeck, UseDeck 리스트를 이용하여 아래의 함수를 호출하면 자동적으로 카드가 생성됩니다. 
     /// </summary>
-    public void InstantiateCard(CardData card_data)
+    public void InstantiateCard(BattleCardData card_data)
     {
         var card_view = m_view.InstantiateCardView();
         m_card_list.Add(card_view);
@@ -78,4 +82,7 @@ public class DeckStatusPresenter
             _               => string.Empty
         };
     }
+
+    public void Dispose()
+        => GameData.Instance.DeckChange += UpdateCardCount;
 }

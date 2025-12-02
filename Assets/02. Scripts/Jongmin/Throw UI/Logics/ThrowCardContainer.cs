@@ -55,11 +55,11 @@ public class ThrowCardContainer
         m_card_dict.Clear();
     }
 
-    public CardData[] GetDatas()
+    public BattleCardData[] GetDatas()
         => m_card_dict.Values.Select(x => x.CardData)
                              .ToArray();
 
-    public CardData GetData(IThrowCardView card_view)
+    public BattleCardData GetData(IThrowCardView card_view)
         => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
                                                                  : null;
 }

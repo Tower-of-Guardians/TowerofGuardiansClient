@@ -56,10 +56,10 @@ public class FieldCardContainer
     }
 
     public CardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.CardData)
+        => m_card_dict.Values.Select(x => x.CardData.data)
                              .ToArray();
 
     public CardData GetData(IFieldCardView card_view)
-        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
+        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData.data
                                                                  : null;
 }

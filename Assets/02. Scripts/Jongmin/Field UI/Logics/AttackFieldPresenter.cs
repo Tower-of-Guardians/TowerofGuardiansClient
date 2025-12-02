@@ -9,7 +9,7 @@ public class AttackFieldPresenter : FieldPresenter
                                 TurnManager turn_manager,
                                 ThrowPresenter throw_presenter) : base(view, container, factory, layout_controller, notice, designer, turn_manager, throw_presenter, true) {}
 
-    public override bool InstantiateCard(CardData card_data)
+    public override bool InstantiateCard(BattleCardData card_data)
     {
         if(!m_service.CanAdd)
         {

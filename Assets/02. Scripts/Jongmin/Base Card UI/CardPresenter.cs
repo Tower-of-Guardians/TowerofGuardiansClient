@@ -1,8 +1,8 @@
 public abstract class CardPresenter
 {
-    protected CardData m_card_data;
+    protected BattleCardData m_card_data;
 
-    public CardData CardData => m_card_data;
+    public BattleCardData CardData => m_card_data;
 
     public abstract void Return();
 }

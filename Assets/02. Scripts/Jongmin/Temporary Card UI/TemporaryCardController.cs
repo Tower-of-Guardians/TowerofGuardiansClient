@@ -7,12 +7,12 @@ public class TemporaryCardController : MonoBehaviour
     [Header("임시 카드 애니메이터")]
     [SerializeField] private TemporaryCardAnimator m_animator;
 
-    public event Action<CardData> OnAnimationEnd;
+    public event Action<BattleCardData> OnAnimationEnd;
 
     private void Awake()
         => m_animator.OnAnimationEnd += AnimationEndHandler;
 
-    public void PlayAnime(CardData[] card_datas,
+    public void PlayAnime(BattleCardData[] card_datas,
                           Vector3 start_position,
                           Vector3 end_position,
                           float scale,
@@ -29,7 +29,7 @@ public class TemporaryCardController : MonoBehaviour
                                 interval));
     }
 
-    public void PlayAnime(CardData card_data,
+    public void PlayAnime(BattleCardData card_data,
                           Vector3 start_position,
                           Vector3 end_position,
                           float scale,
@@ -44,7 +44,7 @@ public class TemporaryCardController : MonoBehaviour
                            duration);  
     }
 
-    public void PlayAnimeFromThis(CardData[] card_datas,
+    public void PlayAnimeFromThis(BattleCardData[] card_datas,
                                   Vector3[] start_positions,
                                   Vector3 end_position,
                                   float scale,
@@ -61,7 +61,7 @@ public class TemporaryCardController : MonoBehaviour
                                         interval));
     }
 
-    private IEnumerator Co_Anime(CardData[] card_datas,
+    private IEnumerator Co_Anime(BattleCardData[] card_datas,
                                  Vector3 start_position,
                                  Vector3 end_position,
                                  float scale,
@@ -82,7 +82,7 @@ public class TemporaryCardController : MonoBehaviour
         }  
     }
 
-    private IEnumerator Co_AnimeFromThis(CardData[] card_datas,
+    private IEnumerator Co_AnimeFromThis(BattleCardData[] card_datas,
                                          Vector3[] start_positions,
                                          Vector3 end_position,
                                          float scale,
@@ -103,7 +103,7 @@ public class TemporaryCardController : MonoBehaviour
         }          
     }
 
-    private void AnimationEndHandler(CardData card_data)
+    private void AnimationEndHandler(BattleCardData card_data)
     {
         OnAnimationEnd?.Invoke(card_data);
     }
