@@ -29,14 +29,8 @@ public class GameData : Singleton<GameData>
     // TODO: 리스트에 추가하는? 인덱스도 
     // TODO: 카드 아이디 => 인덱스 리턴 
 
-    // TODO: 손 덱에서 카드 제거하는 기능
-    // ex) public void RemoveCardFromDeck(CardID id, int index);
-
-    // TODO: 손 덱에서 카드 삽입하는 기능
-    // ex) public void AddCardFromDeck(CardID id);
-
     // TODO: 공격, 방어 필드의 카드 스왑 기능 이야기기
-    
+
     public void InvokeDeckCountChange(DeckType deck_type)
         => DeckChange?.Invoke(deck_type, deck_type == DeckType.Draw ? notuseDeck.Count
                                                                     : garbageDeck.Count);
@@ -76,12 +70,27 @@ public class GameData : Singleton<GameData>
             notuseDeck.RemoveAt(0);
         }
 
-        getdata.index = handDeck.Count-1;
+        getdata.index = handDeck.Count - 1;
 
-        Debug.LogFormat("ID : {0} , [{1}] , index : {2} .",getdata.data.id,getdata.data.itemName, getdata.index);
+        Debug.LogFormat("ID : {0} , [{1}] , index : {2} .", getdata.data.id, getdata.data.itemName, getdata.index);
 
         InvokeDeckCountChange(DeckType.Draw);
         return getdata;
+    }
+
+
+    // TODO: 손 덱에서 카드 제거하는 기능
+    // ex) public void RemoveCardFromDeck(CardID id);
+    public void HandToFieldMove(BattleCardData bc_data)
+    {
+        handDeck.RemoveAt(bc_data.index);
+    }
+
+    // TODO: 손 덱에서 카드 삽입하는 기능
+    // ex) public void AddCardFromDeck(CardID id);
+    public void FieldToHandMove(BattleCardData bc_data)
+    {
+        handDeck.Add(bc_data.data.id);
     }
 
     public void Shuffle()
