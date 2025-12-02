@@ -32,7 +32,11 @@ public class DeckStatusPresenter : IDisposable
         m_view.OpenUI();
         m_view.UpdateUI(title_name);
 
-        // TODO: GameData의 NoUseCard 또는 UseCard 리스트를 참고하여 For문으로 InstantiateCard 호출합니다.
+        var list = deck_type == DeckType.Draw ? GameData.Instance.GetDeckDatas(0)
+                                              : GameData.Instance.GetDeckDatas(1);
+        
+        foreach(var elem in list)
+            InstantiateCard(elem);
     }
 
     public void CloseUI()
