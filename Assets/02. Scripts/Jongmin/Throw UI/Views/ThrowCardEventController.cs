@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 
 public class ThrowCardEventController : MonoBehaviour, IDropHandler
 {
@@ -67,7 +66,10 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
 
     public void OnBeginDragCard(IThrowCardView card_view)
     {
+        Debug.Log(card_view == null ? "없음" : "있음");
         m_presenter.HoverCard = card_view;
+        Debug.Log(m_presenter.HoverCard == null ? "없음" : "있음");
+        Debug.Log(m_container.GetIndex(m_presenter.HoverCard));
 
         m_preview_object.SetActive(true);
         (m_preview_object.transform as RectTransform).anchoredPosition
