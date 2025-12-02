@@ -8,6 +8,8 @@ public class TurnManager : MonoBehaviour
     private int m_current_throw_count;
     private bool m_is_can_throw;
 
+    private HandPresenter m_hand_prsenter;
+
     [Header("에디터 테스트 옵션")]
     [Header("현재 보유 중인 카드의 수")]
     [SerializeField] private int m_card_count;
@@ -39,6 +41,9 @@ public class TurnManager : MonoBehaviour
 
         Initialize();
     }
+
+    public void Inject(HandPresenter hand_presenter)
+        => m_hand_prsenter = hand_presenter;
 
     public void AlertToUpdateActionCount()
         => OnUpdatedActionCount?.Invoke(new ActionData(CurrentActionCount, MaxActionCount));
@@ -83,4 +88,16 @@ public class TurnManager : MonoBehaviour
 
     public bool CanThrow()
         => m_is_can_throw && CurrentThrowCount < MaxThrowCount;
+
+#region Test
+    public void BTN_Instantiate()
+    {
+        for(int i = 0; i < MaxActionCount; i++)
+        {
+            var card_data = GameData.Instance.NextDeckSet(1);
+
+            m_hand_prsenter.InstantiateCard(card_data);
+        }
+    }
+#endregion Test
 }
