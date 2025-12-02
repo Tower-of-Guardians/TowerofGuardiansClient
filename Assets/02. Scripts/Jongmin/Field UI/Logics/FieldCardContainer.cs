@@ -21,6 +21,9 @@ public class FieldCardContainer
         m_card_dict.Remove(card_view);
     }
 
+    public FieldCardPresenter GetPresenter(IFieldCardView card_view)
+        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter : null;
+
     public void Swap(IFieldCardView from_card_view, IFieldCardView to_card_view)
     {
         var index = m_card_list.IndexOf(to_card_view);

@@ -77,5 +77,8 @@ public class DeckStatusPresenter : IDisposable
     }
 
     public void Dispose()
-        => GameData.Instance.DeckChange -= UpdateCardCount;
+    {
+        if(GameData.Instance != null)
+            GameData.Instance.DeckChange -= UpdateCardCount;
+    }
 }

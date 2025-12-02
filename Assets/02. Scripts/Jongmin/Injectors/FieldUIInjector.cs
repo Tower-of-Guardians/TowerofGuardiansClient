@@ -56,15 +56,6 @@ public class FieldUIInjector : MonoBehaviour, IInjector
                                                               throw_presenter);
         DIContainer.Register<AttackFieldPresenter>(attack_field_presenter);
 
-        m_attack_field_view.Inject(m_attack_event_controller, 
-                                   m_attack_field_factory,
-                                   m_attack_layout_controller,
-                                   atk_field_card_container,
-                                   m_designer);
-
-        m_attack_layout_controller.Inject(atk_field_card_container,
-                                          attack_field_presenter);
-
         var def_field_card_container = new FieldCardContainer();
         var defend_field_presenter = new DefendFieldPresenter(m_defend_field_view,
                                                               def_field_card_container,
@@ -76,11 +67,24 @@ public class FieldUIInjector : MonoBehaviour, IInjector
                                                               throw_presenter);
         DIContainer.Register<DefendFieldPresenter>(defend_field_presenter);
 
+        m_attack_field_view.Inject(m_attack_event_controller, 
+                                   m_attack_field_factory,
+                                   m_attack_layout_controller,
+                                   atk_field_card_container,
+                                   m_designer,
+                                   defend_field_presenter,
+                                   m_defend_event_controller);
+
+        m_attack_layout_controller.Inject(atk_field_card_container,
+                                          attack_field_presenter);
+
         m_defend_field_view.Inject(m_defend_event_controller,
                                    m_defend_field_factory,
                                    m_defend_layout_controller,
                                    def_field_card_container,
-                                   m_designer);
+                                   m_designer,
+                                   attack_field_presenter,
+                                   m_attack_event_controller);
 
         m_defend_layout_controller.Inject(def_field_card_container,
                                           defend_field_presenter);
