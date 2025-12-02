@@ -103,4 +103,36 @@ public class GameData : Singleton<GameData>
     {
         garbageDeck.Add(index);
     }
+
+    public List<BattleCardData> GetDeckDatas(int type)
+    {
+        List<BattleCardData> deck_data = new List<BattleCardData>();
+
+        List<string> cards = new List<string>();
+
+        switch (type)
+        {
+            case 0:
+                cards = notuseDeck;
+                break;
+            case 1:
+                cards = garbageDeck;
+                break;
+        }
+
+        int index = 0;
+        foreach(string card in cards)
+        {
+            DataCenter.Instance.GetCardData(card, (data) =>
+            {
+                BattleCardData battleCardData = new BattleCardData();
+                battleCardData.index = index;
+                battleCardData.data = data;
+                deck_data.Add(battleCardData);
+            });
+            index++;
+        }
+
+        return deck_data;
+    }
 }
