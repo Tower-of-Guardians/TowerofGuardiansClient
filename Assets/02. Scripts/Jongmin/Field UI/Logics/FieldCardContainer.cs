@@ -55,11 +55,11 @@ public class FieldCardContainer
         m_card_dict.Clear();
     }
 
-    public CardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.CardData.data)
+    public BattleCardData[] GetDatas()
+        => m_card_dict.Values.Select(x => x.CardData)
                              .ToArray();
 
-    public CardData GetData(IFieldCardView card_view)
-        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData.data
+    public BattleCardData GetData(IFieldCardView card_view)
+        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
                                                                  : null;
 }

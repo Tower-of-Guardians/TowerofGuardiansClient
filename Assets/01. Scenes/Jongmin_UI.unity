@@ -3079,7 +3079,7 @@ MonoBehaviour:
   m_event_controller: {fileID: 1936710989}
   m_layout_controller: {fileID: 1936710987}
   m_throw_card_factory: {fileID: 1936710990}
-  m_throw_ui_designer: {fileID: 0}
+  m_throw_ui_designer: {fileID: 11400000, guid: 2d2e1ce2b7175714a88d2412d679da6e, type: 2}
   m_notice: {fileID: 616374863}
 --- !u!1 &584538473
 GameObject:
@@ -6783,7 +6783,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000021362059}
+  m_AnchoredPosition: {x: 0, y: -0.0000045159395}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -6799,14 +6799,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 75
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 210, y: 270}
+  m_CellSize: {x: 180, y: 270}
   m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2

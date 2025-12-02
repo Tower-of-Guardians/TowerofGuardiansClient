@@ -67,10 +67,10 @@ public abstract class FieldPresenter : IDisposable
     public void Remove(IFieldCardView card_view)
         => m_service.Remove(card_view);
 
-    public CardData[] GetCardDatas()
+    public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
-    public CardData GetCardData(IFieldCardView card_view)
+    public BattleCardData GetCardData(IFieldCardView card_view)
         => m_container.GetData(card_view);
 
     public void OnDroped(IHandCardView card_view)
