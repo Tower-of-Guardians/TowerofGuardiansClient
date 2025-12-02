@@ -92,6 +92,11 @@ public class ThrowPresenter : IDisposable
     {
         if(!m_service.IsThrowed)
             m_hand_presenter.InstantiateCard(card_data);
+        else
+        {
+            GameData.Instance.garbageDeck.Add(card_data.data.id);
+            GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
+        }
     }
     public void OnDroped(IHandCardView card_view)
     {
