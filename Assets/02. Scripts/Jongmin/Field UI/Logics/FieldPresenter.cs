@@ -20,6 +20,8 @@ public abstract class FieldPresenter : IDisposable
         set => m_hover_card = value;
     }
 
+    public FieldCardContainer Container => m_container;
+
     public FieldPresenter(IFieldView view,
                           FieldCardContainer container,
                           IFieldCardFactory factory,

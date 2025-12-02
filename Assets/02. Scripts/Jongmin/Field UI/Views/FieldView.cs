@@ -16,9 +16,11 @@ public class FieldView : MonoBehaviour, IFieldView
                        FieldCardFactory factory,
                        FieldCardLayoutController layout_controller,
                        FieldCardContainer container,
-                       FieldUIDesigner designer)
+                       FieldUIDesigner designer,
+                       FieldPresenter another_presenter,
+                       FieldCardEventController another_event_controller)
     {
-        event_controller.Inject(this, m_presenter, layout_controller, container, designer);
+        event_controller.Inject(this, m_presenter, another_presenter, layout_controller, another_event_controller, container, designer);
         factory.Inject(event_controller);
         m_layout_controller = layout_controller;
     }

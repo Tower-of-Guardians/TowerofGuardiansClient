@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 
-public class DeckStatusPresenter : IDisposable
+public class DeckStatusPresenter
 {
     private readonly IDeckStatusView m_view;
-    // TODO: GameData 의존
-    // Because of 1. NoUseCard 및 UserCard 참조
-    //            2. 카드의 수 변화 이벤트 연결
 
     private List<IDeckStatusCardView> m_card_list;
     private Dictionary<IDeckStatusCardView, DeckStatusCardPresenter> m_card_dict;
@@ -22,7 +18,6 @@ public class DeckStatusPresenter : IDisposable
         GameData.Instance.DeckChange += UpdateCardCount;
         GameData.Instance.InvokeDeckCountChange(DeckType.Draw);
         GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
-        // TODO: 카드의 수 변화 이벤트에 UpdateCardCount를 연결합니다.
     }
 
     public void OpenUI(DeckType deck_type)
@@ -32,10 +27,10 @@ public class DeckStatusPresenter : IDisposable
         m_view.OpenUI();
         m_view.UpdateUI(title_name);
 
-        var list = GameData.Instance.GetDeckDatas(deck_type);
+        var card_data_list = GameData.Instance.GetDeckDatas(deck_type);
 
-        foreach (var elem in list)
-            InstantiateCard(elem);
+        foreach (var card_data in card_data_list)
+            InstantiateCard(card_data);
     }
 
     public void CloseUI()
@@ -46,9 +41,6 @@ public class DeckStatusPresenter : IDisposable
         m_view.CloseUI();
     }
 
-    /// <summary>
-    /// GameData의 NotUseDeck, UseDeck 리스트를 이용하여 아래의 함수를 호출하면 자동적으로 카드가 생성됩니다. 
-    /// </summary>
     public void InstantiateCard(BattleCardData card_data)
     {
         var card_view = m_view.InstantiateCardView();
@@ -59,9 +51,6 @@ public class DeckStatusPresenter : IDisposable
         m_card_dict.TryAdd(card_view, card_presenter);
     }
 
-    /// <summary>
-    /// UI에게 DeckType에 따라 Draw 또는 Throw 카드 덱의 수를 변경하여 표시하도록 지시합니다.
-    /// </summary>
     private void UpdateCardCount(DeckType deck_type, int count)
     {
         switch(deck_type)
@@ -85,7 +74,4 @@ public class DeckStatusPresenter : IDisposable
             _               => string.Empty
         };
     }
-
-    public void Dispose()
-        => GameData.Instance.DeckChange += UpdateCardCount;
 }
