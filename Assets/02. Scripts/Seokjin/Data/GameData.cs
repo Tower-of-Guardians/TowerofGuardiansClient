@@ -104,7 +104,7 @@ public class GameData : Singleton<GameData>
         garbageDeck.Add(index);
     }
 
-    public List<BattleCardData> GetDeckDatas(int type)
+    public List<BattleCardData> GetDeckDatas(DeckType type)
     {
         List<BattleCardData> deck_data = new List<BattleCardData>();
 
@@ -112,10 +112,10 @@ public class GameData : Singleton<GameData>
 
         switch (type)
         {
-            case 0:
+            case DeckType.Draw:
                 cards = notuseDeck;
                 break;
-            case 1:
+            case DeckType.Throw:
                 cards = garbageDeck;
                 break;
         }
