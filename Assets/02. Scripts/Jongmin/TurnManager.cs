@@ -92,7 +92,7 @@ public class TurnManager : MonoBehaviour
 #region Test
     public void BTN_Instantiate()
     {
-        for(int i = 0; i < MaxActionCount; i++)
+        for(int i = 0; i < MaxHandCount; i++)
         {
             var card_data = GameData.Instance.NextDeckSet(1);
 
