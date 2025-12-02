@@ -7,9 +7,9 @@ public class TemporaryCardAnimator : MonoBehaviour
     [Header("임시 카드 팩토리")]
     [SerializeField] private TemporaryCardFactory m_factory;
 
-    public event Action<CardData> OnAnimationEnd;
+    public event Action<BattleCardData> OnAnimationEnd;
 
-    public void Animate(CardData card_data,
+    public void Animate(BattleCardData card_data,
                         Vector3 start_position,
                         Vector3 end_position,
                         float scale,

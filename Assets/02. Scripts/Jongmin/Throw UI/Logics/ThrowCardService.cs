@@ -19,7 +19,7 @@ public class ThrowCardService
         m_turn_manager = turn_manager;
     }
     
-    public void Add(CardData card_data)
+    public void Add(BattleCardData card_data)
     {
         var view = m_factory.InstantiateCardView();
         var presenter = new ThrowCardPresenter(view, card_data);

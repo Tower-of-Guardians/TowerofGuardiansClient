@@ -9,7 +9,7 @@ public class GameData : Singleton<GameData>
     public List<string> handDeck = new List<string>(); // 핸드덱
     public List<string> garbageDeck = new List<string>(); // 사용덱
 
-    public event EventHandler Deck_Change;
+    public event Action<DeckType, int> DeckChange;
 
     public List<string> attackField = new List<string>();
     public List<string> defenseField = new List<string>();
@@ -23,23 +23,7 @@ public class GameData : Singleton<GameData>
     private void Start()
     {
         FirstDeckSet();
-
-        Deck_Change += UseDeckChange;
-        Deck_Change += HandDeckChange;
-        Deck_Change += GarbageDeckChange;
-    }
-
-    private void UseDeckChange(object sender, EventArgs e)
-    {
-        Debug.Log("GameData UseDeckChange");
-    }
-    private void HandDeckChange(object sender, EventArgs e)
-    {
-        Debug.Log("GameData HandDeckChange");
-    }
-    private void GarbageDeckChange(object sender, EventArgs e)
-    {
-        Debug.Log("GameData GarbageDeckChange");
+        DeckChange?.Invoke(DeckType.Draw, notuseDeck.Count);
     }
 
     // TODO: 리스트에 추가하는? 인덱스도 
@@ -52,6 +36,10 @@ public class GameData : Singleton<GameData>
     // ex) public void AddCardFromDeck(CardID id);
 
     // TODO: 공격, 방어 필드의 카드 스왑 기능 이야기기
+    
+    public void InvokeDeckCountChange(DeckType deck_type)
+        => DeckChange?.Invoke(deck_type, deck_type == DeckType.Draw ? notuseDeck.Count
+                                                                    : garbageDeck.Count);
 
     public void FirstDeckSet()
     {
@@ -92,7 +80,7 @@ public class GameData : Singleton<GameData>
 
         Debug.LogFormat("ID : {0} , [{1}] , index : {2} .",getdata.data.id,getdata.data.itemName, getdata.index);
 
-        Deck_Change?.Invoke(this, EventArgs.Empty);
+        InvokeDeckCountChange(DeckType.Draw);
         return getdata;
     }
 

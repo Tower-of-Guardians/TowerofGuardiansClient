@@ -82,13 +82,13 @@ public class ThrowPresenter : IDisposable
         m_controller.ToggleManual(active);
     }
 
-    public CardData[] GetCardDatas()
+    public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
-    public CardData GetCardData(IThrowCardView card_view)
+    public BattleCardData GetCardData(IThrowCardView card_view)
         => m_container.GetData(card_view);
 
-    public void OnTempCardAnimeEnd(CardData card_data)
+    public void OnTempCardAnimeEnd(BattleCardData card_data)
     {
         if(!m_service.IsThrowed)
             m_hand_presenter.InstantiateCard();

@@ -18,7 +18,7 @@ public class ThrowAnimeController : MonoBehaviour
     public void Inject(ThrowCardContainer container)
         => m_container = container;
 
-    public void PlayThrowAll(CardData[] card_datas)
+    public void PlayThrowAll(BattleCardData[] card_datas)
     {
         var throw_card_positions = new List<Vector3>();
         foreach(var throw_card in m_container.Cards)
@@ -33,7 +33,7 @@ public class ThrowAnimeController : MonoBehaviour
                                                  0.1f);        
     }
 
-    public void PlayRemove(IThrowCardView card_view, CardData card_data)
+    public void PlayRemove(IThrowCardView card_view, BattleCardData card_data)
     {
         var target_card = card_view as ThrowCardView;
         
@@ -47,7 +47,7 @@ public class ThrowAnimeController : MonoBehaviour
         ObjectPoolManager.Instance.Return(target_card.gameObject);     
     }
 
-    public void PlayRemoveAll(CardData[] card_datas)
+    public void PlayRemoveAll(BattleCardData[] card_datas)
     {
         var throw_card_positions = new List<Vector3>();
         foreach(var throw_card in m_container.Cards)

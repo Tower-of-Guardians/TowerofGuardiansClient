@@ -9,7 +9,7 @@ public class TemporaryCardFactory : MonoBehaviour
     [Header("임시 카드 프리펩")]
     [SerializeField] private GameObject m_temp_card_prefab;
 
-    public GameObject InstantiateCard(CardData card_data)
+    public GameObject InstantiateCard(BattleCardData card_data)
     {
         var m_temp_card_obj = ObjectPoolManager.Instance.Get(m_temp_card_prefab);
         m_temp_card_obj.transform.SetParent(m_canvas.transform);
