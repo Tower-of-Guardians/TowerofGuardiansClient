@@ -102,6 +102,11 @@ public class ThrowPresenter : IDisposable
         }
 
         m_service.Add(m_hand_presenter.GetCardData(card_view));
+        
+
+        var card_data = m_hand_presenter.GetCardData(card_view);
+        GameData.Instance.HandToFieldMove(card_data);
+    
         m_hand_presenter.RemoveCard(card_view);
     }
 

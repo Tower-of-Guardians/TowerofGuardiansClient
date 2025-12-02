@@ -91,6 +91,9 @@ public class HandPresenter
     public void OnDroped(IThrowCardView card_view)
     {
         // TODO: GameData에 카드 데이터를 전달
+        var card_data = m_throw_presenter.GetCardData(card_view);
+        GameData.Instance.FieldToHandMove(card_data);
+
         m_throw_presenter.RemoveCard(card_view);
     }
 
