@@ -19,3 +19,9 @@ public class CardData : ScriptableObject
     public string effect1Value, effect2Value;
     // ... 필요한 필드 추가
 }
+
+public class BattleCardData
+{
+    public int index;
+    public CardData data;
+}
