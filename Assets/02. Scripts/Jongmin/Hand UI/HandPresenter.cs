@@ -42,13 +42,13 @@ public class HandPresenter
         throw_presenter.Inject(this);
     }
 
-    public void InstantiateCard()
+    public void InstantiateCard(BattleCardData card_data)
     {
         var card_view = m_view.InstantiateCardView();
         m_card_list.Add(card_view);
 
         var card_presenter = new HandCardPresenter(card_view,
-                                                   GameData.Instance.NextDeckSet(1));
+                                                   card_data);
         m_card_dict.TryAdd(card_view, card_presenter);
 
         m_view.UpdateUI();
@@ -102,7 +102,7 @@ public class HandPresenter
         else
             m_defend_field_presenter.Remove(card_view);
 
-        InstantiateCard();
+        //InstantiateCard();
     }
 #endregion Events
 

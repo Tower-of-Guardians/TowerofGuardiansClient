@@ -91,7 +91,7 @@ public class ThrowPresenter : IDisposable
     public void OnTempCardAnimeEnd(BattleCardData card_data)
     {
         if(!m_service.IsThrowed)
-            m_hand_presenter.InstantiateCard();
+            m_hand_presenter.InstantiateCard(card_data);
     }
     public void OnDroped(IHandCardView card_view)
     {

@@ -13,10 +13,6 @@ public class HandView : MonoBehaviour, IHandView, IDropHandler
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
-    [Space(30f), Header("에디터 테스트 컴포넌트")]
-    [Header("테스트 획득 버튼")]
-    [SerializeField] private Button m_add_button;
-
     [Header("테스트 제거 버튼")]
     [SerializeField] private Button m_remove_button;
 
@@ -44,8 +40,6 @@ public class HandView : MonoBehaviour, IHandView, IDropHandler
     public void Inject(HandPresenter presenter)
     {
         m_presenter = presenter;
-
-        m_add_button.onClick.AddListener(() => { m_presenter.InstantiateCard(); });
         m_remove_button.onClick.AddListener(Test_RemoveCard);
     }
 

@@ -30,7 +30,7 @@ public class GameData : Singleton<GameData>
     // TODO: 카드 아이디 => 인덱스 리턴 
 
     // TODO: 손 덱에서 카드 제거하는 기능
-    // ex) public void RemoveCardFromDeck(CardID id);
+    // ex) public void RemoveCardFromDeck(CardID id, int index);
 
     // TODO: 손 덱에서 카드 삽입하는 기능
     // ex) public void AddCardFromDeck(CardID id);
