@@ -100,13 +100,17 @@ public class HandPresenter
 
     public void OnDroped(IFieldCardView card_view)
     {
-        // TODO: GameData에 카드 데이터를 전달
+        var card_data = m_attack_field_presenter.GetCardData(card_view);
+        card_data ??= m_defend_field_presenter.GetCardData(card_view);
+        
+        GameData.Instance.FieldToHandMove(card_data);
+
         if(m_attack_field_presenter.IsExist(card_view))
             m_attack_field_presenter.Remove(card_view);
         else
             m_defend_field_presenter.Remove(card_view);
 
-        //InstantiateCard();
+        InstantiateCard(card_data);
     }
 #endregion Events
 
