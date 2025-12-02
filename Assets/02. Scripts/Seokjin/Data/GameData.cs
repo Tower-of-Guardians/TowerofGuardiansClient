@@ -65,6 +65,7 @@ public class GameData : Singleton<GameData>
         Debug.LogFormat("ID : {0} , [{1}] , index : {2} .", getdata.data.id, getdata.data.itemName, getdata.index);
 
         InvokeDeckCountChange(DeckType.Draw);
+        InvokeDeckCountChange(DeckType.Throw);
         return getdata;
     }
 

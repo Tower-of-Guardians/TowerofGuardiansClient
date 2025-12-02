@@ -4218,7 +4218,6 @@ MonoBehaviour:
   garbageDeck: []
   attackField: []
   defenseField: []
-  garbageField: []
 --- !u!1 &858485778 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4839011377745383518, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
@@ -6795,7 +6794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000477597}
+  m_AnchoredPosition: {x: 0, y: 0.0009967629}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
