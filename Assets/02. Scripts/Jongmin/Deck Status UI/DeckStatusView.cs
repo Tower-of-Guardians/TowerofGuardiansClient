@@ -37,6 +37,9 @@ public class DeckStatusView : MonoBehaviour, IDeckStatusView
     private void Awake()
         => m_animator = GetComponent<Animator>();
 
+    private void OnDestroy()
+        => m_presenter?.Dispose();
+
     public void Inject(DeckStatusPresenter presenter)
     {
         m_presenter = presenter;
