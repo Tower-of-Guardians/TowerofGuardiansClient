@@ -66,20 +66,10 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
 
     public void OnBeginDragCard(IThrowCardView card_view)
     {
-        Debug.Log(card_view == null ? "없음" : "있음");
         m_presenter.HoverCard = card_view;
-        Debug.Log(m_presenter.HoverCard == null ? "없음" : "있음");
-        Debug.Log(m_container.GetIndex(m_presenter.HoverCard));
 
-        m_preview_object.SetActive(true);
-        (m_preview_object.transform as RectTransform).anchoredPosition
-            = CardLayoutCalculator.CalculatedThrowCardPosition(m_container.GetIndex(m_presenter.HoverCard),
-                                                               m_container.Cards.Count, 
-                                                               m_designer.Space);
-        
-        var target_card = card_view as ThrowCardView;
-        target_card.transform.DOKill();
-        target_card.transform.SetParent(m_canvas.transform, false);
+        SetCardParentToCanvas();
+        CalculatePreviewPosition();
     }
 
     public void OnDragCard(Vector2 position)
@@ -87,39 +77,16 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         if(m_presenter.HoverCard == null)
             return;
 
-        var target_card = m_presenter.HoverCard as ThrowCardView;
-        target_card.transform.position = position;
+        MoveCardToMousePosition(position);
 
-        var hit = CheckField(out var pointer_data);
+        var throw_card = GetIThrowCardView();
+        if(throw_card == null)
+            return;
 
-        var field_card = hit?.gameObject.GetComponent<IThrowCardView>();
-        if(field_card != null)
+        if(throw_card != null)
         {
-            m_preview_object.SetActive(true);
-
-            var concrete_card = field_card as ThrowCardView;
-
-            if(m_container.IsPriority(target_card, field_card))
-            {
-                if(position.x >= concrete_card.transform.position.x)
-                {
-                    m_container.Swap(target_card, field_card);
-                    m_layout_controller.UpdateLayout(false, true, true);
-                }
-            }
-            else
-            {
-                if(position.x < concrete_card.transform.position.x)
-                {
-                    m_container.Swap(target_card, field_card);
-                    m_layout_controller.UpdateLayout(false, true, true);
-                }
-            }
-
-            (m_preview_object.transform as RectTransform).anchoredPosition 
-                = CardLayoutCalculator.CalculatedFieldCardPosition(m_container.GetIndex(m_presenter.HoverCard),
-                                                                   m_container.Cards.Count,
-                                                                   m_designer.Space);
+            SwapInSameField(throw_card, position);
+            CalculatePreviewPosition();
         }
     }
 
@@ -128,13 +95,8 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         if(m_presenter.HoverCard == null)
             return;
 
-        var target_card = m_presenter.HoverCard as ThrowCardView;
-        target_card.transform.SetParent(m_slot_root, false);
-
-        var hit = CheckField(out var pointer_data);
-        var drop_handler = hit?.gameObject.GetComponent<IDropHandler>();
-        if(drop_handler != null)
-            ExecuteEvents.Execute(hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
+        SetCardParentToRoot();
+        CheckAndInvokeDropHandler();
 
         m_presenter.HoverCard = null;
 
@@ -153,6 +115,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         }
     }
 
+#region Helper Methods
     private RaycastResult? CheckField(out PointerEventData pointer_data)
     {
         pointer_data = new PointerEventData(EventSystem.current);
@@ -175,4 +138,70 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
 
         return null;
     }
+
+    private void CalculatePreviewPosition()
+    {
+        m_preview_object.SetActive(true);
+        (m_preview_object.transform as RectTransform).anchoredPosition
+            = CardLayoutCalculator.CalculatedThrowCardPosition(m_container.GetIndex(m_presenter.HoverCard),
+                                                               m_container.Cards.Count,
+                                                               m_designer.Space);
+    }
+
+    private void SetCardParentToCanvas()
+    {
+        var target_card = m_presenter.HoverCard as ThrowCardView;
+        target_card.transform.DOKill();
+        target_card.transform.SetParent(m_canvas.transform, false);
+    }
+
+    private void MoveCardToMousePosition(Vector2 position)
+    {
+        var target_card = m_presenter.HoverCard as ThrowCardView;
+        target_card.transform.position = position;
+    }
+
+    private IThrowCardView GetIThrowCardView()
+    {
+        var hit = CheckField(out var _);
+        return hit?.gameObject.GetComponent<IThrowCardView>();        
+    }
+
+    private void SwapInSameField(IThrowCardView throw_card, Vector2 position)
+    {
+        var target_card = m_presenter.HoverCard;
+        var concrete_card = throw_card as ThrowCardView;
+
+        if(m_container.IsPriority(target_card, throw_card))
+        {
+            if(position.x >= concrete_card.transform.position.x)
+            {
+                m_container.Swap(target_card, throw_card);
+                m_layout_controller.UpdateLayout(false);
+            }
+        }
+        else
+        {
+            if(position.x < concrete_card.transform.position.x)
+            {
+                m_container.Swap(target_card, throw_card);
+                m_layout_controller.UpdateLayout(false);
+            }
+        }        
+    }
+
+    private void SetCardParentToRoot()
+    {
+        var target_card = m_presenter.HoverCard as ThrowCardView;
+        target_card.transform.SetParent(m_slot_root, false);
+    }
+
+    private void CheckAndInvokeDropHandler()
+    {
+        var hand_hit = CheckField(out var pointer_data);
+        var drop_handler = hand_hit?.gameObject.GetComponent<HandView>();
+        if(drop_handler != null)
+            ExecuteEvents.Execute(hand_hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
+    }
+#endregion Helper Methods
 }

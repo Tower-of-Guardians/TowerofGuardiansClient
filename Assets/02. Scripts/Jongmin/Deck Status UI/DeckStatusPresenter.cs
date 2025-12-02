@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-public class DeckStatusPresenter : IDisposable
+public class DeckStatusPresenter
 {
     private readonly IDeckStatusView m_view;
 
@@ -74,11 +73,5 @@ public class DeckStatusPresenter : IDisposable
             DeckType.Throw  => "버릴 카드 더미",
             _               => string.Empty
         };
-    }
-
-    public void Dispose()
-    {
-        if(GameData.Instance != null)
-            GameData.Instance.DeckChange -= UpdateCardCount;
     }
 }
