@@ -86,7 +86,10 @@ public abstract class FieldPresenter : IDisposable
 
         var card_data = m_hand_presenter.GetCardData(card_view);
         if(InstantiateCard(card_data))
+        {
+            GameData.Instance.HandToFieldMove(card_data);
             m_hand_presenter.RemoveCard(card_view);
+        }
     }
 
     public void Dispose()
