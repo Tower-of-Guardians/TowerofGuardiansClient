@@ -32,10 +32,9 @@ public class DeckStatusPresenter : IDisposable
         m_view.OpenUI();
         m_view.UpdateUI(title_name);
 
-        var list = deck_type == DeckType.Draw ? GameData.Instance.GetDeckDatas(0)
-                                              : GameData.Instance.GetDeckDatas(1);
-        
-        foreach(var elem in list)
+        var list = GameData.Instance.GetDeckDatas(deck_type);
+
+        foreach (var elem in list)
             InstantiateCard(elem);
     }
 

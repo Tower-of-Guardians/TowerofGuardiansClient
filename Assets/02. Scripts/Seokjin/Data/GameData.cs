@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public class GameData : Singleton<GameData>
 {
@@ -12,23 +14,12 @@ public class GameData : Singleton<GameData>
 
     public List<string> attackField = new List<string>();
     public List<string> defenseField = new List<string>();
-    public List<string> garbageField = new List<string>();
 
-    // TODO: 이벤트 notuseDeck 개수 변경됐을때 
-    // TODO: 이벤트 useDeck 개수 변경됐을때
-
-    // TODO: 뽑을 카드 더미 프로퍼티 Getter 오픈
-    // TODO: 버릴 카드 더미 프로퍼티 Getter 오픈
     private void Start()
     {
         FirstDeckSet();
         DeckChange?.Invoke(DeckType.Draw, notuseDeck.Count);
     }
-
-    // TODO: 리스트에 추가하는? 인덱스도 
-    // TODO: 카드 아이디 => 인덱스 리턴 
-
-    // TODO: 공격, 방어 필드의 카드 스왑 기능 이야기기
 
     public void InvokeDeckCountChange(DeckType deck_type)
         => DeckChange?.Invoke(deck_type, deck_type == DeckType.Draw ? notuseDeck.Count
@@ -39,7 +30,7 @@ public class GameData : Singleton<GameData>
         if (DataCenter.Instance.userDeck.Count <= 0)
         {
             Debug.Log("���� �� �����Ͱ� �����ϴ�");
-            return; //SaveLoadManager.Instance.LoadGame();
+            return;
         }
         foreach (string id in DataCenter.Instance.userDeck)
         {
@@ -130,7 +121,23 @@ public class GameData : Singleton<GameData>
                 battleCardData.data = data;
                 deck_data.Add(battleCardData);
             });
-            index++;
+        }
+
+        int curIndex;
+        int preIndex;
+        BattleCardData value;
+
+        for (curIndex = 1; curIndex < deck_data.Count; curIndex++)
+        {
+            value = deck_data[curIndex];
+            preIndex = curIndex - 1;
+
+            while (preIndex >= 0 && int.Parse(value.data.id) < int.Parse(deck_data[preIndex].data.id))
+            {
+                deck_data[preIndex + 1] = deck_data[preIndex];
+                preIndex--;
+            }
+            deck_data[preIndex + 1] = value;
         }
 
         return deck_data;

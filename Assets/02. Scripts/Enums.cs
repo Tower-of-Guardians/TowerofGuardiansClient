@@ -21,3 +21,11 @@ public enum DeckType
     Draw = 1,
     Throw = 2,
 }
+
+public enum FieldType
+{
+    Hand = 0,
+    Attack = 1,
+    Defense = 2,
+    Garbage = 3
+}
