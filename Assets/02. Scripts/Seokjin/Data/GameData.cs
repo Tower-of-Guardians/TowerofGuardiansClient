@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class GameData : Singleton<GameData>
 {
@@ -78,16 +77,11 @@ public class GameData : Singleton<GameData>
         return getdata;
     }
 
-
-    // TODO: 손 덱에서 카드 제거하는 기능
-    // ex) public void RemoveCardFromDeck(CardID id);
     public void HandToFieldMove(BattleCardData bc_data)
     {
-        handDeck.RemoveAt(bc_data.index);
+        handDeck.Remove(bc_data.data.id);
     }
 
-    // TODO: 손 덱에서 카드 삽입하는 기능
-    // ex) public void AddCardFromDeck(CardID id);
     public void FieldToHandMove(BattleCardData bc_data)
     {
         handDeck.Add(bc_data.data.id);
