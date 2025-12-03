@@ -73,7 +73,8 @@ public class FieldUIInjector : MonoBehaviour, IInjector
                                    atk_field_card_container,
                                    m_designer,
                                    defend_field_presenter,
-                                   m_defend_event_controller);
+                                   m_defend_event_controller,
+                                   GameData.Instance.attackField);
 
         m_attack_layout_controller.Inject(atk_field_card_container,
                                           attack_field_presenter);
@@ -84,7 +85,8 @@ public class FieldUIInjector : MonoBehaviour, IInjector
                                    def_field_card_container,
                                    m_designer,
                                    attack_field_presenter,
-                                   m_attack_event_controller);
+                                   m_attack_event_controller,
+                                   GameData.Instance.defenseField);
 
         m_defend_layout_controller.Inject(def_field_card_container,
                                           defend_field_presenter);

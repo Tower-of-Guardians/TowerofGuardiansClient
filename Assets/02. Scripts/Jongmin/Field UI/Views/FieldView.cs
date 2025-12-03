@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldView : MonoBehaviour, IFieldView
@@ -18,9 +19,10 @@ public class FieldView : MonoBehaviour, IFieldView
                        FieldCardContainer container,
                        FieldUIDesigner designer,
                        FieldPresenter another_presenter,
-                       FieldCardEventController another_event_controller)
+                       FieldCardEventController another_event_controller,
+                       List<string> model)
     {
-        event_controller.Inject(this, m_presenter, another_presenter, layout_controller, another_event_controller, container, designer);
+        event_controller.Inject(this, m_presenter, another_presenter, layout_controller, another_event_controller, container, designer, model);
         factory.Inject(event_controller);
         m_layout_controller = layout_controller;
     }
