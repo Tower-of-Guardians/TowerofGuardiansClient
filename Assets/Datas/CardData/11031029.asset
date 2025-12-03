@@ -17,9 +17,6 @@ MonoBehaviour:
   image: {fileID: 0}
   grade: 3
   star: 1
-  synergy1: "\uB6F0\uC5B4\uB09C \uC804\uB7B5"
-  synergy2: 
-  synergy3: 
   synergy1ID: 210011
   synergy2ID: 
   synergy3ID: 
@@ -31,3 +28,4 @@ MonoBehaviour:
   effect2ID: 
   effect1Value: 
   effect2Value: 
+  price: 30

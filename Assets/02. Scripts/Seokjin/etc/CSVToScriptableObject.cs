@@ -130,20 +130,18 @@ public class CSVToScriptableObject
 
             if (int.TryParse(values[3].Trim(), out int garde)) newItem.grade = garde;
             if (int.TryParse(values[4].Trim(), out int star)) newItem.star = star;
-            newItem.synergy1 = values[5].Trim();
+            if (int.TryParse(values[5].Trim(), out int price)) newItem.price = price;
             newItem.synergy1ID = values[6].Trim();
-            newItem.synergy2 = values[7].Trim();
-            newItem.synergy2ID = values[8].Trim();
-            newItem.synergy3 = values[9].Trim();
-            newItem.synergy3ID = values[10].Trim();
-            newItem.effectDescription = values[11].Trim();
-            if (int.TryParse(values[12].Trim(), out int ATK)) newItem.ATK = ATK;
-            if (int.TryParse(values[13].Trim(), out int DEF)) newItem.DEF = DEF;
-            newItem.effect1ID = values[14].Trim(); ;
-            newItem.effect1Value = values[15].Trim();
-            newItem.effect2ID = values[16].Trim(); ;
-            newItem.effect2Value = values[17].Trim();
-            //ID,Name,Image,Grade,Star,Synergy1,Synergy1ID,Synergy2,Synergy2ID,Synergy3,Synergy3ID,EffectDescription,ATK,DEF,Effect1ID,Effect1Value,Effect2ID,Effect2Value
+            newItem.synergy2ID = values[7].Trim();
+            newItem.synergy3ID = values[8].Trim();
+            newItem.effectDescription = values[9].Trim();
+            if (int.TryParse(values[10].Trim(), out int ATK)) newItem.ATK = ATK;
+            if (int.TryParse(values[11].Trim(), out int DEF)) newItem.DEF = DEF;
+            newItem.effect1ID = values[12].Trim(); ;
+            newItem.effect1Value = values[13].Trim();
+            newItem.effect2ID = values[14].Trim(); ;
+            newItem.effect2Value = values[15].Trim();
+            //ID,Name,Image,Grade,Star,Price,Synergy1ID,Synergy2ID,Synergy3ID,EffectDescription,ATK,DEF,Effect1ID,Effect1Value,Effect2ID,Effect2Value
 
             // ... 나머지 필드 할당
 

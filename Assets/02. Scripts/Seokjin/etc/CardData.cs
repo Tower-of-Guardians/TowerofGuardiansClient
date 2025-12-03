@@ -9,12 +9,12 @@ public class CardData : ScriptableObject
     public Sprite image;
     public int grade;
     public int star;
-    public string synergy1, synergy2, synergy3;
     public string synergy1ID, synergy2ID, synergy3ID;
     public string effectDescription;
     public float ATK;
     public float DEF;
     public string effect1ID, effect2ID;
     public string effect1Value, effect2Value;
+    public float price;
     // ... 필요한 필드 추가
 }

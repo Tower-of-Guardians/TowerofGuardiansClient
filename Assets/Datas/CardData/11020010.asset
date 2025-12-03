@@ -17,16 +17,14 @@ MonoBehaviour:
   image: {fileID: 0}
   grade: 2
   star: 0
-  synergy1: "\uACF5\uACA9\uC801\uC778 \uBC29\uC5B4"
-  synergy2: "\uBD88\uACF5\uD3C9"
-  synergy3: 
   synergy1ID: 210002
   synergy2ID: 210013
   synergy3ID: 
   effectDescription: "\uC655 \uB9C8\uBC95\uC744 \uC0DD\uC131\uD569\uB2C8\uB2E4"
   ATK: 2
   DEF: 6
-  effect1ID: 1110011
-  effect2ID: 1110021
+  effect1ID: '#N/A'
+  effect2ID: '#N/A'
   effect1Value: 5
   effect2Value: 
+  price: 20

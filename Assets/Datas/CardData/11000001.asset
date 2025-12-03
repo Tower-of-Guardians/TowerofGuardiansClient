@@ -14,12 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11000001
   itemName: "\uAC00\uC2DC"
-  image: {fileID: 7158043959947383043, guid: 9c3ba3d02c7e73141ad8b1a5c4fdc885, type: 3}
+  image: {fileID: 0}
   grade: 0
   star: 0
-  synergy1: 
-  synergy2: 
-  synergy3: 
   synergy1ID: 
   synergy2ID: 
   synergy3ID: 
@@ -30,3 +27,4 @@ MonoBehaviour:
   effect2ID: 
   effect1Value: 
   effect2Value: 
+  price: 0

@@ -17,9 +17,6 @@ MonoBehaviour:
   image: {fileID: 0}
   grade: 2
   star: 0
-  synergy1: "\uC555\uB3C4"
-  synergy2: "\uC57D\uD0C8"
-  synergy3: 
   synergy1ID: 210003
   synergy2ID: 210004
   synergy3ID: 
@@ -27,7 +24,8 @@ MonoBehaviour:
     \uACE8\uB4DC 20 \uD68D\uB4DD(\uC911\uCCA9\uBD88\uAC00)"
   ATK: 9
   DEF: 0
-  effect1ID: 1110033
+  effect1ID: '#N/A'
   effect2ID: 
   effect1Value: 20
   effect2Value: 
+  price: 20
