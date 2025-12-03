@@ -7,7 +7,5 @@ public class BattleShopSlotData
     public float Cost => Card.data.price;
 
     public BattleShopSlotData(BattleCardData card_data)
-    {
-        m_card_data = card_data;
-    }
+        => m_card_data = card_data;
 }

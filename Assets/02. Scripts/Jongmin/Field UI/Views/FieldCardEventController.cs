@@ -147,7 +147,6 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
             var cardId = presenter.CardData.data;
 
             if (i < m_model.Count)
-
                 m_model[i] = cardId;
             else
                 m_model.Add(cardId);
