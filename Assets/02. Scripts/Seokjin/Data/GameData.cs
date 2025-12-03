@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -238,16 +239,20 @@ public class GameData : Singleton<GameData>
     public BattleCardData GetRandomCardData(int cut)
     {
         BattleCardData cardData = new BattleCardData();
-        cardData.data.grade = 999;
-        while (cardData.data.grade >= cut)
+        cardData.data = null;
+        while (cardData.data == null)
         {
             string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count - 1)].ToString();
             DataCenter.Instance.GetCardData(radom_id, (data) =>
             {
                 cardData.data = data;
             });
+            if (cardData.data.grade == 0 || cardData.data.grade > cut)
+            {
+                cardData.data = null;
+            }
         }
-        Debug.Log($"cut : {cut - 1} , grade : {cardData.data.grade}");
+        Debug.Log($"cut : {cut} , grade : {cardData.data.grade}");
         return cardData;
     }
     /// <summary>
