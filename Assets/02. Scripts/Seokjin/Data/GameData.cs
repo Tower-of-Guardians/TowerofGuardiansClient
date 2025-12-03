@@ -196,18 +196,18 @@ public class GameData : Singleton<GameData>
         return deck_data;
     }
 
-    public CardData GetRandomCardData()
+    public BattleCardData GetRandomCardData()
     {
-        CardData cardData = ScriptableObject.CreateInstance<CardData>();
+        BattleCardData cardData = new BattleCardData();
         string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count -1)].ToString();
         DataCenter.Instance.GetCardData(radom_id, (data) =>
         {
-            cardData = data;
+            cardData.data = data;
         });
         return cardData;
     }
 
-    public List<CardData> GetResultItems()
+    public List<BattleCardData> GetResultItems()
     {
         int level = 1;
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
@@ -215,7 +215,7 @@ public class GameData : Singleton<GameData>
         {
             resultPercent = data;
         });
-        List<CardData> results = new List<CardData>();
+        List<BattleCardData> results = new List<BattleCardData>();
 
         for (int i = 0; i < 3; i++)
         {
