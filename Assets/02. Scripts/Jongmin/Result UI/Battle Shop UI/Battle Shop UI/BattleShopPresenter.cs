@@ -1,8 +1,12 @@
+using System.Collections.Generic;
+
 public class BattleShopPresenter
 {
     private readonly IBattleShopView m_view;
     private readonly BattleShopCardFactory m_factory;
-    // TOOD: 카드에 필요한 의존성 변수
+
+    private List<BattleCardData> m_card_datas;
+    private int index = 0;
 
     public BattleShopPresenter(IBattleShopView view,
                                BattleShopCardFactory factory)
@@ -15,8 +19,8 @@ public class BattleShopPresenter
 
     public void OpenUI()
     {
-        // TODO: 레벨에 따른 확률 정보 로드
         m_view.OpenUI();
+        SetRate();
     }
 
     public void CloseUI()
@@ -25,9 +29,32 @@ public class BattleShopPresenter
     public void InstantiateCard()
     {
         var slot_view = m_factory.InstantiateCardView();
-        var slot_presenter = new BattleShopSlotPresenter(slot_view);
+
+        var shop_slot_data = new BattleShopSlotData(m_card_datas[index++]); 
+        var slot_presenter = new BattleShopSlotPresenter(slot_view, shop_slot_data);
+    }
+
+    public void Refresh()
+    {
+        m_card_datas = GameData.Instance.GetResultItems();
+        index = 0;
     }
 
     public void RemoveCards()
         => m_factory.RemoveCards();
+
+    private void SetRate()
+    {
+        string[] color_arr = { "828282", "4AA8D8", "FEFD48", "F06464" };
+        List<float> rate_list = GameData.Instance.GetResultPercent();
+
+        string rate_string = string.Empty;
+        for(int i = 0; i < rate_list.Count; i++)
+        {
+            rate_string += i < rate_list.Count - 1 ? $"<color=#{color_arr[i]}>{rate_list[i]}%</color>   "
+                                                   : $"<color=#{color_arr[i]}>{rate_list[i]}%</color>";
+        }
+            
+        m_view.UpdateRate(rate_string);
+    }
 }

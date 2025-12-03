@@ -252,7 +252,7 @@ public class GameData : Singleton<GameData>
                 cardData.data = null;
             }
         }
-        Debug.Log($"cut : {cut} , grade : {cardData.data.grade}");
+        Debug.Log($"이름: {cardData.data.itemName}, ID: {cardData.data.id}, 공격력: {cardData.data.ATK}, 방어력: {cardData.data.DEF}, cut : {cut} , grade : {cardData.data.grade}");
         return cardData;
     }
     /// <summary>
