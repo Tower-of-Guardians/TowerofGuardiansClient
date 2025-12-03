@@ -219,9 +219,8 @@ public class GameData : Singleton<GameData>
             for (int n = 0; n < resultPercent.percent.Count; n++)
             {
                 accumulatedChance += resultPercent.percent[n];
-
                 // 추첨 값이 누적 확률 범위 내에 있으면 해당 등급을 반환
-                if (roll < accumulatedChance)
+                if (roll <= accumulatedChance)
                 {
                     results.Add(GetRandomCardData(n+1));
                     break;
@@ -247,12 +246,13 @@ public class GameData : Singleton<GameData>
             {
                 cardData.data = data;
             });
-            if (cardData.data.grade == 0 || cardData.data.grade > cut || cardData.data.star > 0)
+            if (cardData.data.grade != cut)
             {
                 cardData.data = null;
             }
         }
-        Debug.Log($"이름: {cardData.data.itemName}, ID: {cardData.data.id}, 공격력: {cardData.data.ATK}, 방어력: {cardData.data.DEF}, cut : {cut} , grade : {cardData.data.grade}");
+        //Debug.Log($"이름: {cardData.data.itemName}, ID: {cardData.data.id}, 공격력: {cardData.data.ATK}, 방어력: {cardData.data.DEF}, cut : {cut} , grade : {cardData.data.grade}");
+        Debug.Log($"grade : {cardData.data.grade}");
         return cardData;
     }
     /// <summary>

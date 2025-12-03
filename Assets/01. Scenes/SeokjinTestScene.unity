@@ -3879,7 +3879,7 @@ MonoBehaviour:
   garbageDeck: []
   attackField: []
   defenseField: []
-  player_lever: 4
+  player_lever: 10
 --- !u!1 &1650860553
 GameObject:
   m_ObjectHideFlags: 0
