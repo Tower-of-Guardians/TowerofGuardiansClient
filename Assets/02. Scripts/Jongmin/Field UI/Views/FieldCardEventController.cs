@@ -25,7 +25,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     private FieldCardEventController m_another_event_controller;
     private FieldCardContainer m_container;
     private FieldUIDesigner m_designer;
-    private List<string> m_model;
+    private List<CardData> m_model;
 
     private readonly Dictionary<IFieldCardView, FieldCardEventBundle> m_event_dict = new();
 
@@ -36,7 +36,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
                        FieldCardEventController another_event_controller,
                        FieldCardContainer container,
                        FieldUIDesigner designer,
-                       List<string> model)
+                       List<CardData> model)
     {
         m_view = view;
         m_this_presenter = this_presenter;
@@ -144,7 +144,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         for (int i = 0; i < views.Count; i++)
         {
             var presenter = m_container.GetPresenter(views[i]);
-            var cardId = presenter.CardData.data.id;
+            var cardId = presenter.CardData.data;
 
             if (i < m_model.Count)
 

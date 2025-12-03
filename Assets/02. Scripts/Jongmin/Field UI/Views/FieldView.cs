@@ -20,7 +20,7 @@ public class FieldView : MonoBehaviour, IFieldView
                        FieldUIDesigner designer,
                        FieldPresenter another_presenter,
                        FieldCardEventController another_event_controller,
-                       List<string> model)
+                       List<CardData> model)
     {
         event_controller.Inject(this, m_presenter, another_presenter, layout_controller, another_event_controller, container, designer, model);
         factory.Inject(event_controller);

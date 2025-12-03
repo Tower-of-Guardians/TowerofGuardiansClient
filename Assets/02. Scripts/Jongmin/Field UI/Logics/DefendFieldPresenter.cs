@@ -18,7 +18,7 @@ public class DefendFieldPresenter : FieldPresenter
         }
 
         m_service.Add(card_data);
-        GameData.Instance.defenseField.Add(card_data.data.id);
+        GameData.Instance.defenseField.Add(card_data.data);
         return true;
     }
 }

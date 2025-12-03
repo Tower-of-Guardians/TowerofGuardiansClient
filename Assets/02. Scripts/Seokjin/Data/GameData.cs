@@ -12,8 +12,8 @@ public class GameData : Singleton<GameData>
 
     public event Action<DeckType, int> DeckChange;
 
-    public List<string> attackField = new List<string>();
-    public List<string> defenseField = new List<string>();
+    public List<CardData> attackField = new List<CardData>();
+    public List<CardData> defenseField = new List<CardData>();
 
     private void Start()
     {
@@ -21,10 +21,17 @@ public class GameData : Singleton<GameData>
         DeckChange?.Invoke(DeckType.Draw, notuseDeck.Count);
     }
 
+    /// <summary>
+    /// 덱 정보 변경시 카운트 정보 이벤트
+    /// </summary>
+    /// <param name="deck_type"></param>
     public void InvokeDeckCountChange(DeckType deck_type)
         => DeckChange?.Invoke(deck_type, deck_type == DeckType.Draw ? notuseDeck.Count
                                                                     : garbageDeck.Count);
 
+    /// <summary>
+    /// 처음 시작시 덱 정보 불러오고 섞기
+    /// </summary>
     public void FirstDeckSet()
     {
         if (DataCenter.Instance.userDeck.Count <= 0)
@@ -40,6 +47,11 @@ public class GameData : Singleton<GameData>
         Shuffle();
     }
 
+    /// <summary>
+    /// 카드 뽑을때 데이터 받아올수 있게
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
     public BattleCardData NextDeckSet(int count)
     {
         BattleCardData getdata = new BattleCardData();
@@ -69,16 +81,26 @@ public class GameData : Singleton<GameData>
         return getdata;
     }
 
+    /// <summary>
+    /// 핸드에서 필드에 넣을때
+    /// </summary>
+    /// <param name="bc_data"></param>
     public void HandToFieldMove(BattleCardData bc_data)
     {
         handDeck.Remove(bc_data.data.id);
     }
-
+    /// <summary>
+    /// 필드에서 핸드에 넣을때
+    /// </summary>
+    /// <param name="bc_data"></param>
     public void FieldToHandMove(BattleCardData bc_data)
     {
         handDeck.Add(bc_data.data.id);
     }
 
+    /// <summary>
+    /// 사용하지 않은 카드 섞기
+    /// </summary>
     public void Shuffle()
     {
         for (int i = notuseDeck.Count - 1; i > 0; i--)
@@ -91,11 +113,40 @@ public class GameData : Singleton<GameData>
         }
     }
 
+    public float AttackField()
+    {
+        float damege = 0f;
+        foreach (CardData data in attackField)
+        {
+            damege += data.ATK;
+        }
+        return damege;
+    }
+
+    public float DefenseField()
+    {
+        float shield = 0f;
+        foreach (CardData data in defenseField)
+        {
+            shield += data.DEF;
+        }
+        return shield;
+    }
+
+    /// <summary>
+    /// 사용한 카드 리스트에 추가
+    /// </summary>
+    /// <param name="index"></param>
     public void UseCard(string index)
     {
         garbageDeck.Add(index);
     }
 
+    /// <summary>
+    /// 덱 가지고 있는거 표기해주기 위한 리스트 요청
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public List<BattleCardData> GetDeckDatas(DeckType type)
     {
         List<BattleCardData> deck_data = new List<BattleCardData>();
