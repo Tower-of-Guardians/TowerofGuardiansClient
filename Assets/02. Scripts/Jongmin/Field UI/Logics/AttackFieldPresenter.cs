@@ -18,6 +18,7 @@ public class AttackFieldPresenter : FieldPresenter
         }
 
         m_service.Add(card_data);
+        GameData.Instance.attackField.Add(card_data.data.id);
         return true;
     }
 }

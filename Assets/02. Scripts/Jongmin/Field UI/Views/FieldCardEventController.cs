@@ -25,6 +25,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     private FieldCardEventController m_another_event_controller;
     private FieldCardContainer m_container;
     private FieldUIDesigner m_designer;
+    private List<string> m_model;
 
     private readonly Dictionary<IFieldCardView, FieldCardEventBundle> m_event_dict = new();
 
@@ -34,7 +35,8 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
                        FieldCardLayoutController layout_controller,
                        FieldCardEventController another_event_controller,
                        FieldCardContainer container,
-                       FieldUIDesigner designer)
+                       FieldUIDesigner designer,
+                       List<string> model)
     {
         m_view = view;
         m_this_presenter = this_presenter;
@@ -43,6 +45,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         m_another_event_controller = another_event_controller;
         m_container = container;
         m_designer = designer;
+        m_model = model;
     }
 
     public void Subscribe(IFieldCardView card_view)
@@ -112,6 +115,10 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
         m_preview_object.SetActive(false);
         m_another_presenter.ToggleManual(false);
+
+        CommitChange();
+        m_another_event_controller.CommitChange();
+
         m_layout_controller.UpdateLayout(false);
         m_another_event_controller.UpdateLayout();
     }
@@ -129,6 +136,26 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
     public void UpdateLayout()
         => m_layout_controller.UpdateLayout(false);
+
+    public void CommitChange()
+    {
+        var views = m_container.Cards;
+
+        for (int i = 0; i < views.Count; i++)
+        {
+            var presenter = m_container.GetPresenter(views[i]);
+            var cardId = presenter.CardData.data.id;
+
+            if (i < m_model.Count)
+
+                m_model[i] = cardId;
+            else
+                m_model.Add(cardId);
+        }
+
+        while (m_model.Count > views.Count)
+            m_model.RemoveAt(m_model.Count - 1);
+    }
 
 
 #region Helper Methods
