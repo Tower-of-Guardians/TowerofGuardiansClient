@@ -247,7 +247,7 @@ public class GameData : Singleton<GameData>
             {
                 cardData.data = data;
             });
-            if (cardData.data.grade == 0 || cardData.data.grade > cut)
+            if (cardData.data.grade == 0 || cardData.data.grade > cut || cardData.data.star > 0)
             {
                 cardData.data = null;
             }
