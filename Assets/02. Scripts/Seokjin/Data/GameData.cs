@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Playables;
 using static UnityEngine.Rendering.VolumeComponent;
 
 public class GameData : Singleton<GameData>
@@ -16,6 +17,7 @@ public class GameData : Singleton<GameData>
     public List<CardData> attackField = new List<CardData>();
     public List<CardData> defenseField = new List<CardData>();
 
+    public int player_lever = 1;
     private void Start()
     {
         FirstDeckSet();
@@ -195,23 +197,14 @@ public class GameData : Singleton<GameData>
 
         return deck_data;
     }
-
-    public BattleCardData GetRandomCardData()
-    {
-        BattleCardData cardData = new BattleCardData();
-        string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count -1)].ToString();
-        DataCenter.Instance.GetCardData(radom_id, (data) =>
-        {
-            cardData.data = data;
-        });
-        return cardData;
-    }
-
+    /// <summary>
+    /// 스테이지 종료후 랜덤 아이템 상점
+    /// </summary>
+    /// <returns></returns>
     public List<BattleCardData> GetResultItems()
     {
-        int level = 1;
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
-        DataCenter.Instance.GetResultPercentData(level, (data) =>
+        DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
         {
             resultPercent = data;
         });
@@ -222,20 +215,52 @@ public class GameData : Singleton<GameData>
             float roll = UnityEngine.Random.Range(0, 100);
             float accumulatedChance = 0;
 
-            // 2. 누적 확률 비교를 통한 추첨
-            foreach (float rarityData in resultPercent.percent)
+            for (int n = 0; n < resultPercent.percent.Count; n++)
             {
-                accumulatedChance += rarityData;
+                accumulatedChance += resultPercent.percent[n];
 
                 // 추첨 값이 누적 확률 범위 내에 있으면 해당 등급을 반환
                 if (roll < accumulatedChance)
                 {
-                    results.Add(GetRandomCardData());
+                    results.Add(GetRandomCardData(n+1));
                     break;
                 }
             }
         }
 
         return results;
+    }
+    /// <summary>
+    /// 확률(등급)에 따른 아이템 뽑기
+    /// </summary>
+    /// <param name="cut"></param>
+    /// <returns></returns>
+    public BattleCardData GetRandomCardData(int cut)
+    {
+        BattleCardData cardData = new BattleCardData();
+        cardData.data.grade = 999;
+        while (cardData.data.grade >= cut)
+        {
+            string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count - 1)].ToString();
+            DataCenter.Instance.GetCardData(radom_id, (data) =>
+            {
+                cardData.data = data;
+            });
+        }
+        Debug.Log($"cut : {cut - 1} , grade : {cardData.data.grade}");
+        return cardData;
+    }
+    /// <summary>
+    /// 플레이어 레벨에 따른 퍼센트값 리턴(Normal, Rare, Unique, Epic)
+    /// </summary>
+    /// <returns></returns>
+    public List<float> GetResultPercent()
+    {
+        ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
+        DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
+        {
+            resultPercent = data;
+        });
+        return resultPercent.percent;
     }
 }

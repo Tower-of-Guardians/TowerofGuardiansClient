@@ -2864,6 +2864,7 @@ MonoBehaviour:
   loadtableButton: {fileID: 1650860555}
   firstDeckButton: {fileID: 1949211028}
   useDeckButton: {fileID: 683609945}
+  datas: []
 --- !u!1 &1046320632
 GameObject:
   m_ObjectHideFlags: 0
@@ -3874,7 +3875,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notuseDeck: []
-  useDeck: []
+  handDeck: []
+  garbageDeck: []
+  attackField: []
+  defenseField: []
+  player_lever: 4
 --- !u!1 &1650860553
 GameObject:
   m_ObjectHideFlags: 0

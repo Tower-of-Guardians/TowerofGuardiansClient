@@ -13,5 +13,5 @@ public class SaveData
 public class BattleCardData
 {
     public int index;
-    public CardData data;
+    public CardData data = ScriptableObject.CreateInstance<CardData>();
 }
