@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleShopSlotView : MonoBehaviour, IBattleShopSlotView
+public class BattleShopSlotView : CardView, IBattleShopSlotView
 {
     [Header("UI 관련 컴포넌트")]
     [Header("애니메이터")]
@@ -39,18 +39,11 @@ public class BattleShopSlotView : MonoBehaviour, IBattleShopSlotView
     }
 
     public void Inject(BattleShopSlotPresenter presenter)
-    {
-        m_presenter = presenter;
-    }
+        => m_presenter = presenter;
 
     public void InitUI(BattleShopSlotData slot_data, bool can_purchase)
     {
-        // TODO: 카드 테두리 이미지 설정
-        // TODO: 카드 초상화 이미지 설정
-
-        m_name_label.text = slot_data.Card.itemName;
-        m_description_label.text = slot_data.Card.effectDescription;
-        
+        InitUI(slot_data.Card.data);        
         m_cost_label.text = can_purchase ? slot_data.Cost.ToString()
                                          : $"<color=red>{slot_data.Cost}</color>";
         m_purchase_button.interactable = can_purchase;

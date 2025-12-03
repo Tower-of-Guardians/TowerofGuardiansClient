@@ -36,6 +36,9 @@ public class BattleShopView : MonoBehaviour, IBattleShopView
         m_animator.SetTrigger("Close");
     }
 
+    public void UpdateRate(string rate_string)
+        => m_card_rate_label.text = rate_string;
+
     private void ToggleUI(bool active)
         => m_animator.SetBool("Open", active);
 
@@ -44,4 +47,7 @@ public class BattleShopView : MonoBehaviour, IBattleShopView
 
     public void CallbackToDestroyCard()
         => m_presenter.RemoveCards();
+
+    public void CallbackToRefresh()
+        => m_presenter.Refresh();
 }
