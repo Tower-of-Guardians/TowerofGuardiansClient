@@ -1,22 +1,14 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-
 public class HandPresenter
 {
-    private readonly IHandView m_view;
     private readonly FieldPresenter m_attack_field_presenter;
     private readonly FieldPresenter m_defend_field_presenter;
     private readonly ThrowPresenter m_throw_presenter;
 
-    private List<IHandCardView> m_card_list;
-    private Dictionary<IHandCardView, HandCardPresenter> m_card_dict;
-    private IHandCardView m_hover_card;
+    private readonly HandCardContainer m_container;
+    private readonly HandCardService m_service;
+    private readonly HandCardViewController m_view_controller;
 
-    public List<IHandCardView> Cards
-    {
-        get => m_card_list;
-        set => m_card_list = value;
-    }
+    private IHandCardView m_hover_card;
 
     public IHandCardView HoverCard
     {
@@ -25,50 +17,38 @@ public class HandPresenter
     }
 
     public HandPresenter(IHandView view,
+                         HandCardContainer container,
+                         IHandCardFactory factory,
+                         HandCardLayoutController layout_controller,
                          FieldPresenter attack_field_presenter,
                          FieldPresenter defend_field_presenter,
                          ThrowPresenter throw_presenter)
     {
-        m_card_list = new();
-        m_card_dict = new();
+        
+        m_container = container;
+        m_service = new HandCardService(factory, container, layout_controller);
+        m_view_controller = new HandCardViewController(view);
 
-        m_view = view;
         m_attack_field_presenter = attack_field_presenter;
         m_defend_field_presenter = defend_field_presenter;
         m_throw_presenter = throw_presenter;
 
-        m_view.Inject(this);
+        view.Inject(this);
         m_attack_field_presenter.Inject(this);
         m_defend_field_presenter.Inject(this);
         throw_presenter.Inject(this);
     }
 
     public void InstantiateCard(BattleCardData card_data)
-    {
-        var card_view = m_view.InstantiateCardView();
-        m_card_list.Add(card_view);
-
-        var card_presenter = new HandCardPresenter(card_view,
-                                                   card_data);
-        m_card_dict.TryAdd(card_view, card_presenter);
-
-        m_view.UpdateUI();
-    }
+        => m_service.Add(card_data);
 
     public void RemoveCard(IHandCardView card_view)
-    {
-        m_hover_card = null;
+        => m_service.Remove(card_view);
 
-        m_card_list.Remove(card_view);
-
-        if(m_card_dict.TryGetValue(card_view, out var card_presenter))
-            card_presenter.Return();
-
-        m_card_dict.Remove(card_view);
-    }
-
-    public void OpenUI() => m_view.OpenUI();
-    public void CloseUI() => m_view.CloseUI();
+    public void OpenUI()
+        => m_view_controller.OpenUI();
+    public void CloseUI()
+        => m_view_controller.CloseUI();
 
     public void ToggleFieldPreview(bool active)
     {
@@ -78,20 +58,13 @@ public class HandPresenter
     }
 
     public BattleCardData GetCardData(IHandCardView card_view)
-    {
-        if(m_card_dict.TryGetValue(card_view, out var card_presenter))
-            return card_presenter.CardData;
-        
-        return null;
-    }
+        => m_container.GetData(card_view);
 
-#region Events
-    public void OnPointerEnter(IHandCardView card_view) => m_hover_card = card_view;
-    public void OnPointerExit() => m_hover_card = null;
+    public BattleCardData[] GetCardDatas()
+        => m_container.GetDatas();
 
     public void OnDroped(IThrowCardView card_view)
     {
-        // TODO: GameData에 카드 데이터를 전달
         var card_data = m_throw_presenter.GetCardData(card_view);
         GameData.Instance.FieldToHandMove(card_data);
 
@@ -112,19 +85,4 @@ public class HandPresenter
 
         InstantiateCard(card_data);
     }
-#endregion Events
-
-#region Test
-    public IHandCardView Test_RemoveCard()
-    {
-        if(m_card_list.Count == 0)
-            return null;
-
-        var target = m_card_list[^1];
-        m_card_list.Remove(target);
-        m_card_dict.Remove(target);
-
-        return target;
-    }
-#endregion Test
 }
