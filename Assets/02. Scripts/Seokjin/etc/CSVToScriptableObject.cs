@@ -3,31 +3,44 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+enum CSVData
+{
+    CardData,
+    ResultData
+}
+
 // 에디터 폴더에 위치해야 함
 public class CSVToScriptableObject
 {
     static string csv_name;
+    static CSVData csv_data;
     // Unity 에디터 메뉴에 항목 추가 (예: Tools/Create Item SOs)
     [MenuItem("Tools/Generate Data/CardDataCreate")]
     public static void CardDataCreate()
     {
+        csv_data = CSVData.CardData;
         csv_name = "CardData";
+        soFolderPath = "Assets/Datas/" + csv_name;
+        imageResourcesPath = "Assets/04. Images/Test/Icons/";
         GenerateItemSOs();
     }
 
-    [MenuItem("Tools/Generate Data/SkilDataCreate")]
-    public static void SkilDataCreate()
+    [MenuItem("Tools/Generate Data/ResultDataCreate")]
+    public static void ResultDataCreate()
     {
-        csv_name = "SkillData";
+        csv_data = CSVData.ResultData;
+        csv_name = "ResultData";
+        soFolderPath = "Assets/Datas/" + csv_name;
         GenerateItemSOs();
     }
+
+    static string soFolderPath; // ScriptableObject를 저장할 폴더
+    static string imageResourcesPath;// Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
 
     public static void GenerateItemSOs()
     {
-        // 1. CSV 파일 경로 설정 (Resources 폴더에 두거나, Assets 내의 특정 경로 지정)
         string csvFilePath = Application.dataPath + "/Datas/CSV/" + csv_name + ".csv"; // 예시 경로
-        string soFolderPath = "Assets/Datas/" + csv_name; // ScriptableObject를 저장할 폴더
-        string imageResourcesPath = "Assets/04. Images/Test/Icons/"; // Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
+        // 1. CSV 파일 경로 설정 (Resources 폴더에 두거나, Assets 내의 특정 경로 지정)
         if (!File.Exists(csvFilePath))
         {
             Debug.LogError("CSV 파일을 찾을 수 없습니다: " + csvFilePath);
@@ -49,6 +62,26 @@ public class CSVToScriptableObject
         string[] allLines = File.ReadAllLines(csvFilePath);
 
         // 첫 번째 줄은 헤더(제목)이므로 건너뜁니다.
+        switch (csv_data)
+        {
+            case CSVData.CardData:
+                SetCardData(allLines);
+                break;
+            case CSVData.ResultData:
+                SetResultData(allLines);
+                break;
+
+        }
+
+        // 에셋 데이터베이스를 새로고침하여 Unity 에디터에 반영
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        Debug.Log(csv_name + "CSV 데이터로부터 " + (allLines.Length - 1) + "개의 ScriptableObject 생성이 완료되었습니다.");
+    }
+
+    private static void SetCardData(string[] allLines)
+    {
         foreach (string line in allLines.Skip(1))
         {
             if (string.IsNullOrWhiteSpace(line)) continue;
@@ -120,11 +153,27 @@ public class CSVToScriptableObject
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }
+    }
 
-        // 에셋 데이터베이스를 새로고침하여 Unity 에디터에 반영
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+    private static void SetResultData(string[] allLines)
+    {
+        foreach (string line in allLines.Skip(1))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
 
-        Debug.Log(csv_name + "CSV 데이터로부터 " + (allLines.Length - 1) + "개의 ScriptableObject 생성이 완료되었습니다.");
+            string[] values = line.Split(',');
+
+            ResultTableData newItem = ScriptableObject.CreateInstance<ResultTableData>();
+
+            if (int.TryParse(values[0].Trim(), out int level)) newItem.level = level;
+            if (int.TryParse(values[1].Trim(), out int normal)) newItem.normal = normal;
+            if (int.TryParse(values[2].Trim(), out int rare)) newItem.rare = rare;
+            if (int.TryParse(values[3].Trim(), out int unique)) newItem.unique = unique;
+            if (int.TryParse(values[4].Trim(), out int epic)) newItem.epic = epic;
+
+            string fileName = "ResultData" + newItem.level + ".asset";
+
+            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
+        }
     }
 }

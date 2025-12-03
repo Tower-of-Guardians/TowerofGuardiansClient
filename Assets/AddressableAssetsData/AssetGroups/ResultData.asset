@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ResultData
+  m_EditorClassIdentifier: 
+  m_GroupName: ResultData
+  m_GUID: 0c1907e556c8a474b9b622c8f2c6073c
+  m_SerializeEntries:
+  - m_GUID: 06c9040de66cf2a488c397f6249aa73a
+    m_Address: ResultData1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2129c75dc3547884f9860ddea21c6caa
+    m_Address: ResultData7
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ee0f0cc023aad64e929a0785513e9c8
+    m_Address: ResultData2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 615f1e4ace94f4e48b3715ee8c33f7d1
+    m_Address: ResultData6
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d252ea4f7cd77cc44adb20084daf4197
+    m_Address: ResultData5
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d41c164406e6cd3409ff5d6fa2c801fb
+    m_Address: ResultData9
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea3bd19de00b37540b08dec1e2c3258a
+    m_Address: ResultData8
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f227ce82a8d09b945ba56252e44e51d3
+    m_Address: ResultData4
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f98e9d4e4dcd88c45a66ad46f6109207
+    m_Address: ResultData3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff9e2c4eb3bcee8408f3834886e2aaba
+    m_Address: ResultData10
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResultData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 11547d97efbd680438c8d420c6672236, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

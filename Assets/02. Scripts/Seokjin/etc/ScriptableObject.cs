@@ -25,3 +25,14 @@ public class BattleCardData
     public int index;
     public CardData data;
 }
+
+
+[CreateAssetMenu(fileName = "ResultData", menuName = "Data/ResultData")]
+public class ResultTableData : ScriptableObject
+{
+    public int level;
+    public float normal;
+    public float rare;
+    public float unique;
+    public float epic;
+}

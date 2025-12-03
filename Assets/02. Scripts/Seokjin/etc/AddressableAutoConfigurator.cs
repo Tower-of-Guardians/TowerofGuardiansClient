@@ -3,17 +3,34 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using System.IO;
-using System.Linq;
+using System;
 
 public class AddressableAutoConfigurator : Editor
 {
-    // ScriptableObject 에셋이 저장된 폴더 경로 (Addressable로 만들 대상)
-    private const string SO_FOLDER_PATH = "Assets/Datas";
-    private const string GROUP_NAME = "CardData";
 
-    [MenuItem("Tools/Addressables/Configure Item SOs for Addressables")]
+    // ScriptableObject 에셋이 저장된 폴더 경로 (Addressable로 만들 대상)
+    private static string GROUP_NAME = "CardData";
+    private static Type class_name;
+
+    [MenuItem("Tools/Addressables/CardData for Addressables")]
+    public static void SetCardData()
+    {
+        GROUP_NAME = "CardData";
+        class_name = typeof(CardData);
+        ConfigureItemSOsAsAddressable();
+    }
+
+    [MenuItem("Tools/Addressables/ResultData for Addressables")]
+    public static void SetResultData()
+    {
+        GROUP_NAME = "ResultData";
+        class_name = typeof(ResultTableData);
+        ConfigureItemSOsAsAddressable();
+    }
+
     public static void ConfigureItemSOsAsAddressable()
     {
+        string SO_FOLDER_PATH = "Assets/Datas"+ "/" + GROUP_NAME;
         // 1. Addressable Settings 시스템 로드
         AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
         if (settings == null)
@@ -43,7 +60,7 @@ public class AddressableAutoConfigurator : Editor
             // ItemData 타입의 ScriptableObject인지 확인
             if (assetPath.EndsWith(".asset"))
             {
-                Object assetObject = AssetDatabase.LoadAssetAtPath<CardData>(assetPath);
+                UnityEngine.Object assetObject = AssetDatabase.LoadAssetAtPath(assetPath, class_name);
                 if (assetObject == null) continue;
 
                 // 주소로 사용할 이름 결정 (예: 파일 이름에서 확장자 제거)
