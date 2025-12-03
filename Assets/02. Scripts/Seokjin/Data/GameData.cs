@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using static UnityEngine.Rendering.VolumeComponent;
 
@@ -164,7 +165,7 @@ public class GameData : Singleton<GameData>
         }
 
         int index = 0;
-        foreach(string card in cards)
+        foreach (string card in cards)
         {
             DataCenter.Instance.GetCardData(card, (data) =>
             {
@@ -193,5 +194,48 @@ public class GameData : Singleton<GameData>
         }
 
         return deck_data;
+    }
+
+    public CardData GetRandomCardData()
+    {
+        CardData cardData = ScriptableObject.CreateInstance<CardData>();
+        string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count -1)].ToString();
+        DataCenter.Instance.GetCardData(radom_id, (data) =>
+        {
+            cardData = data;
+        });
+        return cardData;
+    }
+
+    public List<CardData> GetResultItems()
+    {
+        int level = 1;
+        ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
+        DataCenter.Instance.GetResultPercentData(level, (data) =>
+        {
+            resultPercent = data;
+        });
+        List<CardData> results = new List<CardData>();
+
+        for (int i = 0; i < 3; i++)
+        {
+            float roll = UnityEngine.Random.Range(0, 100);
+            float accumulatedChance = 0;
+
+            // 2. 누적 확률 비교를 통한 추첨
+            foreach (float rarityData in resultPercent.percent)
+            {
+                accumulatedChance += rarityData;
+
+                // 추첨 값이 누적 확률 범위 내에 있으면 해당 등급을 반환
+                if (roll < accumulatedChance)
+                {
+                    results.Add(GetRandomCardData());
+                    break;
+                }
+            }
+        }
+
+        return results;
     }
 }
