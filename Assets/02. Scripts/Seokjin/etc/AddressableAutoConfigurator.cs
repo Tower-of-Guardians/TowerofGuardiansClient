@@ -20,11 +20,11 @@ public class AddressableAutoConfigurator : Editor
         ConfigureItemSOsAsAddressable();
     }
 
-    [MenuItem("Tools/Addressables/ResultData for Addressables")]
-    public static void SetResultData()
+    [MenuItem("Tools/Addressables/ResultPercentData for Addressables")]
+    public static void SetResultPercentData()
     {
-        GROUP_NAME = "ResultData";
-        class_name = typeof(ResultTableData);
+        GROUP_NAME = "ResultPercentData";
+        class_name = typeof(ResultPercentData);
         ConfigureItemSOsAsAddressable();
     }
 

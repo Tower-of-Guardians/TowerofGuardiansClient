@@ -8,47 +8,90 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DataCenter : Singleton<DataCenter>
 {
-    public static Dictionary<string,CardData> card_datas = new Dictionary<string, CardData>();
-    public List<string> userDeck = new List<string>();
+    ////// 카드 관련 //////
+    public static Dictionary<string,CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
+    private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // 메모리 관리를 위한 핸들
+    public List<string> userDeck = new List<string>(); // 유저 소지 카드 데이터
+    public static List<string> random_card_datas = new List<string>(); // 랜덤하게 카드 뽑기위한 데이터
+    //////////////////////
 
-    private static AsyncOperationHandle<IList<CardData>> loadHandle; // 메모리 관리를 위한 핸들
-    private const string ITEM_DATA_LABEL = "CardData";
+    ////// 리절트 관련 //////
+    public static Dictionary<int, ResultPercentData> result_datas = new Dictionary<int, ResultPercentData>(); // 카드데이터
+    private static AsyncOperationHandle<IList<ResultPercentData>> resultdata_loadHandle; // 메모리 관리를 위한 핸들
+    //////////////////////
 
     public static bool IsDataLoaded { get; private set; } = false;
     private async void Start()
     {
         await AllCardData();
+        await AllResultPercentData();
     }
     public async Task AllCardData()
     {
         // Addressables.LoadAssetsAsync<TObject>(key, callback)
         // key는 주소 또는 레이블을 사용할 수 있습니다. 여기서는 레이블을 사용합니다.
-        loadHandle = Addressables.LoadAssetsAsync<CardData>(
-            ITEM_DATA_LABEL,
+        carddata_loadHandle = Addressables.LoadAssetsAsync<CardData>(
+            "CardData",
             // 로드된 각 Asset에 대한 콜백 (선택 사항)
             (item) =>
             {
                 if (item != null)
                 {
                     card_datas[item.id] = item;
+                    random_card_datas.Add(item.id);
                 }
             }
         );
 
         // 비동기 작업이 완료될 때까지 대기
-        await loadHandle.Task;
+        await carddata_loadHandle.Task;
 
-        if (loadHandle.Status == AsyncOperationStatus.Succeeded)
+        if (carddata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
             IsDataLoaded = true;
             UnityEngine.Debug.Log($"ItemData 로드 완료: {card_datas.Count}");
         }
         else
         {
-            UnityEngine.Debug.LogError($"ItemData 로드 실패: {loadHandle.OperationException}");
+            UnityEngine.Debug.LogError($"ItemData 로드 실패: {carddata_loadHandle.OperationException}");
         }
     }
-    // 로드된 데이터를 딜레이 없이 바로 사용하는 함수
+    public async Task AllResultPercentData()
+    {
+        // Addressables.LoadAssetsAsync<TObject>(key, callback)
+        // key는 주소 또는 레이블을 사용할 수 있습니다. 여기서는 레이블을 사용합니다.
+        resultdata_loadHandle = Addressables.LoadAssetsAsync<ResultPercentData>(
+            "ResultPercentData",
+            // 로드된 각 Asset에 대한 콜백 (선택 사항)
+            (item) =>
+            {
+                if (item != null)
+                {
+                    result_datas[item.level] = item;
+                }
+            }
+        );
+
+        // 비동기 작업이 완료될 때까지 대기
+        await resultdata_loadHandle.Task;
+
+        if (resultdata_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsDataLoaded = true;
+            UnityEngine.Debug.Log($"ResultPercentData 로드 완료: {result_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"ResultPercentData 로드 실패: {resultdata_loadHandle.OperationException}");
+        }
+    }
+
+
+    /// <summary>
+    /// 아이템 id 를 사용한 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
     public void GetCardData(string id, Action<CardData> data)
     {
         if (IsDataLoaded && card_datas.TryGetValue(id, out CardData itemData))
@@ -62,9 +105,29 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
+
+    /// <summary>
+    /// 레벨당 리절트 확률 데이터 받기
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="data"></param>
+    public void GetResultPercentData(int level, Action<ResultPercentData> data)
+    {
+        if (IsDataLoaded && result_datas.TryGetValue(level, out ResultPercentData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {level}에 해당하는 아이템 데이터가 로드되지 않았습니다.");
+            data?.Invoke(null);
+        }
+    }
+
     private void OnDisable()
     {
-        //Addressables.Release(loadHandle);
+        Addressables.Release(carddata_loadHandle);
+        Addressables.Release(resultdata_loadHandle);
         UnityEngine.Debug.Log("Addressables 핸들 해제 완료.");
     }
 }

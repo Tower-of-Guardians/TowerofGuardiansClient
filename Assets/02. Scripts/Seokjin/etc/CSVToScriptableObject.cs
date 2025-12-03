@@ -6,7 +6,7 @@ using UnityEngine;
 enum CSVData
 {
     CardData,
-    ResultData
+    ResultPercentData
 }
 
 // 에디터 폴더에 위치해야 함
@@ -25,11 +25,11 @@ public class CSVToScriptableObject
         GenerateItemSOs();
     }
 
-    [MenuItem("Tools/Generate Data/ResultDataCreate")]
+    [MenuItem("Tools/Generate Data/ResultPercentDataCreate")]
     public static void ResultDataCreate()
     {
-        csv_data = CSVData.ResultData;
-        csv_name = "ResultData";
+        csv_data = CSVData.ResultPercentData;
+        csv_name = "ResultPercentData";
         soFolderPath = "Assets/Datas/" + csv_name;
         GenerateItemSOs();
     }
@@ -67,7 +67,7 @@ public class CSVToScriptableObject
             case CSVData.CardData:
                 SetCardData(allLines);
                 break;
-            case CSVData.ResultData:
+            case CSVData.ResultPercentData:
                 SetResultData(allLines);
                 break;
 
@@ -163,15 +163,15 @@ public class CSVToScriptableObject
 
             string[] values = line.Split(',');
 
-            ResultTableData newItem = ScriptableObject.CreateInstance<ResultTableData>();
+            ResultPercentData newItem = ScriptableObject.CreateInstance<ResultPercentData>();
 
             if (int.TryParse(values[0].Trim(), out int level)) newItem.level = level;
-            if (int.TryParse(values[1].Trim(), out int normal)) newItem.normal = normal;
-            if (int.TryParse(values[2].Trim(), out int rare)) newItem.rare = rare;
-            if (int.TryParse(values[3].Trim(), out int unique)) newItem.unique = unique;
-            if (int.TryParse(values[4].Trim(), out int epic)) newItem.epic = epic;
+            for (int i = 1; i < values.Length; i++)
+            {
+                if (int.TryParse(values[i].Trim(), out int num)) newItem.percent.Add(num);
+            }
 
-            string fileName = "ResultData" + newItem.level + ".asset";
+            string fileName = "ResultPercentData" + newItem.level + ".asset";
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }

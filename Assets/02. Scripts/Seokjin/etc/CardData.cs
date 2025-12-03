@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 // CSV의 한 행에 대응하는 데이터 구조
@@ -18,21 +17,4 @@ public class CardData : ScriptableObject
     public string effect1ID, effect2ID;
     public string effect1Value, effect2Value;
     // ... 필요한 필드 추가
-}
-
-public class BattleCardData
-{
-    public int index;
-    public CardData data;
-}
-
-
-[CreateAssetMenu(fileName = "ResultData", menuName = "Data/ResultData")]
-public class ResultTableData : ScriptableObject
-{
-    public int level;
-    public float normal;
-    public float rare;
-    public float unique;
-    public float epic;
 }

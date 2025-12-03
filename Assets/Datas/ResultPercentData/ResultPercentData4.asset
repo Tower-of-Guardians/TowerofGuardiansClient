@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: ResultData6
-  m_EditorClassIdentifier: Assembly-CSharp::ResultTableData
-  level: 6
-  normal: 42
-  rare: 42
-  unique: 13
-  epic: 3
+  m_Script: {fileID: 11500000, guid: 3b0b65a63ca4be543a293aad3836e405, type: 3}
+  m_Name: ResultPercentData4
+  m_EditorClassIdentifier: 
+  level: 4
+  percent:
+  - 66
+  - 30
+  - 4
+  - 0
