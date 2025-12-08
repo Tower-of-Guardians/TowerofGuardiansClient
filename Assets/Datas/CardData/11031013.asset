@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11031013
   itemName: "\uC644\uC804"
-  image: {fileID: 0}
+  iconimage: {fileID: 0}
   grade: 3
   star: 1
+  cardimage: {fileID: -114060888496569219, guid: a39fbf36547d7e44caa73393218c98ca, type: 3}
   synergy1ID: 210003
   synergy2ID: 210010
   synergy3ID: 

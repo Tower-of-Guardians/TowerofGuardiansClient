@@ -21,7 +21,7 @@ public class CSVToScriptableObject
         csv_data = CSVData.CardData;
         csv_name = "CardData";
         soFolderPath = "Assets/Datas/" + csv_name;
-        imageResourcesPath = "Assets/04. Images/Test/Icons/";
+        imageResourcesPath = "Assets/04. Images/Test/";
         GenerateItemSOs();
     }
 
@@ -101,7 +101,7 @@ public class CSVToScriptableObject
 
             if (!string.IsNullOrEmpty(spriteNameInSheet))
             {
-                string fullSpriteSheetPath = Path.Combine(imageResourcesPath, "ItemIcon.png").Replace('\\', '/');
+                string fullSpriteSheetPath = Path.Combine(imageResourcesPath+ "Icons/", "ItemIcon.png").Replace('\\', '/');
 
                 // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
                 // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
@@ -141,6 +141,36 @@ public class CSVToScriptableObject
             newItem.effect1Value = values[13].Trim();
             newItem.effect2ID = values[14].Trim(); ;
             newItem.effect2Value = values[15].Trim();
+
+            if (!string.IsNullOrEmpty("Card"))
+            {
+                string fullSpriteSheetPath = Path.Combine(imageResourcesPath +"Card/", "CardFrame.png").Replace('\\', '/');
+
+                // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
+                // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
+                Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(fullSpriteSheetPath);
+                Sprite foundSprite = null;
+
+                foreach (Object asset in allAssets)
+                {
+                    // 불러온 에셋 중 Sprite 타입이고 이름이 일치하는 것을 찾습니다.
+                    if (asset is Sprite sprite && sprite.name == string.Format("CardFrame{0}{1}", newItem.grade, newItem.star))
+                    {
+                        foundSprite = sprite;
+                        break;
+                    }
+                }
+
+                if (foundSprite != null)
+                {
+                    newItem.cardimage = foundSprite;
+                }
+                else
+                {
+                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
+                }
+            }
+
             //ID,Name,Image,Grade,Star,Price,Synergy1ID,Synergy2ID,Synergy3ID,EffectDescription,ATK,DEF,Effect1ID,Effect1Value,Effect2ID,Effect2Value
 
             // ... 나머지 필드 할당
