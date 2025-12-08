@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using TMPro;
 
-public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
+public class CardInventoryUI : MonoBehaviour
 {
 
     [Header("Test Button")]
@@ -20,20 +18,16 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     public Button sortByStrengthButton;
     public Button nextButton;
 
-    [Header("Enhancement UI")]
+    [Header("Card Inventory Panel")]
     [SerializeField] private GameObject cardInventoryPanel;
-    [SerializeField] private GameObject enhancementPanel;
-    [SerializeField] private Toggle enhancementPreviewToggle;
-    [SerializeField] private Image cardImage;
-    [SerializeField] private TMP_Text cardNameText;
-    [SerializeField] private TMP_Text cardDescriptionText;
-    [SerializeField] private GameObject cardGridParent;
+    
+    [Header("Card Info UI")]
+    [SerializeField] private CardInfoUI cardInfoUI;
 
     [Header("Card UI")]
     [SerializeField] private GameObject cardInventoryContent;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private List<GameObject> instantiatedCards = new List<GameObject>();
-    private CardData selectedCardData;
 
     private const int CARDS_PER_ROW = 6;
     private const int INITIAL_HEIGHT = 800;
@@ -47,26 +41,25 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         InitializeButtons();
-        InitializeEnhancementUI();
+        InitializeCardInventoryUI();
     }
 
-    private void InitializeEnhancementUI()
+    private void InitializeCardInventoryUI()
     {
+        if (cardInfoUI == null)
+        {
+            cardInfoUI = FindAnyObjectByType<CardInfoUI>();
+        }
+
         if (testButton != null)
         {
             // Test 기능 : 패널 열기
             testButton.onClick.AddListener(OpenPanel);
         }
 
-        if (enhancementPanel != null)
+        if (cardInventoryPanel != null)
         {
-            enhancementPanel.SetActive(false);
-        }
-
-        if (enhancementPreviewToggle != null)
-        {
-            enhancementPreviewToggle.onValueChanged.AddListener(OnEnhancementPreviewToggleChanged);
-            enhancementPreviewToggle.isOn = false;
+            cardInventoryPanel.SetActive(false);
         }
     }
 
@@ -309,7 +302,10 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
     // 패널 닫기
     public void ClosePanel()
     {
-        HideEnhancementPanel();
+        if (cardInfoUI != null)
+        {
+            cardInfoUI.HidePanel();
+        }
         cardInventoryPanel.SetActive(false);
     }
 
@@ -321,106 +317,14 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        selectedCardData = cardData;
-        ShowEnhancementPanel();
-        UpdateEnhancementUI();
-    }
-
-    private void ShowEnhancementPanel()
-    {
-        if (enhancementPanel != null)
+        // CardInfoUI에 카드 정보 표시 요청
+        if (cardInfoUI != null)
         {
-            enhancementPanel.SetActive(true);
+            cardInfoUI.ShowCardInfo(cardData);
         }
-    }
-
-    private void HideEnhancementPanel()
-    {
-        if (enhancementPanel != null)
+        else
         {
-            enhancementPanel.SetActive(false);
-        }
-
-        selectedCardData = null;
-    }
-
-    private void UpdateEnhancementUI()
-    {
-        if (selectedCardData == null)
-        {
-            return;
-        }
-
-        cardImage.sprite = selectedCardData.iconimage;
-        cardNameText.text = selectedCardData.itemName;
-
-        bool isPreviewMode = enhancementPreviewToggle != null && enhancementPreviewToggle.isOn;
-        if (cardDescriptionText != null)
-        {
-            if (isPreviewMode)
-            {
-                cardDescriptionText.text = GetEnhancedDescription(selectedCardData);
-            }
-            else
-            {
-                cardDescriptionText.text = selectedCardData.effectDescription;
-            }
-        }
-
-        // TODO: 강화가 되어있으면 토글 체크
-    }
-
-    private void OnEnhancementPreviewToggleChanged(bool isOn)
-    {
-        // TODO: 토글을 체크하면 설명이 강화된 효과로 바뀜
-        UpdateEnhancementUI();
-    }
-
-    // 배경 클릭 시 강화 패널 닫기
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // 강화 패널이 열려있지 않으면 무시
-        if (enhancementPanel == null || !enhancementPanel.activeSelf)
-        {
-            return;
-        }
-
-        // 클릭된 UI 요소 확인
-        var results = new System.Collections.Generic.List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, results);
-
-        foreach (var result in results)
-        {
-            if (result.gameObject == cardGridParent || 
-                (cardGridParent != null && result.gameObject.transform.IsChildOf(cardGridParent.transform)))
-            {
-                return;
-            }
-        }
-
-        bool isClickedOnEnhancementPanel = false;
-        bool isClickedOnToggle = false;
-
-        foreach (var result in results)
-        {
-            if (result.gameObject == enhancementPanel ||
-                (enhancementPanel != null && result.gameObject.transform.IsChildOf(enhancementPanel.transform)))
-            {
-                isClickedOnEnhancementPanel = true;
-
-                if (enhancementPreviewToggle != null &&
-                    (result.gameObject == enhancementPreviewToggle.gameObject ||
-                     result.gameObject.transform.IsChildOf(enhancementPreviewToggle.transform)))
-                {
-                    isClickedOnToggle = true;
-                    break;
-                }
-            }
-        }
-
-        if (!isClickedOnEnhancementPanel || (isClickedOnEnhancementPanel && !isClickedOnToggle))
-        {
-            HideEnhancementPanel();
+            Debug.LogWarning("CardInventoryUI: cardInfoUI가 설정되지 않았습니다.");
         }
     }
 
@@ -452,19 +356,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         return null;
     }
 
-    // TODO: 강화했을 때 효과로 설명 바꾸기
-    private string GetEnhancedDescription(CardData cardData)
-    {
-        if (cardData == null)
-        {
-            return string.Empty;
-        }
-
-        // 카드 강화 시 변경될 설명을 반환하는 로직 구현
-        // 예: 강화 레벨에 따라 Description을 수정하거나 강화 효과를 추가
-        // TODO: 현재는 기본 설명 반환 (추후 강화 로직 구현 시 수정 필요)
-        return cardData.effectDescription;
-    }
 
     void OnDestroy()
     {
@@ -497,11 +388,6 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
         if (nextButton != null)
         {
             nextButton.onClick.RemoveListener(OnNextButtonClicked);
-        }
-
-        if (enhancementPreviewToggle != null)
-        {
-            enhancementPreviewToggle.onValueChanged.RemoveListener(OnEnhancementPreviewToggleChanged);
         }
     }
 }
