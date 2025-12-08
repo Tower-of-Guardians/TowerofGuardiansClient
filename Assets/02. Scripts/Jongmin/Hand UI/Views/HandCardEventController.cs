@@ -18,18 +18,21 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private HandPresenter m_presenter;
     private HandCardContainer m_container;
     private HandCardLayoutController m_layout_controller;
+    private CardInfoUI m_card_info_ui;
 
     private Dictionary<IHandCardView, HandCardEventBundle> m_event_dict = new();
 
     public void Inject(HandUIDesigner designer,
                        HandPresenter presenter,
                        HandCardContainer container,
-                       HandCardLayoutController layout_controller)
+                       HandCardLayoutController layout_controller,
+                       CardInfoUI card_info_ui)
     {
         m_designer = designer;
         m_presenter = presenter;
         m_container = container;
         m_layout_controller = layout_controller;
+        m_card_info_ui = card_info_ui;
     }
 
     public void Subscribe(IHandCardView card_view)
@@ -40,7 +43,8 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             OnPointerExit =     ()          => { OnPointerExitFromCard(); },
             OnBeginDrag =       ()          => { OnBeginDragCard(); },
             OnDrag =            (position)  => { OnDragCard(position); },
-            OnEndDrag =         ()          => { OnEndDragCard(); }
+            OnEndDrag =         ()          => { OnEndDragCard(); },
+            OnPointerClick =    ()          => { OnPointerClickCard(); }
         };
 
         m_event_dict[card_view] = new_bundle;
@@ -50,6 +54,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         card_view.OnBeginDragAction += new_bundle.OnBeginDrag;
         card_view.OnDragAction += new_bundle.OnDrag;
         card_view.OnEndDragAction += new_bundle.OnEndDrag;
+        card_view.OnPointerClickAction += new_bundle.OnPointerClick;
     }
 
     public void Unsubscribe(IHandCardView card_view)
@@ -60,7 +65,8 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             card_view.OnPointerExitAction -= bundle.OnPointerExit;
             card_view.OnBeginDragAction -= bundle.OnBeginDrag;
             card_view.OnDragAction -= bundle.OnDrag;
-            card_view.OnEndDragAction -= bundle.OnEndDrag;            
+            card_view.OnEndDragAction -= bundle.OnEndDrag;    
+            card_view.OnPointerClickAction -= bundle.OnPointerClick;        
         }
     }
 
@@ -126,6 +132,11 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         m_preview_object.SetActive(false);
         CommitChange();
         m_layout_controller.UpdateLayout();
+    }
+
+    private void OnPointerClickCard()
+    {
+        m_card_info_ui.ShowCardInfo(m_presenter.GetCardData(m_presenter.HoverCard).data);
     }
 
     public void OnDrop(PointerEventData eventData)

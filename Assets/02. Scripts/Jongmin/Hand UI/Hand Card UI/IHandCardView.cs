@@ -7,11 +7,13 @@ public interface IHandCardView : ICardView,
                                  IPointerExitHandler,
                                  IBeginDragHandler,
                                  IDragHandler,
-                                 IEndDragHandler
+                                 IEndDragHandler,
+                                 IPointerClickHandler
 {
     public event Action OnPointerEnterAction;
     public event Action OnPointerExitAction;
     public event Action OnBeginDragAction;
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
+    public event Action OnPointerClickAction;
 }
