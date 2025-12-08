@@ -14,6 +14,7 @@ public class HandCardView : CardView, IHandCardView
     public event Action OnBeginDragAction;
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
+    public event Action OnPointerClickAction;
 
     public override void Return()
     {
@@ -43,5 +44,11 @@ public class HandCardView : CardView, IHandCardView
         OnEndDragAction?.Invoke();
         ToggleRaycast(true);
     }
-#endregion Events
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+            OnPointerClickAction?.Invoke();
+    }
+    #endregion Events
 }

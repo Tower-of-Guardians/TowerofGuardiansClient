@@ -8,4 +8,5 @@ public class HandCardEventBundle
     public Action OnBeginDrag;
     public Action<Vector2> OnDrag;
     public Action OnEndDrag;
+    public Action OnPointerClick;
 }

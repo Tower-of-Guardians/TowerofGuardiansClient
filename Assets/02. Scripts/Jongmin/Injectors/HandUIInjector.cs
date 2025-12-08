@@ -21,6 +21,9 @@ public class HandUIInjector : MonoBehaviour, IInjector
     [Header("턴 매니저")]
     [SerializeField] private TurnManager m_turn_manager;
 
+    [Header("카드 정보 뷰")]
+    [SerializeField] private CardInfoUI m_card_info_ui;
+
     public void Inject()
     {
         InjectHand();
@@ -46,7 +49,8 @@ public class HandUIInjector : MonoBehaviour, IInjector
                            hand_card_container,
                            m_hand_card_factory,
                            m_hand_card_layout_controller,
-                           m_hand_card_event_controller);
+                           m_hand_card_event_controller,
+                           m_card_info_ui);
     }
 
     private void InjectTurnManager()

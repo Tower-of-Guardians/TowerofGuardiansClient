@@ -16,11 +16,12 @@ public class HandView : MonoBehaviour, IHandView
                        HandCardContainer container,
                        HandCardFactory factory,
                        HandCardLayoutController layout_controller,
-                       HandCardEventController event_controller)
+                       HandCardEventController event_controller,
+                       CardInfoUI card_info_ui)
     {
         factory.Inject(event_controller);
         layout_controller.Inject(container, m_presenter);
-        event_controller.Inject(designer, m_presenter, container, layout_controller);
+        event_controller.Inject(designer, m_presenter, container, layout_controller, card_info_ui);
     }
 
     public void Inject(HandPresenter presenter)
