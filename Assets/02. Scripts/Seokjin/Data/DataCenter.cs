@@ -1,4 +1,5 @@
 using System; // async/await 사용을 위해 필요
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -12,9 +13,10 @@ public class DataCenter : Singleton<DataCenter>
     public PlayerState playerstate = new PlayerState();
     //////////////////////////
     ////// 카드 관련 //////
-    public static Dictionary<string,CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
+    public static Dictionary<string, CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
     private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // 메모리 관리를 위한 핸들
-    public List<string> userDeck = new List<string>(); // 유저 소지 카드 데이터
+    //public List<string> userDeck = new List<string>(); 
+    public List<CardData> userDeck = new List<CardData>();// 유저 소지 카드 데이터
     public static List<string> random_card_datas = new List<string>(); // 랜덤하게 카드 뽑기위한 데이터
     //////////////////////
 
@@ -23,12 +25,14 @@ public class DataCenter : Singleton<DataCenter>
     private static AsyncOperationHandle<IList<ResultPercentData>> resultdata_loadHandle; // 메모리 관리를 위한 핸들
     //////////////////////
 
-    public static bool IsDataLoaded { get; private set; } = false;
+    public static bool IsCardDataLoaded { get; private set; } = false;
+    public static bool IsResultDataLoaded { get; private set; } = false;
     private async void Start()
     {
-        LoadPlayerData();
         await AllCardData();
         await AllResultPercentData();
+        LoadPlayerData();
+        StartCoroutine(SetStartDeck());
     }
     public void LoadPlayerData()
     {
@@ -42,6 +46,15 @@ public class DataCenter : Singleton<DataCenter>
         playerstate.atk = 4;
         playerstate.latk = 0;
         playerstate.maxmagic = 2;
+    }
+    IEnumerator SetStartDeck()
+    {
+        yield return new WaitUntil(() => IsCardDataLoaded == true);
+        string[] startdecks = { "11000001", "11000002", "11010003", "11010004", "11010005", "11010006", "11010007", "11010008", "11010009", "11010010" };
+        foreach (string id in startdecks)
+        {
+            GetCardData(id, (data) => userDeck.Add(Instantiate(data)));
+        }
     }
     public async Task AllCardData()
     {
@@ -65,7 +78,7 @@ public class DataCenter : Singleton<DataCenter>
 
         if (carddata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
-            IsDataLoaded = true;
+            IsCardDataLoaded = true;
             UnityEngine.Debug.Log($"ItemData 로드 완료: {card_datas.Count}");
         }
         else
@@ -94,7 +107,7 @@ public class DataCenter : Singleton<DataCenter>
 
         if (resultdata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
-            IsDataLoaded = true;
+            IsResultDataLoaded = true;
             UnityEngine.Debug.Log($"ResultPercentData 로드 완료: {result_datas.Count}");
         }
         else
@@ -111,13 +124,13 @@ public class DataCenter : Singleton<DataCenter>
     /// <param name="data"></param>
     public void GetCardData(string id, Action<CardData> data)
     {
-        if (IsDataLoaded && card_datas.TryGetValue(id, out CardData itemData))
+        if (IsCardDataLoaded && card_datas.TryGetValue(id, out CardData itemData))
         {
             data?.Invoke(itemData);
         }
         else
         {
-            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다.");
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsCardDataLoaded = {IsCardDataLoaded}.");
             data?.Invoke(null);
         }
     }
@@ -130,7 +143,7 @@ public class DataCenter : Singleton<DataCenter>
     /// <param name="data"></param>
     public void GetResultPercentData(int level, Action<ResultPercentData> data)
     {
-        if (IsDataLoaded && result_datas.TryGetValue(level, out ResultPercentData itemData))
+        if (IsResultDataLoaded && result_datas.TryGetValue(level, out ResultPercentData itemData))
         {
             data?.Invoke(itemData);
         }

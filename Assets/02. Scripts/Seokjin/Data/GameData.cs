@@ -21,7 +21,7 @@ public class GameData : Singleton<GameData>
     public int player_lever = 1;
     private void Start()
     {
-        FirstDeckSet();
+        StartCoroutine(FirstDeckSet());
         DeckChange?.Invoke(DeckType.Draw, notuseDeck.Count);
     }
 
@@ -36,19 +36,19 @@ public class GameData : Singleton<GameData>
     /// <summary>
     /// 처음 시작시 덱 정보 불러오고 섞기
     /// </summary>
-    public void FirstDeckSet()
+    IEnumerator FirstDeckSet()
     {
-        if (DataCenter.Instance.userDeck.Count <= 0)
+        Debug.Log("GameData 카드 세팅 대기");
+        yield return new WaitUntil(() => DataCenter.Instance.userDeck.Count > 0);
+        Debug.Log("GameData 카드 세팅 완료");
+        foreach (CardData id in DataCenter.Instance.userDeck)
         {
-            Debug.Log("���� �� �����Ͱ� �����ϴ�");
-            return;
-        }
-        foreach (string id in DataCenter.Instance.userDeck)
-        {
-            notuseDeck.Add(id);
+            notuseDeck.Add(id.id);
         }
 
         Shuffle();
+        InvokeDeckCountChange(DeckType.Draw);
+        InvokeDeckCountChange(DeckType.Throw);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class GameData : Singleton<GameData>
 
             DataCenter.Instance.GetCardData(notuseDeck[0], (data) =>
             {
-                getdata.data = data;
+                getdata.data = Instantiate(data);
             });
             handDeck.Add(notuseDeck[0]);
             notuseDeck.RemoveAt(0);
@@ -174,7 +174,7 @@ public class GameData : Singleton<GameData>
             {
                 BattleCardData battleCardData = new BattleCardData();
                 battleCardData.index = index;
-                battleCardData.data = data;
+                battleCardData.data = Instantiate(data);
                 deck_data.Add(battleCardData);
             });
         }
@@ -207,7 +207,7 @@ public class GameData : Singleton<GameData>
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
         DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
         {
-            resultPercent = data;
+            resultPercent = Instantiate(data);
         });
         List<BattleCardData> results = new List<BattleCardData>();
 
@@ -244,7 +244,7 @@ public class GameData : Singleton<GameData>
             string radom_id = DataCenter.random_card_datas[UnityEngine.Random.Range(0, DataCenter.random_card_datas.Count - 1)].ToString();
             DataCenter.Instance.GetCardData(radom_id, (data) =>
             {
-                cardData.data = data;
+                cardData.data = Instantiate(data);
             });
             if (cardData.data.grade != cut)
             {
@@ -264,7 +264,7 @@ public class GameData : Singleton<GameData>
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
         DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
         {
-            resultPercent = data;
+            resultPercent = Instantiate(data);
         });
         return resultPercent.percent;
     }

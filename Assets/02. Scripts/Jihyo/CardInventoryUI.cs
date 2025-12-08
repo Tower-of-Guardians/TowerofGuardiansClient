@@ -165,7 +165,7 @@ public class CardInventoryUI : MonoBehaviour
             return;
         }
 
-        if (DataCenter.Instance == null || !DataCenter.IsDataLoaded)
+        if (DataCenter.Instance == null || !DataCenter.IsCardDataLoaded)
         {
             Debug.LogWarning("CardInventoryUI: DataCenter가 아직 데이터를 로드하지 않았습니다.");
             return;
@@ -208,12 +208,9 @@ public class CardInventoryUI : MonoBehaviour
             return cards;
         }
 
-        foreach (string cardId in DataCenter.Instance.userDeck)
+        foreach (CardData data in DataCenter.Instance.userDeck)
         {
-            if (DataCenter.card_datas.TryGetValue(cardId, out CardData cardData))
-            {
-                cards[cardId] = cardData;
-            }
+            cards[data.id] = data;
         }
 
         return cards;
@@ -345,7 +342,7 @@ public class CardInventoryUI : MonoBehaviour
         string cardId = cardName.Substring(5); // "Card_" 제거
 
         // DataCenter에서 카드 데이터 가져오기
-        if (DataCenter.Instance != null && DataCenter.IsDataLoaded)
+        if (DataCenter.Instance != null && DataCenter.IsCardDataLoaded)
         {
             if (DataCenter.card_datas.TryGetValue(cardId, out CardData cardData))
             {
