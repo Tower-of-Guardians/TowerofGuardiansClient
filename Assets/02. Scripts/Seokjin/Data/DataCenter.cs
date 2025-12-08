@@ -8,6 +8,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DataCenter : Singleton<DataCenter>
 {
+    ////// 플레이어 관련 /////
+    public PlayerState playerstate = new PlayerState();
+    //////////////////////////
     ////// 카드 관련 //////
     public static Dictionary<string,CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
     private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // 메모리 관리를 위한 핸들
@@ -23,8 +26,22 @@ public class DataCenter : Singleton<DataCenter>
     public static bool IsDataLoaded { get; private set; } = false;
     private async void Start()
     {
+        LoadPlayerData();
         await AllCardData();
         await AllResultPercentData();
+    }
+    public void LoadPlayerData()
+    {
+        // TODO 석진
+        // SaveLoad 만들어서 로드 데이터 세팅해주는 부분 추가
+
+        playerstate.levle = 1;
+        playerstate.experience = 0;
+        playerstate.hp = 70;
+        playerstate.lhp = 5;
+        playerstate.atk = 4;
+        playerstate.latk = 0;
+        playerstate.maxmagic = 2;
     }
     public async Task AllCardData()
     {

@@ -6,7 +6,9 @@ using UnityEngine;
 enum CSVData
 {
     CardData,
-    ResultPercentData
+    ResultPercentData,
+    PlayerData,
+    MonsterData
 }
 
 // 에디터 폴더에 위치해야 함
