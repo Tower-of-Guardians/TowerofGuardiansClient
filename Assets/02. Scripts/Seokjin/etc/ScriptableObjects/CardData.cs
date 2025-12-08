@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // CSV의 한 행에 대응하는 데이터 구조
@@ -17,5 +18,7 @@ public class CardData : ScriptableObject
     public string effect1ID, effect2ID;
     public string effect1Value, effect2Value;
     public float price;
+
+    public DateTime time;
     // ... 필요한 필드 추가
 }

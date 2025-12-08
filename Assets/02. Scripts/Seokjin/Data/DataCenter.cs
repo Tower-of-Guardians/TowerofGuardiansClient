@@ -1,8 +1,11 @@
+using Mono.Cecil;
 using System; // async/await 사용을 위해 필요
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,9 +18,10 @@ public class DataCenter : Singleton<DataCenter>
     ////// 카드 관련 //////
     public static Dictionary<string, CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
     private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // 메모리 관리를 위한 핸들
-    //public List<string> userDeck = new List<string>(); 
     public List<CardData> userDeck = new List<CardData>();// 유저 소지 카드 데이터
     public static List<string> random_card_datas = new List<string>(); // 랜덤하게 카드 뽑기위한 데이터
+    SortType sortType;
+    bool sortType_oder = true; // true = 오름차순, false = 내림차순
     //////////////////////
 
     ////// 리절트 관련 //////
@@ -151,6 +155,77 @@ public class DataCenter : Singleton<DataCenter>
         {
             UnityEngine.Debug.Log($"ID {level}에 해당하는 아이템 데이터가 로드되지 않았습니다.");
             data?.Invoke(null);
+        }
+    }
+
+    /// <summary>
+    /// 정렬 타입에 따른 userDeck 리스트 정렬
+    /// </summary>
+    /// <param name="type"></param>
+    public void SortUserCards(SortType type)
+    {
+        List<CardData> sortedDescending = new List<CardData>();
+        if (type != sortType)
+        {
+            sortType_oder = true;
+            if (type == SortType.Grade)
+            {
+                sortType_oder = false;
+            }
+        }
+
+        switch (type)
+        {
+            case SortType.Grade:
+                if (!sortType_oder)
+                {
+                    sortedDescending = userDeck.OrderByDescending(data => data.star).ToList();
+                    sortedDescending = userDeck.OrderByDescending(data => data.grade).ToList();
+                }
+                else
+                {
+                    sortedDescending = userDeck.OrderBy(data => data.star).ToList();
+                    sortedDescending = userDeck.OrderBy(data => data.grade).ToList();
+                }
+                break;
+            case SortType.Time:
+                if (sortType_oder)
+                {
+                    sortedDescending = userDeck.OrderBy(data => data.time).ToList();
+                }
+                else
+                {
+                    sortedDescending = userDeck.OrderByDescending(data => data.time).ToList();
+                }
+                break;
+            case SortType.Attack:
+                if (sortType_oder)
+                {
+                    sortedDescending = userDeck.OrderBy(data => data.ATK).ToList();
+                }
+                else
+                {
+                    sortedDescending = userDeck.OrderByDescending(data => data.ATK).ToList();
+                }
+                break;
+            case SortType.Defense:
+                if (sortType_oder)
+                {
+                    sortedDescending = userDeck.OrderBy(data => data.DEF).ToList();
+                }
+                else
+                {
+                    sortedDescending = userDeck.OrderByDescending(data => data.DEF).ToList();
+                }
+                break;
+        }
+
+        sortType = type;
+        sortType_oder = !sortType_oder;
+        userDeck = sortedDescending;
+        foreach (CardData data in userDeck)
+        {
+            UnityEngine.Debug.Log(data.itemName);
         }
     }
 

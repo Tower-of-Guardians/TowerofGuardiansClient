@@ -29,3 +29,11 @@ public enum FieldType
     Defense = 2,
     Garbage = 3
 }
+
+public enum SortType
+{
+    Time, // µ¿½Ã È¹µæ½Ã id¼øÀ¸·Î
+    Grade,
+    Attack,
+    Defense
+}
