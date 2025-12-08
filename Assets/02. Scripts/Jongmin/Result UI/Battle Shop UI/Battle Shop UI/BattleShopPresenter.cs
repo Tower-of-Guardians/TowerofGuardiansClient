@@ -36,8 +36,8 @@ public class BattleShopPresenter
 
     public void Refresh()
     {
-        m_card_datas = GameData.Instance.GetResultItems();
         index = 0;
+        m_card_datas = GameData.Instance.GetResultItems();
     }
 
     public void RemoveCards()
@@ -45,10 +45,10 @@ public class BattleShopPresenter
 
     private void SetRate()
     {
-        string[] color_arr = { "828282", "4AA8D8", "FEFD48", "F06464" };
-        List<float> rate_list = GameData.Instance.GetResultPercent();
+        var color_arr = new List<string>{ "828282", "4AA8D8", "FEFD48", "F06464" };
+        var rate_list = GameData.Instance.GetResultPercent();
 
-        string rate_string = string.Empty;
+        var rate_string = string.Empty;
         for(int i = 0; i < rate_list.Count; i++)
         {
             rate_string += i < rate_list.Count - 1 ? $"<color=#{color_arr[i]}>{rate_list[i]}%</color>   "

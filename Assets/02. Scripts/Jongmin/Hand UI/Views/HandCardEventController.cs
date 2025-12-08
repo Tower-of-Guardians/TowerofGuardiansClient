@@ -88,15 +88,27 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             return;
 
         var target_card = m_presenter.HoverCard as HandCardView;
-        var hit = CheckField(out var pointer_data);
-        var drop_handler = hit?.gameObject.GetComponent<IDropHandler>();
-
-        if(drop_handler != null)
-            target_card.transform.DOScale(0.75f, m_designer.AnimeSPD);
-        else
-            target_card.transform.DOScale(m_designer.Scale, m_designer.AnimeSPD);
-        
         target_card.transform.position = position;
+
+        var hand_card = GetIHandCardView();
+        if(hand_card != null)
+        {
+            if(m_container.IsExist(hand_card))
+            {
+                SwapInSameField(hand_card, position);
+                CalculatePreviewPosition();
+            }
+        }
+        else
+        {
+            var drop_hit = CheckField(out var _);
+            var drop_handler = drop_hit?.gameObject.GetComponent<IDropHandler>();
+
+            if(drop_handler != null)
+                target_card.transform.DOScale(0.75f, m_designer.AnimeSPD);
+            else
+                target_card.transform.DOScale(m_designer.Scale, m_designer.AnimeSPD);
+        }
     }
 
     private void OnEndDragCard()
@@ -111,6 +123,8 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             
         m_presenter.ToggleFieldPreview(false);
 
+        m_preview_object.SetActive(false);
+        CommitChange();
         m_layout_controller.UpdateLayout();
     }
 
@@ -129,6 +143,25 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         }
     }
 
+    public void CommitChange()
+    {
+        var views = m_container.Cards;
+
+        for (int i = 0; i < views.Count; i++)
+        {
+            var presenter = m_container.GetPresenter(views[i]);
+            var card_id = presenter.CardData.data.id;
+
+            if (i < GameData.Instance.handDeck.Count)
+                GameData.Instance.handDeck[i] = card_id;
+            else
+                GameData.Instance.handDeck.Add(card_id);
+        }
+
+        while (GameData.Instance.handDeck.Count > views.Count)
+            GameData.Instance.handDeck.RemoveAt(GameData.Instance.handDeck.Count - 1);
+    }
+
     private RaycastResult? CheckField(out PointerEventData pointer_data)
     {
         pointer_data = new PointerEventData(EventSystem.current);
@@ -140,6 +173,10 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
         foreach(var hit in ray_hits)
         {
+            var card_hit = hit.gameObject.GetComponent<IHandCardView>();
+            if(card_hit != null && m_presenter.HoverCard != card_hit)
+                return hit;
+
             var field_handler = hit.gameObject.GetComponent<FieldCardEventController>();
             if(field_handler != null)
                 return hit;
@@ -150,5 +187,49 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         } 
 
         return null;
+    }
+
+    private IHandCardView GetIHandCardView()
+    {
+        var hit = CheckField(out _);
+        return hit?.gameObject.GetComponent<IHandCardView>();
+    }
+
+    private void SwapInSameField(IHandCardView hand_card, Vector2 position)
+    {
+        var target_card = m_presenter.HoverCard;
+        var concrete_card = hand_card as HandCardView;
+
+        if(m_container.IsPriority(target_card, hand_card))
+        {
+            if(position.x >= concrete_card.transform.position.x)
+            {
+                m_container.Swap(target_card, hand_card);
+                m_layout_controller.UpdateLayout(true);
+            }
+        }
+        else
+        {
+            if(position.x < concrete_card.transform.position.x)
+            {
+                m_container.Swap(target_card, hand_card);
+                m_layout_controller.UpdateLayout(true);
+            }
+        }        
+    }
+
+    private void CalculatePreviewPosition()
+    {
+        var layout_data = CardLayoutCalculator.CalculatedHandCardTransform(m_container.GetIndex(m_presenter.HoverCard),
+                                                                           m_container.Cards.Count,
+                                                                           m_designer.Radius,
+                                                                           m_designer.Angle,
+                                                                           m_designer.Depth);      
+        m_preview_object.SetActive(true);
+
+        var preview_rt = m_preview_object.transform as RectTransform;
+        preview_rt.anchoredPosition = layout_data.Position;
+        preview_rt.rotation = Quaternion.Euler(layout_data.Rotation);
+        preview_rt.localScale = layout_data.Scale;
     }
 }

@@ -20,7 +20,7 @@ public class HandCardLayoutController : MonoBehaviour
         m_presenter = presenter;
     }
 
-    public void UpdateLayout()
+    public void UpdateLayout(bool is_dragging = false)
     {
         var card_count = m_container.Cards.Count;
         if(card_count == 0) 
@@ -29,6 +29,9 @@ public class HandCardLayoutController : MonoBehaviour
         for (int i = 0; i < card_count; i++)
         {
             var card_view = m_container.Cards[i];
+
+            if(is_dragging && m_presenter.HoverCard == card_view)
+                continue;
 
             var target_transform = CardLayoutCalculator.CalculatedHandCardTransform(i, 
                                                                                     card_count,

@@ -8,18 +8,6 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
     [Header("애니메이터")]
     [SerializeField] private Animator m_animator;
 
-    [Header("카드 테두리 이미지")]
-    [SerializeField] private Image m_outline_image;
-
-    [Header("카드 이미지")]
-    [SerializeField] private Image m_card_image;
-
-    [Header("카드 이름 텍스트")]
-    [SerializeField] private TMP_Text m_name_label;
-
-    [Header("카드 설명 텍스트")]
-    [SerializeField] private TMP_Text m_description_label;
-
     [Header("카드 가격 텍스트")]
     [SerializeField] private TMP_Text m_cost_label;
 
@@ -34,9 +22,7 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
     }
 
     private void OnEnable()
-    {
-        m_animator.SetTrigger("Instantiate");
-    }
+        => m_animator.SetTrigger("Instantiate");
 
     public void Inject(BattleShopSlotPresenter presenter)
         => m_presenter = presenter;
@@ -44,8 +30,8 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
     public void InitUI(BattleShopSlotData slot_data, bool can_purchase)
     {
         InitUI(slot_data.Card.data);        
-        m_cost_label.text = can_purchase ? slot_data.Cost.ToString()
-                                         : $"<color=red>{slot_data.Cost}</color>";
+        m_cost_label.text = can_purchase ? $"${slot_data.Cost}"
+                                         : $"<color=red>${slot_data.Cost}</color>";
         m_purchase_button.interactable = can_purchase;
     }
 }
