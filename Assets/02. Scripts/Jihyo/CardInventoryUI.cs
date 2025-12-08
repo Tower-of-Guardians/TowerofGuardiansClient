@@ -351,7 +351,7 @@ public class CardInventoryUI : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        cardImage.sprite = selectedCardData.image;
+        cardImage.sprite = selectedCardData.iconimage;
         cardNameText.text = selectedCardData.itemName;
 
         bool isPreviewMode = enhancementPreviewToggle != null && enhancementPreviewToggle.isOn;

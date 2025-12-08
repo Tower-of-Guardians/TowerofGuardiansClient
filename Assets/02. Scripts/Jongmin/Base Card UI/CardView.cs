@@ -26,7 +26,7 @@ public class CardView : MonoBehaviour, ICardView
     public void InitUI(CardData card_data)
     {
         // TODO: 카드 이미지 초기화
-        m_card_item_image.sprite = card_data.image;
+        m_card_item_image.sprite = card_data.iconimage;
         m_card_name_label.text = card_data.itemName;
         m_card_description_label.text = card_data.effectDescription;
         m_card_atk_label.text = card_data.ATK.ToString();

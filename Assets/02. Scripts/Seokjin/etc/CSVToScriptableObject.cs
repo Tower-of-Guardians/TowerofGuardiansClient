@@ -120,7 +120,7 @@ public class CSVToScriptableObject
 
                 if (foundSprite != null)
                 {
-                    newItem.image = foundSprite;
+                    newItem.iconimage = foundSprite;
                 }
                 else
                 {

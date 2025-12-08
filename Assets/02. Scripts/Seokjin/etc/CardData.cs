@@ -6,9 +6,10 @@ public class CardData : ScriptableObject
 {
     public string id;
     public string itemName;
-    public Sprite image;
+    public Sprite iconimage;
     public int grade;
     public int star;
+    public Sprite cardimage;
     public string synergy1ID, synergy2ID, synergy3ID;
     public string effectDescription;
     public float ATK;

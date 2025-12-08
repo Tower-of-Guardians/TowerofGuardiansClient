@@ -25,7 +25,7 @@ public class InventoryCard : MonoBehaviour
         if (card_data == null)
             return;
 
-        m_card_image.sprite = card_data.image;
+        m_card_image.sprite = card_data.iconimage;
         m_name_label.text = card_data.itemName;
         m_description_label.text = card_data.effectDescription;
     }
