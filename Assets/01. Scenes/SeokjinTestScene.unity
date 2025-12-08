@@ -727,17 +727,7 @@ MonoBehaviour:
     atk: 0
     latk: 0
     maxmagic: 0
-  userDeck:
-  - 11000001
-  - 11000002
-  - 11010003
-  - 11010004
-  - 11010005
-  - 11010006
-  - 11010007
-  - 11010008
-  - 11010009
-  - 11010025
+  userDeck: []
 --- !u!1 &1041942896
 GameObject:
   m_ObjectHideFlags: 0

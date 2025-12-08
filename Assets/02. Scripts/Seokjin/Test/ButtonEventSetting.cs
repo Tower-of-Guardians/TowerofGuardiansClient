@@ -12,21 +12,16 @@ public class ButtonEventSetting : MonoBehaviour
     {
         testbutton1.onClick.AddListener(() =>
         {
-            DataCenter.Instance.GetCardData("11000001", (data) =>
-            {
-                card = Instantiate(data);
-            });
+            DataCenter.Instance.SortUserCards(SortType.Attack);
         });
         textbutton2.onClick.AddListener(() =>
         {
-            card.ATK += 10;
-            //card.time = DateTime.Now.ToString();
+            DataCenter.Instance.SortUserCards(SortType.Defense);
         });
 
         textbutton3.onClick.AddListener(() =>
         {
-            /*if(DateTime.TryParse(card.time, out DateTime resultDate))
-                Debug.LogFormat("{0}", resultDate);;*/
+            DataCenter.Instance.SortUserCards(SortType.Grade);
         });
     }
 }
