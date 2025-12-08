@@ -50,7 +50,7 @@ public class DataCenter : Singleton<DataCenter>
     IEnumerator SetStartDeck()
     {
         yield return new WaitUntil(() => IsCardDataLoaded == true);
-        string[] startdecks = { "11000001", "11000002", "11010003", "11010004", "11010005", "11010006", "11010007", "11010008", "11010009", "11010010" };
+        string[] startdecks = { "11000001", "11000002", "11010003", "11010004", "11010005", "11010006", "11010007", "11010008", "11010009", "11010025" };
         foreach (string id in startdecks)
         {
             GetCardData(id, (data) => userDeck.Add(Instantiate(data)));
