@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 public class CardInventoryUI : MonoBehaviour
@@ -12,10 +13,11 @@ public class CardInventoryUI : MonoBehaviour
     public Button cardTabButton;
     public Button otherTabButton;
 
-    [Header("Right UI Sort Buttons")]
-    public Button sortByAcquisitionButton;
-    public Button sortByGradeButton;
-    public Button sortByStrengthButton;
+    [Header("Right UI Sort")]
+    public TextMeshProUGUI sortText;
+    public Button leftButton;
+    public Button rightButton;
+    public Button asDesButton;
     public Button nextButton;
 
     [Header("Card Inventory Panel")]
@@ -34,14 +36,22 @@ public class CardInventoryUI : MonoBehaviour
     private const int HEIGHT_INCREMENT = 300;
     private const int INITIAL_CARD_COUNT = 18;
 
-    private bool isAcquisitionAscending = true;
-    private bool isGradeAscending = false;
-    private bool isStrengthAscending = true;
+    private enum SortType
+    {
+        Acquisition,
+        Grade,
+        Attack,
+        Defense
+    }
+
+    private SortType currentSortType = SortType.Acquisition;
+    private bool isAscending = true;
 
     void Start()
     {
         InitializeButtons();
         InitializeCardInventoryUI();
+        UpdateSortText();
     }
 
     private void InitializeCardInventoryUI()
@@ -76,20 +86,20 @@ public class CardInventoryUI : MonoBehaviour
             otherTabButton.onClick.AddListener(OnOtherTabClicked);
         }
 
-        // 오른쪽 정렬 버튼 초기화
-        if (sortByAcquisitionButton != null)
+        // 정렬 버튼 초기화
+        if (leftButton != null)
         {
-            sortByAcquisitionButton.onClick.AddListener(OnSortByAcquisitionClicked);
+            leftButton.onClick.AddListener(OnLeftButtonClicked);
         }
 
-        if (sortByGradeButton != null)
+        if (rightButton != null)
         {
-            sortByGradeButton.onClick.AddListener(OnSortByGradeClicked);
+            rightButton.onClick.AddListener(OnRightButtonClicked);
         }
 
-        if (sortByStrengthButton != null)
+        if (asDesButton != null)
         {
-            sortByStrengthButton.onClick.AddListener(OnSortByStrengthClicked);
+            asDesButton.onClick.AddListener(OnAsDesButtonClicked);
         }
 
         // Next 버튼 초기화
@@ -111,31 +121,98 @@ public class CardInventoryUI : MonoBehaviour
         // TODO: 다른 탭 UI로 전환하는 로직 구현
     }
 
-    // 획득순 정렬 기능
-    private void OnSortByAcquisitionClicked()
+    // 왼쪽 버튼 클릭 (이전 정렬 타입)
+    private void OnLeftButtonClicked()
     {
-        // 오름차순/내림차순 토글
-        isAcquisitionAscending = !isAcquisitionAscending;
+        currentSortType = GetPreviousSortType();
+        UpdateSortText();
         
-        // TODO: 카드를 획득순으로 정렬하는 로직 구현
+        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
     }
 
-    // 등급순 정렬 기능
-    private void OnSortByGradeClicked()
+    // 오른쪽 버튼 클릭 (다음 정렬 타입)
+    private void OnRightButtonClicked()
     {
-        // 오름차순/내림차순 토글
-        isGradeAscending = !isGradeAscending;
+        currentSortType = GetNextSortType();
+        UpdateSortText();
         
-        // TODO: 카드를 등급순으로 정렬하는 로직 구현
+        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
     }
 
-    // 강화순 정렬 기능
-    private void OnSortByStrengthClicked()
+    // 오름차순/내림차순 토글 버튼 클릭
+    private void OnAsDesButtonClicked()
     {
-        // 오름차순/내림차순 토글
-        isStrengthAscending = !isStrengthAscending;
+        isAscending = !isAscending;
         
-        // TODO: 카드를 강화순으로 정렬하는 로직 구현
+        // TODO: UI 작업 중 - 일단 Rotation Z를 180도 돌려서 위아래로 표시
+        if (asDesButton != null)
+        {
+            RectTransform buttonRect = asDesButton.GetComponent<RectTransform>();
+            if (buttonRect != null)
+            {
+                float currentRotation = buttonRect.localEulerAngles.z;
+                float newRotation = isAscending ? 0f : 180f;
+                buttonRect.localRotation = Quaternion.Euler(0f, 0f, newRotation);
+            }
+        }
+        
+        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
+    }
+
+    // 이전 정렬 타입 가져오기
+    private SortType GetPreviousSortType()
+    {
+        switch (currentSortType)
+        {
+            case SortType.Acquisition:
+                return SortType.Defense;
+            case SortType.Grade:
+                return SortType.Acquisition;
+            case SortType.Attack:
+                return SortType.Grade;
+            case SortType.Defense:
+                return SortType.Attack;
+            default:
+                return SortType.Acquisition;
+        }
+    }
+
+    // 다음 정렬 타입 가져오기
+    private SortType GetNextSortType()
+    {
+        switch (currentSortType)
+        {
+            case SortType.Acquisition:
+                return SortType.Grade;
+            case SortType.Grade:
+                return SortType.Attack;
+            case SortType.Attack:
+                return SortType.Defense;
+            case SortType.Defense:
+                return SortType.Acquisition;
+            default:
+                return SortType.Acquisition;
+        }
+    }
+
+    // 정렬 텍스트 업데이트
+    private void UpdateSortText()
+    {
+        if (sortText == null)
+        {
+            return;
+        }
+
+        string sortTypeText = currentSortType switch
+        {
+            SortType.Acquisition => "획득순 정렬",
+            SortType.Grade => "등급순 정렬",
+            SortType.Attack => "공격력순 정렬",
+            SortType.Defense => "보호력순 정렬",
+            _ => "획득순 정렬"
+        };
+
+        sortText.text = sortTypeText;
     }
 
     private void OnNextButtonClicked()
@@ -148,6 +225,55 @@ public class CardInventoryUI : MonoBehaviour
     {
         cardInventoryPanel.SetActive(true);
         RefreshCardInventory();
+    }
+
+    /// 특정 컨테이너에 카드 목록 표시
+    public void DisplayCardsInContainer(GameObject container)
+    {
+        if (container == null)
+        {
+            Debug.LogWarning("CardInventoryUI: container가 설정되지 않았습니다.");
+            return;
+        }
+
+        if (cardPrefab == null)
+        {
+            Debug.LogWarning("CardInventoryUI: cardPrefab이 설정되지 않았습니다.");
+            return;
+        }
+
+        if (DataCenter.Instance == null || !DataCenter.IsCardDataLoaded)
+        {
+            Debug.LogWarning("CardInventoryUI: DataCenter가 아직 데이터를 로드하지 않았습니다.");
+            return;
+        }
+
+        // 기존 카드 제거 (해당 컨테이너의 자식만)
+        ClearCardsInContainer(container);
+
+        // 덱에서 카드 가져오기
+        Dictionary<string, CardData> displayCard = GetUserCards();
+
+        foreach (var kvp in displayCard)
+        {
+            string cardId = kvp.Key;
+            CardData cardData = kvp.Value;
+
+            if (cardData == null)
+            {
+                continue;
+            }
+
+            GameObject cardObject = Instantiate(cardPrefab, container.transform);
+            instantiatedCards.Add(cardObject);
+
+            SetupCardData(cardObject, cardData, cardId);
+
+            SetupCardClickHandler(cardObject);
+        }
+
+        // Content Height 동적 조정
+        UpdateContentHeightInContainer(container, displayCard.Count);
     }
 
     /// 인벤토리 열 때마다 카드 목록을 새로고침
@@ -271,6 +397,34 @@ public class CardInventoryUI : MonoBehaviour
         instantiatedCards.Clear();
     }
 
+    /// 특정 컨테이너의 카드만 제거
+    private void ClearCardsInContainer(GameObject container)
+    {
+        if (container == null)
+        {
+            return;
+        }
+
+        // 해당 컨테이너의 자식 카드들만 제거
+        List<GameObject> cardsToRemove = new List<GameObject>();
+        foreach (GameObject card in instantiatedCards)
+        {
+            if (card != null && card.transform.parent == container.transform)
+            {
+                cardsToRemove.Add(card);
+            }
+        }
+
+        foreach (GameObject card in cardsToRemove)
+        {
+            if (card != null)
+            {
+                Destroy(card);
+            }
+            instantiatedCards.Remove(card);
+        }
+    }
+
     /// Content Height 동적 조정
     private void UpdateContentHeight(int cardCount)
     {
@@ -279,7 +433,18 @@ public class CardInventoryUI : MonoBehaviour
             return;
         }
 
-        RectTransform contentRect = cardInventoryContent.GetComponent<RectTransform>();
+        UpdateContentHeightInContainer(cardInventoryContent, cardCount);
+    }
+
+    /// 특정 컨테이너의 Content Height 동적 조정
+    private void UpdateContentHeightInContainer(GameObject container, int cardCount)
+    {
+        if (container == null)
+        {
+            return;
+        }
+
+        RectTransform contentRect = container.GetComponent<RectTransform>();
         if (contentRect == null)
         {
             return;
@@ -367,19 +532,19 @@ public class CardInventoryUI : MonoBehaviour
             otherTabButton.onClick.RemoveListener(OnOtherTabClicked);
         }
 
-        if (sortByAcquisitionButton != null)
+        if (leftButton != null)
         {
-            sortByAcquisitionButton.onClick.RemoveListener(OnSortByAcquisitionClicked);
+            leftButton.onClick.RemoveListener(OnLeftButtonClicked);
         }
 
-        if (sortByGradeButton != null)
+        if (rightButton != null)
         {
-            sortByGradeButton.onClick.RemoveListener(OnSortByGradeClicked);
+            rightButton.onClick.RemoveListener(OnRightButtonClicked);
         }
 
-        if (sortByStrengthButton != null)
+        if (asDesButton != null)
         {
-            sortByStrengthButton.onClick.RemoveListener(OnSortByStrengthClicked);
+            asDesButton.onClick.RemoveListener(OnAsDesButtonClicked);
         }
 
         if (nextButton != null)
