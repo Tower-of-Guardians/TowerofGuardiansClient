@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,10 +9,11 @@ using UnityEngine.UI;
 public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 {
     [Header("Data")]
-    [SerializeField] private MonsterData data;
+    // TODO: 외부데이터로 받아올 예정
+    [SerializeField] private const int MaxHealthConst = 100;
+    [SerializeField] private const int Attack = 5;
     [SerializeField] private int currentHealth;
     [SerializeField] private bool hasDefense;
-    [SerializeField] private int defaultAttackValue = 0;
 
     [Header("Status UI")]
     [SerializeField] private Transform attackAnchor;
@@ -26,9 +26,8 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
     [SerializeField] private Color defenseHpColor = Color.white;
     [SerializeField] private GameObject targetIndicator;
 
-    public MonsterData Data => data;
     public int CurrentHealth => currentHealth;
-    public int MaxHealth => data != null ? data.HP : 0;
+    public int MaxHealth => MaxHealthConst;
     public bool IsAlive => currentHealth > 0;
     public bool HasDefense => hasDefense;
     public event Action<MonsterUnit> Clicked;
@@ -37,7 +36,6 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
     private void Awake()
     {
-        InitializeData();
         ClampHealth(forceMaxIfZero: true);
         RefreshUI();
         SetTargeted(false);
@@ -66,15 +64,13 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
     public void SetCurrentHealth(int value)
     {
-        InitializeData();
-        currentHealth = Mathf.Clamp(value, 0, data.HP);
+        currentHealth = Mathf.Clamp(value, 0, MaxHealthConst);
         RefreshUI();
     }
 
     public void TakeDamage(int amount)
     {
-        InitializeData();
-        currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, data.HP);
+        currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, MaxHealthConst);
         RefreshUI();
     }
 
@@ -84,12 +80,6 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
         RefreshUI();
     }
 
-    public void SetData(MonsterData newData)
-    {
-        data = newData ?? new MonsterData();
-        ClampHealth(forceMaxIfZero: true);
-        RefreshUI();
-    }
 
     public void SetTargeted(bool isTargeted)
     {
@@ -103,18 +93,7 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
     public int GetAttackValue()
     {
-        InitializeData();
-
-        if (data.Actions != null && data.Actions.Count > 0)
-        {
-            MonsterActionDefinition action = data.Actions.FirstOrDefault();
-            if (action != null && action.Value > 0)
-            {
-                return action.Value;
-            }
-        }
-
-        return defaultAttackValue;
+        return Attack;
     }
 
     public void PerformAttack(IDamageable target)
@@ -202,13 +181,6 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
         }
     }
 
-    private void InitializeData()
-    {
-        if (data == null)
-        {
-            data = new MonsterData();
-        }
-    }
 
     private void RegisterBattleManager()
     {
@@ -244,31 +216,20 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
     {
         if (forceMaxIfZero && currentHealth == 0)
         {
-            currentHealth = data.HP;
+            currentHealth = MaxHealthConst;
         }
 
-        currentHealth = Mathf.Clamp(currentHealth, 0, data.HP);
+        currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealthConst);
     }
 
     private void RefreshUI()
     {
-        if (data == null)
-        {
-            return;
-        }
-
-        int attackValue = defaultAttackValue;
-        if (data.Actions != null && data.Actions.Count > 0)
-        {
-            attackValue = data.Actions.First().Value;
-        }
-
         if (attackText != null)
         {
-            attackText.text = attackValue.ToString();
+            attackText.text = Attack.ToString();
         }
 
-        float ratio = data.HP > 0 ? (float)currentHealth / data.HP : 0f;
+        float ratio = MaxHealthConst > 0 ? (float)currentHealth / MaxHealthConst : 0f;
 
         if (hpSlider != null)
         {
@@ -277,7 +238,7 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
 
         if (hpText != null)
         {
-            hpText.text = $"HP {currentHealth}/{data.HP}";
+            hpText.text = $"HP {currentHealth}/{MaxHealthConst}";
         }
 
         if (hpFillImage != null)

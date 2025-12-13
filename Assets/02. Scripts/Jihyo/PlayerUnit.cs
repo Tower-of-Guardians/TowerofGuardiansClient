@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class PlayerUnit : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
-    [SerializeField] private CharacterStats stats;
+    // TODO: 외부데이터로 받아올 예정
+    [SerializeField] private const int MaxHealthConst = 100;
+    [SerializeField] private int attack = 5;
     [SerializeField] private int currentHealth;
     [SerializeField] private bool hasDefense;
 
@@ -23,8 +25,12 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
-    [SerializeField] private string attackTriggerName = "Attack";
-    [SerializeField] private string attackStateName = "Player1_Attack";
+    [SerializeField] private string attack1TriggerName = "Attack1";
+    [SerializeField] private string attack1StateName = "Player1_Attack1";
+    [SerializeField] private string attack2TriggerName = "Attack2";
+    [SerializeField] private string attack2StateName = "Player1_Attack2";
+    [SerializeField] private string attack3TriggerName = "Attack3";
+    [SerializeField] private string attack3StateName = "Player1_Attack3";
 
     [Header("Sprite")]
     [SerializeField] private Transform spriteTransform;
@@ -36,15 +42,14 @@ public class PlayerUnit : MonoBehaviour, IDamageable
     private Vector3 initialSpriteLocalPosition;
     private bool hasCachedSpriteOrigin;
 
-    public CharacterStats Stats => stats;
     public int CurrentHealth => currentHealth;
-    public int MaxHealth => stats != null ? stats.MaxHealth : 0;
+    public int MaxHealth => MaxHealthConst;
+    public int AttackValue => attack;
     public bool IsAlive => currentHealth > 0;
     public bool HasDefense => hasDefense;
 
     private void Awake()
     {
-        InitializeStats();
         InitializeAnimator();
         CacheSpriteOrigin();
         ClampHealth(forceMaxIfZero: true);
@@ -53,28 +58,24 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
     public void SetCurrentHealth(int value)
     {
-        InitializeStats();
-        currentHealth = Mathf.Clamp(value, 0, stats.MaxHealth);
+        currentHealth = Mathf.Clamp(value, 0, MaxHealthConst);
         RefreshUI();
     }
 
     public void TakeDamage(int amount)
     {
-        InitializeStats();
-        currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, stats.MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, MaxHealthConst);
         RefreshUI();
     }
 
     public void Heal(int amount)
     {
-        InitializeStats();
-        currentHealth = Mathf.Clamp(currentHealth + Mathf.Max(0, amount), 0, stats.MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + Mathf.Max(0, amount), 0, MaxHealthConst);
         RefreshUI();
     }
 
     public IEnumerator PerformAttack(IEnumerable<IDamageable> targets, bool isAreaAttack = false, Vector3? primaryTargetWorldPosition = null)
     {
-        InitializeStats();
         CacheSpriteOrigin();
 
         if (spriteTransform != null)
@@ -113,7 +114,7 @@ public class PlayerUnit : MonoBehaviour, IDamageable
             {
                 if (target != null && target.IsAlive)
                 {
-                    target.TakeDamage(stats.Attack);
+                    target.TakeDamage(attack);
                 }
             }
         }
@@ -159,20 +160,6 @@ public class PlayerUnit : MonoBehaviour, IDamageable
         RefreshUI();
     }
 
-    public void SetStats(CharacterStats newStats)
-    {
-        stats = newStats ?? new CharacterStats();
-        ClampHealth(forceMaxIfZero: true);
-        RefreshUI();
-    }
-
-    private void InitializeStats()
-    {
-        if (stats == null)
-        {
-            stats = new CharacterStats();
-        }
-    }
 
     private void InitializeAnimator()
     {
@@ -184,15 +171,55 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
     private void PlayAttackAnimation()
     {
-        if (animator != null && !string.IsNullOrEmpty(attackTriggerName))
+        if (animator == null)
         {
-            animator.SetTrigger(attackTriggerName);
+            return;
+        }
+
+        string triggerName = GetAttackTriggerName();
+        if (!string.IsNullOrEmpty(triggerName))
+        {
+            animator.SetTrigger(triggerName);
+        }
+    }
+
+    private string GetAttackTriggerName()
+    {
+        if (attack < 10)
+        {
+            return attack1TriggerName;
+        }
+        else if (attack < 20)
+        {
+            return attack2TriggerName;
+        }
+        else
+        {
+            return attack3TriggerName;
+        }
+    }
+
+    private string GetAttackStateName()
+    {
+        if (attack <= 20)
+        {
+            return attack1StateName;
+        }
+        else if (attack <= 40)
+        {
+            return attack2StateName;
+        }
+        else
+        {
+            return attack3StateName;
         }
     }
 
     private IEnumerator WaitForAttackAnimationComplete()
     {
-        if (animator == null || string.IsNullOrEmpty(attackStateName))
+        string stateName = GetAttackStateName();
+        
+        if (animator == null || string.IsNullOrEmpty(stateName))
         {
             if (attackMotionDuration > 0f)
             {
@@ -201,7 +228,7 @@ public class PlayerUnit : MonoBehaviour, IDamageable
             yield break;
         }
 
-        int attackStateHash = Animator.StringToHash(attackStateName);
+        int attackStateHash = Animator.StringToHash(stateName);
         
         // Attack 상태로 전환될 때까지 대기
         while (true)
@@ -248,25 +275,20 @@ public class PlayerUnit : MonoBehaviour, IDamageable
     {
         if (forceMaxIfZero && currentHealth == 0)
         {
-            currentHealth = stats.MaxHealth;
+            currentHealth = MaxHealthConst;
         }
 
-        currentHealth = Mathf.Clamp(currentHealth, 0, stats.MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealthConst);
     }
 
     private void RefreshUI()
     {
-        if (stats == null)
-        {
-            return;
-        }
-
         if (attackText != null)
         {
-            attackText.text = stats.Attack.ToString();
+            attackText.text = attack.ToString();
         }
 
-        float ratio = stats.MaxHealth > 0 ? (float)currentHealth / stats.MaxHealth : 0f;
+        float ratio = MaxHealthConst > 0 ? (float)currentHealth / MaxHealthConst : 0f;
 
         if (hpSlider != null)
         {
@@ -275,7 +297,7 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
         if (hpText != null)
         {
-            hpText.text = $"HP {currentHealth}/{stats.MaxHealth}";
+            hpText.text = $"HP {currentHealth}/{MaxHealthConst}";
         }
 
         if (hpFillImage != null)
