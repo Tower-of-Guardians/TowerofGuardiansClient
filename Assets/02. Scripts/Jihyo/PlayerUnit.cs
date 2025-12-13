@@ -14,6 +14,10 @@ public class PlayerUnit : MonoBehaviour, IDamageable
     [SerializeField] private int currentHealth;
     [SerializeField] private bool hasDefense;
 
+    [Header("Attack Thresholds")]
+    [SerializeField] private const int lightAttack = 10;   // Attack1
+    [SerializeField] private const int normalAttack = 20;   // Attack2
+
     [Header("Status UI")]
     [SerializeField] private TMP_Text attackText;
     [SerializeField] private Slider hpSlider;
@@ -185,11 +189,11 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
     private string GetAttackTriggerName()
     {
-        if (attack < 10)
+        if (attack < lightAttack)
         {
             return attack1TriggerName;
         }
-        else if (attack < 20)
+        else if (attack < normalAttack)
         {
             return attack2TriggerName;
         }
@@ -201,11 +205,11 @@ public class PlayerUnit : MonoBehaviour, IDamageable
 
     private string GetAttackStateName()
     {
-        if (attack <= 20)
+        if (attack < lightAttack)
         {
             return attack1StateName;
         }
-        else if (attack <= 40)
+        else if (attack < normalAttack)
         {
             return attack2StateName;
         }
