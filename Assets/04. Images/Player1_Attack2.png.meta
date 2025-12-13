@@ -124,12 +124,12 @@ TextureImporter:
       name: Player1_Attack2_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 95
-        width: 100
+        x: 0
+        y: 96
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -146,12 +146,12 @@ TextureImporter:
       name: Player1_Attack2_1
       rect:
         serializedVersion: 2
-        x: 336
+        x: 305
         y: 96
-        width: 101
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -168,12 +168,12 @@ TextureImporter:
       name: Player1_Attack2_2
       rect:
         serializedVersion: 2
-        x: 651
+        x: 610
         y: 96
-        width: 90
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -190,12 +190,12 @@ TextureImporter:
       name: Player1_Attack2_3
       rect:
         serializedVersion: 2
-        x: 968
+        x: 915
         y: 96
-        width: 92
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -212,12 +212,12 @@ TextureImporter:
       name: Player1_Attack2_4
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 0
-        width: 207
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -234,12 +234,12 @@ TextureImporter:
       name: Player1_Attack2_5
       rect:
         serializedVersion: 2
-        x: 337
-        y: 1
-        width: 145
+        x: 305
+        y: 0
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -256,12 +256,12 @@ TextureImporter:
       name: Player1_Attack2_6
       rect:
         serializedVersion: 2
-        x: 628
+        x: 610
         y: 0
-        width: 132
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -278,12 +278,12 @@ TextureImporter:
       name: Player1_Attack2_7
       rect:
         serializedVersion: 2
-        x: 932
-        y: 1
-        width: 132
+        x: 915
+        y: 0
+        width: 305
         height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
