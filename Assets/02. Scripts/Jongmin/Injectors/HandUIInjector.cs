@@ -50,7 +50,8 @@ public class HandUIInjector : MonoBehaviour, IInjector
                            m_hand_card_factory,
                            m_hand_card_layout_controller,
                            m_hand_card_event_controller,
-                           m_card_info_ui);
+                           m_card_info_ui,
+                           m_turn_manager);
     }
 
     private void InjectTurnManager()
