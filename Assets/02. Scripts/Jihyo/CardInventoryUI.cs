@@ -361,7 +361,6 @@ public class CardInventoryUI : MonoBehaviour
         return null;
     }
 
-
     void OnDestroy()
     {
         // 이벤트 리스너 제거

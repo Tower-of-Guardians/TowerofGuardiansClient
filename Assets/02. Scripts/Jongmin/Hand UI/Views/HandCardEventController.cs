@@ -90,7 +90,10 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         (m_presenter.HoverCard as HandCardView).transform.DOKill();
 
         if(m_turn_manager.CanAction())
+        {
             m_presenter.ToggleFieldPreview(true);
+            CalculatePreviewPosition();
+        }
     }
 
     private void OnDragCard(Vector2 position)
