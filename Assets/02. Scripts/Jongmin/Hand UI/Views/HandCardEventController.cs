@@ -19,6 +19,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private HandCardContainer m_container;
     private HandCardLayoutController m_layout_controller;
     private CardInfoUI m_card_info_ui;
+    private TurnManager m_turn_manager;
 
     private Dictionary<IHandCardView, HandCardEventBundle> m_event_dict = new();
 
@@ -26,13 +27,15 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
                        HandPresenter presenter,
                        HandCardContainer container,
                        HandCardLayoutController layout_controller,
-                       CardInfoUI card_info_ui)
+                       CardInfoUI card_info_ui,
+                       TurnManager turn_manager)
     {
         m_designer = designer;
         m_presenter = presenter;
         m_container = container;
         m_layout_controller = layout_controller;
         m_card_info_ui = card_info_ui;
+        m_turn_manager = turn_manager;
     }
 
     public void Subscribe(IHandCardView card_view)
@@ -85,7 +88,9 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private void OnBeginDragCard()
     {
         (m_presenter.HoverCard as HandCardView).transform.DOKill();
-        m_presenter.ToggleFieldPreview(true);
+
+        if(m_turn_manager.CanAction())
+            m_presenter.ToggleFieldPreview(true);
     }
 
     private void OnDragCard(Vector2 position)
