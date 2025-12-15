@@ -22,6 +22,9 @@ public class CardInventoryUI : MonoBehaviour
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
+    [Header("나가기 버튼")]
+    [SerializeField] private Button m_back_button;
+
     private const int CARDS_PER_ROW = 6;
     private const int INITIAL_HEIGHT = 800;
     private const int HEIGHT_INCREMENT = 300;
@@ -33,34 +36,36 @@ public class CardInventoryUI : MonoBehaviour
         InitializeCardInventoryUI();
     }
 
+    void OnDestroy()
+    {
+        if (cardTabButton)
+            cardTabButton.onClick.RemoveListener(OnCardTabClicked);
+
+        if (otherTabButton)
+            otherTabButton.onClick.RemoveListener(OnOtherTabClicked);
+    }
+
     private void InitializeCardInventoryUI()
     {
-        if (cardInfoUI == null)
-        {
+        if (cardInfoUI)
             cardInfoUI = FindAnyObjectByType<CardInfoUI>();
-        }
 
-        if (testButton != null)
-        {
-            // Test 기능 : 패널 열기
+        if (testButton)
             testButton.onClick.AddListener(OpenPanel);
-        }
 
         ToggleCanvasGroup(false);
     }
 
     private void InitializeButtons()
     {
-        // 왼쪽 탭 버튼 초기화
-        if (cardTabButton != null)
-        {
+        if (cardTabButton)
             cardTabButton.onClick.AddListener(OnCardTabClicked);
-        }
 
-        if (otherTabButton != null)
-        {
+        if (otherTabButton)
             otherTabButton.onClick.AddListener(OnOtherTabClicked);
-        }
+
+        if(m_back_button)
+            m_back_button.onClick.AddListener(ClosePanel);
     }
 
     // 왼쪽 UI의 탭 전환 기능
@@ -73,11 +78,6 @@ public class CardInventoryUI : MonoBehaviour
     private void OnOtherTabClicked()
     {
         // TODO: 다른 탭 UI로 전환하는 로직 구현
-    }
-
-    private void OnNextButtonClicked()
-    {
-        ClosePanel();
     }
 
     // 패널 열기
@@ -359,20 +359,6 @@ public class CardInventoryUI : MonoBehaviour
         }
 
         return null;
-    }
-
-    void OnDestroy()
-    {
-        // 이벤트 리스너 제거
-        if (cardTabButton != null)
-        {
-            cardTabButton.onClick.RemoveListener(OnCardTabClicked);
-        }
-
-        if (otherTabButton != null)
-        {
-            otherTabButton.onClick.RemoveListener(OnOtherTabClicked);
-        }
     }
 
     private void ToggleCanvasGroup(bool active)

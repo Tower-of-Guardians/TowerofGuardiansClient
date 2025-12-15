@@ -47,11 +47,11 @@ public class InventorySortPresenter
     {
         string sort_text = m_current_sort_type switch
         {
-            SortType.Time       => "획득순 정렬",
-            SortType.Grade      => "등급순 정렬",
-            SortType.Attack     => "공격력순 정렬",
-            SortType.Defense    => "보호력순 정렬",
-            _                   => "획득순 정렬"
+            SortType.Time       => "획득순",
+            SortType.Grade      => "등급순",
+            SortType.Attack     => "공격력순",
+            SortType.Defense    => "보호력순",
+            _                   => "획득순"
         };        
 
         m_view.UpdateSortLabel(sort_text);
