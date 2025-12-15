@@ -58,8 +58,9 @@ public class ThrowCardLayoutController : MonoBehaviour
             preview_rect.anchoredPosition = prev_preview_position;
             
             var preview_position = CardLayoutCalculator.CalculatedThrowCardPosition(card_count - 1, card_count, m_designer.Space);
-            preview_rect.DOKill();
-            preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);
+            preview_rect.anchoredPosition = preview_position;
+            //preview_rect.DOKill();
+            //preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);
         }        
     }
 }
