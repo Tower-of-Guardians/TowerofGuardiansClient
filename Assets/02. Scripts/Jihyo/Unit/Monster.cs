@@ -6,40 +6,36 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
+public class Monster : BaseUnit, IPointerClickHandler
 {
     [Header("Data")]
-    // TODO: 외부데이터로 받아올 예정
-    [SerializeField] private const int MaxHealthConst = 100;
     [SerializeField] private const int Attack = 5;
-    [SerializeField] private int currentHealth;
-    [SerializeField] private bool hasDefense;
 
     [Header("Status UI")]
     [SerializeField] private Transform attackAnchor;
-    [SerializeField] private TMP_Text attackText;
-    [SerializeField] private Slider hpSlider;
-    [SerializeField] private TMP_Text hpText;
-    [SerializeField] private Image hpFillImage;
-    [SerializeField] private GameObject defenseIcon;
-    [SerializeField] private Color defaultHpColor = Color.red;
-    [SerializeField] private Color defenseHpColor = Color.white;
     [SerializeField] private GameObject targetIndicator;
 
-    public int CurrentHealth => currentHealth;
-    public int MaxHealth => MaxHealthConst;
-    public bool IsAlive => currentHealth > 0;
-    public bool HasDefense => hasDefense;
-    public event Action<MonsterUnit> Clicked;
+    [Header("Animation")]
+    private MonsterAnimation monsterAnimation;
+
+    public event Action<Monster> Clicked;
     private BattleManager battleManager;
     private Coroutine registrationRoutine;
 
-    private void Awake()
+    protected override void Awake()
     {
-        ClampHealth(forceMaxIfZero: true);
-        RefreshUI();
+        base.Awake();
+        InitializeAnimation();
         SetTargeted(false);
         RegisterBattleManager();
+    }
+
+    private void InitializeAnimation()
+    {
+        if (monsterAnimation == null)
+        {
+            monsterAnimation = GetComponent<MonsterAnimation>();
+        }
     }
 
     private void OnEnable()
@@ -61,25 +57,6 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
             registrationRoutine = null;
         }
     }
-
-    public void SetCurrentHealth(int value)
-    {
-        currentHealth = Mathf.Clamp(value, 0, MaxHealthConst);
-        RefreshUI();
-    }
-
-    public void TakeDamage(int amount)
-    {
-        currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, MaxHealthConst);
-        RefreshUI();
-    }
-
-    public void SetDefense(bool active)
-    {
-        hasDefense = active;
-        RefreshUI();
-    }
-
 
     public void SetTargeted(bool isTargeted)
     {
@@ -107,6 +84,11 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
         if (damage > 0)
         {
             target.TakeDamage(damage);
+        }
+
+        if (monsterAnimation != null)
+        {
+            monsterAnimation.PlayAttackAnimation();
         }
     }
 
@@ -181,7 +163,6 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
         }
     }
 
-
     private void RegisterBattleManager()
     {
         if (battleManager != null || registrationRoutine != null)
@@ -212,43 +193,13 @@ public class MonsterUnit : MonoBehaviour, IDamageable, IPointerClickHandler
         battleManager.RegisterMonster(this);
     }
 
-    private void ClampHealth(bool forceMaxIfZero = false)
+    protected override void RefreshUI()
     {
-        if (forceMaxIfZero && currentHealth == 0)
-        {
-            currentHealth = MaxHealthConst;
-        }
+        base.RefreshUI();
 
-        currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealthConst);
-    }
-
-    private void RefreshUI()
-    {
         if (attackText != null)
         {
             attackText.text = Attack.ToString();
-        }
-
-        float ratio = MaxHealthConst > 0 ? (float)currentHealth / MaxHealthConst : 0f;
-
-        if (hpSlider != null)
-        {
-            hpSlider.normalizedValue = ratio;
-        }
-
-        if (hpText != null)
-        {
-            hpText.text = $"HP {currentHealth}/{MaxHealthConst}";
-        }
-
-        if (hpFillImage != null)
-        {
-            hpFillImage.color = hasDefense ? defenseHpColor : defaultHpColor;
-        }
-
-        if (defenseIcon != null)
-        {
-            defenseIcon.SetActive(hasDefense);
         }
     }
 }

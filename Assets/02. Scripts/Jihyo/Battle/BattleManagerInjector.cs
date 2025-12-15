@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class BattleManagerInjector : MonoBehaviour, IInjector
 {
     [SerializeField] private BattleManager battleManager;
-    [SerializeField] private PlayerUnit player;
-    [SerializeField] private List<MonsterUnit> initialMonsters = new();
+    [SerializeField] private Player player;
+    [SerializeField] private List<Monster> initialMonsters = new();
     [SerializeField] private Button attackButton;
 
     public void Inject()
@@ -22,6 +22,11 @@ public class BattleManagerInjector : MonoBehaviour, IInjector
             return;
         }
 
+        if (player == null)
+        {
+            player = FindAnyObjectByType<Player>();
+        }
+        
         battleManager.Initialize(player, initialMonsters, attackButton);
 
         if (!DIContainer.IsRegistered<BattleManager>())

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerUnit))]
+[RequireComponent(typeof(Player))]
 public class PlayerDescriptor : BaseDescriptor
 {
-    private PlayerUnit m_player_unit;
+    private Player m_player_unit;
 
     private void Awake()
     {
-        m_player_unit = GetComponent<PlayerUnit>();
+        m_player_unit = GetComponent<Player>();
     }
 
     public override TooltipData GetTooltipData()

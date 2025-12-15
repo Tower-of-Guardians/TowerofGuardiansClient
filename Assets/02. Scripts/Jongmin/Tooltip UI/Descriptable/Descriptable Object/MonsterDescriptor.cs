@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MonsterUnit))]
+[RequireComponent(typeof(Monster))]
 public class MonsterDescriptor : BaseDescriptor
 {
-    private MonsterUnit m_monster_unit;
+    private Monster m_monster_unit;
 
     private void Awake()
     {
-        m_monster_unit = GetComponent<MonsterUnit>();
+        m_monster_unit = GetComponent<Monster>();
     }
 
     public override TooltipData GetTooltipData()

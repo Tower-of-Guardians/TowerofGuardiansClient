@@ -96,9 +96,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1158091095933760972}
-  - component: {fileID: 3164955985190176612}
   - component: {fileID: 811175669760757188}
   - component: {fileID: 4137754374880751806}
+  - component: {fileID: 5886319840209422735}
+  - component: {fileID: 4344606365010817277}
+  - component: {fileID: 8334733415889442526}
   m_Layer: 7
   m_Name: Monster
   m_TagString: Enemy
@@ -124,42 +126,6 @@ Transform:
   - {fileID: 105580593809740270}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3164955985190176612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4839011377745383518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5079eac3d72d87440b3d0422ba47c9d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    id: 41001000
-    fileName: ProtoType
-    localizedName: "\uD504\uB85C\uD1A0\uD0C0\uC785"
-    spritePath: 
-    hp: 45
-    type: 1
-    behaviorPattern: 1
-    passiveStatusEffects: []
-    actions: []
-    goldReward: 10
-    experienceReward: 10
-  currentHealth: 0
-  hasDefense: 0
-  defaultAttackValue: 5
-  attackAnchor: {fileID: 1158091095933760972}
-  attackText: {fileID: 9054910505145391813}
-  hpSlider: {fileID: 8096385002698865753}
-  hpText: {fileID: 2668482592201094179}
-  hpFillImage: {fileID: 4071303590829385784}
-  defenseIcon: {fileID: 8963745569437661512}
-  defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
-  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
-  targetIndicator: {fileID: 8759010155118555184}
 --- !u!61 &811175669760757188
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -228,6 +194,57 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5886319840209422735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839011377745383518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33804f9535ddb59448bbfd58610c2d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  hasDefense: 0
+  attackText: {fileID: 9054910505145391813}
+  hpSlider: {fileID: 8096385002698865753}
+  hpText: {fileID: 2668482592201094179}
+  hpFillImage: {fileID: 4071303590829385784}
+  defenseIcon: {fileID: 8963745569437661512}
+  defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
+  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
+  attackAnchor: {fileID: 1158091095933760972}
+  targetIndicator: {fileID: 8759010155118555184}
+  monsterAnimation: {fileID: 4344606365010817277}
+--- !u!114 &4344606365010817277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839011377745383518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa808425e1b2b043ae7788b394f3444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4137754374880751806}
+--- !u!114 &8334733415889442526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839011377745383518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77daa8af771ae0945a612eaae15589c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tooltip_position: {x: 300, y: 150, z: 0}
 --- !u!1 &8759010155118555184
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +467,10 @@ PrefabInstance:
     - target: {fileID: 4721513011996409899, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721513011996409899, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5104687116059956241, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_Layer

@@ -96,8 +96,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4190901830044802311}
-  - component: {fileID: -7541606174938053781}
   - component: {fileID: 5711068066887165276}
+  - component: {fileID: 4625413738402288248}
+  - component: {fileID: 8227538613326071428}
   - component: {fileID: 6321516154979108677}
   - component: {fileID: 2409638708001309342}
   m_Layer: 6
@@ -124,42 +125,6 @@ Transform:
   - {fileID: 2114998287067690909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7541606174938053781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2675832450616904799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd69be68f65e3f3418ad960484be4320, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats:
-    level: 1
-    experience: 0
-    maxHealth: 70
-    healthGrowthPerLevel: 5
-    attack: 4
-    attackGrowthPerLevel: 0
-    maxMagicSlots: 2
-  currentHealth: 70
-  hasDefense: 0
-  attackText: {fileID: 7027693908933622966}
-  hpSlider: {fileID: 7814519420119980586}
-  hpText: {fileID: 4118182897028649552}
-  hpFillImage: {fileID: 2643276850887298635}
-  defenseIcon: {fileID: 6938776382912519995}
-  defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
-  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
-  animator: {fileID: 0}
-  attackTriggerName: Attack
-  spriteTransform: {fileID: 5132067724293868386}
-  singleTargetAttackOffset: 1
-  attackMoveDuration: 0.2
-  attackMotionDuration: 0.3
-  returnMoveDuration: 0.2
 --- !u!95 &5711068066887165276
 Animator:
   serializedVersion: 7
@@ -182,6 +147,54 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4625413738402288248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675832450616904799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ac28610d793f1498909b3f98235ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  hasDefense: 0
+  attackText: {fileID: 7027693908933622966}
+  hpSlider: {fileID: 7814519420119980586}
+  hpText: {fileID: 4118182897028649552}
+  hpFillImage: {fileID: 2643276850887298635}
+  defenseIcon: {fileID: 6938776382912519995}
+  defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
+  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
+  attack: 5
+  spriteTransform: {fileID: 5132067724293868386}
+  singleTargetAttackOffset: 2
+  attackMoveDuration: 0.2
+  returnMoveDuration: 0.2
+--- !u!114 &8227538613326071428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675832450616904799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c8807489790f04b8144ecf930ad108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack1TriggerName: Attack1
+  attack1StateName: Player1_Attack1
+  attack2TriggerName: Attack2
+  attack2StateName: Player1_Attack2
+  attack3TriggerName: Attack3
+  attack3StateName: Player1_Attack3
+  attackMotionDuration: 0.3
+  lightAttack: 10
+  normalAttack: 20
 --- !u!114 &6321516154979108677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,6 +429,22 @@ PrefabInstance:
     - target: {fileID: 8435537487519411764, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

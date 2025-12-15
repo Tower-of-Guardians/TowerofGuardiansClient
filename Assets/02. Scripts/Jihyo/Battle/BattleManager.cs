@@ -10,17 +10,17 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool playerAttackHitsAll;
     [SerializeField] private float monsterAttackDelay = 0.15f;
 
-    private readonly List<MonsterUnit> primaryMonsters = new();
-    private PlayerUnit player;
+    private readonly List<Monster> primaryMonsters = new();
+    private Player player;
     private Button attackButton;
-    private MonsterUnit selectedTarget;
+    private Monster selectedTarget;
     private bool isProcessingAttack;
     private bool isInitialized;
 
     private void OnDestroy()
     {
         DetachAttackButton();
-        foreach (MonsterUnit monster in primaryMonsters)
+        foreach (Monster monster in primaryMonsters)
         {
             if (monster != null)
             {
@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
         selectedTarget = null;
     }
 
-    private void OnMonsterClicked(MonsterUnit monster)
+    private void OnMonsterClicked(Monster monster)
     {
         if (monster == null || !monster.IsAlive)
         {
@@ -54,7 +54,7 @@ public class BattleManager : MonoBehaviour
         selectedTarget.SetTargeted(true);
     }
 
-    public void Initialize(PlayerUnit playerUnit, IEnumerable<MonsterUnit> monsters, Button attackBtn)
+    public void Initialize(Player playerUnit, IEnumerable<Monster> monsters, Button attackBtn)
     {
         if (isInitialized)
         {
@@ -68,7 +68,7 @@ public class BattleManager : MonoBehaviour
 
         if (monsters != null)
         {
-            foreach (MonsterUnit monster in monsters)
+            foreach (Monster monster in monsters)
             {
                 RegisterMonster(monster);
             }
@@ -77,7 +77,7 @@ public class BattleManager : MonoBehaviour
         isInitialized = true;
     }
 
-    public void RegisterMonster(MonsterUnit monster)
+    public void RegisterMonster(Monster monster)
     {
         if (monster == null || primaryMonsters.Contains(monster))
         {
@@ -88,7 +88,7 @@ public class BattleManager : MonoBehaviour
         monster.Clicked += OnMonsterClicked;
     }
 
-    public void UnregisterMonster(MonsterUnit monster)
+    public void UnregisterMonster(Monster monster)
     {
         if (monster == null)
         {
@@ -119,7 +119,7 @@ public class BattleManager : MonoBehaviour
         AttachAttackButton();
     }
 
-    public void SetPlayer(PlayerUnit playerUnit)
+    public void SetPlayer(Player playerUnit)
     {
         player = playerUnit;
     }
@@ -138,7 +138,7 @@ public class BattleManager : MonoBehaviour
     {
         isProcessingAttack = true;
 
-        List<MonsterUnit> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
+        List<Monster> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
         if (aliveMonsters.Count == 0)
         {
             Debug.Log("No monsters available to attack.");
@@ -147,7 +147,7 @@ public class BattleManager : MonoBehaviour
         }
 
         List<IDamageable> playerTargets = new();
-        MonsterUnit primaryMonsterTarget = null;
+        Monster primaryMonsterTarget = null;
         if (playerAttackHitsAll)
         {
             playerTargets.AddRange(aliveMonsters);
@@ -158,7 +158,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            MonsterUnit target = selectedTarget != null && selectedTarget.IsAlive
+            Monster target = selectedTarget != null && selectedTarget.IsAlive
                 ? selectedTarget
                 : aliveMonsters[Random.Range(0, aliveMonsters.Count)];
 
@@ -175,7 +175,7 @@ public class BattleManager : MonoBehaviour
         // 몬스터 공격 대기
         yield return new WaitForSeconds(0.5f);
 
-        foreach (MonsterUnit monster in primaryMonsters)
+        foreach (Monster monster in primaryMonsters)
         {
             if (monster != null)
             {
@@ -186,7 +186,7 @@ public class BattleManager : MonoBehaviour
 
         aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
 
-        foreach (MonsterUnit monster in aliveMonsters)
+        foreach (Monster monster in aliveMonsters)
         {
             if (monster == null || !monster.IsAlive)
             {
