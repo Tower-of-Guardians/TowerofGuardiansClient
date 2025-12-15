@@ -36,15 +36,8 @@ public class CardInventoryUI : MonoBehaviour
     private const int HEIGHT_INCREMENT = 300;
     private const int INITIAL_CARD_COUNT = 18;
 
-    private enum SortType
-    {
-        Acquisition,
-        Grade,
-        Attack,
-        Defense
-    }
-
-    private SortType currentSortType = SortType.Acquisition;
+    private SortType currentSortType = SortType.Time;
+    private SortType lastAppliedSortType = SortType.Time;
     private bool isAscending = true;
 
     void Start()
@@ -126,8 +119,7 @@ public class CardInventoryUI : MonoBehaviour
     {
         currentSortType = GetPreviousSortType();
         UpdateSortText();
-        
-        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
+        ApplySorting();
     }
 
     // 오른쪽 버튼 클릭 (다음 정렬 타입)
@@ -135,28 +127,30 @@ public class CardInventoryUI : MonoBehaviour
     {
         currentSortType = GetNextSortType();
         UpdateSortText();
-        
-        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
+        ApplySorting();
     }
 
     // 오름차순/내림차순 토글 버튼 클릭
     private void OnAsDesButtonClicked()
     {
         isAscending = !isAscending;
-        
-        // TODO: UI 작업 중 - 일단 Rotation Z를 180도 돌려서 위아래로 표시
+        UpdateAsDesButtonRotation();
+        ApplySorting();
+    }
+    
+    // asDesButton의 회전 상태 업데이트
+    private void UpdateAsDesButtonRotation()
+    {
+        // UI 작업 중 - 일단 Rotation Z를 180도 돌려서 위아래로 표시
         if (asDesButton != null)
         {
             RectTransform buttonRect = asDesButton.GetComponent<RectTransform>();
             if (buttonRect != null)
             {
-                float currentRotation = buttonRect.localEulerAngles.z;
                 float newRotation = isAscending ? 0f : 180f;
                 buttonRect.localRotation = Quaternion.Euler(0f, 0f, newRotation);
             }
         }
-        
-        // TODO: 데이터 인덱스 작업 중 - 정렬 기능 구현 예정
     }
 
     // 이전 정렬 타입 가져오기
@@ -164,16 +158,16 @@ public class CardInventoryUI : MonoBehaviour
     {
         switch (currentSortType)
         {
-            case SortType.Acquisition:
+            case SortType.Time:
                 return SortType.Defense;
             case SortType.Grade:
-                return SortType.Acquisition;
+                return SortType.Time;
             case SortType.Attack:
                 return SortType.Grade;
             case SortType.Defense:
                 return SortType.Attack;
             default:
-                return SortType.Acquisition;
+                return SortType.Time;
         }
     }
 
@@ -182,16 +176,16 @@ public class CardInventoryUI : MonoBehaviour
     {
         switch (currentSortType)
         {
-            case SortType.Acquisition:
+            case SortType.Time:
                 return SortType.Grade;
             case SortType.Grade:
                 return SortType.Attack;
             case SortType.Attack:
                 return SortType.Defense;
             case SortType.Defense:
-                return SortType.Acquisition;
+                return SortType.Time;
             default:
-                return SortType.Acquisition;
+                return SortType.Time;
         }
     }
 
@@ -205,7 +199,7 @@ public class CardInventoryUI : MonoBehaviour
 
         string sortTypeText = currentSortType switch
         {
-            SortType.Acquisition => "획득순 정렬",
+            SortType.Time => "획득순 정렬",
             SortType.Grade => "등급순 정렬",
             SortType.Attack => "공격력순 정렬",
             SortType.Defense => "보호력순 정렬",
@@ -213,6 +207,37 @@ public class CardInventoryUI : MonoBehaviour
         };
 
         sortText.text = sortTypeText;
+    }
+
+    private void ApplySorting()
+    {
+        if (DataCenter.Instance == null)
+        {
+            Debug.LogWarning("CardInventoryUI: DataCenter 인스턴스가 없습니다.");
+            return;
+        }
+
+        bool sortTypeChanged = (lastAppliedSortType != currentSortType);
+        
+        DataCenter.Instance.SortUserCards(currentSortType);
+        
+        lastAppliedSortType = currentSortType;
+        
+        if (sortTypeChanged)
+        {
+            isAscending = (currentSortType == SortType.Grade) ? false : true;
+        }
+        else
+        {
+            isAscending = !isAscending;
+        }
+        
+        UpdateAsDesButtonRotation();
+
+        if (cardInventoryPanel != null && cardInventoryPanel.activeSelf)
+        {
+            RefreshCardInventory();
+        }
     }
 
     private void OnNextButtonClicked()
@@ -224,7 +249,32 @@ public class CardInventoryUI : MonoBehaviour
     public void OpenPanel()
     {
         cardInventoryPanel.SetActive(true);
-        RefreshCardInventory();
+        
+        if (DataCenter.Instance != null)
+        {
+            if (lastAppliedSortType != currentSortType)
+            {
+                ApplySorting();
+                
+                bool expectedDefaultOrder = (currentSortType == SortType.Grade) ? false : true;
+                if (isAscending != expectedDefaultOrder)
+                {
+                    ApplySorting();
+                }
+            }
+            else
+            {
+                ApplySorting();
+            }
+        }
+        else
+        {
+            RefreshCardInventory();
+        }
+        
+        // UI 텍스트 및 버튼 상태 업데이트
+        UpdateSortText();
+        UpdateAsDesButtonRotation();
     }
 
     /// 특정 컨테이너에 카드 목록 표시

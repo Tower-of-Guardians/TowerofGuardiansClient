@@ -63,6 +63,11 @@ public class ResultView : MonoBehaviour, IResultView
             return;
         }
 
+        if (DataCenter.Instance != null)
+        {
+            DataCenter.Instance.SortUserCards(SortType.Grade);
+        }
+
         m_card_inventory_ui.DisplayCardsInContainer(m_card_content_container);
     }
 

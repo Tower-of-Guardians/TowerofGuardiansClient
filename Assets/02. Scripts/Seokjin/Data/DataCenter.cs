@@ -1,5 +1,5 @@
 using Mono.Cecil;
-using System; // async/await »ç¿ëÀ» À§ÇØ ÇÊ¿ä
+using System; // async/await ì‚¬ìš©ì„ ìœ„í•´ í•„ìš”
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,21 +12,21 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DataCenter : Singleton<DataCenter>
 {
-    ////// ÇÃ·¹ÀÌ¾î °ü·Ã /////
+    ////// í”Œë ˆì´ì–´ ê´€ë ¨ /////
     public PlayerState playerstate = new PlayerState();
     //////////////////////////
-    ////// Ä«µå °ü·Ã //////
-    public static Dictionary<string, CardData> card_datas = new Dictionary<string, CardData>(); // Ä«µåµ¥ÀÌÅÍ
-    private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // ¸Ş¸ğ¸® °ü¸®¸¦ À§ÇÑ ÇÚµé
-    public List<CardData> userDeck = new List<CardData>();// À¯Àú ¼ÒÁö Ä«µå µ¥ÀÌÅÍ
-    public static List<string> random_card_datas = new List<string>(); // ·£´ıÇÏ°Ô Ä«µå »Ì±âÀ§ÇÑ µ¥ÀÌÅÍ
+    ////// ì¹´ë“œ ê´€ë ¨ //////
+    public static Dictionary<string, CardData> card_datas = new Dictionary<string, CardData>(); // ì¹´ë“œë°ì´í„°
+    private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // ë©”ëª¨ë¦¬ ê´€ë¦¬ë¥¼ ìœ„í•œ í•¸ë“¤
+    public List<CardData> userDeck = new List<CardData>();// ìœ ì € ì†Œì§€ ì¹´ë“œ ë°ì´í„°
+    public static List<string> random_card_datas = new List<string>(); // ëœë¤í•˜ê²Œ ì¹´ë“œ ë½‘ê¸°ìœ„í•œ ë°ì´í„°
     SortType sortType;
-    bool sortType_oder = true; // true = ¿À¸§Â÷¼ø, false = ³»¸²Â÷¼ø
+    bool sortType_oder = true; // true = ì˜¤ë¦„ì°¨ìˆœ, false = ë‚´ë¦¼ì°¨ìˆœ
     //////////////////////
 
-    ////// ¸®ÀıÆ® °ü·Ã //////
-    public static Dictionary<int, ResultPercentData> result_datas = new Dictionary<int, ResultPercentData>(); // Ä«µåµ¥ÀÌÅÍ
-    private static AsyncOperationHandle<IList<ResultPercentData>> resultdata_loadHandle; // ¸Ş¸ğ¸® °ü¸®¸¦ À§ÇÑ ÇÚµé
+    ////// ë¦¬ì ˆíŠ¸ ê´€ë ¨ //////
+    public static Dictionary<int, ResultPercentData> result_datas = new Dictionary<int, ResultPercentData>(); // ì¹´ë“œë°ì´í„°
+    private static AsyncOperationHandle<IList<ResultPercentData>> resultdata_loadHandle; // ë©”ëª¨ë¦¬ ê´€ë¦¬ë¥¼ ìœ„í•œ í•¸ë“¤
     //////////////////////
 
     public static bool IsCardDataLoaded { get; private set; } = false;
@@ -40,8 +40,8 @@ public class DataCenter : Singleton<DataCenter>
     }
     public void LoadPlayerData()
     {
-        // TODO ¼®Áø
-        // SaveLoad ¸¸µé¾î¼­ ·Îµå µ¥ÀÌÅÍ ¼¼ÆÃÇØÁÖ´Â ºÎºĞ Ãß°¡
+        // TODO ì„ì§„
+        // SaveLoad ë§Œë“¤ì–´ì„œ ë¡œë“œ ë°ì´í„° ì„¸íŒ…í•´ì£¼ëŠ” ë¶€ë¶„ ì¶”ê°€
 
         playerstate.levle = 1;
         playerstate.experience = 0;
@@ -63,10 +63,10 @@ public class DataCenter : Singleton<DataCenter>
     public async Task AllCardData()
     {
         // Addressables.LoadAssetsAsync<TObject>(key, callback)
-        // key´Â ÁÖ¼Ò ¶Ç´Â ·¹ÀÌºíÀ» »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù. ¿©±â¼­´Â ·¹ÀÌºíÀ» »ç¿ëÇÕ´Ï´Ù.
+        // keyëŠ” ì£¼ì†Œ ë˜ëŠ” ë ˆì´ë¸”ì„ ì‚¬ìš©í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤. ì—¬ê¸°ì„œëŠ” ë ˆì´ë¸”ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
         carddata_loadHandle = Addressables.LoadAssetsAsync<CardData>(
             "CardData",
-            // ·ÎµåµÈ °¢ Asset¿¡ ´ëÇÑ Äİ¹é (¼±ÅÃ »çÇ×)
+            // ë¡œë“œëœ ê° Assetì— ëŒ€í•œ ì½œë°± (ì„ íƒ ì‚¬í•­)
             (item) =>
             {
                 if (item != null)
@@ -77,26 +77,26 @@ public class DataCenter : Singleton<DataCenter>
             }
         );
 
-        // ºñµ¿±â ÀÛ¾÷ÀÌ ¿Ï·áµÉ ¶§±îÁö ´ë±â
+        // ë¹„ë™ê¸° ì‘ì—…ì´ ì™„ë£Œë  ë•Œê¹Œì§€ ëŒ€ê¸°
         await carddata_loadHandle.Task;
 
         if (carddata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
             IsCardDataLoaded = true;
-            UnityEngine.Debug.Log($"ItemData ·Îµå ¿Ï·á: {card_datas.Count}");
+            UnityEngine.Debug.Log($"ItemData ë¡œë“œ ì™„ë£Œ: {card_datas.Count}");
         }
         else
         {
-            UnityEngine.Debug.LogError($"ItemData ·Îµå ½ÇÆĞ: {carddata_loadHandle.OperationException}");
+            UnityEngine.Debug.LogError($"ItemData ë¡œë“œ ì‹¤íŒ¨: {carddata_loadHandle.OperationException}");
         }
     }
     public async Task AllResultPercentData()
     {
         // Addressables.LoadAssetsAsync<TObject>(key, callback)
-        // key´Â ÁÖ¼Ò ¶Ç´Â ·¹ÀÌºíÀ» »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù. ¿©±â¼­´Â ·¹ÀÌºíÀ» »ç¿ëÇÕ´Ï´Ù.
+        // keyëŠ” ì£¼ì†Œ ë˜ëŠ” ë ˆì´ë¸”ì„ ì‚¬ìš©í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤. ì—¬ê¸°ì„œëŠ” ë ˆì´ë¸”ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
         resultdata_loadHandle = Addressables.LoadAssetsAsync<ResultPercentData>(
             "ResultPercentData",
-            // ·ÎµåµÈ °¢ Asset¿¡ ´ëÇÑ Äİ¹é (¼±ÅÃ »çÇ×)
+            // ë¡œë“œëœ ê° Assetì— ëŒ€í•œ ì½œë°± (ì„ íƒ ì‚¬í•­)
             (item) =>
             {
                 if (item != null)
@@ -106,23 +106,23 @@ public class DataCenter : Singleton<DataCenter>
             }
         );
 
-        // ºñµ¿±â ÀÛ¾÷ÀÌ ¿Ï·áµÉ ¶§±îÁö ´ë±â
+        // ë¹„ë™ê¸° ì‘ì—…ì´ ì™„ë£Œë  ë•Œê¹Œì§€ ëŒ€ê¸°
         await resultdata_loadHandle.Task;
 
         if (resultdata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
             IsResultDataLoaded = true;
-            UnityEngine.Debug.Log($"ResultPercentData ·Îµå ¿Ï·á: {result_datas.Count}");
+            UnityEngine.Debug.Log($"ResultPercentData ë¡œë“œ ì™„ë£Œ: {result_datas.Count}");
         }
         else
         {
-            UnityEngine.Debug.LogError($"ResultPercentData ·Îµå ½ÇÆĞ: {resultdata_loadHandle.OperationException}");
+            UnityEngine.Debug.LogError($"ResultPercentData ë¡œë“œ ì‹¤íŒ¨: {resultdata_loadHandle.OperationException}");
         }
     }
 
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ id ¸¦ »ç¿ëÇÑ µ¥ÀÌÅÍ ¹Ş±â
+    /// ì•„ì´í…œ id ë¥¼ ì‚¬ìš©í•œ ë°ì´í„° ë°›ê¸°
     /// </summary>
     /// <param name="id"></param>
     /// <param name="data"></param>
@@ -134,14 +134,14 @@ public class DataCenter : Singleton<DataCenter>
         }
         else
         {
-            UnityEngine.Debug.Log($"ID {id}¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌÅÛ µ¥ÀÌÅÍ°¡ ·ÎµåµÇÁö ¾Ê¾Ò½À´Ï´Ù. IsCardDataLoaded = {IsCardDataLoaded}.");
+            UnityEngine.Debug.Log($"ID {id}ì— í•´ë‹¹í•˜ëŠ” ì•„ì´í…œ ë°ì´í„°ê°€ ë¡œë“œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. IsCardDataLoaded = {IsCardDataLoaded}.");
             data?.Invoke(null);
         }
     }
 
 
     /// <summary>
-    /// ·¹º§´ç ¸®ÀıÆ® È®·ü µ¥ÀÌÅÍ ¹Ş±â
+    /// ë ˆë²¨ë‹¹ ë¦¬ì ˆíŠ¸ í™•ë¥  ë°ì´í„° ë°›ê¸°
     /// </summary>
     /// <param name="level"></param>
     /// <param name="data"></param>
@@ -153,13 +153,13 @@ public class DataCenter : Singleton<DataCenter>
         }
         else
         {
-            UnityEngine.Debug.Log($"ID {level}¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌÅÛ µ¥ÀÌÅÍ°¡ ·ÎµåµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            UnityEngine.Debug.Log($"ID {level}ì— í•´ë‹¹í•˜ëŠ” ì•„ì´í…œ ë°ì´í„°ê°€ ë¡œë“œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             data?.Invoke(null);
         }
     }
 
     /// <summary>
-    /// Á¤·Ä Å¸ÀÔ¿¡ µû¸¥ userDeck ¸®½ºÆ® Á¤·Ä
+    /// ì •ë ¬ íƒ€ì…ì— ë”°ë¥¸ userDeck ë¦¬ìŠ¤íŠ¸ ì •ë ¬
     /// </summary>
     /// <param name="type"></param>
     public void SortUserCards(SortType type)
@@ -233,6 +233,6 @@ public class DataCenter : Singleton<DataCenter>
     {
         Addressables.Release(carddata_loadHandle);
         Addressables.Release(resultdata_loadHandle);
-        UnityEngine.Debug.Log("Addressables ÇÚµé ÇØÁ¦ ¿Ï·á.");
+        UnityEngine.Debug.Log("Addressables í•¸ë“¤ í•´ì œ ì™„ë£Œ.");
     }
 }
