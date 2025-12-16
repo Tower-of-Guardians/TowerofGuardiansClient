@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BattleShopPresenter
 {
@@ -7,6 +8,13 @@ public class BattleShopPresenter
 
     private List<BattleCardData> m_card_datas;
     private int index = 0;
+
+    private int m_current_cost;
+
+    private readonly int MIN_REFRESH_COST = 5;
+    private readonly int MAX_REFRESH_COST = 20;
+    private readonly int INIT_REFRESH_COST = 5;
+    private readonly int REFRESH_COST_INTERVAL = 5;
 
     public BattleShopPresenter(IBattleShopView view,
                                BattleShopCardFactory factory)
@@ -20,6 +28,8 @@ public class BattleShopPresenter
     public void OpenUI()
     {
         m_view.OpenUI();
+
+        InitRefreshCost();
         SetRate();
     }
 
@@ -36,8 +46,8 @@ public class BattleShopPresenter
 
     public void Refresh()
     {
-        index = 0;
-        m_card_datas = GameData.Instance.GetResultItems();
+        UpdateCandidateCards();
+        UpdateRefreshCost();
     }
 
     public void RemoveCards()
@@ -56,5 +66,23 @@ public class BattleShopPresenter
         }
             
         m_view.UpdateRate(rate_string);
+    }
+
+    private void InitRefreshCost()
+        => m_current_cost = INIT_REFRESH_COST - REFRESH_COST_INTERVAL;
+
+    private void UpdateRefreshCost()
+    {
+        m_current_cost += REFRESH_COST_INTERVAL;
+        m_current_cost = Mathf.Clamp(m_current_cost, MIN_REFRESH_COST, MAX_REFRESH_COST);
+
+        // TODO: 플레이어 정보가 생긴다면 true를 플레이어의 현재 보유 골드와 비교하여 나타내야 함.
+        m_view.UpdateRefresh($"<size=20>새로고침</size>\n<color=#99CCFF>${m_current_cost}</color>", true);
+    }
+
+    private void UpdateCandidateCards()
+    {
+        index = 0;
+        m_card_datas = GameData.Instance.GetResultItems();
     }
 }
