@@ -3,14 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class CardInventoryUI : MonoBehaviour
-{
-    [Header("Test Button")]
-    public Button testButton;
-
-    [Header("Left UI Tabs")]
-    public Button cardTabButton;
-    public Button otherTabButton;
-    
+{    
     [Header("Card Info UI")]
     [SerializeField] private CardInfoUI cardInfoUI;
 
@@ -22,62 +15,18 @@ public class CardInventoryUI : MonoBehaviour
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
-    [Header("나가기 버튼")]
-    [SerializeField] private Button m_back_button;
-
     private const int CARDS_PER_ROW = 6;
     private const int INITIAL_HEIGHT = 800;
     private const int HEIGHT_INCREMENT = 300;
     private const int INITIAL_CARD_COUNT = 18;
 
     void Start()
-    {
-        InitializeButtons();
-        InitializeCardInventoryUI();
-    }
-
-    void OnDestroy()
-    {
-        if (cardTabButton)
-            cardTabButton.onClick.RemoveListener(OnCardTabClicked);
-
-        if (otherTabButton)
-            otherTabButton.onClick.RemoveListener(OnOtherTabClicked);
-    }
+        => InitializeCardInventoryUI();
 
     private void InitializeCardInventoryUI()
     {
         if (cardInfoUI)
             cardInfoUI = FindAnyObjectByType<CardInfoUI>();
-
-        if (testButton)
-            testButton.onClick.AddListener(OpenPanel);
-
-        ToggleCanvasGroup(false);
-    }
-
-    private void InitializeButtons()
-    {
-        if (cardTabButton)
-            cardTabButton.onClick.AddListener(OnCardTabClicked);
-
-        if (otherTabButton)
-            otherTabButton.onClick.AddListener(OnOtherTabClicked);
-
-        if(m_back_button)
-            m_back_button.onClick.AddListener(ClosePanel);
-    }
-
-    // 왼쪽 UI의 탭 전환 기능
-    private void OnCardTabClicked()
-    {
-        // TODO: 카드 탭 UI로 전환하는 로직 구현
-    }
-
-    // 왼쪽 UI의 탭 전환 기능
-    private void OnOtherTabClicked()
-    {
-        // TODO: 다른 탭 UI로 전환하는 로직 구현
     }
 
     // 패널 열기
