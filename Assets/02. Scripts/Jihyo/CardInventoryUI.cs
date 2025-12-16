@@ -20,7 +20,7 @@ public class CardInventoryUI : MonoBehaviour
 
     private void InitializeCardInventoryUI()
     {
-        if (cardInfoUI)
+        if (!cardInfoUI)
             cardInfoUI = FindAnyObjectByType<CardInfoUI>();
     }
 

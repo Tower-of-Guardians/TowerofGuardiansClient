@@ -12,6 +12,9 @@ public class BattleShopView : MonoBehaviour, IBattleShopView
     [Header("새로고침 버튼")]
     [SerializeField] private Button m_refresh_button;
 
+    [Header("새로고침 텍스트")]
+    [SerializeField] private TMP_Text m_refresh_label;
+
     private Animator m_animator;
     private BattleShopPresenter m_presenter;
 
@@ -38,6 +41,14 @@ public class BattleShopView : MonoBehaviour, IBattleShopView
 
     public void UpdateRate(string rate_string)
         => m_card_rate_label.text = rate_string;
+
+    public void UpdateRefresh(string refresh_string, bool can_refresh)
+    {
+        m_refresh_label.text = can_refresh ? refresh_string
+                                           : $"<color=red>{refresh_string}</color>";
+
+        m_refresh_button.interactable = can_refresh;
+    }
 
     private void ToggleUI(bool active)
         => m_animator.SetBool("Open", active);
