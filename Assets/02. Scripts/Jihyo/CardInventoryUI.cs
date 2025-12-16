@@ -15,11 +15,6 @@ public class CardInventoryUI : MonoBehaviour
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
-    private const int CARDS_PER_ROW = 6;
-    private const int INITIAL_HEIGHT = 800;
-    private const int HEIGHT_INCREMENT = 300;
-    private const int INITIAL_CARD_COUNT = 18;
-
     void Start()
         => InitializeCardInventoryUI();
 
@@ -34,55 +29,6 @@ public class CardInventoryUI : MonoBehaviour
     {
         ToggleCanvasGroup(true);
         RefreshCardInventory();
-    }
-
-    /// 특정 컨테이너에 카드 목록 표시
-    public void DisplayCardsInContainer(GameObject container)
-    {
-        if (container == null)
-        {
-            Debug.LogWarning("CardInventoryUI: container가 설정되지 않았습니다.");
-            return;
-        }
-
-        if (cardPrefab == null)
-        {
-            Debug.LogWarning("CardInventoryUI: cardPrefab이 설정되지 않았습니다.");
-            return;
-        }
-
-        if (DataCenter.Instance == null || !DataCenter.IsCardDataLoaded)
-        {
-            Debug.LogWarning("CardInventoryUI: DataCenter가 아직 데이터를 로드하지 않았습니다.");
-            return;
-        }
-
-        // 기존 카드 제거 (해당 컨테이너의 자식만)
-        ClearCardsInContainer(container);
-
-        // 덱에서 카드 가져오기
-        Dictionary<string, CardData> displayCard = GetUserCards();
-
-        foreach (var kvp in displayCard)
-        {
-            string cardId = kvp.Key;
-            CardData cardData = kvp.Value;
-
-            if (cardData == null)
-            {
-                continue;
-            }
-
-            GameObject cardObject = Instantiate(cardPrefab, container.transform);
-            instantiatedCards.Add(cardObject);
-
-            SetupCardData(cardObject, cardData, cardId);
-
-            SetupCardClickHandler(cardObject);
-        }
-
-        // Content Height 동적 조정
-        UpdateContentHeightInContainer(container, displayCard.Count);
     }
 
     /// 인벤토리 열 때마다 카드 목록을 새로고침
@@ -197,59 +143,6 @@ public class CardInventoryUI : MonoBehaviour
             ObjectPoolManager.Instance.Return(card);
 
         instantiatedCards.Clear();
-    }
-
-    /// 특정 컨테이너의 카드만 제거
-    private void ClearCardsInContainer(GameObject container)
-    {
-        if (container == null)
-        {
-            return;
-        }
-
-        // 해당 컨테이너의 자식 카드들만 제거
-        List<GameObject> cardsToRemove = new List<GameObject>();
-        foreach (GameObject card in instantiatedCards)
-        {
-            if (card != null && card.transform.parent == container.transform)
-            {
-                cardsToRemove.Add(card);
-            }
-        }
-
-        foreach (GameObject card in cardsToRemove)
-        {
-            if (card != null)
-            {
-                Destroy(card);
-            }
-            instantiatedCards.Remove(card);
-        }
-    }
-
-    /// 특정 컨테이너의 Content Height 동적 조정
-    private void UpdateContentHeightInContainer(GameObject container, int cardCount)
-    {
-        if (container == null)
-        {
-            return;
-        }
-
-        RectTransform contentRect = container.GetComponent<RectTransform>();
-        if (contentRect == null)
-        {
-            return;
-        }
-
-        float newHeight = INITIAL_HEIGHT;
-        
-        if (cardCount > INITIAL_CARD_COUNT)
-        {
-            int extraRows = Mathf.CeilToInt((float)(cardCount - INITIAL_CARD_COUNT) / CARDS_PER_ROW);
-            newHeight = INITIAL_HEIGHT + (extraRows * HEIGHT_INCREMENT);
-        }
-
-        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, newHeight);
     }
 
     // 패널 닫기
