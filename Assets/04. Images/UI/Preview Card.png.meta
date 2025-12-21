@@ -1,25 +1,10 @@
 fileFormatVersion: 2
-guid: 20dcc91d8549d704eaf56503285860bb
+guid: 3be1490f0d4126c459e40093d016fafb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7098612632576968541
-    second: Bar UI Test_0
-  - first:
-      213: -1758087205254503282
-    second: Bar UI Test_1
-  - first:
-      213: -8630517472812233307
-    second: Bar UI Test_2
-  - first:
-      213: -4552086888294272055
-    second: Bar UI Test_3
-  - first:
-      213: 3492574596174277762
-    second: Bar UI Test_4
-  - first:
-      213: 8486709050481011994
-    second: Bar UI Test_5
+      213: 2604434725356699501
+    second: Preview Card_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,123 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Attack Panel
-      rect:
-        serializedVersion: 2
-        x: 258
-        y: 484
-        width: 650
-        height: 220
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d57c9da4496538260800000000000000
-      internalID: 7098612632576968541
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Defend Panel
-      rect:
-        serializedVersion: 2
-        x: 1012
-        y: 484
-        width: 650
-        height: 220
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8465a660050a97e0800000000000000
-      internalID: -1758087205254503282
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bar UI Test_2
-      rect:
-        serializedVersion: 2
-        x: 1698
-        y: 679
-        width: 188
-        height: 106
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5ad893db51e3a3880800000000000000
-      internalID: -8630517472812233307
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bar UI Test_3
-      rect:
-        serializedVersion: 2
-        x: 1698
-        y: 594
-        width: 188
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9c3b184d71db3d0c0800000000000000
-      internalID: -4552086888294272055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bar UI Test_4
-      rect:
-        serializedVersion: 2
-        x: 1698
-        y: 507
-        width: 188
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 28c658c371e187030800000000000000
-      internalID: 3492574596174277762
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bar Panel
+      name: Preview Card_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 473
+        width: 116
+        height: 175
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,8 +115,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a1d630abae8d6c570800000000000000
-      internalID: 8486709050481011994
+      spriteID: d6ff395759fc42420800000000000000
+      internalID: 2604434725356699501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview Card_1
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 0
+        width: 117
+        height: 175
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c67e4c34ed253d48974545500d71d26
+      internalID: -1004509083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview Card_2
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 0
+        width: 117
+        height: 175
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ca3034339bedda42bf17ef11a36febf
+      internalID: -1513531431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview Card_3
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 0
+        width: 116
+        height: 175
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 405b2d6d66577df4a8f3e7ff0448c07a
+      internalID: 1783865952
       vertices: []
       indices: 
       edges: []
@@ -250,7 +191,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6f1113ec5a3aac94abbc2e2a7020ff32
+    spriteID: 6d43bfc0de7298a4f89c7f143c484fa0
     internalID: 0
     vertices: []
     indices: 
@@ -260,12 +201,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Attack Panel: 7098612632576968541
-      Bar Panel: 8486709050481011994
-      Bar UI Test_2: -8630517472812233307
-      Bar UI Test_3: -4552086888294272055
-      Bar UI Test_4: 3492574596174277762
-      Defend Panel: -1758087205254503282
+      Preview Card_0: 2604434725356699501
+      Preview Card_1: -1004509083
+      Preview Card_2: -1513531431
+      Preview Card_3: 1783865952
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

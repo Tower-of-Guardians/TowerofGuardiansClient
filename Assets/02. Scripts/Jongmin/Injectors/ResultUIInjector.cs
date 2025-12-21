@@ -12,6 +12,12 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     [Header("결과 뷰")]
     [SerializeField] private ResultView m_result_view;
 
+    [Header("인벤토리 뷰")]
+    [SerializeField] private CardInventoryView m_inventory_view;
+
+    [Header("인벤토리 카드 팩토리")]
+    [SerializeField] private CardInventoryFactory m_inventory_card_factory;
+
     [Header("전투 상점 카드 팩토리")]
     [SerializeField] private BattleShopCardFactory m_battle_shop_card_factory;
 
@@ -19,6 +25,7 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     {
         InjectReward();
         InjectShop();
+        InjectInventory();
         InjectResult();
     }
 
@@ -39,13 +46,23 @@ public class ResultUIInjector : MonoBehaviour, IInjector
         DIContainer.Register<BattleShopPresenter>(shop_presenter);
     }
 
+    private void InjectInventory()
+    {
+        DIContainer.Register<ICardInventoryView>(m_inventory_view);
+
+        var card_inventory_presenter = new CardInventoryPresenter(m_inventory_view,
+                                                                  m_inventory_card_factory);
+        DIContainer.Register<CardInventoryPresenter>(card_inventory_presenter);
+    }
+
     private void InjectResult()
     {
         DIContainer.Register<ResultView>(m_result_view);
 
         var result_presenter = new ResultPresenter(m_result_view,
                                                    DIContainer.Resolve<RewardPresenter>(),
-                                                   DIContainer.Resolve<BattleShopPresenter>());
+                                                   DIContainer.Resolve<BattleShopPresenter>(),
+                                                   DIContainer.Resolve<CardInventoryPresenter>());
         DIContainer.Register<ResultPresenter>(result_presenter);
     }
 }

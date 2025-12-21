@@ -42,9 +42,9 @@ public class FieldCardLayoutController : MonoBehaviour
                 concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
             else
             {
-                if(card_count - i > 1)
-                    concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
-                else
+                 if(card_count - i > 1)
+                     concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
+                 else
                     concrete_card.anchoredPosition = target_position;
             }
         }        
@@ -58,8 +58,10 @@ public class FieldCardLayoutController : MonoBehaviour
             preview_rect.anchoredPosition = prev_preview_position;
 
             var preview_position = CardLayoutCalculator.CalculatedFieldCardPosition(card_count, m_designer.ATKLimit, m_designer.Space);
-            preview_rect.transform.DOKill();
-            preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);            
+            preview_rect.anchoredPosition = preview_position;
+            
+            //preview_rect.transform.DOKill();
+            //preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);            
         }
     }
 }
