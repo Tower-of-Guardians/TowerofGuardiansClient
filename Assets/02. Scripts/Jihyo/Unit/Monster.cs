@@ -25,6 +25,7 @@ public class Monster : BaseUnit, IPointerClickHandler
     protected override void Awake()
     {
         base.Awake();
+        currentHealth = maxHealth;
         InitializeAnimation();
         SetTargeted(false);
         RegisterBattleManager();
@@ -191,6 +192,39 @@ public class Monster : BaseUnit, IPointerClickHandler
         registrationRoutine = null;
         battleManager = DIContainer.Resolve<BattleManager>();
         battleManager.RegisterMonster(this);
+    }
+
+    private bool isMarkedForDeath = false;
+
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+        
+        if (!IsAlive && !isMarkedForDeath)
+        {
+            HandleDeath();
+        }
+    }
+
+    private void HandleDeath()
+    {
+        isMarkedForDeath = true;
+        
+        // BattleManager에 죽은 몬스터로 표시
+        if (battleManager != null)
+        {
+            battleManager.MarkMonsterForRemove(this);
+        }
+    }
+
+    public void DestroyMonster()
+    {
+        if (battleManager != null)
+        {
+            battleManager.UnregisterMonster(this);
+        }
+        
+        Destroy(gameObject);
     }
 
     protected override void RefreshUI()

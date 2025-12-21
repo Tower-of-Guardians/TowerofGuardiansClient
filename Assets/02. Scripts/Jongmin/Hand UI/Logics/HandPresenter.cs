@@ -45,8 +45,12 @@ public class HandPresenter
     public void RemoveCard(IHandCardView card_view)
         => m_service.Remove(card_view);
 
+    public void ClearAllCards()
+        => m_service.RemoveAll();
+
     public void OpenUI()
         => m_view_controller.OpenUI();
+
     public void CloseUI()
         => m_view_controller.CloseUI();
 

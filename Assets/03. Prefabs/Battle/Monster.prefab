@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8334733415889442526}
   m_Layer: 7
   m_Name: Monster
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,9 +206,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33804f9535ddb59448bbfd58610c2d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10
   currentHealth: 0
   hasDefense: 0
+  protectionValue: 0
   attackText: {fileID: 9054910505145391813}
   hpSlider: {fileID: 8096385002698865753}
   hpText: {fileID: 2668482592201094179}
@@ -216,9 +217,10 @@ MonoBehaviour:
   defenseIcon: {fileID: 8963745569437661512}
   defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
   defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
+  healthAnimationDuration: 0.3
+  healthAnimationEase: 6
   attackAnchor: {fileID: 1158091095933760972}
   targetIndicator: {fileID: 8759010155118555184}
-  monsterAnimation: {fileID: 4344606365010817277}
 --- !u!114 &4344606365010817277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa808425e1b2b043ae7788b394f3444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 4137754374880751806}
 --- !u!114 &8334733415889442526
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -168,8 +168,7 @@ MonoBehaviour:
   hpFillImage: {fileID: 2643276850887298635}
   defenseIcon: {fileID: 6938776382912519995}
   defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
-  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
-  attack: 5
+  defenseHpColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   spriteTransform: {fileID: 5132067724293868386}
   singleTargetAttackOffset: 2
   attackMoveDuration: 0.2
@@ -262,6 +261,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4190901830044802311}
     m_Modifications:
+    - target: {fileID: 130020819551191538, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 130020819551191538, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 130020819551191538, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 245476058089792959, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_Name
       value: Status

@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float monsterAttackDelay = 0.15f;
 
     private readonly List<Monster> primaryMonsters = new();
+    private readonly List<Monster> monstersToRemove = new();
     private Player player;
     private Button attackButton;
     private Monster selectedTarget;
@@ -75,6 +76,9 @@ public class BattleManager : MonoBehaviour
         }
 
         isInitialized = true;
+
+        // 처음 카드 뽑기
+        StartCoroutine(DrawCardsAtTurnStartDelayed());
     }
 
     public void RegisterMonster(Monster monster)
@@ -105,6 +109,28 @@ public class BattleManager : MonoBehaviour
             monster.SetTargeted(false);
             selectedTarget = null;
         }
+
+        monstersToRemove.Remove(monster);
+    }
+
+    public void MarkMonsterForRemove(Monster monster)
+    {
+        if (monster != null && !monstersToRemove.Contains(monster))
+        {
+            monstersToRemove.Add(monster);
+        }
+    }
+
+    private void RemoveDeadMonsters()
+    {
+        foreach (Monster monster in monstersToRemove.ToList())
+        {
+            if (monster != null)
+            {
+                monster.DestroyMonster();
+            }
+        }
+        monstersToRemove.Clear();
     }
 
     public void ConfigureAttackButton(Button button)
@@ -172,6 +198,18 @@ public class BattleManager : MonoBehaviour
 
         yield return StartCoroutine(player.PerformAttack(playerTargets, playerAttackHitsAll, attackAnchorPosition));
 
+        // 공격 완료 후 죽은 몬스터들 제거
+        RemoveDeadMonsters();
+
+        // 모든 몬스터 처치 확인
+        aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
+        if (aliveMonsters.Count == 0)
+        {
+            isProcessingAttack = false;
+            yield return StartCoroutine(HandleVictory());
+            yield break;
+        }
+
         // 몬스터 공격 대기
         yield return new WaitForSeconds(0.5f);
 
@@ -203,11 +241,128 @@ public class BattleManager : MonoBehaviour
             if (!player.IsAlive)
             {
                 Debug.Log("Player defeated.");
-                break;
+                isProcessingAttack = false;
+                yield return StartCoroutine(HandleDefeat());
+                yield break;
             }
         }
 
+        aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
+        if (aliveMonsters.Count == 0)
+        {
+            isProcessingAttack = false;
+            yield return StartCoroutine(HandleVictory());
+            yield break;
+        }
+
+        // 몬스터 공격 후 죽은 몬스터들 제거
+        RemoveDeadMonsters();
+
         isProcessingAttack = false;
+
+        // 턴 종료 후 사용하지 않은 핸드 카드 모두 버리기
+        DiscardAllHandCards();
+
+        // 턴 종료 후 카드 뽑기
+        DrawCards();
+    }
+
+    private IEnumerator DrawCardsAtTurnStartDelayed()
+    {
+        // HandPresenter와 TurnManager가 등록될 때까지 대기
+        yield return new WaitUntil(() => DIContainer.IsRegistered<HandPresenter>() && DIContainer.IsRegistered<TurnManager>());
+        
+        // 덱이 준비될 때까지 대기
+        yield return new WaitUntil(() => GameData.Instance != null && GameData.Instance.notuseDeck.Count > 0);
+
+        DrawCards();
+    }
+
+    private void DiscardAllHandCards()
+    {
+        // 사용 카드 버리기
+        if (GameData.Instance != null)
+        {
+            var attackFieldCards = new List<CardData>(GameData.Instance.attackField);
+            foreach (var cardData in attackFieldCards)
+            {
+                if (cardData != null)
+                {
+                    GameData.Instance.UseCard(cardData.id);
+                }
+            }
+            GameData.Instance.attackField.Clear();
+            
+            var defenseFieldCards = new List<CardData>(GameData.Instance.defenseField);
+            foreach (var cardData in defenseFieldCards)
+            {
+                if (cardData != null)
+                {
+                    GameData.Instance.UseCard(cardData.id);
+                }
+            }
+            GameData.Instance.defenseField.Clear();
+        }
+        
+        // Hand UI 카드 제거
+        if (DIContainer.IsRegistered<HandPresenter>())
+        {
+            var handPresenter = DIContainer.Resolve<HandPresenter>();
+            
+            // 핸드 카드 버리기
+            var handCards = handPresenter.GetCardDatas();
+            if (handCards != null && handCards.Length > 0)
+            {
+                foreach (var cardData in handCards)
+                {
+                    if (cardData != null && cardData.data != null)
+                    {
+                        // 버리는 덱에 추가
+                        GameData.Instance.UseCard(cardData.data.id);
+                    }
+                }
+            }
+
+            handPresenter.ClearAllCards();
+            GameData.Instance.handDeck.Clear();
+        }
+        
+        // Attacking Field UI 카드 제거
+        if (DIContainer.IsRegistered<AttackFieldPresenter>())
+        {
+            var attackFieldPresenter = DIContainer.Resolve<AttackFieldPresenter>();
+            attackFieldPresenter.RemoveAll();
+        }
+        
+        // Defending Field UI 카드 제거
+        if (DIContainer.IsRegistered<DefendFieldPresenter>())
+        {
+            var defendFieldPresenter = DIContainer.Resolve<DefendFieldPresenter>();
+            defendFieldPresenter.RemoveAll();
+        }
+    }
+
+    private void DrawCards()
+    {
+        if (!DIContainer.IsRegistered<HandPresenter>() || !DIContainer.IsRegistered<TurnManager>())
+        {
+            return;
+        }
+
+        var handPresenter = DIContainer.Resolve<HandPresenter>();
+        var turnManager = DIContainer.Resolve<TurnManager>();
+
+        int drawCount = turnManager.MaxHandCount;
+        for (int i = 0; i < drawCount; i++)
+        {
+            var cardData = GameData.Instance.NextDeckSet(1);
+            if (cardData == null || cardData.data == null)
+            {
+                Debug.LogWarning($"BattleManager: 카드를 뽑을 수 없습니다. (뽑은 횟수: {i}/{drawCount})");
+                break;
+            }
+            handPresenter.InstantiateCard(cardData);
+        }
     }
 
     private void AttachAttackButton()
@@ -224,6 +379,66 @@ public class BattleManager : MonoBehaviour
         {
             attackButton.onClick.RemoveListener(HandleAttackButton);
         }
+    }
+
+    private IEnumerator HandleVictory()
+    {
+        // 보상 계산 (TODO: 몬스터 데이터에서 보상 정보 가져오기)
+        int totalGold = CalculateTotalGold();
+        int totalExp = CalculateTotalExp();
+
+        // ResultPresenter가 등록될 때까지 대기
+        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultPresenter>());
+
+        // Result 창 열기
+        var resultPresenter = DIContainer.Resolve<ResultPresenter>();
+        var resultData = new ResultData(BattleResultType.Victory, totalGold, totalExp);
+        resultPresenter.OpenUI(resultData);
+    }
+
+    private IEnumerator HandleDefeat()
+    {
+        // ResultPresenter가 등록될 때까지 대기
+        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultPresenter>());
+
+        // Result 창 열기
+        var resultPresenter = DIContainer.Resolve<ResultPresenter>();
+        var resultData = new ResultData(BattleResultType.Defeat, 0, 0);
+        resultPresenter.OpenUI(resultData);
+    }
+
+    private int CalculateTotalGold()
+    {
+        // TODO: 몬스터 데이터에서 골드 정보 가져오기
+
+        // 현재는 기본값 반환
+        int totalGold = 0;
+        foreach (Monster monster in primaryMonsters)
+        {
+            if (monster != null)
+            {
+                // 몬스터당 기본 골드 (나중에 몬스터 데이터에서 가져오도록 수정)
+                totalGold += 100;
+            }
+        }
+        return totalGold;
+    }
+
+    private int CalculateTotalExp()
+    {
+        // TODO: 몬스터 데이터에서 경험치 정보 가져오기
+        
+        // 현재는 기본값 반환
+        int totalExp = 0;
+        foreach (Monster monster in primaryMonsters)
+        {
+            if (monster != null)
+            {
+                // 몬스터당 기본 경험치 (나중에 몬스터 데이터에서 가져오도록 수정)
+                totalExp += 50;
+            }
+        }
+        return totalExp;
     }
 }
 

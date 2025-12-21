@@ -22,6 +22,8 @@ public class Player : BaseUnit
 
     private Vector3 initialSpriteLocalPosition;
     private bool hasCachedSpriteOrigin;
+    private float lastAttackBonus;
+    private float lastDefenseBonus;
 
     public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus);
     public float DefenseValue => cardDefenseBonus;
@@ -43,11 +45,7 @@ public class Player : BaseUnit
             
             baseAttack = playerState.atk;
             maxHealth = playerState.hp;
-            
-            if (currentHealth == 0)
-            {
-                currentHealth = maxHealth;
-            }
+            currentHealth = maxHealth;
             
             UpdateCardStats();
             RefreshUI();
@@ -64,10 +62,29 @@ public class Player : BaseUnit
         if (GameData.Instance != null)
         {
             cardAttackBonus = GameData.Instance.AttackField();
-            cardDefenseBonus = GameData.Instance.DefenseField();
+            float newDefenseBonus = GameData.Instance.DefenseField();
             
-            // 보호력이 있으면 방어 상태로 설정
-            SetDefense(cardDefenseBonus > 0);
+            if (newDefenseBonus > cardDefenseBonus)
+            {
+                float protectionIncrease = newDefenseBonus - cardDefenseBonus;
+                AddProtection(protectionIncrease);
+            }
+            else if (newDefenseBonus < cardDefenseBonus)
+            {
+                float protectionDecrease = cardDefenseBonus - newDefenseBonus;
+                if (protectionValue > 0)
+                {
+                    protectionValue = Mathf.Max(0, protectionValue - protectionDecrease);
+                    if (protectionValue <= 0)
+                    {
+                        hasDefense = false;
+                    }
+                }
+            }
+            
+            cardDefenseBonus = newDefenseBonus;
+            lastAttackBonus = cardAttackBonus;
+            lastDefenseBonus = cardDefenseBonus;
             
             RefreshUI();
         }
@@ -89,6 +106,9 @@ public class Player : BaseUnit
 
     public IEnumerator PerformAttack(IEnumerable<IDamageable> targets, bool isAreaAttack = false, Vector3? primaryTargetWorldPosition = null)
     {
+        // 공격 전 카드 스탯 업데이트
+        UpdateCardStats();
+        
         CacheSpriteOrigin();
 
         if (spriteTransform != null)
@@ -125,6 +145,9 @@ public class Player : BaseUnit
         {
             playerAnimation.PlayAttackAnimation(currentAttack);
         }
+
+        // TODO: 공격 애니메이션 후 0.5초 대기 후 데미지 적용(하드코딩)
+        yield return new WaitForSeconds(0.5f);
 
         // 공격 실행
         if (targets != null)
@@ -188,9 +211,30 @@ public class Player : BaseUnit
 
     public override void TakeDamage(int amount)
     {
-        float actualDamage = Mathf.Max(0, amount - cardDefenseBonus);
-        currentHealth = Mathf.Clamp(currentHealth - Mathf.RoundToInt(actualDamage), 0, maxHealth);
-        RefreshUI();
+        // 데미지 받기 전에 카드 스탯 업데이트
+        UpdateCardStats();
+        
+        // 보호력 먼저 감소, 남은 데미지는 체력으로
+        base.TakeDamage(amount);
+    }
+
+    private void Update()
+    {
+        // 카드를 필드에 올릴 때마다 공격력과 보호력 UI 갱신
+        if (GameData.Instance != null)
+        {
+            float currentAttackBonus = GameData.Instance.AttackField();
+            float currentDefenseBonus = GameData.Instance.DefenseField();
+            
+            // 값이 변경되었을 때만 업데이트
+            if (Mathf.Abs(currentAttackBonus - lastAttackBonus) > 0.01f || 
+                Mathf.Abs(currentDefenseBonus - lastDefenseBonus) > 0.01f)
+            {
+                UpdateCardStats();
+                lastAttackBonus = currentAttackBonus;
+                lastDefenseBonus = currentDefenseBonus;
+            }
+        }
     }
 
     protected override void RefreshUI()
@@ -201,6 +245,7 @@ public class Player : BaseUnit
         {
             attackText.text = AttackValue.ToString();
         }
+
     }
 }
 
