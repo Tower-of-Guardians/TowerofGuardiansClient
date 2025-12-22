@@ -20,5 +20,4 @@ public class CardData : ScriptableObject
     public float price;
 
     public DateTime time;
-    // ... 필요한 필드 추가
 }

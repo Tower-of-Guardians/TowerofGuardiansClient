@@ -27,6 +27,34 @@ public class AddressableAutoConfigurator : Editor
         class_name = typeof(ResultPercentData);
         ConfigureItemSOsAsAddressable();
     }
+    [MenuItem("Tools/Addressables/MonsterData for Addressables")]
+    public static void SetMonsterData()
+    {
+        GROUP_NAME = "MonsterData";
+        class_name = typeof(MonsterData);
+        ConfigureItemSOsAsAddressable();
+    }
+    [MenuItem("Tools/Addressables/MonsterActionData for Addressables")]
+    public static void SetMonsterActionData()
+    {
+        GROUP_NAME = "MonsterActionData";
+        class_name = typeof(MonsterActionData);
+        ConfigureItemSOsAsAddressable();
+    }
+    [MenuItem("Tools/Addressables/MonsterEncounterData for Addressables")]
+    public static void SetMonsterEncounterData()
+    {
+        GROUP_NAME = "MonsterEncounterData";
+        class_name = typeof(MonsterEncounterData);
+        ConfigureItemSOsAsAddressable();
+    }
+    [MenuItem("Tools/Addressables/StatusEffectData for Addressables")]
+    public static void SetStatusEffectData()
+    {
+        GROUP_NAME = "StatusEffectData";
+        class_name = typeof(StatusEffectData);
+        ConfigureItemSOsAsAddressable();
+    }
 
     public static void ConfigureItemSOsAsAddressable()
     {

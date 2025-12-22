@@ -43,7 +43,7 @@ public class DataCenter : Singleton<DataCenter>
         // TODO 석진
         // SaveLoad 만들어서 로드 데이터 세팅해주는 부분 추가
 
-        playerstate.levle = 1;
+        playerstate.level = 1;
         playerstate.experience = 0;
         playerstate.hp = 70;
         playerstate.lhp = 5;

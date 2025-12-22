@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: MonsterActionData
+  m_EditorClassIdentifier: 
+  m_GroupName: MonsterActionData
+  m_GUID: 19452dbd9d72a1e41a24ba17ad29289e
+  m_SerializeEntries:
+  - m_GUID: 027fe66e89d74ab49b38f84ce4d8c80d
+    m_Address: 2410005
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e7184d75669ba14aa68f94153d32728
+    m_Address: 2410020
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22b28b510da933e468b8976ea0da8c40
+    m_Address: 2410010
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2412e68efdd0efa4f9ed49b7374f836b
+    m_Address: 2410017
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28c12e8e3a9fbd949a5934b093821eef
+    m_Address: 2410019
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 334d86326ce77614f93d736d22220505
+    m_Address: 2410013
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 437b8a16da8556a4781170a163219f55
+    m_Address: 2410002
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 438f58815b910e64fbadf30720f5a9b9
+    m_Address: 2410007
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58e593e29bf76a3468bb480974559c24
+    m_Address: 2410015
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64998cf6f0f5fc84e98c2debc7d754b5
+    m_Address: 2410012
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c0d96f456b530c4d9db2281a75353f2
+    m_Address: 2410022
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 856a538f09222bd4ea665365ba79874e
+    m_Address: 2410008
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9731dd7061600664c9af008181f60088
+    m_Address: 2410011
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2fc0e4709f2fb34aab99cc4745767b4
+    m_Address: 2410004
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b127bf11ebb87334492fe1cd980d4d96
+    m_Address: 2410003
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b910507ffe2b8c5418c6bd467e960e4f
+    m_Address: 2410009
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc1ed664754d2254594ed57a4b8740a5
+    m_Address: 2410001
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd9cffba9c472164597f1efe5389d5a2
+    m_Address: 2410014
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5b0a9fafc52f0e4886d73bd320360cb
+    m_Address: 2410016
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7f8f0acd8ab58b4088a4e72ed946428
+    m_Address: 2410021
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb05f6ed848a17d48be8230cf92a711c
+    m_Address: 2410006
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa60f11624c6b6e469553ee1114ead6e
+    m_Address: 2410018
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterActionData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 11547d97efbd680438c8d420c6672236, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

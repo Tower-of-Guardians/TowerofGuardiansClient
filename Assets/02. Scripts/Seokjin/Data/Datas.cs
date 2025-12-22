@@ -19,7 +19,7 @@ public class BattleCardData
 [Serializable]
 public class PlayerState
 {
-    public int levle;
+    public int level;
     public int experience;
     public int hp;
     public int lhp;
