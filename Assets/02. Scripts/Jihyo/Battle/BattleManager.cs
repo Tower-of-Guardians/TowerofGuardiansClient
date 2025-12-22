@@ -445,7 +445,7 @@ public class BattleManager : MonoBehaviour
     
     private IEnumerator DrawCardsAfterThrowDelayed(int throwCount)
     {
-        float waitTime = throwCount * 0.2f;
+        float waitTime = throwCount * 0.3f;
         yield return new WaitForSeconds(waitTime);
         
         if (throwCount > 0)

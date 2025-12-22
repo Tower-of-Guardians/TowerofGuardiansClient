@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 04fd99b2efe34c94fab98c11ab78c614
+guid: 108dbee1fd319794ab682e4b703f0e3e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8513374771558978612
-    second: Battle_Bg_0
+      213: -6743497895970902628
+    second: BGHasdasfasd_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Battle_Bg_0
+      name: BGHasdasfasd_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1900
-        height: 650
+        width: 1782
+        height: 590
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4349b8abf35952670800000000000000
-      internalID: 8513374771558978612
+      spriteID: c9d6f0764684a62a0800000000000000
+      internalID: -6743497895970902628
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Battle_Bg_0: 8513374771558978612
+      BGHasdasfasd_0: -6743497895970902628
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
