@@ -382,6 +382,7 @@ public class DataCenter : Singleton<DataCenter>
             data?.Invoke(null);
         }
     }
+
     /// <summary>
     /// 몬스터액션 데이터 받기
     /// </summary>
@@ -399,8 +400,9 @@ public class DataCenter : Singleton<DataCenter>
             data?.Invoke(null);
         }
     }
-        /// <summary>
-        /// 몬스터 데이터 받기
+
+   /// <summary>
+        /// 몬스터 인카운터 데이터 받기
         /// </summary>
         /// <param name="id"></param>
         /// <param name="data"></param>
@@ -416,6 +418,7 @@ public class DataCenter : Singleton<DataCenter>
             data?.Invoke(null);
         }
     }
+
     /// <summary>
     /// 상태 데이터 받기
     /// </summary>
@@ -433,6 +436,7 @@ public class DataCenter : Singleton<DataCenter>
             data?.Invoke(null);
         }
     }
+
     private void OnDisable()
     {
         ReleaseDataHandle();
