@@ -365,6 +365,74 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
+    /// <summary>
+    /// 몬스터 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    public void GetMonsterData(string id, Action<MonsterData> data)
+    {
+        if (IsMonsterDataLoaded && monster_datas.TryGetValue(id, out MonsterData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsMonsterDataLoaded = {IsMonsterDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
+    /// <summary>
+    /// 몬스터액션 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    public void GetMonsterActionData(string id, Action<MonsterActionData> data)
+    {
+        if (IsMonsterActionDataLoaded && monster_action_datas.TryGetValue(id, out MonsterActionData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsMonsterActionDataLoaded = {IsMonsterActionDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
+        /// <summary>
+        /// 몬스터 데이터 받기
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="data"></param>
+    public void GetMonsterEncounterData(string id, Action<MonsterEncounterData> data)
+    {
+        if (IsMonsterEncounterDataLoaded && monster_encounter_datas.TryGetValue(id, out MonsterEncounterData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsMonsterEncounterDataLoaded = {IsMonsterEncounterDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
+    /// <summary>
+    /// 상태 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    public void GetStatusEffectData(string id, Action<StatusEffectData> data)
+    {
+        if (IsStatusEffectDataLoaded && status_effect_datas.TryGetValue(id, out StatusEffectData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsStatusEffectDataLoaded = {IsStatusEffectDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
     private void OnDisable()
     {
         ReleaseDataHandle();
