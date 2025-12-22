@@ -18,11 +18,17 @@ public class DeckStatusView : MonoBehaviour, IDeckStatusView
     [Header("후보 카드 덱 버튼")]
     [SerializeField] private Button m_draw_card_button;
 
+    [Header("후보 카드 덱 버튼 강조 텍스트")]
+    [SerializeField] private TMP_Text m_draw_card_back_label;
+
     [Header("후보 카드 덱 버튼 텍스트")]
     [SerializeField] private TMP_Text m_draw_card_label;
 
     [Header("교체 카드 덱 버튼")]
     [SerializeField] private Button m_throw_card_button;
+
+    [Header("교체 카드 덱 버튼 강조 텍스트")]
+    [SerializeField] private TMP_Text m_throw_card_back_label;
 
     [Header("교체 카드 덱 버튼 텍스트")]
     [SerializeField] private TMP_Text m_throw_card_label;
@@ -59,9 +65,15 @@ public class DeckStatusView : MonoBehaviour, IDeckStatusView
         => m_title_name_label.text = title_string;
 
     public void UpdateDrawCardCount(int count)
-        => m_draw_card_label.text = count.ToString();
+    {
+        m_draw_card_back_label.text = count.ToString();
+        m_draw_card_label.text = count.ToString();
+    }
     public void UpdateThrowCardCount(int count)
-        => m_throw_card_label.text = count.ToString();
+    {
+        m_throw_card_back_label.text = count.ToString();
+        m_throw_card_label.text = count.ToString();
+    }
 
     public IDeckStatusCardView InstantiateCardView()
     {
