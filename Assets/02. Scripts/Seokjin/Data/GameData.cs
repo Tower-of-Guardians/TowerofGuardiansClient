@@ -198,6 +198,7 @@ public class GameData : Singleton<GameData>
 
         return deck_data;
     }
+
     /// <summary>
     /// 스테이지 종료후 랜덤 아이템 상점
     /// </summary>
@@ -230,6 +231,7 @@ public class GameData : Singleton<GameData>
 
         return results;
     }
+
     /// <summary>
     /// 확률(등급)에 따른 아이템 뽑기
     /// </summary>
@@ -255,6 +257,7 @@ public class GameData : Singleton<GameData>
         Debug.Log($"grade : {cardData.data.grade}");
         return cardData;
     }
+
     /// <summary>
     /// 플레이어 레벨에 따른 퍼센트값 리턴(Normal, Rare, Unique, Epic)
     /// </summary>

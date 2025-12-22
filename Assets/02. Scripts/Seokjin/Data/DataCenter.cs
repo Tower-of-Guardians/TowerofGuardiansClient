@@ -22,19 +22,47 @@ public class DataCenter : Singleton<DataCenter>
     public static List<string> random_card_datas = new List<string>(); // 랜덤하게 카드 뽑기위한 데이터
     SortType sortType;
     bool sortType_oder = true; // true = 오름차순, false = 내림차순
+    public static bool IsCardDataLoaded { get; private set; } = false;
     //////////////////////
 
     ////// 리절트 관련 //////
     public static Dictionary<int, ResultPercentData> result_datas = new Dictionary<int, ResultPercentData>(); // 카드데이터
     private static AsyncOperationHandle<IList<ResultPercentData>> resultdata_loadHandle; // 메모리 관리를 위한 핸들
-    //////////////////////
-
-    public static bool IsCardDataLoaded { get; private set; } = false;
     public static bool IsResultDataLoaded { get; private set; } = false;
+    /////////////////////////
+
+
+    ////// 몬스터 관련 ///////
+    public static Dictionary<string, MonsterData> monster_datas = new Dictionary<string, MonsterData>(); // 몬스터 데이터
+    private static AsyncOperationHandle<IList<MonsterData>> monsterdata_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static Dictionary<string, MonsterActionData> monster_action_datas = new Dictionary<string, MonsterActionData>(); // 몬스터 데이터
+    private static AsyncOperationHandle<IList<MonsterActionData>> monster_action_datas_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static Dictionary<string, MonsterEncounterData> monster_encounter_datas = new Dictionary<string, MonsterEncounterData>(); // 몬스터 데이터
+    private static AsyncOperationHandle<IList<MonsterEncounterData>> monster_encounter_datas_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static bool IsMonsterDataLoaded { get; private set; } = false;
+    public static bool IsMonsterActionDataLoaded { get; private set; } = false;
+    public static bool IsMonsterEncounterDataLoaded { get; private set; } = false;
+    //////////////////////////
+
+    ////// 몬스터 관련 ///////
+    public static Dictionary<string, StatusEffectData> status_effect_datas = new Dictionary<string, StatusEffectData>(); // 몬스터 데이터
+    private static AsyncOperationHandle<IList<StatusEffectData>> status_effect_datas_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static bool IsStatusEffectDataLoaded { get; private set; } = false;
+    //////////////////////////
+
     private async void Start()
     {
         await AllCardData();
         await AllResultPercentData();
+        await AllMonsterData();
+        await AllMonsterActionData();
+        await AllMonsterEncounterData();
+        await AllStatusEffectData();
+
         LoadPlayerData();
         StartCoroutine(SetStartDeck());
     }
@@ -119,8 +147,116 @@ public class DataCenter : Singleton<DataCenter>
             UnityEngine.Debug.LogError($"ResultPercentData 로드 실패: {resultdata_loadHandle.OperationException}");
         }
     }
+    public async Task AllMonsterData()
+    {
+        monsterdata_loadHandle = Addressables.LoadAssetsAsync<MonsterData>(
+            "MonsterData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    monster_datas[item.Id] = item;
+                }
+            }
+        );
 
+        await monsterdata_loadHandle.Task;
 
+        if (monsterdata_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsMonsterDataLoaded = true;
+            UnityEngine.Debug.Log($"MonsterData 로드 완료: {monster_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"MonsterData 로드 실패: {monsterdata_loadHandle.OperationException}");
+        }
+    }
+    public async Task AllMonsterActionData()
+    {
+        monster_action_datas_loadHandle = Addressables.LoadAssetsAsync<MonsterActionData>(
+            "MonsterActionData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    monster_action_datas[item.Id] = item;
+                }
+            }
+        );
+
+        await monster_action_datas_loadHandle.Task;
+
+        if (monster_action_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsMonsterActionDataLoaded = true;
+            UnityEngine.Debug.Log($"MonsterActionData 로드 완료: {monster_action_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"MonsterActionData 로드 실패: {monster_action_datas_loadHandle.OperationException}");
+        }
+    }
+    public async Task AllMonsterEncounterData()
+    {
+        monster_encounter_datas_loadHandle = Addressables.LoadAssetsAsync<MonsterEncounterData>(
+            "MonsterEncounterData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    monster_encounter_datas[item.Id] = item;
+                }
+            }
+        );
+
+        await monster_encounter_datas_loadHandle.Task;
+
+        if (monster_encounter_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsMonsterEncounterDataLoaded = true;
+            UnityEngine.Debug.Log($"MonsterEncounterData 로드 완료: {monster_encounter_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"MonsterEncounterData 로드 실패: {monster_encounter_datas_loadHandle.OperationException}");
+        }
+    }
+    public async Task AllStatusEffectData()
+    {
+        status_effect_datas_loadHandle = Addressables.LoadAssetsAsync<StatusEffectData>(
+            "StatusEffectData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    status_effect_datas[item.Id] = item;
+                }
+            }
+        );
+
+        await status_effect_datas_loadHandle.Task;
+
+        if (status_effect_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsStatusEffectDataLoaded = true;
+            UnityEngine.Debug.Log($"StatusEffectData 로드 완료: {status_effect_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"StatusEffectData 로드 실패: {status_effect_datas_loadHandle.OperationException}");
+        }
+    }
+    public void ReleaseDataHandle()
+    {
+        Addressables.Release(carddata_loadHandle);
+        Addressables.Release(resultdata_loadHandle);
+        Addressables.Release(monsterdata_loadHandle);
+        Addressables.Release(monster_action_datas_loadHandle);
+        Addressables.Release(monster_encounter_datas_loadHandle);
+        Addressables.Release(status_effect_datas_loadHandle);
+        UnityEngine.Debug.Log("Addressables 핸들 해제 완료.");
+    }
     /// <summary>
     /// 아이템 id 를 사용한 데이터 받기
     /// </summary>
@@ -231,8 +367,6 @@ public class DataCenter : Singleton<DataCenter>
 
     private void OnDisable()
     {
-        Addressables.Release(carddata_loadHandle);
-        Addressables.Release(resultdata_loadHandle);
-        UnityEngine.Debug.Log("Addressables 핸들 해제 완료.");
+        ReleaseDataHandle();
     }
 }
