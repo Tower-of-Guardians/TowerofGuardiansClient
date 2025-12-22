@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: d7dbbfa3e8631d34385749ae6134d045
+guid: 275391318d0cdee4b8d6864daadce2c2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 130600029345354424
-    second: Monster1_0
+      213: -6450118057451760995
+    second: Saint_Idle_0
   - first:
-      213: -648425785678834747
-    second: Monster1_1
+      213: 5148396285980508973
+    second: Saint_Idle_1
   - first:
-      213: 8560980063234855749
-    second: Monster1_2
+      213: -3030338537531827692
+    second: Saint_Idle_2
   - first:
-      213: -11594890492368935
-    second: Monster1_3
+      213: 8832052394053380758
+    second: Saint_Idle_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -60,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster1_0
+      name: Saint_Idle_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 23
         y: 0
-        width: 64
-        height: 64
+        width: 54
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b219c4e80cffc100800000000000000
-      internalID: 130600029345354424
+      spriteID: d92514a0dc39c76a0800000000000000
+      internalID: -6450118057451760995
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_1
+      name: Saint_Idle_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 117
         y: 0
-        width: 64
-        height: 64
+        width: 56
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c3d865fe245007f0800000000000000
-      internalID: -648425785678834747
+      spriteID: d230fcc0527c27740800000000000000
+      internalID: 5148396285980508973
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_2
+      name: Saint_Idle_2
       rect:
         serializedVersion: 2
-        x: 128
+        x: 211
         y: 0
-        width: 64
-        height: 64
+        width: 58
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 543905e6206bec670800000000000000
-      internalID: 8560980063234855749
+      spriteID: 41a1d31d72312f5d0800000000000000
+      internalID: -3030338537531827692
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster1_3
+      name: Saint_Idle_3
       rect:
         serializedVersion: 2
-        x: 192
+        x: 309
         y: 0
-        width: 64
-        height: 64
+        width: 56
+        height: 95
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,8 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9d72efe228ec6dff0800000000000000
-      internalID: -11594890492368935
+      spriteID: 69aa031bbd0c19a70800000000000000
+      internalID: 8832052394053380758
       vertices: []
       indices: 
       edges: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 68e75c69b3008d14ca6136fa27c6aaca
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monster1_0: 130600029345354424
-      Monster1_1: -648425785678834747
-      Monster1_2: 8560980063234855749
-      Monster1_3: -11594890492368935
+      Saint_Idle_0: -6450118057451760995
+      Saint_Idle_1: 5148396285980508973
+      Saint_Idle_2: -3030338537531827692
+      Saint_Idle_3: 8832052394053380758
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
