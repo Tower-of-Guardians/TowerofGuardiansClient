@@ -17,10 +17,13 @@ public class BattleManager : MonoBehaviour
     private Monster selectedTarget;
     private bool isProcessingAttack;
     private bool isInitialized;
+    private int throwCountBeforeAction;
+    private int lastThrowCountBeforeRemoveAll;
 
     private void OnDestroy()
     {
         DetachAttackButton();
+        DetachThrowPresenter();
         foreach (Monster monster in primaryMonsters)
         {
             if (monster != null)
@@ -76,6 +79,9 @@ public class BattleManager : MonoBehaviour
         }
 
         isInitialized = true;
+
+        // ThrowPresenter 이벤트 구독
+        AttachThrowPresenter();
 
         // 처음 카드 뽑기
         StartCoroutine(DrawCardsAtTurnStartDelayed());
@@ -164,6 +170,15 @@ public class BattleManager : MonoBehaviour
     {
         isProcessingAttack = true;
 
+        // 매 턴마다 Throw 시스템 초기화
+        if (DIContainer.IsRegistered<TurnManager>())
+        {
+            var turnManager = DIContainer.Resolve<TurnManager>();
+            turnManager.Initialize();
+
+            throwCountBeforeAction = 0;
+        }
+
         List<Monster> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
         if (aliveMonsters.Count == 0)
         {
@@ -194,7 +209,7 @@ public class BattleManager : MonoBehaviour
 
         Vector3? attackAnchorPosition = primaryMonsterTarget != null
             ? primaryMonsterTarget.AttackAnchor.position
-            : (Vector3?)null;
+            : null;
 
         yield return StartCoroutine(player.PerformAttack(playerTargets, playerAttackHitsAll, attackAnchorPosition));
 
@@ -263,7 +278,7 @@ public class BattleManager : MonoBehaviour
         // 턴 종료 후 사용하지 않은 핸드 카드 모두 버리기
         DiscardAllHandCards();
 
-        // 턴 종료 후 카드 뽑기
+        // 턴 종료 후 기본 드로우
         DrawCards();
     }
 
@@ -342,7 +357,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void DrawCards()
+    private void DrawCards(int count = -1)
     {
         if (!DIContainer.IsRegistered<HandPresenter>() || !DIContainer.IsRegistered<TurnManager>())
         {
@@ -352,7 +367,9 @@ public class BattleManager : MonoBehaviour
         var handPresenter = DIContainer.Resolve<HandPresenter>();
         var turnManager = DIContainer.Resolve<TurnManager>();
 
-        int drawCount = turnManager.MaxHandCount;
+        // count가 -1이면 기본값(MaxHandCount) 사용, 그 외에는 지정된 개수만큼 드로우
+        int drawCount = count >= 0 ? count : turnManager.MaxHandCount;
+        
         for (int i = 0; i < drawCount; i++)
         {
             var cardData = GameData.Instance.NextDeckSet(1);
@@ -362,6 +379,79 @@ public class BattleManager : MonoBehaviour
                 break;
             }
             handPresenter.InstantiateCard(cardData);
+        }
+    }
+
+    private void AttachThrowPresenter()
+    {
+        // TurnManager가 등록될 때까지 대기 후 이벤트 구독
+        StartCoroutine(AttachTurnManagerDelayed());
+    }
+
+    private IEnumerator AttachTurnManagerDelayed()
+    {
+        yield return new WaitUntil(() => DIContainer.IsRegistered<TurnManager>());
+        
+        var turnManager = DIContainer.Resolve<TurnManager>();
+        turnManager.OnUpdatedThrowActionState += OnThrowActionStateChanged;
+        turnManager.OnUpdatedThrowCount += OnThrowCountChanged;
+    }
+
+    private void DetachThrowPresenter()
+    {
+        if (DIContainer.IsRegistered<TurnManager>())
+        {
+            var turnManager = DIContainer.Resolve<TurnManager>();
+            turnManager.OnUpdatedThrowActionState -= OnThrowActionStateChanged;
+            turnManager.OnUpdatedThrowCount -= OnThrowCountChanged;
+        }
+    }
+
+    private void OnThrowCountChanged(ActionData actionData)
+    {
+        // Throw 카운트가 증가할 때 저장
+        if (actionData.Current > throwCountBeforeAction)
+        {
+            throwCountBeforeAction = actionData.Current;
+            lastThrowCountBeforeRemoveAll = actionData.Current;
+        }
+    }
+
+    private void OnThrowActionStateChanged(bool canThrow)
+    {
+        if (!canThrow)
+        {
+            int throwCount = throwCountBeforeAction;
+            
+            if (throwCount == 0 && lastThrowCountBeforeRemoveAll > 0)
+            {
+                throwCount = lastThrowCountBeforeRemoveAll;
+            }
+            
+            if (throwCount > 0)
+            {
+                // 애니메이션 완료를 위해 약간의 지연 후 드로우
+                StartCoroutine(DrawCardsAfterThrowDelayed(throwCount));
+            }
+            else
+            {
+            }
+            
+            lastThrowCountBeforeRemoveAll = 0;
+            
+            throwCountBeforeAction = 0;
+        }
+    }
+    
+    private IEnumerator DrawCardsAfterThrowDelayed(int throwCount)
+    {
+        float waitTime = throwCount * 0.2f;
+        yield return new WaitForSeconds(waitTime);
+        
+        if (throwCount > 0)
+        {
+            // Throw한 카드 수만큼 드로우
+            DrawCards(throwCount);
         }
     }
 
@@ -441,4 +531,3 @@ public class BattleManager : MonoBehaviour
         return totalExp;
     }
 }
-
