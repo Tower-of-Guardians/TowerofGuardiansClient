@@ -9,10 +9,11 @@ using System.Collections;
 
 #nullable enable
 
-public class CustomOptionPresenter : DialoguePresenterBase
+public class CustomOptionPresenter : CustomDialoguePresenter
 {
     [Header("필요 컴포넌트")]
     [SerializeField] private CanvasGroup? m_canvas_group;
+    [SerializeField] private CanvasGroup? m_option_group;
     [MustNotBeNull] [SerializeField] private OptionItem? m_option_view_prefab;
     private List<OptionItem> m_option_views = new List<OptionItem>();
 
@@ -36,17 +37,6 @@ public class CustomOptionPresenter : DialoguePresenterBase
     [Indent]
     [SerializeField] GameObject? m_last_line_character_name_container;
 
-    [Space(30f), Header("초상화 설정")]
-    [Group("Portrait"), SerializeField] private bool m_show_portrait = true;
-    [Group("portrait"), SerializeField] private CanvasGroup m_portrait_group;
-    [Group("Portrait"), ShowIf(nameof(m_show_portrait)), SerializeField] private Image m_player_portrait;
-    [Group("Portrait"), ShowIf(nameof(m_show_portrait)), SerializeField] private Image m_npc_portrait;
-
-    [Space(30f), Header("초상화 강조 설정")]
-    [Group("Portrait Hover"), SerializeField] private float m_active_color = 1f;
-    [Group("Portrait Hover"), SerializeField] private float m_inactive_color = 0.4f;
-    [Group("Portrait Hover"), SerializeField] private float m_fade_durtion = 0.3f;
-
     LocalizedLine? m_last_seen_line;
 
     [Space(30f), Header("선택지 출력 설정")]
@@ -67,12 +57,7 @@ public class CustomOptionPresenter : DialoguePresenterBase
 
     private void Start()
     {
-        if (m_canvas_group != null)
-        {
-            m_canvas_group.alpha = 0;
-            m_canvas_group.interactable = false;
-            m_canvas_group.blocksRaycasts = false;
-        }
+        ToggleCanvasGroup(false);
 
         if (m_last_line_container == null && m_last_line_text != null)
             m_last_line_container = m_last_line_text.gameObject;
@@ -83,24 +68,14 @@ public class CustomOptionPresenter : DialoguePresenterBase
 
     public override YarnTask OnDialogueStartedAsync()
     {
-        if (m_canvas_group != null)
-        {
-            m_canvas_group.alpha = 0;
-            m_canvas_group.interactable = false;
-            m_canvas_group.blocksRaycasts = false;
-        }
+        ToggleCanvasGroup(false);
 
         return YarnTask.CompletedTask;
     }
 
     public override YarnTask OnDialogueCompleteAsync()
     {
-        if (m_canvas_group != null)
-        {
-            m_canvas_group.alpha = 0;
-            m_canvas_group.interactable = false;
-            m_canvas_group.blocksRaycasts = false;
-        }
+        ToggleCanvasGroup(false);
 
         return YarnTask.CompletedTask;
     }
@@ -116,7 +91,7 @@ public class CustomOptionPresenter : DialoguePresenterBase
     public override async YarnTask<DialogueOption?> RunOptionsAsync(DialogueOption[] dialogue_options, LineCancellationToken cancellation_token)
     {
         if(m_show_portrait)
-            UpdatePortrait("플레이어");
+            UpdatePortrait(PLAYER_NAME);
             
         var any_available = false;
         foreach (var option in dialogue_options)
@@ -229,28 +204,24 @@ public class CustomOptionPresenter : DialoguePresenterBase
         if (m_use_fade_effect && m_canvas_group != null)
         {
             await Effects.FadeAlphaAsync(m_canvas_group, 0, 1, m_fade_up_duration, cancellation_token.HurryUpToken);
-            await Effects.FadeAlphaAsync(m_portrait_group, 0, 1, 0, cancellation_token.HurryUpToken);
+
+            if(m_portrait_group != null)
+                await Effects.FadeAlphaAsync(m_portrait_group, 0, 1, 0, cancellation_token.HurryUpToken);
         }
 
-        if (m_canvas_group != null)
-        {
-            m_canvas_group.interactable = true;
-            m_canvas_group.blocksRaycasts = true;
-        }
+        ToggleCanvasGroup(true, false);
 
         var completed_task = await selectedOptionCompletionSource.Task;
         completionCancellationSource.Cancel();
 
-        if (m_canvas_group != null)
-        {
-            m_canvas_group.interactable = false;
-            m_canvas_group.blocksRaycasts = false;
-        }
+        ToggleCanvasGroup(false, false);
 
         if (m_use_fade_effect && m_canvas_group != null)
         {
             await Effects.FadeAlphaAsync(m_canvas_group, 1, 0, m_fade_down_duration, cancellation_token.HurryUpToken);
-            await Effects.FadeAlphaAsync(m_portrait_group, 1, 0, 0, cancellation_token.HurryUpToken);
+
+            if(m_portrait_group != null)
+                await Effects.FadeAlphaAsync(m_portrait_group, 1, 0, 0, cancellation_token.HurryUpToken);
         }
 
         foreach (var optionView in m_option_views)
@@ -268,7 +239,7 @@ public class CustomOptionPresenter : DialoguePresenterBase
     {
         var option_view = Instantiate(m_option_view_prefab);
 
-        var targetTransform = m_canvas_group != null ? m_canvas_group.transform 
+        var targetTransform = m_option_group != null ? m_option_group.transform 
                                                      : transform;
 
         if (option_view == null)
@@ -281,32 +252,15 @@ public class CustomOptionPresenter : DialoguePresenterBase
         return option_view;
     }
 
-    private void UpdatePortrait(string? character_name)
+    private void ToggleCanvasGroup(bool active, bool include_alpha = true)
     {
-        var player_target = (character_name == "플레이어") ? m_active_color : m_inactive_color;
-        var npc_target = (character_name != "플레이어") ? m_active_color : m_inactive_color;
-
-        StartCoroutine(FadePortraitColor(m_player_portrait, player_target));
-        StartCoroutine(FadePortraitColor(m_npc_portrait, npc_target));
-    }
-
-    private IEnumerator FadePortraitColor(Image image, float color)
-    {
-        if (image == null) yield break;
-
-        var elapsed_time = 0f;
-        var start_color = image.color;
-        var target_color = new Color(color, color, color, start_color.a);
-
-        while (elapsed_time < m_fade_durtion)
+        if(m_canvas_group != null)
         {
-            elapsed_time += Time.deltaTime;
-
-            image.color = Color.Lerp(start_color, target_color, elapsed_time / m_fade_durtion);
-
-            yield return null;
+            if(include_alpha)
+                m_canvas_group.alpha = active ? 1f : 0f;
+            
+            m_canvas_group.blocksRaycasts = active;
+            m_canvas_group.interactable = active;
         }
-
-        image.color = target_color;
     }
 }

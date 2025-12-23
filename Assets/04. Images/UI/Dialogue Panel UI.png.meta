@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7ac6ea2c2c196bb419eea91a0c645ac0
+guid: 349e7eb564a8a404f92932d57e281b45
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 269566990114908604
-    second: Merchant Portrait_0
+      213: -2076541815991202156
+    second: image 3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Merchant Portrait_0
+      name: image 3_0
       rect:
         serializedVersion: 2
-        x: 186
+        x: 0
         y: 0
-        width: 1962
-        height: 2226
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 1102}
+        width: 2000
+        height: 367
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cb968f0dfb1bdb300800000000000000
-      internalID: 269566990114908604
+      spriteID: 49e89986834ae23e0800000000000000
+      internalID: -2076541815991202156
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Merchant Portrait_0: 269566990114908604
+      image 3_0: -2076541815991202156
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
