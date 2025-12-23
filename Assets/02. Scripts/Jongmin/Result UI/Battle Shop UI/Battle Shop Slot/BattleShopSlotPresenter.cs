@@ -10,7 +10,7 @@ public class BattleShopSlotPresenter : CardPresenter
         m_view.InitUI(m_card_data.data);
     }
 
-    public BattleShopSlotPresenter(IBattleShopSlotView view, BattleShopSlotData slot_data)
+    public BattleShopSlotPresenter(IBattleShopSlotView view, ShopCardData slot_data)
     {
         m_view = view;
         m_card_data = slot_data.Card;

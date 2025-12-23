@@ -40,7 +40,7 @@ public class BattleShopPresenter
     {
         var slot_view = m_factory.InstantiateCardView();
 
-        var shop_slot_data = new BattleShopSlotData(m_card_datas[index++]); 
+        var shop_slot_data = new ShopCardData(m_card_datas[index++]); 
         var slot_presenter = new BattleShopSlotPresenter(slot_view, shop_slot_data);
     }
 
