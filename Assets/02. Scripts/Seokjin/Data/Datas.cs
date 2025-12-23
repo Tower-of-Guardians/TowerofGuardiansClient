@@ -26,4 +26,5 @@ public class PlayerState
     public int atk;
     public int latk;
     public int maxmagic;
+    public int money;
 }
