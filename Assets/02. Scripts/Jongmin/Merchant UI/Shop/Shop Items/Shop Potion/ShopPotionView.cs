@@ -2,48 +2,47 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopCardView : CardView, IShopCardView
+public class ShopPotionView : MonoBehaviour, IShopPotionView
 {
-    [Space(30f), Header("추가 UI 관련 컴포넌트")]
-    [Header("카드 가격 텍스트")]
-    [SerializeField] private TMP_Text m_cost_label;
+    [Header("UI 관련 컴포넌트")]
+    [Header("구매 완료 이미지")]
+    [SerializeField] private GameObject m_already_purchased_image;
 
     [Header("구매 버튼")]
     [SerializeField] private Button m_purchase_button;
 
-    [Header("구매 완료 이미지")]
-    [SerializeField] private GameObject m_already_purchased_image;
+    [Header("구매 버튼 텍스트")]
+    [SerializeField] private TMP_Text m_cost_label;
 
-    private ShopCardPresenter m_presenter;
+    private ShopPotionPresenter m_presenter;
 
     private void OnDisable()
         => m_presenter?.Dispose();
 
-    public void Inject(ShopCardPresenter presenter)
+    public void Inject(ShopPotionPresenter presenter)
     {
         m_presenter = presenter;
 
         m_purchase_button.onClick.AddListener(m_presenter.OnClickedPurchase);
     }
 
-    public void InitUI(ShopCardData card_data, bool can_purchase)
+    public void InitUI(int cost, bool can_purchase)
     {
-        InitUI(card_data.Card.data);   
-        SetPurchaseButtonAlpha(1f);   
-        m_already_purchased_image.SetActive(false);  
+        m_already_purchased_image.SetActive(false);
 
-        m_cost_label.text = can_purchase ? $"${card_data.Cost}"
-                                            : $"<color=red>${card_data.Cost}</color>";
+        m_cost_label.text = can_purchase ? $"{cost}G"
+                                         : $"<color=red>{cost}G</color>";
 
         m_purchase_button.interactable = can_purchase;
+        SetPurchaseButtonAlpha(1f);
     }
 
-    public void UpdateUI(ShopCardData card_data, bool can_purchase)
+    public void UpdateUI(int cost, bool can_purchase)
     {
         if(m_presenter.Purchased)
         {
             m_cost_label.text = string.Empty;
-            
+
             m_purchase_button.interactable = false;
             SetPurchaseButtonAlpha(0f);
 
@@ -51,7 +50,7 @@ public class ShopCardView : CardView, IShopCardView
         }
         else
         {
-            InitUI(card_data, can_purchase);
+            InitUI(cost, can_purchase);
         }
     }
 

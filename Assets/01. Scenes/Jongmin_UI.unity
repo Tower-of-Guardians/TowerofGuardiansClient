@@ -2403,7 +2403,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_merchant_view: {fileID: 1239267229}
   m_shop_view: {fileID: 1235296513}
+  m_shop_dispenser: {fileID: 1235296517}
   m_dialogue_ui: {fileID: 2083184575}
+  m_card_root: {fileID: 1747872004}
+  m_potion_view: {fileID: 1611520284}
 --- !u!1 &309632393
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,8 +3305,8 @@ CanvasGroup:
   m_GameObject: {fileID: 471899410}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &471899414
 MonoBehaviour:
@@ -5517,9 +5520,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3741642141232605904, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741642141232605904, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4839011377745383518, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
       propertyPath: m_Name
       value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839011377745383518, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4900768691448632677, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6727,6 +6742,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4839011377745383518, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4900768691448632677, guid: 2591bc9149ccef449b41734eb4ac4959, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7578,7 +7597,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1585536348}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.36263737
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7704,7 +7723,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1950586836}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9998895
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8909,6 +8928,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2675832450616904799, guid: 2472cb36af642a14cba31b91dadf8d03, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4190901830044802311, guid: 2472cb36af642a14cba31b91dadf8d03, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7
@@ -9399,7 +9422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0005682866}
+  m_AnchoredPosition: {x: 0, y: 0.000030010287}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -11890,6 +11913,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5533193106915904871, guid: 15112c7c22b356c4e858aa8dde4ccb7c, type: 3}
   m_PrefabInstance: {fileID: 1611520280}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1611520284 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1377593524718118366, guid: 15112c7c22b356c4e858aa8dde4ccb7c, type: 3}
+  m_PrefabInstance: {fileID: 1611520280}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ac7656c1619724689fe9fb16a4b393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1615627323
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
 
     [Space(30f), Header("카드 아이템 부모")]
     [SerializeField] private Transform m_card_root;
+
+    [Header("회복 포션")]
+    [SerializeField] private ShopPotionView m_potion_view;
     
     public void Inject()
     {
@@ -33,11 +36,16 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
         
         foreach(var card_view in card_views)
         {
-            var card_presenter = new ShopCardPresenter(card_view, m_shop_dispenser);
+            var card_presenter = new ShopCardPresenter(card_view, 
+                                                       m_shop_dispenser);
             card_presenter_list.Add(card_presenter);
         }
 
-        m_shop_dispenser.Inject(card_presenter_list);
+        var potion_presenter = new ShopPotionPresenter(m_potion_view, 
+                                                       m_shop_dispenser);
+
+        m_shop_dispenser.Inject(card_presenter_list,
+                                potion_presenter);
     }
 
     private void InjectShop()
