@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MerchantUIInjector : MonoBehaviour, IInjector
@@ -9,20 +10,42 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
     [Header("상점 UI")]
     [SerializeField] private MerchantShopView m_shop_view;
 
+    [Header("품목 디스펜서")]
+    [SerializeField] private MerchantShopDispenser m_shop_dispenser;
+
     [Header("대화 UI")]
     [SerializeField] private YarnDialogueUI m_dialogue_ui;
+
+    [Space(30f), Header("카드 아이템 부모")]
+    [SerializeField] private Transform m_card_root;
     
     public void Inject()
     {
+        InjectDispenser();
         InjectShop();
         InjectMerchant();
+    }
+
+    private void InjectDispenser()
+    {
+        var card_views = m_card_root.GetComponentsInChildren<IShopCardView>();
+        var card_presenter_list = new List<ShopCardPresenter>();
+        
+        foreach(var card_view in card_views)
+        {
+            var card_presenter = new ShopCardPresenter(card_view, m_shop_dispenser);
+            card_presenter_list.Add(card_presenter);
+        }
+
+        m_shop_dispenser.Inject(card_presenter_list);
     }
 
     private void InjectShop()
     {
         DIContainer.Register<IMerchantShopView>(m_shop_view);
 
-        var shop_presenter = new MerchantShopPresenter(m_shop_view);
+        var shop_presenter = new MerchantShopPresenter(m_shop_view,
+                                                       m_shop_dispenser);
         DIContainer.Register<MerchantShopPresenter>(shop_presenter);
     }
 

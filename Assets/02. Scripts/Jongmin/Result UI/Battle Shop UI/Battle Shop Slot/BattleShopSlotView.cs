@@ -27,7 +27,7 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
     public void Inject(BattleShopSlotPresenter presenter)
         => m_presenter = presenter;
 
-    public void InitUI(BattleShopSlotData slot_data, bool can_purchase)
+    public void InitUI(ShopCardData slot_data, bool can_purchase)
     {
         InitUI(slot_data.Card.data);        
         m_cost_label.text = can_purchase ? $"${slot_data.Cost}"
