@@ -32,8 +32,17 @@ public enum FieldType
 
 public enum SortType
 {
-    Time, // µ¿½Ã È¹µæ½Ã id¼øÀ¸·Î
+    Time, // ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½ï¿½ idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     Grade,
     Attack,
     Defense
+}
+
+public enum CharacterCode
+{
+    Eccliss,
+    Xylvia,
+    Kane,
+    Kravian,
+    Lucien,
 }

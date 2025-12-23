@@ -460,10 +460,10 @@ TextureImporter:
       name: Action Manual
       rect:
         serializedVersion: 2
-        x: 1472
-        y: 361
-        width: 188
-        height: 104
+        x: 1470
+        y: 359
+        width: 192
+        height: 108
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 17, y: 21, z: 19, w: 19}
@@ -548,10 +548,10 @@ TextureImporter:
       name: Button Default
       rect:
         serializedVersion: 2
-        x: 1472
-        y: 252
-        width: 188
-        height: 68
+        x: 1470
+        y: 250
+        width: 192
+        height: 72
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 26, y: 22, z: 28, w: 18}
@@ -570,10 +570,10 @@ TextureImporter:
       name: Button Disable
       rect:
         serializedVersion: 2
-        x: 1472
-        y: 178
-        width: 188
-        height: 68
+        x: 1470
+        y: 176
+        width: 192
+        height: 72
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 26, y: 19, z: 28, w: 18}

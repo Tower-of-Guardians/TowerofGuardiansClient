@@ -47,6 +47,8 @@ public class MerchantPresenter
 
     private void SubscribeDialogueEvent()
     {
+        m_dialogue_ui.InitPortrait(CharacterCode.Eccliss, CharacterCode.Kravian);
+        
         (m_dialogue_ui as YarnDialogueUI).Runner.onDialogueComplete.AddListener(OpenShop);
         (m_dialogue_ui as YarnDialogueUI).Runner.onDialogueStart.AddListener(CloseShop);
     }
