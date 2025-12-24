@@ -3,7 +3,7 @@ using System;
 public class ShopCardPresenter : CardPresenter, IDisposable
 {
     private readonly IShopCardView m_view;
-    // TODO: 플레이어 데이터
+    private readonly PlayerState m_player_state;
     private readonly MerchantShopDispenser m_dispenser;
 
     public bool Purchased { get; private set; }
@@ -12,6 +12,7 @@ public class ShopCardPresenter : CardPresenter, IDisposable
                              MerchantShopDispenser dispenser)
     {
         m_view = view;
+        m_player_state = DataCenter.Instance.playerstate;
         m_dispenser = dispenser;
 
         m_view.Inject(this);
@@ -33,13 +34,12 @@ public class ShopCardPresenter : CardPresenter, IDisposable
     {
         var shop_card_data = new ShopCardData(m_card_data);
         var card_cost = shop_card_data.Cost;
-        // TODO: 플레이어의 골드와 카드의 비용을 대소 비교
-        var can_purchase = true;
+        var can_purchase = m_player_state.money >= card_cost;
 
         if(can_purchase)
         {
-            // TODO: 플레이어 데이터에서 골드 차감
-            // TODO: 플레이어의 인벤토리에 카드 추가
+            m_player_state.money -= (int)card_cost;
+            DataCenter.Instance.userDeck.Add(m_card_data.data);
 
             Purchased = true;
             m_dispenser.Alert();
@@ -57,8 +57,7 @@ public class ShopCardPresenter : CardPresenter, IDisposable
         var shop_card_data = new ShopCardData(m_card_data);
         var card_cost = shop_card_data.Cost;
         
-        // TODO: 플레이어의 골드와 카드의 비용을 대소 비교
-        var can_purchase = true;
+        var can_purchase = m_player_state.money >= card_cost;
         m_view.UpdateUI(shop_card_data, can_purchase);
     }
 }
