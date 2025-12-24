@@ -8,6 +8,8 @@ public class CardInventoryView : MonoBehaviour, ICardInventoryView
     private void Awake()
         => m_animator = GetComponent<Animator>();
 
+    public virtual void Inject(CardInventoryPresenter presenter) {}
+
     public void OpenUI()
         => ToggleUI(true);
 

@@ -16,11 +16,20 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
     [Header("대화 UI")]
     [SerializeField] private YarnDialogueUI m_dialogue_ui;
 
+    [Header("알리미 UI")]
+    [SerializeField] private Notice m_notice;
+
     [Space(30f), Header("카드 아이템 부모")]
     [SerializeField] private Transform m_card_root;
 
     [Header("회복 포션")]
     [SerializeField] private ShopPotionView m_potion_view;
+
+    [Header("인벤토리 UI")]
+    [SerializeField] private MerchantInventoryView m_inventory_view;
+
+    [Header("인벤토리 카드 팩토리")]
+    [SerializeField] private CardInventoryFactory m_card_factory;
     
     public void Inject()
     {
@@ -43,18 +52,31 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
 
         var potion_presenter = new ShopPotionPresenter(m_potion_view, 
                                                        m_shop_dispenser);
+        DIContainer.Register<ShopPotionPresenter>(potion_presenter);
 
         m_shop_dispenser.Inject(card_presenter_list,
                                 potion_presenter);
+
+        var select_behavior = new SelectCardBehavior();
+        var inventory_presenter = new MerchantInventoryPresenter(m_inventory_view, 
+                                                                 m_card_factory,
+                                                                 select_behavior,
+                                                                 m_notice,
+                                                                 DIContainer.Resolve<MerchantDialogueBubblePresenter>());
+        DIContainer.Register<MerchantInventoryPresenter>(inventory_presenter);
     }
 
     private void InjectShop()
     {
         DIContainer.Register<IMerchantShopView>(m_shop_view);
 
+        var inventory_presenter = DIContainer.Resolve<MerchantInventoryPresenter>();
         var shop_presenter = new MerchantShopPresenter(m_shop_view,
-                                                       m_shop_dispenser);
+                                                       m_shop_dispenser,
+                                                       inventory_presenter);
         DIContainer.Register<MerchantShopPresenter>(shop_presenter);
+
+        inventory_presenter.Inject(shop_presenter);
     }
 
     private void InjectMerchant()

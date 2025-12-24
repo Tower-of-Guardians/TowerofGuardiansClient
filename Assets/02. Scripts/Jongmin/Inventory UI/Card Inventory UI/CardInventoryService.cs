@@ -2,18 +2,25 @@ public class CardInventoryService
 {
     private readonly CardInventoryContainer m_container;
     private readonly CardInventoryFactory m_factory;
+    private readonly ICardBehavior m_behavior;
+    private ICardSelectionRequester m_selection_requester;
 
     public CardInventoryService(CardInventoryContainer container,
-                                CardInventoryFactory factory)
+                                CardInventoryFactory factory,
+                                ICardBehavior behavior)
     {
         m_container = container;
         m_factory = factory;
+        m_behavior = behavior;
     }
+
+    public void SetSelectionRequester(ICardSelectionRequester selection_requester)
+        => m_selection_requester = selection_requester;
 
     public void Add(CardData card_data)
     {
         var view = m_factory.InstantiateCardView();
-        var presenter = new InventoryCardPresenter(view, card_data);
+        var presenter = new InventoryCardPresenter(view, card_data, m_behavior, m_selection_requester);
 
         m_container.Add(view, presenter);
     }

@@ -21,6 +21,9 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     [Header("전투 상점 카드 팩토리")]
     [SerializeField] private BattleShopCardFactory m_battle_shop_card_factory;
 
+    [Header("알리미 UI")]
+    [SerializeField] private Notice m_notice;
+
     public void Inject()
     {
         InjectReward();
@@ -50,8 +53,11 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     {
         DIContainer.Register<ICardInventoryView>(m_inventory_view);
 
+        var readonly_behavior = new ReadonlyCardBehavior();
         var card_inventory_presenter = new CardInventoryPresenter(m_inventory_view,
-                                                                  m_inventory_card_factory);
+                                                                  m_inventory_card_factory,
+                                                                  readonly_behavior,
+                                                                  m_notice);
         DIContainer.Register<CardInventoryPresenter>(card_inventory_presenter);
     }
 
