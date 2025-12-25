@@ -209,12 +209,6 @@ public class Monster : BaseUnit, IPointerClickHandler
     private void HandleDeath()
     {
         isMarkedForDeath = true;
-        
-        // BattleManager에 죽은 몬스터로 표시
-        if (battleManager != null)
-        {
-            battleManager.MarkMonsterForRemove(this);
-        }
     }
 
     public void DestroyMonster()
