@@ -24,6 +24,7 @@ public class CardInventoryPresenter : ICardSelectionRequester
                                              behavior);
 
         m_service.SetSelectionRequester(CreateSelectionRequester());
+        m_service.SetSelectionController(CreateSelectionController());
     }
 
     public virtual void OpenUI()
@@ -74,6 +75,9 @@ public class CardInventoryPresenter : ICardSelectionRequester
         => m_service.RemoveAll();
 
     protected virtual ICardSelectionRequester CreateSelectionRequester()
+        => null;
+
+    protected virtual ICardSelectionController CreateSelectionController()
         => null;
 
     protected void AlertUpdateSelectedCards()

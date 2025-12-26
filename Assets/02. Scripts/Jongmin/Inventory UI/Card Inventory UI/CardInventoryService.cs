@@ -4,6 +4,7 @@ public class CardInventoryService
     private readonly CardInventoryFactory m_factory;
     private readonly ICardBehavior m_behavior;
     private ICardSelectionRequester m_selection_requester;
+    private ICardSelectionController m_selection_controller;
 
     public CardInventoryService(CardInventoryContainer container,
                                 CardInventoryFactory factory,
@@ -17,10 +18,17 @@ public class CardInventoryService
     public void SetSelectionRequester(ICardSelectionRequester selection_requester)
         => m_selection_requester = selection_requester;
 
+    public void SetSelectionController(ICardSelectionController selection_controller)
+        => m_selection_controller = selection_controller;
+
     public void Add(CardData card_data)
     {
         var view = m_factory.InstantiateCardView();
-        var presenter = new InventoryCardPresenter(view, card_data, m_behavior, m_selection_requester);
+        var presenter = new InventoryCardPresenter(view, 
+                                                   card_data, 
+                                                   m_behavior, 
+                                                   m_selection_requester,
+                                                   m_selection_controller);
 
         m_container.Add(view, presenter);
     }

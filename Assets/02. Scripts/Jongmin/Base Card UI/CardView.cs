@@ -18,10 +18,10 @@ public class CardView : MonoBehaviour, ICardView
     [SerializeField] private TMP_Text m_card_description_label;
 
     [Header("카드 공격력")]
-    [SerializeField] private TMP_Text m_card_atk_label;
+    [SerializeField] protected TMP_Text m_card_atk_label;
 
     [Header("카드 방어력")]
-    [SerializeField] private TMP_Text m_card_def_label;
+    [SerializeField] protected TMP_Text m_card_def_label;
 
     public void InitUI(CardData card_data)
     {
