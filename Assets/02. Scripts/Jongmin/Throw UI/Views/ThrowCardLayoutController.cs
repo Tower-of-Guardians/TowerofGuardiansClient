@@ -44,12 +44,7 @@ public class ThrowCardLayoutController : MonoBehaviour
             if(is_sorting || is_anime)
                 concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
             else
-            {
-                if(card_count - i > 1)
-                    concrete_card.DOAnchorPos(target_position, m_designer.AnimeDuration).SetEase(Ease.InOutSine);
-                else
-                    concrete_card.anchoredPosition = target_position;
-            }
+                concrete_card.anchoredPosition = target_position;
         }
 
         if(include_preview)
@@ -59,8 +54,6 @@ public class ThrowCardLayoutController : MonoBehaviour
             
             var preview_position = CardLayoutCalculator.CalculatedThrowCardPosition(card_count - 1, card_count, m_designer.Space);
             preview_rect.anchoredPosition = preview_position;
-            //preview_rect.DOKill();
-            //preview_rect.DOAnchorPos(preview_position, m_designer.AnimeDuration);
         }        
     }
 }

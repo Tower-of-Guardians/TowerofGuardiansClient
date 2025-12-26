@@ -79,7 +79,8 @@ public class ThrowPresenter : IDisposable
         if(!m_controller.Active)
             return;
 
-        m_controller.ToggleManual(active);
+        if(m_turn_manager.CanThrow() || !active)
+            m_controller.ToggleManual(active);
     }
 
     public BattleCardData[] GetCardDatas()
