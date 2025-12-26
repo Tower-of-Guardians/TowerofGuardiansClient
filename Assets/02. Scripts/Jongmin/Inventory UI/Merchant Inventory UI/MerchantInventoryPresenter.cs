@@ -36,7 +36,7 @@ public class MerchantInventoryPresenter : CardInventoryPresenter
             DataCenter.Instance.userDeck.Remove(card.CardData);
         
         var total_money = GetSalePrice();
-        DataCenter.Instance.playerstate.money -= total_money;
+        DataCenter.Instance.playerstate.money += total_money;
 
         m_shop_presenter.ToggleSaleButton(false);
 

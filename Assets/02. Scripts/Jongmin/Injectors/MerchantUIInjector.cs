@@ -57,7 +57,7 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
         m_shop_dispenser.Inject(card_presenter_list,
                                 potion_presenter);
 
-        var select_behavior = new SelectCardBehavior();
+        var select_behavior = new SelectCardsBehavior();
         var inventory_presenter = new MerchantInventoryPresenter(m_inventory_view, 
                                                                  m_card_factory,
                                                                  select_behavior,
