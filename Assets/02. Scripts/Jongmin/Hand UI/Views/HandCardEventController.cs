@@ -87,6 +87,9 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
     private void OnBeginDragCard()
     {
+        if(m_presenter.HoverCard == null)
+            return;
+            
         (m_presenter.HoverCard as HandCardView).transform.DOKill();
 
         if(m_turn_manager.CanAction())
