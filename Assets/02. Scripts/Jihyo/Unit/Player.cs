@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Player : BaseUnit
 {
@@ -24,6 +25,13 @@ public class Player : BaseUnit
     private bool hasCachedSpriteOrigin;
     private float lastAttackBonus;
     private float lastDefenseBonus;
+    
+    [Header("UI Animation")]
+    [SerializeField] private float statAnimationDuration = 0.5f;
+    [SerializeField] private Ease statAnimationEase = Ease.OutQuad;
+    
+    private Tweener attackTextTweener;
+    private Tweener protectionTweener;
 
     public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus);
     public float DefenseValue => cardDefenseBonus;
@@ -57,6 +65,7 @@ public class Player : BaseUnit
         }
     }
 
+    /// 공격 시 카드 스탯을 업데이트합니다.
     public void UpdateCardStats()
     {
         if (GameData.Instance != null)
@@ -217,35 +226,119 @@ public class Player : BaseUnit
         // 보호력 먼저 감소, 남은 데미지는 체력으로
         base.TakeDamage(amount);
     }
-
-    private void Update()
+    public void ApplyFieldStatsToPlayer()
     {
-        // 카드를 필드에 올릴 때마다 공격력과 보호력 UI 갱신
         if (GameData.Instance != null)
         {
-            float currentAttackBonus = GameData.Instance.AttackField();
-            float currentDefenseBonus = GameData.Instance.DefenseField();
+            // 기본 공격력에 카드 필드의 공격력을 더함
+            float fieldAttackPower = GameData.Instance.AttackField();
+            int currentAttack = AttackValue;
+            int targetAttack = Mathf.RoundToInt(baseAttack + fieldAttackPower);
             
-            // 값이 변경되었을 때만 업데이트
-            if (Mathf.Abs(currentAttackBonus - lastAttackBonus) > 0.01f || 
-                Mathf.Abs(currentDefenseBonus - lastDefenseBonus) > 0.01f)
-            {
-                UpdateCardStats();
-                lastAttackBonus = currentAttackBonus;
-                lastDefenseBonus = currentDefenseBonus;
-            }
+            cardAttackBonus = fieldAttackPower;
+            lastAttackBonus = cardAttackBonus;
+            
+            // 기존 보호력이 있으면 그 값에 더하고, 없으면 새로 설정
+            float fieldDefensePower = GameData.Instance.DefenseField();
+            float currentProtection = protectionValue;
+            float targetProtection = protectionValue > 0 ? protectionValue + fieldDefensePower : fieldDefensePower;
+            
+            cardDefenseBonus = fieldDefensePower;
+            lastDefenseBonus = cardDefenseBonus;
+            
+            // 공격력과 보호력 애니메이션
+            AnimateAttackText(currentAttack, targetAttack);
+            AnimateProtection(currentProtection, targetProtection);
         }
     }
-
+    
+    private void AnimateAttackText(int fromValue, int toValue)
+    {
+        if (attackText == null)
+        {
+            return;
+        }
+        
+        if (attackTextTweener != null && attackTextTweener.IsActive())
+        {
+            attackTextTweener.Kill();
+        }
+        
+        int currentValue = fromValue;
+        attackTextTweener = DOTween.To(
+            () => currentValue,
+            x => {
+                currentValue = x;
+                attackText.text = currentValue.ToString();
+            },
+            toValue,
+            statAnimationDuration
+        ).SetEase(statAnimationEase);
+    }
+    
+    private void AnimateProtection(float fromValue, float toValue)
+    {
+        if (Mathf.Abs(fromValue - toValue) < 0.01f)
+        {
+            RefreshUI();
+            return;
+        }
+        
+        if (protectionTweener != null && protectionTweener.IsActive())
+        {
+            protectionTweener.Kill();
+        }
+        
+        float currentValue = fromValue;
+        protectionTweener = DOTween.To(
+            () => currentValue,
+            x => {
+                currentValue = x;
+                protectionValue = currentValue;
+                hasDefense = currentValue > 0;
+                RefreshUI();
+            },
+            toValue,
+            statAnimationDuration
+        ).SetEase(statAnimationEase);
+    }
+    
+    public void ResetAttackToBase()
+    {
+        cardAttackBonus = 0;
+        lastAttackBonus = 0;
+        
+        // TODO: 추후 보호력이 남는 효과 추가 시 수정
+        SetProtection(0);
+        cardDefenseBonus = 0;
+        lastDefenseBonus = 0;
+        
+        RefreshUI();
+    }
+    
     protected override void RefreshUI()
     {
         base.RefreshUI();
 
-        if (attackText != null)
+        if (attackText != null && (attackTextTweener == null || !attackTextTweener.IsActive()))
         {
             attackText.text = AttackValue.ToString();
         }
-
+    }
+    
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        
+        if (attackTextTweener != null && attackTextTweener.IsActive())
+        {
+            attackTextTweener.Kill();
+        }
+        
+        if (protectionTweener != null && protectionTweener.IsActive())
+        {
+            protectionTweener.Kill();
+        }
     }
 }
 

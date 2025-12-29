@@ -238,8 +238,8 @@ Transform:
   m_GameObject: {fileID: 2519018439783964889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4190901830044802311}
@@ -388,6 +388,8 @@ MonoBehaviour:
   singleTargetAttackOffset: 2
   attackMoveDuration: 0.2
   returnMoveDuration: 0.2
+  statAnimationDuration: 0.5
+  statAnimationEase: 6
 --- !u!114 &8227538613326071428
 MonoBehaviour:
   m_ObjectHideFlags: 0

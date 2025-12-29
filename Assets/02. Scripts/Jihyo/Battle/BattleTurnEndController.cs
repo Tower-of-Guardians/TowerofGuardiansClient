@@ -28,6 +28,20 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
     public void ProcessTurnEnd()
     {
+        // 턴 종료 시 플레이어의 공격력을 기본 공격력으로 되돌림
+        if (battleManager != null)
+        {
+            var setupController = battleManager.GetSetupController();
+            if (setupController != null)
+            {
+                Player player = setupController.GetPlayer();
+                if (player != null)
+                {
+                    player.ResetAttackToBase();
+                }
+            }
+        }
+        
         // 사용하지 않은 핸드 카드 모두 버리기
         DiscardAllHandCards();
 

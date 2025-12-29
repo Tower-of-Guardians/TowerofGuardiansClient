@@ -97,12 +97,31 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
+        // 공격 버튼 클릭 시 카드 필드의 공격력과 방어력을 플레이어에 반영
+        if (setupController != null)
+        {
+            Player player = setupController.GetPlayer();
+            if (player != null)
+            {
+                player.ApplyFieldStatsToPlayer();
+            }
+        }
+
         // 턴 시작 처리
         if (actionController != null)
         {
             actionController.OnTurnStart();
         }
 
+        // 공격 시퀀스 시작 (애니메이션 대기 시간 포함)
+        StartCoroutine(StartAttackSequenceWithDelay());
+    }
+    
+    private IEnumerator StartAttackSequenceWithDelay()
+    {
+        // 공격력/보호력 애니메이션 효과를 위한 대기 시간
+        yield return new WaitForSeconds(combatController.GetStatAnimationWaitTime());
+        
         // 공격 시퀀스 시작
         combatController.StartAttackSequence();
     }
@@ -227,5 +246,10 @@ public class BattleManager : MonoBehaviour
         {
             setupController.SetPlayer(playerUnit);
         }
+    }
+
+    public BattleSetupController GetSetupController()
+    {
+        return setupController;
     }
 }

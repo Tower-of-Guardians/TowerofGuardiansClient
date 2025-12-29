@@ -7,9 +7,12 @@ using Random = UnityEngine.Random;
 public class BattleCombatController : MonoBehaviour, IBattleController
 {
     [SerializeField] private bool playerAttackHitsAll;
-    [SerializeField] private float monsterAttackDelay = 0.15f;
+    [SerializeField] private float monsterAttackDelay = 0.5f;
+    [SerializeField] private float statAnimationWaitTime = 1.0f;
 
     private BattleManager battleManager;
+    
+    public float GetStatAnimationWaitTime() => statAnimationWaitTime;
     private BattleSetupController setupController;
     private bool isInitialized;
     private bool isProcessingAttack;
