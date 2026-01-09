@@ -26,6 +26,21 @@ TextureImporter:
   - first:
       213: -3312583849086427344
     second: Player1_Attack2_7
+  - first:
+      213: -4837423832547588496
+    second: Player1_Attack2_8
+  - first:
+      213: -8491104957990671053
+    second: Player1_Attack2_9
+  - first:
+      213: 6733845170122024937
+    second: Player1_Attack2_10
+  - first:
+      213: 2280702385718059803
+    second: Player1_Attack2_11
+  - first:
+      213: 2231529939607260767
+    second: Player1_Attack2_12
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,8 +140,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 288
-        width: 915
+        y: 576
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -146,9 +161,9 @@ TextureImporter:
       name: Player1_Attack2_1
       rect:
         serializedVersion: 2
-        x: 915
-        y: 288
-        width: 915
+        x: 918
+        y: 576
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -168,9 +183,9 @@ TextureImporter:
       name: Player1_Attack2_2
       rect:
         serializedVersion: 2
-        x: 1830
-        y: 288
-        width: 915
+        x: 1836
+        y: 576
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -190,9 +205,9 @@ TextureImporter:
       name: Player1_Attack2_3
       rect:
         serializedVersion: 2
-        x: 2745
+        x: 0
         y: 288
-        width: 915
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -212,9 +227,9 @@ TextureImporter:
       name: Player1_Attack2_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 915
+        x: 918
+        y: 288
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -234,9 +249,9 @@ TextureImporter:
       name: Player1_Attack2_5
       rect:
         serializedVersion: 2
-        x: 915
-        y: 0
-        width: 915
+        x: 1836
+        y: 288
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -256,9 +271,9 @@ TextureImporter:
       name: Player1_Attack2_6
       rect:
         serializedVersion: 2
-        x: 1830
+        x: 0
         y: 0
-        width: 915
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -278,9 +293,9 @@ TextureImporter:
       name: Player1_Attack2_7
       rect:
         serializedVersion: 2
-        x: 2742
+        x: 918
         y: 0
-        width: 915
+        width: 918
         height: 288
       alignment: 9
       pivot: {x: 0.2, y: 0.5}
@@ -300,7 +315,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 891fa10e27cc06149853d226cb0360f3
+    spriteID: 4265d6fc86dd21445a12e3a10246d36d
     internalID: 0
     vertices: []
     indices: 
