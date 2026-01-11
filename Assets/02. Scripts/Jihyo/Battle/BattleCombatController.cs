@@ -110,7 +110,72 @@ public class BattleCombatController : MonoBehaviour, IBattleController
             ? primaryMonsterTarget.AttackAnchor.position
             : null;
 
-        yield return StartCoroutine(player.PerformAttack(playerTargets, playerAttackHitsAll, attackAnchorPosition));
+        var playerAnimation = player.GetComponent<PlayerAnimation>();
+        
+        if (playerAnimation != null)
+        {
+            playerAnimation.ResetAnimationState();
+        }
+        
+        // TODO: 시너지 발동, 즉발 카드 효과 발동
+        // yield return StartCoroutine(ActivateSynergyAndInstantCards());
+        
+        // 공격력 보호력 계산
+        player.ApplyFieldStatsToPlayer();
+        
+        // 공격력 확인
+        int currentAttack = player.AttackValue;
+        
+        // EntryAttack 트리거 설정
+        if (playerAnimation != null)
+        {
+            playerAnimation.TriggerEntryAttack();
+            playerAnimation.SetAttackParameters(currentAttack);
+        }
+        
+        if (playerAnimation != null)
+        {
+            yield return StartCoroutine(playerAnimation.WaitForEnforceAnimationComplete(currentAttack));
+        }
+        
+        // 공격 위치로 이동
+        yield return StartCoroutine(player.MoveToAttackPosition(attackAnchorPosition, playerAttackHitsAll));
+        
+        // Attack 트리거 발동
+        if (playerAnimation != null)
+        {
+            playerAnimation.TriggerAttack();
+        }
+        
+        // 공격 실행
+        if (playerTargets != null)
+        {
+            foreach (IDamageable target in playerTargets)
+            {
+                if (target != null && target.IsAlive)
+                {
+                    target.TakeDamage(currentAttack);
+                }
+            }
+        }
+        
+        // 공격 애니메이션 완료 대기
+        if (playerAnimation != null)
+        {
+            yield return StartCoroutine(playerAnimation.WaitForAttackAnimationComplete(currentAttack));
+        }
+        
+        // 0.5초 대기 후 제자리로 복귀(하드코딩)
+        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(player.ReturnToOriginalPosition());
+        
+        // 애니메이션 종료 후 트리거 취소하여 BaseLayer로 복귀
+        if (playerAnimation != null)
+        {
+            playerAnimation.ResetAnimationState();
+        }
+
+        // 공격 후 발동 카드 효과 발동
 
         // 공격 완료 후 죽은 몬스터들 제거
         RemoveDeadMonsters(primaryMonsters);

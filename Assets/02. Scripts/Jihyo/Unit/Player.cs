@@ -152,7 +152,8 @@ public class Player : BaseUnit
         // 공격 애니메이션 재생
         if (playerAnimation != null)
         {
-            playerAnimation.PlayAttackAnimation(currentAttack);
+            playerAnimation.TriggerAttack();
+            playerAnimation.SetAttackParameters(currentAttack);
         }
 
         // TODO: 공격 애니메이션 후 0.5초 대기 후 데미지 적용(하드코딩)
@@ -215,6 +216,46 @@ public class Player : BaseUnit
         {
             initialSpriteLocalPosition = spriteTransform.localPosition;
             hasCachedSpriteOrigin = true;
+        }
+    }
+    
+    public IEnumerator MoveToAttackPosition(Vector3? attackAnchorPosition, bool isAreaAttack)
+    {
+        CacheSpriteOrigin();
+        
+        if (spriteTransform == null)
+        {
+            yield break;
+        }
+        
+        Vector3 attackPosition = initialSpriteLocalPosition;
+        
+        if (isAreaAttack)
+        {
+            attackPosition.x = 0f;
+        }
+        else if (attackAnchorPosition.HasValue)
+        {
+            Transform parent = spriteTransform.parent;
+            Vector3 targetLocal = parent != null
+                ? parent.InverseTransformPoint(attackAnchorPosition.Value)
+                : attackAnchorPosition.Value;
+            
+            attackPosition.x = targetLocal.x - Mathf.Abs(singleTargetAttackOffset);
+        }
+        else
+        {
+            attackPosition.x = initialSpriteLocalPosition.x - Mathf.Abs(singleTargetAttackOffset);
+        }
+        
+        yield return StartCoroutine(MoveSpriteToPosition(attackPosition, attackMoveDuration));
+    }
+    
+    public IEnumerator ReturnToOriginalPosition()
+    {
+        if (spriteTransform != null)
+        {
+            yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, returnMoveDuration));
         }
     }
 

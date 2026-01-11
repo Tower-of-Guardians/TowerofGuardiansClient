@@ -5,12 +5,20 @@ public class PlayerAnimation : MonoBehaviour
 {
     [Header("Animation")]
     private Animator animator;
-    [SerializeField] private string attack1TriggerName = "Attack1";
+
+    [Header("Animator Parameters")]
+    private static readonly int EntryAttackHash = Animator.StringToHash("EntryAttack");
+    private static readonly int AttackHash = Animator.StringToHash("Attack");
+    private static readonly int DamageHash = Animator.StringToHash("Damage");
+
+    [Header("Animation State Names")]
     [SerializeField] private string attack1StateName = "Player1_Attack1";
-    [SerializeField] private string attack2TriggerName = "Attack2";
     [SerializeField] private string attack2StateName = "Player1_Attack2";
-    [SerializeField] private string attack3TriggerName = "Attack3";
     [SerializeField] private string attack3StateName = "Player1_Attack3";
+    [SerializeField] private string attack2EnforceStateName = "Player1_Attack2_Enforce";
+    [SerializeField] private string attack3EnforceStateName = "Player1_Attack3_Enforce";
+    [SerializeField] private string attack2IdleStateName = "Player1_Attack2_Idle";
+    [SerializeField] private string attack3IdleStateName = "Player1_Attack3_Idle";
 
     [Header("Animation Settings")]
     [SerializeField] private float attackMotionDuration = 0.3f;
@@ -32,24 +40,50 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
-    public void PlayAttackAnimation(int attackValue)
+    public void TriggerEntryAttack()
     {
-        if (animator == null)
+        if (animator != null)
         {
-            return;
+            animator.SetTrigger(EntryAttackHash);
         }
+    }
 
-        string triggerName = GetAttackTriggerName(attackValue);
-        if (!string.IsNullOrEmpty(triggerName))
+    public void TriggerAttack()
+    {
+        if (animator != null)
         {
-            animator.SetTrigger(triggerName);
+            animator.SetTrigger(AttackHash);
         }
+    }
+
+    public void SetAttackParameters(int attackValue)
+    {
+        if (animator != null)
+        {
+            animator.SetInteger(DamageHash, attackValue);
+        }
+    }
+
+    public void ResetAnimationState()
+    {
+        if (animator != null)
+        {
+            animator.ResetTrigger(EntryAttackHash);
+            animator.ResetTrigger(AttackHash);
+            animator.SetInteger(DamageHash, 0);
+        }
+    }
+
+    public IEnumerator WaitForEnforceAnimationComplete(int attackValue)
+    {
+        // 연출시간 1초 대기(하드코딩)
+        yield return new WaitForSeconds(1.0f);
     }
 
     public IEnumerator WaitForAttackAnimationComplete(int attackValue)
     {
         string stateName = GetAttackStateName(attackValue);
-        
+
         if (animator == null || string.IsNullOrEmpty(stateName))
         {
             if (attackMotionDuration > 0f)
@@ -60,52 +94,36 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         int attackStateHash = Animator.StringToHash(stateName);
-        
+
         // Attack 상태로 전환될 때까지 대기
         while (true)
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            
+
             if (stateInfo.shortNameHash == attackStateHash)
             {
                 break;
             }
-            
+
             yield return null;
         }
-        
+
         // Attack 상태가 끝날 때까지 대기
         while (true)
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            
+
             if (stateInfo.shortNameHash != attackStateHash)
             {
                 break;
             }
-            
+
             if (stateInfo.normalizedTime >= 1.0f)
             {
                 break;
             }
-            
-            yield return null;
-        }
-    }
 
-    private string GetAttackTriggerName(int attackValue)
-    {
-        if (attackValue < lightAttack)
-        {
-            return attack1TriggerName;
-        }
-        else if (attackValue < normalAttack)
-        {
-            return attack2TriggerName;
-        }
-        else
-        {
-            return attack3TriggerName;
+            yield return null;
         }
     }
 
@@ -124,5 +142,28 @@ public class PlayerAnimation : MonoBehaviour
             return attack3StateName;
         }
     }
-}
 
+    private string GetEnforceStateName(int attackValue)
+    {
+        if (attackValue < normalAttack)
+        {
+            return attack2EnforceStateName;
+        }
+        else
+        {
+            return attack3EnforceStateName;
+        }
+    }
+
+    private string GetIdleStateName(int attackValue)
+    {
+        if (attackValue < normalAttack)
+        {
+            return attack2IdleStateName;
+        }
+        else
+        {
+            return attack3IdleStateName;
+        }
+    }
+}
