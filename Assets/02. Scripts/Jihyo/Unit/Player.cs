@@ -152,8 +152,7 @@ public class Player : BaseUnit
         // 공격 애니메이션 재생
         if (playerAnimation != null)
         {
-            playerAnimation.TriggerAttack();
-            playerAnimation.SetAttackParameters(currentAttack);
+            playerAnimation.TriggerAttackByValue(currentAttack);
         }
 
         // TODO: 공격 애니메이션 후 0.5초 대기 후 데미지 적용(하드코딩)

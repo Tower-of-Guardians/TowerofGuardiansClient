@@ -7,9 +7,10 @@ public class PlayerAnimation : MonoBehaviour
     private Animator animator;
 
     [Header("Animator Parameters")]
-    private static readonly int EntryAttackHash = Animator.StringToHash("EntryAttack");
     private static readonly int AttackHash = Animator.StringToHash("Attack");
-    private static readonly int DamageHash = Animator.StringToHash("Damage");
+    private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
+    private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
+    private static readonly int Attack3Hash = Animator.StringToHash("Attack3");
 
     [Header("Animation State Names")]
     [SerializeField] private string attack1StateName = "Player1_Attack1";
@@ -40,14 +41,6 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
-    public void TriggerEntryAttack()
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger(EntryAttackHash);
-        }
-    }
-
     public void TriggerAttack()
     {
         if (animator != null)
@@ -56,11 +49,24 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
-    public void SetAttackParameters(int attackValue)
+    public void TriggerAttackByValue(int attackValue)
     {
-        if (animator != null)
+        if (animator == null)
         {
-            animator.SetInteger(DamageHash, attackValue);
+            return;
+        }
+
+        if (attackValue < lightAttack)
+        {
+            animator.SetTrigger(Attack1Hash);
+        }
+        else if (attackValue < normalAttack)
+        {
+            animator.SetTrigger(Attack2Hash);
+        }
+        else
+        {
+            animator.SetTrigger(Attack3Hash);
         }
     }
 
@@ -68,9 +74,10 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (animator != null)
         {
-            animator.ResetTrigger(EntryAttackHash);
             animator.ResetTrigger(AttackHash);
-            animator.SetInteger(DamageHash, 0);
+            animator.ResetTrigger(Attack1Hash);
+            animator.ResetTrigger(Attack2Hash);
+            animator.ResetTrigger(Attack3Hash);
         }
     }
 
