@@ -6,16 +6,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor.Rendering;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Playables;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DataCenter : Singleton<DataCenter>
 {
     ////// 플레이어 관련 /////
     public PlayerState playerstate = new PlayerState();
+    public event Action<PlayerState> playerStateEvent;
+    public event Action<int> playerMoneyEvent;
+    public event Action<int> playerHpEvent;
+    public event Action<int,int> playerLevelEvent;
     //////////////////////////
-    
+
     ////// 카드 관련 //////
     public static Dictionary<string, CardData> card_datas = new Dictionary<string, CardData>(); // 카드데이터
     private static AsyncOperationHandle<IList<CardData>> carddata_loadHandle; // 메모리 관리를 위한 핸들
@@ -259,6 +265,8 @@ public class DataCenter : Singleton<DataCenter>
         Addressables.Release(status_effect_datas_loadHandle);
         UnityEngine.Debug.Log("Addressables 핸들 해제 완료.");
     }
+
+    #region 데이터 받는 함수
     /// <summary>
     /// 아이템 id 를 사용한 데이터 받기
     /// </summary>
@@ -463,7 +471,29 @@ public class DataCenter : Singleton<DataCenter>
 
         return cards;
     }
+    #endregion
 
+    public void SetPlayerState(PlayerState data)
+    {
+        /*playerstate = data;*/
+        playerStateEvent?.Invoke(playerstate);
+    }
+    public void SetMoney(int money)
+    {
+        /*playerstate.money = money;*/
+        playerMoneyEvent?.Invoke(playerstate.money);
+    }
+    public void SetPlayerHP(int hp)
+    {
+       /* playerstate.hp = hp;*/
+        playerHpEvent?.Invoke(hp);
+    }
+    public void SetPlayerLevel(int levet, int experience)
+    {
+        /*playerstate.level = levet;
+        playerstate.experience = experience;*/
+        playerLevelEvent?.Invoke(levet, experience);
+    }
     private void OnDisable()
     {
         ReleaseDataHandle();
