@@ -439,6 +439,31 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
+
+    /// <summary>
+    /// 카드ID를 통한 해당 아이디의 모든 성급의 카드 데이터 리스트 리턴
+    /// </summary>
+    /// <param name="card_id"></param>
+    /// <returns></returns>
+    public List<CardData> GetSeriesCards(string card_id)
+    {
+        var cards = new List<CardData>();
+
+        string front_id = card_id.Substring(0, 4);
+        string back_id = card_id.Substring(5, 3);
+
+        for (int s = 0; s < 3; s++)
+        {
+            string find_id = front_id + s + back_id;
+            if (card_datas.TryGetValue(find_id, out CardData itemData))
+            {
+                cards.Add(itemData);
+            }
+        }
+
+        return cards;
+    }
+
     private void OnDisable()
     {
         ReleaseDataHandle();
