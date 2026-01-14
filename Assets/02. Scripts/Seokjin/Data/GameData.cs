@@ -199,14 +199,16 @@ public class GameData : Singleton<GameData>
     }
 
     /// <summary>
-    /// 스테이지 종료후 랜덤 아이템 상점
+    /// 렌덤 아이템 추출용 함수
     /// </summary>
+    /// <param name="count"> 추출 갯수 </param>
+    /// <param name="level"> 레벨 보정값 </param>
     /// <returns></returns>
-    public List<BattleCardData> GetResultItems(int level = -999, int count = 3)
+    public List<BattleCardData> GetResultItems(int count = 3, int level = 0)
     {
-        if (level < 0) level = DataCenter.Instance.playerstate.level;
+        int t_level = Mathf.Clamp(DataCenter.Instance.playerstate.level + level, 0, 9);
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
-        DataCenter.Instance.GetResultPercentData(level, (data) =>
+        DataCenter.Instance.GetResultPercentData(t_level, (data) =>
         {
             resultPercent = Instantiate(data);
         });
