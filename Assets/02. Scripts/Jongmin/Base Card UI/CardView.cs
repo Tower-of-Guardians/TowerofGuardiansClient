@@ -28,7 +28,7 @@ public class CardView : MonoBehaviour, ICardView
 
     private Image[] m_star_objects;
 
-    private void Awake()
+    protected virtual void Awake()
         => m_star_objects = m_star_group.GetComponentsInChildren<Image>();
 
     public virtual void InitUI(CardData card_data)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 13370b9ff9f58254d8de8d0fea7a8c5e
+guid: f8ac4623b07a0a448ab441da06c152f8
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -11,6 +11,9 @@ TextureImporter:
   - first:
       213: -2740870884985674476
     second: Player Portrait_2
+  - first:
+      213: -6673440742906364287
+    second: Player Portrait_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,10 +112,10 @@ TextureImporter:
       name: Player Portrait_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1072
-        height: 956
+        x: 9
+        y: 979
+        width: 13
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,10 +134,10 @@ TextureImporter:
       name: Player Portrait_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 478
-        width: 7
-        height: 12
+        x: 15
+        y: 0
+        width: 2548
+        height: 2149
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +156,10 @@ TextureImporter:
       name: Player Portrait_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 450
-        width: 5
-        height: 8
+        x: 2
+        y: 940
+        width: 14
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,6 +170,28 @@ TextureImporter:
       bones: []
       spriteID: 415e73da37876f9d0800000000000000
       internalID: -2740870884985674476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player Portrait_3
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 906
+        width: 17
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18e7271700d2363a0800000000000000
+      internalID: -6673440742906364287
       vertices: []
       indices: 
       edges: []
@@ -188,6 +213,7 @@ TextureImporter:
       Player Portrait_0: -3279152384857617569
       Player Portrait_1: -8097111120427589914
       Player Portrait_2: -2740870884985674476
+      Player Portrait_3: -6673440742906364287
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
