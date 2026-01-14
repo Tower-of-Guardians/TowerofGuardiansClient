@@ -616,6 +616,7 @@ MonoBehaviour:
   m_description_label: {fileID: 908598072533431834}
   m_atk_label: {fileID: 8403034050420387628}
   m_def_label: {fileID: 4275732057274710079}
+  m_star_group: {fileID: 2065916787976966213}
 --- !u!1 &6421642872887914929
 GameObject:
   m_ObjectHideFlags: 0

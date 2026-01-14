@@ -139,6 +139,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             ExecuteEvents.Execute(hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
             
         m_presenter.ToggleFieldPreview(false);
+        m_presenter.HoverCard = null;
 
         m_preview_object.SetActive(false);
         CommitChange();

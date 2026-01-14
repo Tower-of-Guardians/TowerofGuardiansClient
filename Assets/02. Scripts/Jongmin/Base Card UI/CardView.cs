@@ -31,7 +31,7 @@ public class CardView : MonoBehaviour, ICardView
     private void Awake()
         => m_star_objects = m_star_group.GetComponentsInChildren<Image>();
 
-    public void InitUI(CardData card_data)
+    public virtual void InitUI(CardData card_data)
     {
         m_card_image.sprite = card_data.cardimage;
         m_card_item_image.sprite = card_data.iconimage;
