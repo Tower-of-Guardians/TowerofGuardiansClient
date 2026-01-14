@@ -42,7 +42,7 @@ public enum CharacterCode
 {
     Eccliss,
     Xylvia,
-    Kane,
+    Heka,
     Kravian,
     Lucien,
 }
