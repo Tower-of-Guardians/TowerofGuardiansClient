@@ -7,9 +7,6 @@ public class HandView : MonoBehaviour, IHandView
     [Header("캔버스 그룹")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
-    [Header("테스트 제거 버튼")]
-    [SerializeField] private Button m_remove_button;
-
     private HandPresenter m_presenter;
 
     public void Inject(HandUIDesigner designer,

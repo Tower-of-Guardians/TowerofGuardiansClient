@@ -1,0 +1,940 @@
+fileFormatVersion: 2
+guid: 85f77de63d1997a49b2cb9963bd41fc1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -431936217018797723
+    second: Bar UI_0
+  - first:
+      213: -7526506039980214500
+    second: Bar UI_1
+  - first:
+      213: 2331671591463614459
+    second: Bar UI_2
+  - first:
+      213: 8115845860489732148
+    second: Bar UI_3
+  - first:
+      213: -3957431947553862705
+    second: Bar UI_4
+  - first:
+      213: -6502573583078748806
+    second: Bar UI_5
+  - first:
+      213: 2232697654763648322
+    second: Bar UI_6
+  - first:
+      213: 8351015154161515083
+    second: Bar UI_7
+  - first:
+      213: -3182275232043692024
+    second: Bar UI_8
+  - first:
+      213: 6569930721598778394
+    second: Bar UI_9
+  - first:
+      213: -1142307673536433589
+    second: Bar UI_10
+  - first:
+      213: 3265094996324830013
+    second: Bar UI_11
+  - first:
+      213: 1418629094251524598
+    second: Bar UI_12
+  - first:
+      213: 2579516835295387601
+    second: Bar UI_13
+  - first:
+      213: 691172798284926618
+    second: Bar UI_14
+  - first:
+      213: 4766221524772183401
+    second: Bar UI_15
+  - first:
+      213: 3895553151849088861
+    second: Bar UI_16
+  - first:
+      213: 5680913816004611010
+    second: Bar UI_17
+  - first:
+      213: 1597126651679235490
+    second: Bar UI_18
+  - first:
+      213: -306216575908384304
+    second: Bar UI_19
+  - first:
+      213: 7063344487716655902
+    second: Bar UI_20
+  - first:
+      213: -7456213333894815393
+    second: Bar UI_21
+  - first:
+      213: 3159423999107064123
+    second: Bar UI_22
+  - first:
+      213: -8250492809068387259
+    second: Bar UI_23
+  - first:
+      213: -2564967697035869706
+    second: Bar UI_24
+  - first:
+      213: 4148244382622425425
+    second: Bar UI_25
+  - first:
+      213: 9204135261995244087
+    second: Bar UI_26
+  - first:
+      213: 8852775508702702687
+    second: Bar UI_27
+  - first:
+      213: -1536281789579445336
+    second: Bar UI_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bar Panel
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 808
+        width: 1920
+        height: 480
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 561f7f29c44710af0800000000000000
+      internalID: -431936217018797723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack Field Panel
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 505
+        width: 658
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c17b52f32aa7c8790800000000000000
+      internalID: -7526506039980214500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rate Panel
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 650
+        width: 74
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf7fe0e65f2cb5020800000000000000
+      internalID: 2331671591463614459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defend Field Panel
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 505
+        width: 658
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 430a05e7fc641a070800000000000000
+      internalID: 8115845860489732148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Action Maual Panel
+      rect:
+        serializedVersion: 2
+        x: 1477
+        y: 625
+        width: 192
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 37, y: 33, z: 30, w: 32}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcb054f6c906419c0800000000000000
+      internalID: -3957431947553862705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 358
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7d80ce37c732c5a0800000000000000
+      internalID: -6502573583078748806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 358
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 245f80b00b22cfe10800000000000000
+      internalID: 2232697654763648322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_7
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 358
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a73b18904c4e370800000000000000
+      internalID: 8351015154161515083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_8
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 358
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 13, z: 10, w: 8}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8001380798946d3d0800000000000000
+      internalID: -3182275232043692024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throw Button Normal
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 316
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1c22dbae251d2b50800000000000000
+      internalID: 6569930721598778394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throw Button Highlight
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 316
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4278ae1935b520f0800000000000000
+      internalID: -1142307673536433589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throw Button Pressed
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 316
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3bc8d59992ff4d20800000000000000
+      internalID: 3265094996324830013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview 1
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 259
+        width: 116
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f175ee15abffa310800000000000000
+      internalID: 1418629094251524598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 270
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dfdbe315e84cc320800000000000000
+      internalID: 2579516835295387601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_14
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 270
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9e8f208ff9879900800000000000000
+      internalID: 691172798284926618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_15
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 270
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96dddd86935052240800000000000000
+      internalID: 4766221524772183401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_16
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 270
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 8, z: 8, w: 10}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d574e9bb3f8cf0630800000000000000
+      internalID: 3895553151849088861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Draw Button Highlight
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 156
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cb40925409a6de40800000000000000
+      internalID: 5680913816004611010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Draw Button Pressed
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 156
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ad56ae4a322a2610800000000000000
+      internalID: 1597126651679235490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_19
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 182
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d1f4a885a910cbf0800000000000000
+      internalID: -306216575908384304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_20
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 182
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e13909c636a060260800000000000000
+      internalID: 7063344487716655902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_21
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 182
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f512baf3a75368890800000000000000
+      internalID: -7456213333894815393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_22
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 182
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 9, z: 8, w: 10}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b31ee99436788db20800000000000000
+      internalID: 3159423999107064123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Draw Button Normal
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 156
+        width: 86
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 544609dc08c508d80800000000000000
+      internalID: -8250492809068387259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_24
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 94
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f143d52877676cd0800000000000000
+      internalID: -2564967697035869706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 94
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15128b3a946819930800000000000000
+      internalID: 4148244382622425425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_26
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 94
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73a9fd35148abbf70800000000000000
+      internalID: 9204135261995244087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bar UI_27
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 94
+        width: 192
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 13, z: 11, w: 8}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5ca080db606bda70800000000000000
+      internalID: 8852775508702702687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throw Icon
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 14
+        width: 66
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ab37391ad70eaae0800000000000000
+      internalID: -1536281789579445336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview 2
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 259
+        width: 117
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdabd65757467b64b8be90a44c4cd65a
+      internalID: 657646309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview 3
+      rect:
+        serializedVersion: 2
+        x: 1673
+        y: 259
+        width: 117
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aeae3560ba54b4478c93a2876e75c6b
+      internalID: 1114319413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Preview 4
+      rect:
+        serializedVersion: 2
+        x: 1790
+        y: 259
+        width: 116
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03415ac9724cad046b378a4f1dfa2e9f
+      internalID: -282631960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fdd00bf57089aa146955857c0027ed4c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Action Maual Panel: -3957431947553862705
+      Attack Field Panel: -7526506039980214500
+      Bar Panel: -431936217018797723
+      Bar UI_13: 2579516835295387601
+      Bar UI_14: 691172798284926618
+      Bar UI_15: 4766221524772183401
+      Bar UI_16: 3895553151849088861
+      Bar UI_19: -306216575908384304
+      Bar UI_20: 7063344487716655902
+      Bar UI_21: -7456213333894815393
+      Bar UI_22: 3159423999107064123
+      Bar UI_24: -2564967697035869706
+      Bar UI_25: 4148244382622425425
+      Bar UI_26: 9204135261995244087
+      Bar UI_27: 8852775508702702687
+      Bar UI_5: -6502573583078748806
+      Bar UI_6: 2232697654763648322
+      Bar UI_7: 8351015154161515083
+      Bar UI_8: -3182275232043692024
+      Defend Field Panel: 8115845860489732148
+      Draw Button Highlight: 5680913816004611010
+      Draw Button Normal: -8250492809068387259
+      Draw Button Pressed: 1597126651679235490
+      Preview 1: 1418629094251524598
+      Preview 2: 657646309
+      Preview 3: 1114319413
+      Preview 4: -282631960
+      Rate Panel: 2331671591463614459
+      Throw Button Highlight: -1142307673536433589
+      Throw Button Normal: 6569930721598778394
+      Throw Button Pressed: 3265094996324830013
+      Throw Icon: -1536281789579445336
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

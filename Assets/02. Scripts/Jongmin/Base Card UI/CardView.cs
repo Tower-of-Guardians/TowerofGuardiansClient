@@ -23,7 +23,15 @@ public class CardView : MonoBehaviour, ICardView
     [Header("카드 방어력")]
     [SerializeField] protected TMP_Text m_card_def_label;
 
-    public void InitUI(CardData card_data)
+    [Header("카드 성급 그룹")]
+    [SerializeField] private GameObject m_star_group;
+
+    private Image[] m_star_objects;
+
+    private void Awake()
+        => m_star_objects = m_star_group.GetComponentsInChildren<Image>();
+
+    public virtual void InitUI(CardData card_data)
     {
         m_card_image.sprite = card_data.cardimage;
         m_card_item_image.sprite = card_data.iconimage;
@@ -31,6 +39,12 @@ public class CardView : MonoBehaviour, ICardView
         m_card_description_label.text = card_data.effectDescription;
         m_card_atk_label.text = card_data.ATK.ToString();
         m_card_def_label.text = card_data.DEF.ToString();
+
+        for(int i = 0; i < m_star_objects.Length; i++)
+            m_star_objects[i].gameObject.SetActive(false);
+
+        for(int i = 0; i < card_data.star + 1; i++)
+            m_star_objects[i].gameObject.SetActive(true);
     }
 
     public virtual void Return()
