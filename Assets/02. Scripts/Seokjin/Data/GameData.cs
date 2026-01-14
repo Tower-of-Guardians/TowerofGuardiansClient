@@ -206,7 +206,7 @@ public class GameData : Singleton<GameData>
     /// <returns></returns>
     public List<BattleCardData> GetResultItems(int count = 3, int level = 0)
     {
-        int t_level = Mathf.Clamp(DataCenter.Instance.playerstate.level + level, 0, 9);
+        int t_level = Mathf.Clamp(DataCenter.Instance.playerstate.level + level, 1, 9);
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
         DataCenter.Instance.GetResultPercentData(t_level, (data) =>
         {
