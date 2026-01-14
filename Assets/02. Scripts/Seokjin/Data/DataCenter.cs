@@ -475,24 +475,40 @@ public class DataCenter : Singleton<DataCenter>
 
     public void SetPlayerState(PlayerState data)
     {
-        /*playerstate = data;*/
+        playerstate = data;
         playerStateEvent?.Invoke(playerstate);
     }
     public void SetMoney(int money)
     {
-        /*playerstate.money = money;*/
+        playerstate.money += money;
         playerMoneyEvent?.Invoke(playerstate.money);
     }
     public void SetPlayerHP(int hp)
     {
-       /* playerstate.hp = hp;*/
+        playerstate.hp += hp;
+        playerstate.hp = Mathf.Clamp(playerstate.hp, 0, playerstate.maxhp);
         playerHpEvent?.Invoke(hp);
     }
-    public void SetPlayerLevel(int levet, int experience)
+    public void SetPlayerLevel(int experience)
     {
-        /*playerstate.level = levet;
-        playerstate.experience = experience;*/
-        playerLevelEvent?.Invoke(levet, experience);
+        if (playerstate.level >= 9)
+        {
+            playerstate.level = 9;
+            playerLevelEvent?.Invoke(playerstate.level, 0);
+        }
+        else
+        {
+            playerstate.experience += experience;
+
+            if (playerstate.maxexperience <= playerstate.experience)
+            {
+                int ex = playerstate.experience - playerstate.maxexperience;
+                playerstate.level++;
+                playerstate.maxexperience = 25 + 6 * (playerstate.level - 1); // 경험치 수식
+                playerstate.experience = ex;
+            }
+            playerLevelEvent?.Invoke(playerstate.level, playerstate.experience);
+        }
     }
     private void OnDisable()
     {

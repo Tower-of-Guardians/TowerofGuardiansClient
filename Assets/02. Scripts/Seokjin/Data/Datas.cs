@@ -20,8 +20,10 @@ public class BattleCardData
 public class PlayerState
 {
     public int level;
+    public int maxexperience;
     public int experience;
     public int hp;
+    public int maxhp;
     public int lhp;
     public int atk;
     public int latk;
