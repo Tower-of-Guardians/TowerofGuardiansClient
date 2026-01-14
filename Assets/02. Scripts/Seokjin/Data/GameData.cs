@@ -18,7 +18,6 @@ public class GameData : Singleton<GameData>
     public List<CardData> attackField = new List<CardData>();
     public List<CardData> defenseField = new List<CardData>();
 
-    public int player_lever = 1;
     private void Start()
     {
         StartCoroutine(FirstDeckSet());
@@ -203,16 +202,17 @@ public class GameData : Singleton<GameData>
     /// 스테이지 종료후 랜덤 아이템 상점
     /// </summary>
     /// <returns></returns>
-    public List<BattleCardData> GetResultItems()
+    public List<BattleCardData> GetResultItems(int level = -999, int count = 3)
     {
+        if (level < 0) level = DataCenter.Instance.playerstate.level;
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
-        DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
+        DataCenter.Instance.GetResultPercentData(level, (data) =>
         {
             resultPercent = Instantiate(data);
         });
         List<BattleCardData> results = new List<BattleCardData>();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < count; i++)
         {
             float roll = UnityEngine.Random.Range(0, 100);
             float accumulatedChance = 0;
@@ -265,7 +265,7 @@ public class GameData : Singleton<GameData>
     public List<float> GetResultPercent()
     {
         ResultPercentData resultPercent = ScriptableObject.CreateInstance<ResultPercentData>();
-        DataCenter.Instance.GetResultPercentData(player_lever, (data) =>
+        DataCenter.Instance.GetResultPercentData(DataCenter.Instance.playerstate.level, (data) =>
         {
             resultPercent = Instantiate(data);
         });
