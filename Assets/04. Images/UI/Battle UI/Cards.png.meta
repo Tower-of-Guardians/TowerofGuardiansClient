@@ -1,43 +1,28 @@
 fileFormatVersion: 2
-guid: 176c4e61a5860f94684ae2abaa0f72b5
+guid: d889177a9fd4c0c49891228819c04ce5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4457850898058260020
-    second: Card_0
+      213: -6555575649291838755
+    second: Cards_0
   - first:
-      213: 3609959554996883812
-    second: Card_1
+      213: -1636742031616846006
+    second: Cards_1
   - first:
-      213: 693384124834221472
-    second: Card_2
+      213: -7557494978891415441
+    second: Cards_2
   - first:
-      213: 7254593484104784328
-    second: Card_3
+      213: 6220208007999549204
+    second: Cards_3
   - first:
-      213: 3515724163430638945
-    second: Card_4
+      213: -2613411450045547498
+    second: Cards_4
   - first:
-      213: -8627803510776909774
-    second: Card_5
+      213: 6084249756908604392
+    second: Cards_5
   - first:
-      213: -178499864975547042
-    second: Card_6
-  - first:
-      213: -815812442243144733
-    second: Card_7
-  - first:
-      213: 8946199758543506004
-    second: Card_8
-  - first:
-      213: -5389640312921232770
-    second: Card_9
-  - first:
-      213: 4162875479951319663
-    second: Card_10
-  - first:
-      213: 3027756237851308148
-    second: Card_11
+      213: -6663811380663864060
+    second: Cards_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -133,397 +118,331 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Card_0
+      name: Default
       rect:
         serializedVersion: 2
         x: 0
-        y: 400
-        width: 120
-        height: 180
+        y: 1200
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc1d4971a388222c0800000000000000
-      internalID: -4457850898058260020
+      spriteID: dda52cd0eaae505a0800000000000000
+      internalID: -6555575649291838755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 200
-        width: 120
-        height: 180
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 461dd11c617291230800000000000000
-      internalID: 3609959554996883812
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ATK Background
-      rect:
-        serializedVersion: 2
-        x: 732
-        y: 376
-        width: 16
-        height: 2
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0ad83a510356f9900800000000000000
-      internalID: 693384124834221472
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DEF Background
-      rect:
-        serializedVersion: 2
-        x: 812
-        y: 376
-        width: 16
-        height: 2
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8c9dde9565e7da460800000000000000
-      internalID: 7254593484104784328
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Name Panel
-      rect:
-        serializedVersion: 2
-        x: 738
-        y: 340
-        width: 66
-        height: 18
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1656a81ef7c5ac030800000000000000
-      internalID: 3515724163430638945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Description Panel
-      rect:
-        serializedVersion: 2
-        x: 725
-        y: 203
-        width: 100
-        height: 40
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3e3e0c8f7e6ada4f0800000000000000
-      internalID: -815812442243144733
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_2
-      rect:
-        serializedVersion: 2
-        x: 732
-        y: 138
-        width: 33
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91a654cd5470dd04b8283e7b431cdd10
-      internalID: -1954553541
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_3
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 400
-        width: 120
-        height: 180
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7e5eeb7fdf715aa49bc7bf4781846309
-      internalID: -70072621
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_4
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 400
-        width: 120
-        height: 180
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5c0b9dd8e73bba74eb8ccc3b9e71ffed
-      internalID: 1767489792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_5
+      name: Normal 1
       rect:
         serializedVersion: 2
         x: 360
-        y: 400
-        width: 120
-        height: 180
+        y: 1200
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 75c8bfd49e7b179479d2beb556f8149d
-      internalID: -8627803510776909774
+      spriteID: a47d6884bcf1949e0800000000000000
+      internalID: -1636742031616846006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_6
-      rect:
-        serializedVersion: 2
-        x: 480
-        y: 400
-        width: 120
-        height: 180
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6ebc2debe611c344a46b07ee9af2de5
-      internalID: -178499864975547042
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_7
-      rect:
-        serializedVersion: 2
-        x: 600
-        y: 400
-        width: 120
-        height: 180
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1fbe3066126c2da4991d5b7265560cc5
-      internalID: 2029748775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Card_8
+      name: Normal 2
       rect:
         serializedVersion: 2
         x: 720
-        y: 400
-        width: 120
-        height: 180
+        y: 1200
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 268c032d4da376249b8e3c994c144197
-      internalID: 8946199758543506004
+      spriteID: f600167ab526e1790800000000000000
+      internalID: -7557494978891415441
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_9
+      name: Normal 3
       rect:
         serializedVersion: 2
-        x: 120
-        y: 200
-        width: 120
-        height: 180
+        x: 1080
+        y: 1200
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 72ec8ab251fcc9b43bd6a29cfc052ba8
-      internalID: -5389640312921232770
+      spriteID: 41f6ad92a3e925650800000000000000
+      internalID: 6220208007999549204
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_10
+      name: Rare 1
       rect:
         serializedVersion: 2
-        x: 240
-        y: 200
-        width: 120
-        height: 180
+        x: 1440
+        y: 1200
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61cb814f12c4bbbd0800000000000000
+      internalID: -2613411450045547498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rare 2
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1200
+        width: 360
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8eb4b4d0be89f6450800000000000000
+      internalID: 6084249756908604392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rare 3
+      rect:
+        serializedVersion: 2
+        x: 2160
+        y: 1200
+        width: 360
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 405335d0bd26583a0800000000000000
+      internalID: -6663811380663864060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Unique 1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 585
+        width: 360
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dbd7e0cc1deafb74e91d000102169a99
-      internalID: 4162875479951319663
+      spriteID: f5f1bab48aad089439ad629fa3770bb2
+      internalID: 564948614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_11
+      name: Unique 2
       rect:
         serializedVersion: 2
         x: 360
-        y: 200
-        width: 120
-        height: 180
+        y: 585
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4077181715d1b134c87058c5953c205e
-      internalID: 3027756237851308148
+      spriteID: f755a9f620423ad48996041c3aa844ee
+      internalID: 689967810
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_12
+      name: Unique 3
       rect:
         serializedVersion: 2
-        x: 480
-        y: 200
-        width: 120
-        height: 180
+        x: 720
+        y: 585
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67617e4d7fb22c845bb5eef148314185
-      internalID: -1500507708
+      spriteID: d246ea45808c85a428aa7e7231e91506
+      internalID: 1394468112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_13
+      name: Epic 1
       rect:
         serializedVersion: 2
-        x: 600
-        y: 200
-        width: 120
-        height: 180
+        x: 1080
+        y: 585
+        width: 360
+        height: 540
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b0ee8ff69f67d04692cbf57c52c5555
-      internalID: 266012732
+      spriteID: 0931e815a497c7c4db0a71d44275e8ec
+      internalID: -384371065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Epic 2
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 585
+        width: 360
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1107fc036ab0da478a03b502795655d
+      internalID: 13062051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Epic 3
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 585
+        width: 360
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfc2c6d74447a64469f79bbdbf72c770
+      internalID: -570441315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Star
+      rect:
+        serializedVersion: 2
+        x: 2199
+        y: 915
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18924d1100712c84bac75aa0537479e0
+      internalID: 805186735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lock Image
+      rect:
+        serializedVersion: 2
+        x: 2292
+        y: 897
+        width: 78
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7579de87ffdef944faf152a44f0d2948
+      internalID: 339615195
       vertices: []
       indices: 
       edges: []
@@ -532,7 +451,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: de6dd1f6750e0784eb1a933919580358
+    spriteID: ed031056bf6485f478b37703176c765a
     internalID: 0
     vertices: []
     indices: 
@@ -542,24 +461,27 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ATK Background: 693384124834221472
-      Card_0: -4457850898058260020
-      Card_1: 3609959554996883812
-      Card_10: 4162875479951319663
-      Card_11: 3027756237851308148
-      Card_12: -1500507708
-      Card_13: 266012732
-      Card_2: -1954553541
-      Card_3: -70072621
-      Card_4: 1767489792
-      Card_5: -8627803510776909774
-      Card_6: -178499864975547042
-      Card_7: 2029748775
-      Card_8: 8946199758543506004
-      Card_9: -5389640312921232770
-      DEF Background: 7254593484104784328
-      Description Panel: -815812442243144733
-      Name Panel: 3515724163430638945
+      Cards_15: -2134527194
+      Cards_16: -1973650535
+      Cards_17: -2066051578
+      Cards_18: 634875157
+      Cards_19: 1715517808
+      Cards_20: -356783463
+      Default: -6555575649291838755
+      Epic 1: -384371065
+      Epic 2: 13062051
+      Epic 3: -570441315
+      Lock Image: 339615195
+      Normal 1: -1636742031616846006
+      Normal 2: -7557494978891415441
+      Normal 3: 6220208007999549204
+      Rare 1: -2613411450045547498
+      Rare 2: 6084249756908604392
+      Rare 3: -6663811380663864060
+      Star: 805186735
+      Unique 1: 564948614
+      Unique 2: 689967810
+      Unique 3: 1394468112
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
