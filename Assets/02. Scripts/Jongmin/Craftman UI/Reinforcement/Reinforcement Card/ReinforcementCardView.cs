@@ -5,8 +5,11 @@ public class ReinforcementCardView : CardView, IReinforcementCardView
 {
     private Animator m_animator;
 
-    private void Awake()
-        => m_animator = GetComponent<Animator>();
+    protected override void Awake()
+    {
+        base.Awake();
+        m_animator = GetComponent<Animator>();
+    }
 
     public void UpgradeATK(float atk)
     {

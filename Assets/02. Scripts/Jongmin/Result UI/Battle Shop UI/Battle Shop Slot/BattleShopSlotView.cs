@@ -16,8 +16,9 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
 
     private BattleShopSlotPresenter m_presenter;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // TODO: 카드 구매 이벤트 등록
     }
 
