@@ -473,9 +473,8 @@ public class DataCenter : Singleton<DataCenter>
     }
     #endregion
 
-    public void SetPlayerState(PlayerState data)
+    public void SetPlayerState()
     {
-        playerstate = data;
         playerStateEvent?.Invoke(playerstate);
     }
     public void SetMoney(int money)
@@ -500,7 +499,7 @@ public class DataCenter : Singleton<DataCenter>
         {
             playerstate.experience += experience;
 
-            if (playerstate.maxexperience <= playerstate.experience)
+            while (playerstate.maxexperience <= playerstate.experience) // 혹시 모를 과다 경험치 획득시 연속 레벨업 대비
             {
                 int ex = playerstate.experience - playerstate.maxexperience;
                 playerstate.level++;
