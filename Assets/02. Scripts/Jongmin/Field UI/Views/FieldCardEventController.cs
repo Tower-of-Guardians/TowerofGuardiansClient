@@ -243,6 +243,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         m_another_event_controller.Subscribe(m_this_presenter.HoverCard);
 
         var card_presenter = m_container.GetPresenter(m_this_presenter.HoverCard);
+        card_presenter.ToggleLock();
         m_another_presenter.Container.Add(m_this_presenter.HoverCard, card_presenter);
         m_this_presenter.Container.Remove(m_this_presenter.HoverCard);
     }

@@ -774,6 +774,8 @@ MonoBehaviour:
   m_card_def_label: {fileID: 951175292473989018}
   m_star_group: {fileID: 8776367001970341997}
   m_canvas_group: {fileID: 4229501210860241730}
+  m_atk_lock_image: {fileID: 3519918085230263738}
+  m_def_lock_image: {fileID: 7496036098124992281}
 --- !u!225 &4229501210860241730
 CanvasGroup:
   m_ObjectHideFlags: 0

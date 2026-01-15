@@ -31,7 +31,7 @@ public class FieldCardService
     public void Add(BattleCardData card_data)
     {
         var view = m_factory.InstantiateCardView();
-        var presenter = new FieldCardPresenter(view, card_data);
+        var presenter = new FieldCardPresenter(view, card_data, m_is_atk);
 
         m_container.Add(view, presenter);
         m_layout_controller.UpdateLayout(false, false, false);
