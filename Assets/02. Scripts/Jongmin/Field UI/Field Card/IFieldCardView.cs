@@ -11,4 +11,7 @@ public interface IFieldCardView : ICardView,
     event Action OnBeginDragAction;
     event Action<Vector2> OnDragAction;
     event Action OnEndDragAction;
+
+    void InitUI(CardData card_data, bool is_atk);
+    void ToggleLock();
 }

@@ -43,7 +43,7 @@ public class CardView : MonoBehaviour, ICardView
         for(int i = 0; i < m_star_objects.Length; i++)
             m_star_objects[i].gameObject.SetActive(false);
 
-        for(int i = 0; i < card_data.star + 1; i++)
+        for(int i = 0; i < card_data.star; i++)
             m_star_objects[i].gameObject.SetActive(true);
     }
 
