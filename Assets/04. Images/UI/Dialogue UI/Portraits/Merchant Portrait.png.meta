@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: f8ac4623b07a0a448ab441da06c152f8
+guid: c39b43e4a0458ac4086af9a3aa3e9872
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3279152384857617569
-    second: Player Portrait_0
-  - first:
-      213: -8097111120427589914
-    second: Player Portrait_1
-  - first:
-      213: -2740870884985674476
-    second: Player Portrait_2
-  - first:
-      213: -6673440742906364287
-    second: Player Portrait_3
+      213: 6821027440879438252
+    second: Shop Portrait_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,35 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player Portrait_0
+      name: Shop Portrait_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 979
-        width: 13
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f5bcf28974c1e72d0800000000000000
-      internalID: -3279152384857617569
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Portrait_1
-      rect:
-        serializedVersion: 2
-        x: 15
+        x: 1041
         y: 0
-        width: 2548
-        height: 2149
+        width: 879
+        height: 1000
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,52 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ee5c08165841af80800000000000000
-      internalID: -8097111120427589914
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Portrait_2
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 940
-        width: 14
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 415e73da37876f9d0800000000000000
-      internalID: -2740870884985674476
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player Portrait_3
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 906
-        width: 17
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 18e7271700d2363a0800000000000000
-      internalID: -6673440742906364287
+      spriteID: ca98fc0715829ae50800000000000000
+      internalID: 6821027440879438252
       vertices: []
       indices: 
       edges: []
@@ -210,10 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player Portrait_0: -3279152384857617569
-      Player Portrait_1: -8097111120427589914
-      Player Portrait_2: -2740870884985674476
-      Player Portrait_3: -6673440742906364287
+      Shop Portrait_0: 6821027440879438252
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
