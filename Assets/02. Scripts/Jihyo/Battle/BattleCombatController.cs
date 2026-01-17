@@ -111,15 +111,19 @@ public class BattleCombatController : MonoBehaviour, IBattleController
         // TODO: 시너지 발동, 즉발 카드 효과 발동
         // yield return StartCoroutine(ActivateSynergyAndInstantCards());
 
-        // 공격력 보호력 계산
-        player.ApplyFieldStatsToPlayer();
+        // 공격력 적용 및 이펙트
+        player.ApplyAttackStats();
+        yield return new WaitForSeconds(statAnimationWaitTime);
 
         // 공격력 확인
         int currentAttack = player.AttackValue;
-        
+
         playerAnimation.TriggerAttackByValue(currentAttack);
 
         yield return StartCoroutine(playerAnimation.WaitForEnforceAnimationComplete(currentAttack));
+
+        // 방어력 이펙트
+        yield return StartCoroutine(player.ApplyDefenseStatsWithEffect());
 
         // 공격 위치로 이동
         yield return StartCoroutine(player.MoveToAttackPosition(attackAnchorPosition, playerAttackHitsAll));
@@ -130,8 +134,15 @@ public class BattleCombatController : MonoBehaviour, IBattleController
             playerAnimation.TriggerAttack();
         }
 
-        // TODO: 공격 애니메이션 후 0.5초 대기 후 데미지 적용(하드코딩)
-        yield return new WaitForSeconds(0.5f);
+        // TODO: 공격 애니메이션 대기 후 데미지 적용(하드코딩)
+        if (currentAttack < 10)
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.8f);
+        }
 
         // 공격 실행
         if (playerTargets != null)

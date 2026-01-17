@@ -15,6 +15,9 @@ public class Player : BaseUnit
     [Header("Animation")]
     private PlayerAnimation playerAnimation;
 
+    [Header("Effects")]
+    [SerializeField] private GameObject effectShield;
+
     [Header("Sprite")]
     [SerializeField] private Transform spriteTransform;
     [SerializeField] private float singleTargetAttackOffset = 3.5f;
@@ -35,6 +38,7 @@ public class Player : BaseUnit
 
     public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus);
     public float DefenseValue => cardDefenseBonus;
+    public float GetStatAnimationWaitTime() => statAnimationDuration;
 
     protected override void Awake()
     {
@@ -266,7 +270,8 @@ public class Player : BaseUnit
         // 보호력 먼저 감소, 남은 데미지는 체력으로
         base.TakeDamage(amount);
     }
-    public void ApplyFieldStatsToPlayer()
+    
+    public void ApplyAttackStats()
     {
         if (GameData.Instance != null)
         {
@@ -278,6 +283,15 @@ public class Player : BaseUnit
             cardAttackBonus = fieldAttackPower;
             lastAttackBonus = cardAttackBonus;
             
+            // 공격력 애니메이션
+            AnimateAttackText(currentAttack, targetAttack);
+        }
+    }
+
+    public void ApplyDefenseStats()
+    {
+        if (GameData.Instance != null)
+        {
             // 기존 보호력이 있으면 그 값에 더하고, 없으면 새로 설정
             float fieldDefensePower = GameData.Instance.DefenseField();
             float currentProtection = protectionValue;
@@ -286,9 +300,34 @@ public class Player : BaseUnit
             cardDefenseBonus = fieldDefensePower;
             lastDefenseBonus = cardDefenseBonus;
             
-            // 공격력과 보호력 애니메이션
-            AnimateAttackText(currentAttack, targetAttack);
+            // 보호력 애니메이션
             AnimateProtection(currentProtection, targetProtection);
+        }
+    }
+
+    public IEnumerator ShowDefenseEffect()
+    {
+        if (effectShield != null)
+        {
+            effectShield.SetActive(true);
+            yield return new WaitForSeconds(1.0f);
+            effectShield.SetActive(false);
+        }
+    }
+
+    public IEnumerator ApplyDefenseStatsWithEffect()
+    {
+        if (GameData.Instance != null)
+        {
+            float fieldDefensePower = GameData.Instance.DefenseField();
+            
+            // 보호력 카드가 있는 경우에만 연출 실행
+            if (fieldDefensePower > 0)
+            {
+                StartCoroutine(ShowDefenseEffect());
+                ApplyDefenseStats();
+                yield return new WaitForSeconds(1.0f);
+            }
         }
     }
     
