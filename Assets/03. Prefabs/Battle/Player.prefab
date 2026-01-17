@@ -385,7 +385,7 @@ MonoBehaviour:
   healthAnimationDuration: 0.3
   healthAnimationEase: 6
   spriteTransform: {fileID: 5132067724293868386}
-  singleTargetAttackOffset: 2
+  singleTargetAttackOffset: 3.5
   attackMoveDuration: 0.2
   returnMoveDuration: 0.2
   statAnimationDuration: 0.5
@@ -402,12 +402,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c8807489790f04b8144ecf930ad108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack1TriggerName: Attack1
   attack1StateName: Player1_Attack1
-  attack2TriggerName: Attack2
   attack2StateName: Player1_Attack2
-  attack3TriggerName: Attack3
   attack3StateName: Player1_Attack3
+  attack2EnforceStateName: Player1_Attack2_Enforce
+  attack3EnforceStateName: Player1_Attack3_Enforce
+  attack2IdleStateName: Player1_Attack2_Idle
+  attack3IdleStateName: Player1_Attack3_Idle
   attackMotionDuration: 0.3
   lightAttack: 10
   normalAttack: 20

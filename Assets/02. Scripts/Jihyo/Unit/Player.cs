@@ -17,7 +17,7 @@ public class Player : BaseUnit
 
     [Header("Sprite")]
     [SerializeField] private Transform spriteTransform;
-    [SerializeField] private float singleTargetAttackOffset = 3.0f;
+    [SerializeField] private float singleTargetAttackOffset = 3.5f;
     [SerializeField] private float attackMoveDuration = 0.2f;
     [SerializeField] private float returnMoveDuration = 0.2f;
 
