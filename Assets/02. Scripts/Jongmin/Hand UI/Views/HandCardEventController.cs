@@ -88,7 +88,12 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private void OnBeginDragCard()
     {
         if(m_presenter.HoverCard == null)
+        {
+            m_presenter.ToggleFieldPreview(false);
+            m_preview_object.SetActive(false);
+            m_layout_controller.UpdateLayout();
             return;
+        }
             
         (m_presenter.HoverCard as HandCardView).transform.DOKill();
 
@@ -102,7 +107,12 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private void OnDragCard(Vector2 position)
     {
         if(m_presenter.HoverCard == null)
+        {
+            m_presenter.ToggleFieldPreview(false);
+            m_preview_object.SetActive(false);
+            m_layout_controller.UpdateLayout();
             return;
+        }
 
         var target_card = m_presenter.HoverCard as HandCardView;
         target_card.transform.position = position;
@@ -131,7 +141,12 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private void OnEndDragCard()
     {
         if(m_presenter.HoverCard == null)
+        {
+            m_presenter.ToggleFieldPreview(false);
+            m_preview_object.SetActive(false);
+            m_layout_controller.UpdateLayout();
             return;
+        }
 
         var hit = CheckField(out var pointer_data);
         var drop_handler = hit?.gameObject.GetComponent<IDropHandler>();
