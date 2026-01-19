@@ -26,10 +26,17 @@ public class CardView : MonoBehaviour, ICardView
     [Header("카드 성급 그룹")]
     [SerializeField] private GameObject m_star_group;
 
+    [Header("카드 시너지 프레임 그룹")]
+    [SerializeField] private Transform m_synergy_frame_group;
+
     private Image[] m_star_objects;
+    private Image[] m_synergy_frame_objects;
 
     protected virtual void Awake()
-        => m_star_objects = m_star_group.GetComponentsInChildren<Image>();
+    {
+        m_star_objects = m_star_group.GetComponentsInChildren<Image>();
+        m_synergy_frame_objects = m_synergy_frame_group.GetComponentsInChildren<Image>();
+    }
 
     public virtual void InitUI(CardData card_data)
     {
@@ -45,6 +52,9 @@ public class CardView : MonoBehaviour, ICardView
 
         for(int i = 0; i < card_data.star; i++)
             m_star_objects[i].gameObject.SetActive(true);
+
+        for(int i = 0; i < m_synergy_frame_objects.Length; i++)
+            m_synergy_frame_objects[i].sprite = card_data.synergyFrameImage;
     }
 
     public virtual void Return()
