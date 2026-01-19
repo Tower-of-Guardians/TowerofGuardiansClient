@@ -1,7 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.U2D;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 enum CSVData
 {
@@ -25,7 +28,7 @@ public class CSVToScriptableObject
         csv_data = CSVData.CardData;
         csv_name = "CardData";
         soFolderPath = "Assets/Datas/" + csv_name;
-        imageResourcesPath = "Assets/04. Images/Test/";
+        imageResourcesPath = "Assets/04. Images/";
         GenerateItemSOs();
     }
 
@@ -173,36 +176,22 @@ public class CSVToScriptableObject
 
             if (!string.IsNullOrEmpty("Card"))
             {
-                string fullSpriteSheetPath = Path.Combine(imageResourcesPath +"Card/", "CardFrame.png").Replace('\\', '/');
+                string name = string.Format("CardFrame{0}{1}", newItem.grade, newItem.star);
+                string fullSpriteSheetPath = Path.Combine(imageResourcesPath + "UI/Jongmin/Associate With Card").Replace('\\', '/');
+                var file = Directory.GetFiles(fullSpriteSheetPath, "*.png", SearchOption.AllDirectories).FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == name);
 
-                // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
-                // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
-                Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(fullSpriteSheetPath);
-                Sprite foundSprite = null;
-
-                foreach (Object asset in allAssets)
+                if (file != null)
                 {
-                    // 불러온 에셋 중 Sprite 타입이고 이름이 일치하는 것을 찾습니다.
-                    if (asset is Sprite sprite && sprite.name == string.Format("CardFrame{0}{1}", newItem.grade, newItem.star))
-                    {
-                        foundSprite = sprite;
-                        break;
-                    }
-                }
-
-                if (foundSprite != null)
-                {
-                    newItem.cardimage = foundSprite;
+                    // 유니티 시스템에 맞게 경로 수정 후 로드 (에디터 전용)
+#if UNITY_EDITOR
+                    newItem.cardimage = AssetDatabase.LoadAssetAtPath<Sprite>(file);
+#endif
                 }
                 else
                 {
                     Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
                 }
             }
-
-            //ID,Name,Image,Grade,Star,Price,Synergy1Icon,Synergy1ID,Synergy2Icon,Synergy2ID,Synergy3Icon,Synergy3ID,EffectDescription,ATK,DEF,When,Trigger,Effect1ID,Effect1Value,Effect2ID,Effect2Value,
-
-            // ... 나머지 필드 할당
 
             // 4. 에셋 파일로 저장
             string fileName = newItem.id + ".asset";
