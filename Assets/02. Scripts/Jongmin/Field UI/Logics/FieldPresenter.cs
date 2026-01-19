@@ -40,6 +40,7 @@ public abstract class FieldPresenter : IDisposable
         m_throw_presenter = throw_presenter;
 
         m_throw_presenter.OnUpdatedToggleUI += ToggleActive;
+        m_turn_manager.EndCurrentTurn += RemoveAll;
 
         m_view.Inject(this);
     }
@@ -63,7 +64,7 @@ public abstract class FieldPresenter : IDisposable
     public bool IsExist(IFieldCardView card_view)
         => m_container.IsExist(card_view);
 
-    public void RemoveAll()
+    public virtual void RemoveAll()
         => m_service.RemoveAll();
 
     public void Remove(IFieldCardView card_view)
@@ -95,7 +96,13 @@ public abstract class FieldPresenter : IDisposable
     }
 
     public void Dispose()
-        => m_throw_presenter.OnUpdatedToggleUI -= ToggleActive;
+    {
+        if(m_throw_presenter != null)
+            m_throw_presenter.OnUpdatedToggleUI -= ToggleActive;
+        
+        if(m_turn_manager != null)
+            m_turn_manager.EndCurrentTurn -= RemoveAll;
+    }
 
     protected void ToggleActive(bool active)
         => Active = !active;

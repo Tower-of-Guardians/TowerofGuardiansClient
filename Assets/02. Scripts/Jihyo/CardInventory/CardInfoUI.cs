@@ -1,188 +1,86 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using TMPro;
 
-public class CardInfoUI : MonoBehaviour, IPointerClickHandler
+public class CardInfoUI : MonoBehaviour
 {
-    [Header("Card Info Panel")]
-    [SerializeField] private GameObject cardInfoPanel;
-    
-    [Header("Card UI Components")]
-    [SerializeField] private Image cardImage;
-    [SerializeField] private TMP_Text cardNameText;
-    [SerializeField] private TMP_Text cardDescriptionText;
-    [SerializeField] private Toggle enhancementPreviewToggle;
-    [SerializeField] private GameObject cardGridParent;
+    [Header("UI 관련 컴포넌트")]
+    [Header("캔버스 그룹")]
+    [SerializeField] private CanvasGroup m_canvas_group;
 
-    private CardData currentCardData;
+    [Header("레이어 토글")]
+    [SerializeField] private Toggle m_layer_toggle;
 
-    void Start()
+    [Header("나가기 버튼")]
+    [SerializeField] private Button m_back_button;
+
+    private AttributePresenter m_attribute_presenter;
+    private SeriesPresenter m_series_presenter;
+
+    private CardData m_current_card_data;
+
+    private void OnDestroy()
     {
-        InitializeCardInfoUI();
+        if (m_layer_toggle != null)
+            m_layer_toggle.onValueChanged.RemoveListener(OnEnhancementPreviewToggleChanged);
     }
 
-    private void InitializeCardInfoUI()
+    public void Inject(AttributePresenter attribute_presenter,
+                       SeriesPresenter series_presenter)
     {
-        if (cardInfoPanel != null)
-        {
-            cardInfoPanel.SetActive(false);
-        }
+        m_attribute_presenter = attribute_presenter;
+        m_series_presenter = series_presenter;
 
-        if (enhancementPreviewToggle != null)
-        {
-            enhancementPreviewToggle.onValueChanged.AddListener(OnEnhancementPreviewToggleChanged);
-            enhancementPreviewToggle.isOn = false;
-        }
+        m_layer_toggle.onValueChanged.AddListener(OnEnhancementPreviewToggleChanged);
+        m_back_button.onClick.AddListener(HidePanel);
     }
 
-    /// 카드 정보를 표시합니다.
-    public void ShowCardInfo(CardData cardData)
+    public void ShowCardInfo(CardData card_data)
     {
-        if (cardData == null)
+        if (card_data == null)
         {
             Debug.LogWarning("CardInfoUI: cardData가 null입니다.");
             return;
         }
 
-        currentCardData = cardData;
+        m_current_card_data = card_data;
         ShowPanel();
-        UpdateCardInfoUI();
     }
 
-    /// 카드 정보 패널을 표시합니다.
     public void ShowPanel()
     {
-        if (cardInfoPanel != null)
-        {
-            cardInfoPanel.SetActive(true);
-        }
+        ToggleUI(true);
+        OnEnhancementPreviewToggleChanged(false);
     }
 
-    /// 카드 정보 패널을 숨깁니다.
     public void HidePanel()
     {
-        if (cardInfoPanel != null)
-        {
-            cardInfoPanel.SetActive(false);
-        }
+        m_layer_toggle.isOn = false;
+        ToggleUI(false);
 
-        currentCardData = null;
+        m_attribute_presenter.CloseUI();
+        m_series_presenter.CloseUI();
     }
 
-    /// 카드 정보 UI를 업데이트합니다.
-    private void UpdateCardInfoUI()
-    {
-        if (currentCardData == null)
-        {
-            return;
-        }
-
-        if (cardImage != null)
-        {
-            cardImage.sprite = currentCardData.iconimage;
-        }
-
-        if (cardNameText != null)
-        {
-            cardNameText.text = currentCardData.itemName;
-        }
-
-        bool isPreviewMode = enhancementPreviewToggle != null && enhancementPreviewToggle.isOn;
-        if (cardDescriptionText != null)
-        {
-            if (isPreviewMode)
-            {
-                cardDescriptionText.text = GetEnhancedDescription(currentCardData);
-            }
-            else
-            {
-                cardDescriptionText.text = currentCardData.effectDescription;
-            }
-        }
-
-        // TODO: 강화가 되어있으면 토글 체크
-    }
-
-    /// 강화 미리보기 토글 변경 시 호출됩니다.
     private void OnEnhancementPreviewToggleChanged(bool isOn)
     {
-        // TODO: 토글을 체크하면 설명이 강화된 효과로 바뀜
-        UpdateCardInfoUI();
-    }
-
-    /// 배경 클릭 시 카드 정보 패널을 닫습니다.
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // 카드 정보 패널이 열려있지 않으면 무시
-        if (cardInfoPanel == null || !cardInfoPanel.activeSelf)
+        if(isOn)
         {
-            return;
+            m_attribute_presenter.CloseUI();
+            m_series_presenter.OpenUI(m_current_card_data);
         }
-
-        // 클릭된 UI 요소 확인
-        System.Collections.Generic.List<RaycastResult> results = new System.Collections.Generic.List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, results);
-
-        // cardGridParent 영역을 클릭한 경우 패널을 닫지 않음
-        foreach (var result in results)
+        else
         {
-            if (cardGridParent != null && 
-                (result.gameObject == cardGridParent || 
-                 result.gameObject.transform.IsChildOf(cardGridParent.transform)))
-            {
-                return;
-            }
-        }
-
-        bool isClickedOnCardInfoPanel = false;
-        bool isClickedOnToggle = false;
-
-        foreach (var result in results)
-        {
-            if (cardInfoPanel != null &&
-                (result.gameObject == cardInfoPanel ||
-                 result.gameObject.transform.IsChildOf(cardInfoPanel.transform)))
-            {
-                isClickedOnCardInfoPanel = true;
-
-                if (enhancementPreviewToggle != null &&
-                    (result.gameObject == enhancementPreviewToggle.gameObject ||
-                     result.gameObject.transform.IsChildOf(enhancementPreviewToggle.transform)))
-                {
-                    isClickedOnToggle = true;
-                    break;
-                }
-            }
-        }
-
-        // 카드 정보 패널 외부를 클릭했거나, 토글이 아닌 패널 내부를 클릭한 경우 닫기
-        if (!isClickedOnCardInfoPanel || (isClickedOnCardInfoPanel && !isClickedOnToggle))
-        {
-            HidePanel();
+            m_attribute_presenter.OpenUI(m_current_card_data);
+            m_series_presenter.CloseUI();
         }
     }
 
-    /// 강화된 카드 설명을 반환합니다.
-    private string GetEnhancedDescription(CardData cardData)
+    private void ToggleUI(bool active)
     {
-        if (cardData == null)
-        {
-            return string.Empty;
-        }
-
-        // 카드 강화 시 변경될 설명을 반환하는 로직 구현
-        // 예: 강화 레벨에 따라 Description을 수정하거나 강화 효과를 추가
-        // TODO: 현재는 기본 설명 반환 (추후 강화 로직 구현 시 수정 필요)
-        return cardData.effectDescription;
-    }
-
-    void OnDestroy()
-    {
-        if (enhancementPreviewToggle != null)
-        {
-            enhancementPreviewToggle.onValueChanged.RemoveListener(OnEnhancementPreviewToggleChanged);
-        }
+        // 코루틴으로 변경할 가능성 있음
+        m_canvas_group.alpha = active ? 1f : 0f;
+        m_canvas_group.interactable = active;
+        m_canvas_group.blocksRaycasts = active;
     }
 }
 

@@ -27,7 +27,10 @@ public class StatusPresenter : IDisposable
 
     public void Dispose()
     {
-        DataCenter.Instance.playerLevelEvent -= UpdateLevel;
-        DataCenter.Instance.playerMoneyEvent -= UpdateGold;
+        if(DataCenter.Instance != null)
+        {
+            DataCenter.Instance.playerLevelEvent -= UpdateLevel;
+            DataCenter.Instance.playerMoneyEvent -= UpdateGold;
+        }
     }
 }

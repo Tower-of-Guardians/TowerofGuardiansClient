@@ -34,6 +34,9 @@ public class TurnManager : MonoBehaviour
     public event Action<ActionData> OnUpdatedActionCount;
     public event Action<ActionData> OnUpdatedThrowCount;
     public event Action<bool> OnUpdatedThrowActionState;
+    public event Action StartNewTurn;
+    public event Action EndCurrentTurn;
+
 
     public void Inject(ITurnRuleService turn_rule_service)
     {
@@ -82,6 +85,12 @@ public class TurnManager : MonoBehaviour
         m_is_can_throw = active;
         OnUpdatedThrowActionState?.Invoke(m_is_can_throw);
     }
+
+    public void StartTurn()
+        => StartNewTurn?.Invoke();
+
+    public void EndTurn()
+        => EndCurrentTurn?.Invoke();
 
     public bool CanAction() 
         => CurrentActionCount < MaxActionCount;

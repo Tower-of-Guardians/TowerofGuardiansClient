@@ -9,6 +9,9 @@ public class HandView : MonoBehaviour, IHandView
 
     private HandPresenter m_presenter;
 
+    private void OnDestroy()
+        => m_presenter?.Dispose();
+
     public void Inject(HandUIDesigner designer,
                        HandCardContainer container,
                        HandCardFactory factory,

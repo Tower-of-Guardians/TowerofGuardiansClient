@@ -17,7 +17,7 @@ MonoBehaviour:
   iconimage: {fileID: 0}
   grade: 3
   star: 0
-  cardimage: {fileID: 564948614, guid: d889177a9fd4c0c49891228819c04ce5, type: 3}
+  cardimage: {fileID: 21300000, guid: 527d7453094746b4c90574c8b45bc896, type: 3}
   synergy1ID: 210011
   synergy2ID: 
   synergy3ID: 

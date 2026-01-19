@@ -42,7 +42,8 @@ public class HandUIInjector : MonoBehaviour, IInjector
                                                m_hand_card_layout_controller,
                                                DIContainer.Resolve<AttackFieldPresenter>(),
                                                DIContainer.Resolve<DefendFieldPresenter>(),
-                                               DIContainer.Resolve<ThrowPresenter>());
+                                               DIContainer.Resolve<ThrowPresenter>(),
+                                               m_turn_manager);
         DIContainer.Register<HandPresenter>(hand_presenter);
 
         m_hand_view.Inject(m_hand_ui_designer,
