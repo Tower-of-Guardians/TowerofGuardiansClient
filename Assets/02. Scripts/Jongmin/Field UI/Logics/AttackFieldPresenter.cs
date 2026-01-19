@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class AttackFieldPresenter : FieldPresenter
 {
     public AttackFieldPresenter(IFieldView view,
@@ -20,5 +22,19 @@ public class AttackFieldPresenter : FieldPresenter
         m_service.Add(card_data);
         GameData.Instance.attackField.Add(card_data.data);
         return true;
+    }
+
+    public override void RemoveAll()
+    {
+        base.RemoveAll();
+
+        var attack_field_card_list = new List<CardData>(GameData.Instance.attackField);
+        foreach (var card_data in attack_field_card_list)
+        {
+            if (card_data != null)
+                GameData.Instance.UseCard(card_data.id);
+        }
+        
+        GameData.Instance.attackField.Clear();
     }
 }

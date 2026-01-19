@@ -1,4 +1,6 @@
-public class HandPresenter
+using System;
+
+public class HandPresenter : IDisposable
 {
     private readonly FieldPresenter m_attack_field_presenter;
     private readonly FieldPresenter m_defend_field_presenter;
@@ -7,6 +9,7 @@ public class HandPresenter
     private readonly HandCardContainer m_container;
     private readonly HandCardService m_service;
     private readonly HandCardViewController m_view_controller;
+    private readonly TurnManager m_turn_manager;
 
     private IHandCardView m_hover_card;
 
@@ -22,7 +25,8 @@ public class HandPresenter
                          HandCardLayoutController layout_controller,
                          FieldPresenter attack_field_presenter,
                          FieldPresenter defend_field_presenter,
-                         ThrowPresenter throw_presenter)
+                         ThrowPresenter throw_presenter,
+                         TurnManager turn_manager)
     {
         
         m_container = container;
@@ -32,6 +36,9 @@ public class HandPresenter
         m_attack_field_presenter = attack_field_presenter;
         m_defend_field_presenter = defend_field_presenter;
         m_throw_presenter = throw_presenter;
+        m_turn_manager = turn_manager;
+
+        m_turn_manager.EndCurrentTurn += ClearAllCards;
 
         view.Inject(this);
         m_attack_field_presenter.Inject(this);
@@ -46,7 +53,20 @@ public class HandPresenter
         => m_service.Remove(card_view);
 
     public void ClearAllCards()
-        => m_service.RemoveAll();
+    {
+        var card_data_list = GetCardDatas();
+        if (card_data_list != null && card_data_list.Length > 0)
+        {
+            foreach (var card_data in card_data_list)
+            {
+                if (card_data != null && card_data.data != null)
+                    GameData.Instance.UseCard(card_data.data.id);
+            }
+        }
+
+        m_service.RemoveAll();
+        GameData.Instance.handDeck.Clear();
+    }
 
     public void OpenUI()
         => m_view_controller.OpenUI();
@@ -88,5 +108,11 @@ public class HandPresenter
             m_defend_field_presenter.Remove(card_view);
 
         InstantiateCard(card_data);
+    }
+
+    public void Dispose()
+    {
+        if(m_turn_manager != null)
+            m_turn_manager.EndCurrentTurn -= ClearAllCards;
     }
 }
