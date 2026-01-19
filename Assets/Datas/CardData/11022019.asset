@@ -25,8 +25,8 @@ MonoBehaviour:
   synergy1ID: 210003
   synergy2ID: 210004
   synergy3ID: 
-  effectDescription: "\uC774\uBC88 \uACF5\uACA9\uC5D0 \uC801 \uCC98\uCE58 \uC2DC/n\uACE8\uB4DC
-    20 \uD68D\uB4DD/n(\uC911\uCCA9\uBD88\uAC00)"
+  effectDescription: "\uC774\uBC88 \uACF5\uACA9\uC5D0 \uC801 \uCC98\uCE58 \uC2DC\\n\uACE8\uB4DC
+    20 \uD68D\uB4DD\\n(\uC911\uCCA9\uBD88\uAC00)"
   ATK: 26
   DEF: 0
   when: 2

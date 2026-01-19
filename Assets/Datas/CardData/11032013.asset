@@ -25,7 +25,7 @@ MonoBehaviour:
   synergy1ID: 210003
   synergy2ID: 210010
   synergy3ID: 
-  effectDescription: "\uAD11\uC5ED/n\uC57D\uC810\uB178\uCD9C"
+  effectDescription: "\uAD11\uC5ED\\n\uC57D\uC810\uB178\uCD9C"
   ATK: 30
   DEF: 0
   when: 3

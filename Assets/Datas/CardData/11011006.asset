@@ -25,7 +25,7 @@ MonoBehaviour:
   synergy1ID: 210012
   synergy2ID: 
   synergy3ID: 
-  effectDescription: "\uCCAB\uBC88\uC9F8 \uD134\uC77C \uACBD\uC6B0/n\uC774\uBC88
+  effectDescription: "\uCCAB\uBC88\uC9F8 \uD134\uC77C \uACBD\uC6B0\\n\uC774\uBC88
     \uD134\uB3D9\uC548 \uC774 \uCE74\uB4DC\uC758 \uACF5\uACA9\uB825 +15"
   ATK: 7
   DEF: 1
