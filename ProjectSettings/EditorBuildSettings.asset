@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/01. Scenes/Jongmin_UI.unity
+    guid: b87f6d3d4e88f324ebb3a3fe00ada68e
+  - enabled: 1
     path: Assets/01. Scenes/Game.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    guid: d0e589bf960c7a84cb43b2d2a8a9907b
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 64874e1dfb77111448ee7dcc677836ad, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

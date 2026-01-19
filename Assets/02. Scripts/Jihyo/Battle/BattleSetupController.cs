@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,9 +65,6 @@ public class BattleSetupController : MonoBehaviour, IBattleController
                 RegisterMonster(monster);
             }
         }
-
-        // 처음 카드 뽑기
-        StartCoroutine(DrawCardsAtTurnStartDelayed());
     }
 
     public void RegisterMonster(Monster monster)
@@ -180,19 +176,4 @@ public class BattleSetupController : MonoBehaviour, IBattleController
             attackButton.onClick.RemoveListener(battleManager.OnAttackButtonClicked);
         }
     }
-
-    private IEnumerator DrawCardsAtTurnStartDelayed()
-    {
-        // HandPresenter와 TurnManager가 등록될 때까지 대기
-        yield return new WaitUntil(() => DIContainer.IsRegistered<HandPresenter>() && DIContainer.IsRegistered<TurnManager>());
-        
-        // 덱이 준비될 때까지 대기
-        yield return new WaitUntil(() => GameData.Instance != null && GameData.Instance.notuseDeck.Count > 0);
-
-        if (battleManager != null)
-        {
-            battleManager.RequestDrawCards();
-        }
-    }
 }
-
