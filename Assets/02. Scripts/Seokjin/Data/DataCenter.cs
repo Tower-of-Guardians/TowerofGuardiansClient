@@ -70,13 +70,13 @@ public class DataCenter : Singleton<DataCenter>
         LoadPlayerData();
 
         await AllCardData();
+        StartCoroutine(SetStartDeck());
+
         await AllResultPercentData();
         await AllMonsterData();
         await AllMonsterEncounterData();
         await AllStatusEffectData();
         await AllSynergyData();
-
-        StartCoroutine(SetStartDeck());
     }
     public void LoadPlayerData()
     {
