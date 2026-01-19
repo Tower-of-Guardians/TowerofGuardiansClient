@@ -8,6 +8,7 @@ public class CardData : ScriptableObject
     public string id;
     public string itemName;
     public Sprite iconimage;
+    public Sprite synergyFrameImage;
     public int grade;
     public int star;
     public int price;

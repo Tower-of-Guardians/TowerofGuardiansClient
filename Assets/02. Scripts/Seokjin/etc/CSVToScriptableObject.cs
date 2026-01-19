@@ -152,7 +152,7 @@ public class CSVToScriptableObject
 
             // ✨ 스프라이트 시트 파일 이름과 개별 스프라이트 이름 읽기
             string spriteNameInSheet = values[n++].Trim();   // 예: Sword
-            newItem.iconimage = FindSprite(spriteNameInSheet,"Icons/", "ItemIcon.png");
+            newItem.iconimage = FindSprite(spriteNameInSheet, "Icons/", "ItemIcon.png");
 
             if (int.TryParse(values[n++].Trim(), out int garde)) newItem.grade = garde;
             if (int.TryParse(values[n++].Trim(), out int star)) newItem.star = star;
@@ -176,28 +176,42 @@ public class CSVToScriptableObject
 
             if (!string.IsNullOrEmpty("Card"))
             {
-                string name = string.Format("CardFrame{0}{1}", newItem.grade, newItem.star);
+                string cardname = string.Format("CardFrame{0}{1}", newItem.grade, newItem.star);
+                string synergyname = string.Format("SynergyFrame{0}", newItem.grade);
                 string fullSpriteSheetPath = Path.Combine(imageResourcesPath + "UI/Jongmin/Associate With Card").Replace('\\', '/');
-                var file = Directory.GetFiles(fullSpriteSheetPath, "*.png", SearchOption.AllDirectories).FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == name);
+                var file_carframe = Directory.GetFiles(fullSpriteSheetPath, "*.png", SearchOption.AllDirectories).FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == cardname);
+                var file_synergyframe = Directory.GetFiles(fullSpriteSheetPath, "*.png", SearchOption.AllDirectories).FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == synergyname);
 
-                if (file != null)
+                if (file_carframe != null)
                 {
                     // 유니티 시스템에 맞게 경로 수정 후 로드 (에디터 전용)
 #if UNITY_EDITOR
-                    newItem.cardimage = AssetDatabase.LoadAssetAtPath<Sprite>(file);
+                    newItem.cardimage = AssetDatabase.LoadAssetAtPath<Sprite>(file_carframe);
 #endif
                 }
                 else
                 {
-                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
+                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{cardname}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
                 }
+
+                if (file_synergyframe != null)
+                {
+                    // 유니티 시스템에 맞게 경로 수정 후 로드 (에디터 전용)
+#if UNITY_EDITOR
+                    newItem.synergyFrameImage = AssetDatabase.LoadAssetAtPath<Sprite>(file_synergyframe);
+#endif
+                }
+                else
+                {
+                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{synergyname}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
+                }
+
+                // 4. 에셋 파일로 저장
+                string fileName = newItem.id + ".asset";
+                //string fullPath = Path.Combine(soFolderPath, fileName);
+
+                AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
             }
-
-            // 4. 에셋 파일로 저장
-            string fileName = newItem.id + ".asset";
-            //string fullPath = Path.Combine(soFolderPath, fileName);
-
-            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }
     }
     private static void SetResultData(string[] allLines)
@@ -406,7 +420,7 @@ public class CSVToScriptableObject
         }
     }
 
-    private static Sprite FindSprite(string spriteNameInSheet,string address,string spritename)
+    private static Sprite FindSprite(string spriteNameInSheet, string address, string spritename)
     {
         if (!string.IsNullOrEmpty(spriteNameInSheet))
         {

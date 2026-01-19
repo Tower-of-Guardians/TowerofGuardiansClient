@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 11032020
   itemName: "\uD6C4\uCE78\uC758 \uB3C4\uB07C"
   iconimage: {fileID: 0}
+  synergyFrameImage: {fileID: 21300000, guid: f8015f11f7dae24468919133953254d1, type: 3}
   grade: 3
   star: 2
   price: 30

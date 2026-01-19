@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 11020012
   itemName: "\uC219\uBA85"
   iconimage: {fileID: 0}
+  synergyFrameImage: {fileID: 21300000, guid: 97301378ea0bcac4a9a60a1c23def89d, type: 3}
   grade: 2
   star: 0
   price: 20
