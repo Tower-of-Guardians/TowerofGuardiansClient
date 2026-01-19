@@ -150,34 +150,6 @@ public class CSVToScriptableObject
             // ✨ 스프라이트 시트 파일 이름과 개별 스프라이트 이름 읽기
             string spriteNameInSheet = values[n++].Trim();   // 예: Sword
             newItem.iconimage = FindSprite(spriteNameInSheet,"Icons/", "ItemIcon.png");
-            /*if (!string.IsNullOrEmpty(spriteNameInSheet))
-            {
-                string fullSpriteSheetPath = Path.Combine(imageResourcesPath+ "Icons/", "ItemIcon.png").Replace('\\', '/');
-
-                // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
-                // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
-                Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(fullSpriteSheetPath);
-                Sprite foundSprite = null;
-
-                foreach (Object asset in allAssets)
-                {
-                    // 불러온 에셋 중 Sprite 타입이고 이름이 일치하는 것을 찾습니다.
-                    if (asset is Sprite sprite && sprite.name == spriteNameInSheet)
-                    {
-                        foundSprite = sprite;
-                        break;
-                    }
-                }
-
-                if (foundSprite != null)
-                {
-                    newItem.iconimage = foundSprite;
-                }
-                else
-                {
-                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
-                }
-            }*/
 
             if (int.TryParse(values[n++].Trim(), out int garde)) newItem.grade = garde;
             if (int.TryParse(values[n++].Trim(), out int star)) newItem.star = star;
@@ -188,7 +160,8 @@ public class CSVToScriptableObject
             newItem.synergy2ID = values[n++].Trim();
             newItem.synergy3Icon = FindSprite(values[n++].Trim(), "Icons/", "ItemIcon.png");
             newItem.synergy3ID = values[n++].Trim();
-            newItem.effectDescription = values[n++].Trim();
+            string newdescription = values[n++].Replace("\"\"", "<br>").Replace("\"", "").Replace("<br>", "\"").Trim();
+            newItem.effectDescription = newdescription;
             if (int.TryParse(values[n++].Trim(), out int ATK)) newItem.ATK = ATK;
             if (int.TryParse(values[n++].Trim(), out int DEF)) newItem.DEF = DEF;
             if (int.TryParse(values[n++].Trim(), out int When)) newItem.when = When;
