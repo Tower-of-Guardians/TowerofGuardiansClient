@@ -18,12 +18,40 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
         battleManager = manager;
         isInitialized = true;
+
+        StartCoroutine(AttachTurnManagerDelayed());
+    }
+
+    private System.Collections.IEnumerator AttachTurnManagerDelayed()
+    {
+        yield return new WaitUntil(() => DIContainer.IsRegistered<TurnManager>());
+
+        var turnManager = DIContainer.Resolve<TurnManager>();
+        if (turnManager != null)
+        {
+            turnManager.StartNewTurn += OnStartNewTurn;
+        }
     }
 
     public void Cleanup()
     {
+        if (DIContainer.IsRegistered<TurnManager>())
+        {
+            var turnManager = DIContainer.Resolve<TurnManager>();
+            if (turnManager != null)
+            {
+                turnManager.StartNewTurn -= OnStartNewTurn;
+            }
+        }
+
         battleManager = null;
         isInitialized = false;
+    }
+
+    private void OnStartNewTurn()
+    {
+        // 새 턴 시작 시 카드 드로우
+        DrawCards();
     }
 
     public void ProcessTurnEnd()
@@ -45,8 +73,6 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         // 사용하지 않은 핸드 카드 모두 버리기
         DiscardAllHandCards();
 
-        // 턴 종료 후 기본 드로우
-        DrawCards();
     }
 
     public void DrawCards(int count = -1)

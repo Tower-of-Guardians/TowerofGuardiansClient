@@ -82,6 +82,21 @@ public class BattleManager : MonoBehaviour
 
         setupController.SetupBattle(playerUnit, monsters, attackBtn);
         isInitialized = true;
+
+        StartCoroutine(StartFirstTurnDelayed());
+    }
+
+    private IEnumerator StartFirstTurnDelayed()
+    {
+        yield return new WaitUntil(() => DIContainer.IsRegistered<TurnManager>());
+
+        var turnManager = DIContainer.Resolve<TurnManager>();
+        if (turnManager != null)
+        {
+            turnManager.Initialize();
+            turnManager.ResetTurnNumber();
+            turnManager.StartTurn();
+        }
     }
 
     public void OnAttackButtonClicked()
@@ -103,15 +118,6 @@ public class BattleManager : MonoBehaviour
             actionController.OnTurnStart();
         }
 
-        // 공격 시퀀스 시작 (애니메이션 대기 시간 포함)
-        StartCoroutine(StartAttackSequenceWithDelay());
-    }
-    
-    private IEnumerator StartAttackSequenceWithDelay()
-    {
-        // 공격력/보호력 애니메이션 효과를 위한 대기 시간
-        yield return new WaitForSeconds(combatController.GetStatAnimationWaitTime());
-        
         // 공격 시퀀스 시작
         combatController.StartAttackSequence();
     }
@@ -136,6 +142,17 @@ public class BattleManager : MonoBehaviour
         }
 
         turnEndController.ProcessTurnEnd();
+
+        // 공격 종료 시 턴 증가
+        if (DIContainer.IsRegistered<TurnManager>())
+        {
+            var turnManager = DIContainer.Resolve<TurnManager>();
+            if (turnManager != null)
+            {
+                turnManager.EndTurn();
+                turnManager.StartTurn();
+            }
+        }
     }
 
     public IEnumerator HandleVictory()

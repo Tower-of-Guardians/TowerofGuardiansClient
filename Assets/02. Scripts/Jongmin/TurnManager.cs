@@ -7,6 +7,7 @@ public class TurnManager : MonoBehaviour
     private int m_current_action_count;
     private int m_current_throw_count;
     private bool m_is_can_throw;
+    private int m_current_turn_number;
 
     private HandPresenter m_hand_prsenter;
 
@@ -26,6 +27,12 @@ public class TurnManager : MonoBehaviour
         private set => m_current_throw_count = value;
     }
 
+    public int CurrentTurnNumber
+    {
+        get => m_current_turn_number;
+        private set => m_current_turn_number = value;
+    }
+
     public int MaxThrowCount => MaxActionCount;
 
     public int MaxActionCount => m_turn_rule_service.GetRule(m_card_count).MaxUseCount;
@@ -36,6 +43,7 @@ public class TurnManager : MonoBehaviour
     public event Action<bool> OnUpdatedThrowActionState;
     public event Action StartNewTurn;
     public event Action EndCurrentTurn;
+    public event Action<int> OnTurnNumberChanged;
 
 
     public void Inject(ITurnRuleService turn_rule_service)
@@ -87,26 +95,23 @@ public class TurnManager : MonoBehaviour
     }
 
     public void StartTurn()
-        => StartNewTurn?.Invoke();
+    {
+        CurrentTurnNumber++;
+        OnTurnNumberChanged?.Invoke(CurrentTurnNumber);
+        StartNewTurn?.Invoke();
+    }
 
     public void EndTurn()
         => EndCurrentTurn?.Invoke();
+
+    public void ResetTurnNumber()
+    {
+        m_current_turn_number = 0;
+    }
 
     public bool CanAction() 
         => CurrentActionCount < MaxActionCount;
 
     public bool CanThrow()
         => m_is_can_throw && CurrentThrowCount < MaxThrowCount;
-
-#region Test
-    public void BTN_Instantiate()
-    {
-        for(int i = 0; i < MaxHandCount; i++)
-        {
-            var card_data = GameData.Instance.NextDeckSet(1);
-
-            m_hand_prsenter.InstantiateCard(card_data);
-        }
-    }
-#endregion Test
 }
