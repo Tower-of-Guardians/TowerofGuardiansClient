@@ -20,6 +20,7 @@ public class DataCenter : Singleton<DataCenter>
     public event Action<int> playerMoneyEvent;
     public event Action<int> playerHpEvent;
     public event Action<int,int> playerLevelEvent;
+    public event Action<bool> playerStateLoadEvent;
     //////////////////////////
 
     ////// 카드 관련 //////
@@ -30,6 +31,7 @@ public class DataCenter : Singleton<DataCenter>
     SortType sortType;
     bool sortType_oder = true; // true = 오름차순, false = 내림차순
     public static bool IsCardDataLoaded { get; private set; } = false;
+    public event Action<bool> cardDataLoadEvent;
     //////////////////////
 
     ////// 리절트 관련 //////
@@ -65,7 +67,13 @@ public class DataCenter : Singleton<DataCenter>
     public static bool IsSynergyDataLoaded { get; private set; } = false;
     //////////////////////////
 
-    private async void Start()
+    protected override void Awake()
+    {
+        base.Awake();
+        DataLoad();
+    }
+
+    private async void DataLoad()
     {
         LoadPlayerData();
 
@@ -78,6 +86,7 @@ public class DataCenter : Singleton<DataCenter>
         await AllStatusEffectData();
         await AllSynergyData();
     }
+
     public void LoadPlayerData()
     {
         playerstate.level = 1;
@@ -88,6 +97,7 @@ public class DataCenter : Singleton<DataCenter>
         playerstate.latk = 0;
         playerstate.maxmagic = 2;
         playerstate.money = 100;
+        playerStateLoadEvent?.Invoke(true);
     }
     IEnumerator SetStartDeck()
     {
@@ -121,6 +131,7 @@ public class DataCenter : Singleton<DataCenter>
         if (carddata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
             IsCardDataLoaded = true;
+            cardDataLoadEvent?.Invoke(true);
             UnityEngine.Debug.Log($"ItemData 로드 완료: {card_datas.Count}");
         }
         else
@@ -181,8 +192,7 @@ public class DataCenter : Singleton<DataCenter>
         {
             UnityEngine.Debug.LogError($"MonsterData 로드 실패: {monsterdata_loadHandle.OperationException}");
         }
-    }
-   
+    }   
     public async Task AllMonsterEncounterData()
     {
         monster_encounter_datas_loadHandle = Addressables.LoadAssetsAsync<MonsterEncounterData>(
