@@ -7,11 +7,10 @@ enum CSVData
 {
     CardData,
     ResultPercentData,
-    PlayerData,
     MonsterData,
-    MonsterActionData,
     MonsterEncounterData,
-    StatusEffectData
+    StatusEffectData,
+    SynergyData
 }
 
 // 에디터 폴더에 위치해야 함
@@ -48,15 +47,6 @@ public class CSVToScriptableObject
         GenerateItemSOs();
     }
 
-    [MenuItem("Tools/Generate Data/MonsterActionDataCreate")]
-    public static void MonsterActionDataCreate()
-    {
-        csv_data = CSVData.MonsterActionData;
-        csv_name = "MonsterActionData";
-        soFolderPath = "Assets/Datas/" + csv_name;
-        GenerateItemSOs();
-    }
-
     [MenuItem("Tools/Generate Data/MonsterEncounterDataCreate")]
     public static void MonsterEncounterDataCreate()
     {
@@ -71,6 +61,15 @@ public class CSVToScriptableObject
     {
         csv_data = CSVData.StatusEffectData;
         csv_name = "StatusEffectData";
+        soFolderPath = "Assets/Datas/" + csv_name;
+        GenerateItemSOs();
+    }
+
+    [MenuItem("Tools/Generate Data/SynergyDataCreate")]
+    public static void SynergyDataCreate()
+    {
+        csv_data = CSVData.SynergyData;
+        csv_name = "SynergyData";
         soFolderPath = "Assets/Datas/" + csv_name;
         GenerateItemSOs();
     }
@@ -114,14 +113,14 @@ public class CSVToScriptableObject
             case CSVData.MonsterData:
                 SetMonsterData(allLines);
                 break;
-            case CSVData.MonsterActionData:
-                SetMonsterActionData(allLines);
-                break;
             case CSVData.MonsterEncounterData:
                 SetMonsterEncounterData(allLines);
                 break;
             case CSVData.StatusEffectData:
                 SetStatusEffectData(allLines);
+                break;
+            case CSVData.SynergyData:
+                SynergyDataCreate(allLines);
                 break;
         }
 
@@ -150,8 +149,8 @@ public class CSVToScriptableObject
 
             // ✨ 스프라이트 시트 파일 이름과 개별 스프라이트 이름 읽기
             string spriteNameInSheet = values[n++].Trim();   // 예: Sword
-
-            if (!string.IsNullOrEmpty(spriteNameInSheet))
+            newItem.iconimage = FindSprite(spriteNameInSheet,"Icons/", "ItemIcon.png");
+            /*if (!string.IsNullOrEmpty(spriteNameInSheet))
             {
                 string fullSpriteSheetPath = Path.Combine(imageResourcesPath+ "Icons/", "ItemIcon.png").Replace('\\', '/');
 
@@ -178,17 +177,22 @@ public class CSVToScriptableObject
                 {
                     Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
                 }
-            }
+            }*/
 
             if (int.TryParse(values[n++].Trim(), out int garde)) newItem.grade = garde;
             if (int.TryParse(values[n++].Trim(), out int star)) newItem.star = star;
             if (int.TryParse(values[n++].Trim(), out int price)) newItem.price = price;
+            newItem.synergy1Icon = FindSprite(values[n++].Trim(), "Icons/", "ItemIcon.png");
             newItem.synergy1ID = values[n++].Trim();
+            newItem.synergy2Icon = FindSprite(values[n++].Trim(), "Icons/", "ItemIcon.png");
             newItem.synergy2ID = values[n++].Trim();
+            newItem.synergy3Icon = FindSprite(values[n++].Trim(), "Icons/", "ItemIcon.png");
             newItem.synergy3ID = values[n++].Trim();
             newItem.effectDescription = values[n++].Trim();
             if (int.TryParse(values[n++].Trim(), out int ATK)) newItem.ATK = ATK;
             if (int.TryParse(values[n++].Trim(), out int DEF)) newItem.DEF = DEF;
+            if (int.TryParse(values[n++].Trim(), out int When)) newItem.when = When;
+            if (int.TryParse(values[n++].Trim(), out int Trigger)) newItem.trigger = Trigger;
             newItem.effect1ID = values[n++].Trim(); ;
             newItem.effect1Value = values[n++].Trim();
             newItem.effect2ID = values[n++].Trim(); ;
@@ -223,7 +227,7 @@ public class CSVToScriptableObject
                 }
             }
 
-            //ID,Name,Image,Grade,Star,Price,Synergy1ID,Synergy2ID,Synergy3ID,EffectDescription,ATK,DEF,Effect1ID,Effect1Value,Effect2ID,Effect2Value
+            //ID,Name,Image,Grade,Star,Price,Synergy1Icon,Synergy1ID,Synergy2Icon,Synergy2ID,Synergy3Icon,Synergy3ID,EffectDescription,ATK,DEF,When,Trigger,Effect1ID,Effect1Value,Effect2ID,Effect2Value,
 
             // ... 나머지 필드 할당
 
@@ -349,29 +353,6 @@ public class CSVToScriptableObject
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }
     }
-    private static void SetMonsterActionData(string[] allLines)
-    {
-        foreach (string line in allLines.Skip(1))
-        {
-            if (string.IsNullOrWhiteSpace(line)) continue;
-
-            string[] values = line.Split(',');
-
-            MonsterActionData newItem = ScriptableObject.CreateInstance<MonsterActionData>();
-            int n = 0;
-
-            newItem.Id = values[n++].Trim();
-            newItem.Name = values[n++].Trim();            
-
-            if (int.TryParse(values[n++].Trim(), out int garde)) newItem.Target = garde;
-            newItem.StatusEffect = values[n++].Trim();
-            newItem.Description = values[n++].Trim();
-
-            string fileName = newItem.Id + ".asset";
-
-            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
-        }
-    }
     private static void SetMonsterEncounterData(string[] allLines)
     {
         foreach (string line in allLines.Skip(1))
@@ -418,5 +399,82 @@ public class CSVToScriptableObject
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }
+    }
+    private static void SynergyDataCreate(string[] allLines)
+    {
+        foreach (string line in allLines.Skip(1))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] values = line.Split(',');
+
+            SynergyData newItem = ScriptableObject.CreateInstance<SynergyData>();
+            int n = 0;
+
+            newItem.ID = values[n++].Trim();
+            newItem.Name = values[n++].Trim();
+            newItem.Description = values[n++].Trim();
+
+            if (int.TryParse(values[n++].Trim(), out int tier)) newItem.Tier = tier;
+
+            newItem.Effect1ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int es1_1)) newItem.Effect1Synergy1 = es1_1;
+            if (int.TryParse(values[n++].Trim(), out int es1_2)) newItem.Effect1Synergy2 = es1_2;
+            if (int.TryParse(values[n++].Trim(), out int es1_3)) newItem.Effect1Synergy3 = es1_3;
+            if (int.TryParse(values[n++].Trim(), out int es1_4)) newItem.Effect1Synergy4 = es1_4;
+            if (int.TryParse(values[n++].Trim(), out int es1_5)) newItem.Effect1Synergy5 = es1_5;
+
+            newItem.Effect2ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int es2_1)) newItem.Effect2Synergy1 = es2_1;
+            if (int.TryParse(values[n++].Trim(), out int es2_2)) newItem.Effect2Synergy2 = es2_2;
+            if (int.TryParse(values[n++].Trim(), out int es2_3)) newItem.Effect2Synergy3 = es2_3;
+            if (int.TryParse(values[n++].Trim(), out int es2_4)) newItem.Effect2Synergy4 = es2_4;
+            if (int.TryParse(values[n++].Trim(), out int es2_5)) newItem.Effect2Synergy5 = es2_5;
+
+            newItem.Effect3ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int es3_1)) newItem.Effect3Synergy1 = es3_1;
+            if (int.TryParse(values[n++].Trim(), out int es3_2)) newItem.Effect3Synergy2 = es3_2;
+            if (int.TryParse(values[n++].Trim(), out int es3_3)) newItem.Effect3Synergy3 = es3_3;
+            if (int.TryParse(values[n++].Trim(), out int es3_4)) newItem.Effect3Synergy4 = es3_4;
+            if (int.TryParse(values[n++].Trim(), out int es3_5)) newItem.Effect3Synergy5 = es3_5;
+
+            string fileName = newItem.ID + ".asset";
+
+            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
+        }
+    }
+
+    private static Sprite FindSprite(string spriteNameInSheet,string address,string spritename)
+    {
+        if (!string.IsNullOrEmpty(spriteNameInSheet))
+        {
+            string fullSpriteSheetPath = Path.Combine(imageResourcesPath + address, spritename).Replace('\\', '/');
+
+            // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
+            // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
+            Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(fullSpriteSheetPath);
+            Sprite foundSprite = null;
+
+            foreach (Object asset in allAssets)
+            {
+                // 불러온 에셋 중 Sprite 타입이고 이름이 일치하는 것을 찾습니다.
+                if (asset is Sprite sprite && sprite.name == spriteNameInSheet)
+                {
+                    foundSprite = sprite;
+                    break;
+                }
+            }
+
+            if (foundSprite != null)
+            {
+                return foundSprite;
+            }
+            else
+            {
+                Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
+                return null;
+            }
+        }
+        else return null;
     }
 }

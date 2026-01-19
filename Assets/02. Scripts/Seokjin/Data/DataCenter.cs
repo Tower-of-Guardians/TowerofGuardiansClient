@@ -43,9 +43,6 @@ public class DataCenter : Singleton<DataCenter>
     public static Dictionary<string, MonsterData> monster_datas = new Dictionary<string, MonsterData>(); // 몬스터 데이터
     private static AsyncOperationHandle<IList<MonsterData>> monsterdata_loadHandle; // 메모리 관리를 위한 핸들
 
-    public static Dictionary<string, MonsterActionData> monster_action_datas = new Dictionary<string, MonsterActionData>(); // 몬스터 데이터
-    private static AsyncOperationHandle<IList<MonsterActionData>> monster_action_datas_loadHandle; // 메모리 관리를 위한 핸들
-
     public static Dictionary<string, MonsterEncounterData> monster_encounter_datas = new Dictionary<string, MonsterEncounterData>(); // 몬스터 데이터
     private static AsyncOperationHandle<IList<MonsterEncounterData>> monster_encounter_datas_loadHandle; // 메모리 관리를 위한 핸들
 
@@ -54,30 +51,35 @@ public class DataCenter : Singleton<DataCenter>
     public static bool IsMonsterEncounterDataLoaded { get; private set; } = false;
     //////////////////////////
 
-    ////// 몬스터 관련 ///////
-    public static Dictionary<string, StatusEffectData> status_effect_datas = new Dictionary<string, StatusEffectData>(); // 몬스터 데이터
+    ////// 이팩트 관련 ///////
+    public static Dictionary<string, StatusEffectData> status_effect_datas = new Dictionary<string, StatusEffectData>(); // 이팩트 데이터
     private static AsyncOperationHandle<IList<StatusEffectData>> status_effect_datas_loadHandle; // 메모리 관리를 위한 핸들
 
     public static bool IsStatusEffectDataLoaded { get; private set; } = false;
     //////////////////////////
 
+    ////// 이팩트 관련 ///////
+    public static Dictionary<string, SynergyData> synergy_datas = new Dictionary<string, SynergyData>(); // 이팩트 데이터
+    private static AsyncOperationHandle<IList<SynergyData>> synergy_datas_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static bool IsSynergyDataLoaded { get; private set; } = false;
+    //////////////////////////
+
     private async void Start()
     {
+        LoadPlayerData();
+
         await AllCardData();
         await AllResultPercentData();
         await AllMonsterData();
-        await AllMonsterActionData();
         await AllMonsterEncounterData();
         await AllStatusEffectData();
+        await AllSynergyData();
 
-        LoadPlayerData();
         StartCoroutine(SetStartDeck());
     }
     public void LoadPlayerData()
     {
-        // TODO 석진
-        // SaveLoad 만들어서 로드 데이터 세팅해주는 부분 추가
-
         playerstate.level = 1;
         playerstate.experience = 0;
         playerstate.hp = 70;
@@ -180,31 +182,7 @@ public class DataCenter : Singleton<DataCenter>
             UnityEngine.Debug.LogError($"MonsterData 로드 실패: {monsterdata_loadHandle.OperationException}");
         }
     }
-    public async Task AllMonsterActionData()
-    {
-        monster_action_datas_loadHandle = Addressables.LoadAssetsAsync<MonsterActionData>(
-            "MonsterActionData",
-            (item) =>
-            {
-                if (item != null)
-                {
-                    monster_action_datas[item.Id] = item;
-                }
-            }
-        );
-
-        await monster_action_datas_loadHandle.Task;
-
-        if (monster_action_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
-        {
-            IsMonsterActionDataLoaded = true;
-            UnityEngine.Debug.Log($"MonsterActionData 로드 완료: {monster_action_datas.Count}");
-        }
-        else
-        {
-            UnityEngine.Debug.LogError($"MonsterActionData 로드 실패: {monster_action_datas_loadHandle.OperationException}");
-        }
-    }
+   
     public async Task AllMonsterEncounterData()
     {
         monster_encounter_datas_loadHandle = Addressables.LoadAssetsAsync<MonsterEncounterData>(
@@ -255,14 +233,39 @@ public class DataCenter : Singleton<DataCenter>
             UnityEngine.Debug.LogError($"StatusEffectData 로드 실패: {status_effect_datas_loadHandle.OperationException}");
         }
     }
+    public async Task AllSynergyData()
+    {
+        synergy_datas_loadHandle = Addressables.LoadAssetsAsync<SynergyData>(
+            "SynergyData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    synergy_datas[item.ID] = item;
+                }
+            }
+        );
+
+        await synergy_datas_loadHandle.Task;
+
+        if (synergy_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsSynergyDataLoaded = true;
+            UnityEngine.Debug.Log($"StatusEffectData 로드 완료: {synergy_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"StatusEffectData 로드 실패: {synergy_datas_loadHandle.OperationException}");
+        }
+    }
     public void ReleaseDataHandle()
     {
         Addressables.Release(carddata_loadHandle);
         Addressables.Release(resultdata_loadHandle);
         Addressables.Release(monsterdata_loadHandle);
-        Addressables.Release(monster_action_datas_loadHandle);
         Addressables.Release(monster_encounter_datas_loadHandle);
         Addressables.Release(status_effect_datas_loadHandle);
+        Addressables.Release(synergy_datas_loadHandle);
         UnityEngine.Debug.Log("Addressables 핸들 해제 완료.");
     }
 
@@ -393,29 +396,11 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
-    /// <summary>
-    /// 몬스터액션 데이터 받기
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="data"></param>
-    public void GetMonsterActionData(string id, Action<MonsterActionData> data)
-    {
-        if (IsMonsterActionDataLoaded && monster_action_datas.TryGetValue(id, out MonsterActionData itemData))
-        {
-            data?.Invoke(itemData);
-        }
-        else
-        {
-            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsMonsterActionDataLoaded = {IsMonsterActionDataLoaded}.");
-            data?.Invoke(null);
-        }
-    }
-
    /// <summary>
-        /// 몬스터 인카운터 데이터 받기
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="data"></param>
+   /// 몬스터 인카운터 데이터 받기
+   /// </summary>
+   /// <param name="id"></param>
+   /// <param name="data"></param>
     public void GetMonsterEncounterData(string id, Action<MonsterEncounterData> data)
     {
         if (IsMonsterEncounterDataLoaded && monster_encounter_datas.TryGetValue(id, out MonsterEncounterData itemData))
@@ -447,6 +432,23 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
+    /// <summary>
+    /// 시너지 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    public void GetSynergyData(string id, Action<SynergyData> data)
+    {
+        if (IsSynergyDataLoaded && synergy_datas.TryGetValue(id, out SynergyData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsSynergyDataLoaded = {IsSynergyDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
 
     /// <summary>
     /// 카드ID를 통한 해당 아이디의 모든 성급의 카드 데이터 리스트 리턴
@@ -473,6 +475,7 @@ public class DataCenter : Singleton<DataCenter>
     }
     #endregion
 
+    #region 플레이어 데이터 이벤트
     public void SetPlayerState()
     {
         playerStateEvent?.Invoke(playerstate);
@@ -509,6 +512,8 @@ public class DataCenter : Singleton<DataCenter>
             playerLevelEvent?.Invoke(playerstate.level, playerstate.experience);
         }
     }
+    #endregion
+
     private void OnDisable()
     {
         ReleaseDataHandle();

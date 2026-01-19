@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936f215bc48e1d847890abb0eebd22a6, type: 3}
+  m_Name: 210010
+  m_EditorClassIdentifier: 
+  ID: 210010
+  Name: Synergy_Weapon of Guardian
+  Description: "N\uC758 \uBCF4\uD638\uB9C9\uC744 \uC5BB\uC2B5\uB2C8\uB2E4. \uC774\uBC88
+    \uD134\uC5D0 \uACF5\uACA9\uB825\uC774 N \uC0C1\uC2B9\uD569\uB2C8\uB2E4. \uB2E4\uC74C
+    \uD134\uC5D0 \uD328\uB97C \uD55C \uC7A5 \uB354 \uBF51\uC2B5\uB2C8\uB2E4."
+  Tier: 11
+  Effect1ID: 
+  Effect1Synergy1: 0
+  Effect1Synergy2: 0
+  Effect1Synergy3: 20
+  Effect1Synergy4: 0
+  Effect1Synergy5: 0
+  Effect2ID: 
+  Effect2Synergy1: 0
+  Effect2Synergy2: 0
+  Effect2Synergy3: 30
+  Effect2Synergy4: 0
+  Effect2Synergy5: 0
+  Effect3ID: 
+  Effect3Synergy1: 0
+  Effect3Synergy2: 0
+  Effect3Synergy3: 1
+  Effect3Synergy4: 0
+  Effect3Synergy5: 0

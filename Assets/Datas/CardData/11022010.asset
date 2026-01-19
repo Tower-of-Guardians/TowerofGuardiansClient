@@ -17,15 +17,20 @@ MonoBehaviour:
   iconimage: {fileID: 0}
   grade: 2
   star: 2
-  cardimage: {fileID: 21300000, guid: f6e6add0a9eec9d409ce9264c1008d1d, type: 3}
+  price: 20
+  cardimage: {fileID: 1798872776394631789, guid: a39fbf36547d7e44caa73393218c98ca, type: 3}
+  synergy1Icon: {fileID: 0}
+  synergy2Icon: {fileID: 0}
+  synergy3Icon: {fileID: 0}
   synergy1ID: 210002
   synergy2ID: 210013
   synergy3ID: 
   effectDescription: "\uC655 \uB9C8\uBC95\uC744 \uC0DD\uC131\uD569\uB2C8\uB2E4."
   ATK: 12
   DEF: 25
-  effect1ID: '#N/A'
-  effect2ID: '#N/A'
-  effect1Value: 20
+  when: 1
+  trigger: 0
+  effect1ID: 
+  effect2ID: 
+  effect1Value: 
   effect2Value: 
-  price: 20

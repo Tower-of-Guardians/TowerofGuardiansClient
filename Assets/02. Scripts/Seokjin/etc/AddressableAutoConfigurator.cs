@@ -34,13 +34,6 @@ public class AddressableAutoConfigurator : Editor
         class_name = typeof(MonsterData);
         ConfigureItemSOsAsAddressable();
     }
-    [MenuItem("Tools/Addressables/MonsterActionData for Addressables")]
-    public static void SetMonsterActionData()
-    {
-        GROUP_NAME = "MonsterActionData";
-        class_name = typeof(MonsterActionData);
-        ConfigureItemSOsAsAddressable();
-    }
     [MenuItem("Tools/Addressables/MonsterEncounterData for Addressables")]
     public static void SetMonsterEncounterData()
     {
@@ -53,6 +46,13 @@ public class AddressableAutoConfigurator : Editor
     {
         GROUP_NAME = "StatusEffectData";
         class_name = typeof(StatusEffectData);
+        ConfigureItemSOsAsAddressable();
+    }
+    [MenuItem("Tools/Addressables/SynergyData for Addressables")]
+    public static void SetSynergyData()
+    {
+        GROUP_NAME = "SynergyData";
+        class_name = typeof(SynergyData);
         ConfigureItemSOsAsAddressable();
     }
 
