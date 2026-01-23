@@ -145,6 +145,11 @@ public class BattleSetupController : MonoBehaviour, IBattleController
             return;
         }
 
+        if (battleManager != null && battleManager.IsProcessingAttack())
+        {
+            return;
+        }
+
         if (selectedTarget == monster)
         {
             monster.SetTargeted(false);
@@ -166,6 +171,13 @@ public class BattleSetupController : MonoBehaviour, IBattleController
         if (attackButton != null && battleManager != null)
         {
             attackButton.onClick.AddListener(battleManager.OnAttackButtonClicked);
+            
+            // AttackButtonController가 있으면 클릭 이벤트 연결
+            var buttonController = attackButton.GetComponent<AttackButton>();
+            if (buttonController != null)
+            {
+                attackButton.onClick.AddListener(buttonController.OnAttackButtonClicked);
+            }
         }
     }
 
@@ -174,6 +186,12 @@ public class BattleSetupController : MonoBehaviour, IBattleController
         if (attackButton != null && battleManager != null)
         {
             attackButton.onClick.RemoveListener(battleManager.OnAttackButtonClicked);
+            
+            var buttonController = attackButton.GetComponent<AttackButton>();
+            if (buttonController != null)
+            {
+                attackButton.onClick.RemoveListener(buttonController.OnAttackButtonClicked);
+            }
         }
     }
 }

@@ -259,4 +259,9 @@ public class BattleManager : MonoBehaviour
     {
         return setupController;
     }
+
+    public bool IsProcessingAttack()
+    {
+        return combatController != null && combatController.IsProcessingAttack;
+    }
 }
