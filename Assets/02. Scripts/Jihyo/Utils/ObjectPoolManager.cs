@@ -172,6 +172,34 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         return pools[prefab];
     }
 
+    /// <summary>
+    /// 외부에서 풀을 등록할 수 있는 public 메서드
+    /// </summary>
+    public void RegisterPool(GameObject prefab, int initialPoolSize = 10, int maxPoolSize = 50, bool expandable = true)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("ObjectPoolManager: RegisterPool에 null 프리팹이 전달되었습니다.", this);
+            return;
+        }
+
+        if (pools.ContainsKey(prefab))
+        {
+            Debug.LogWarning($"ObjectPoolManager: 프리팹 '{prefab.name}'의 풀이 이미 등록되어 있습니다.", this);
+            return;
+        }
+
+        PoolConfig config = new PoolConfig
+        {
+            prefab = prefab,
+            initialPoolSize = initialPoolSize,
+            maxPoolSize = maxPoolSize,
+            expandable = expandable
+        };
+
+        CreatePool(config);
+    }
+
 
     private new void OnDestroy()
     {

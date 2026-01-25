@@ -46,6 +46,7 @@ public class Player : BaseUnit
         InitializeFromDataCenter();
         InitializeAnimation();
         CacheSpriteOrigin();
+        SubscribeDataCenterHpEvent();
     }
 
     private void InitializeFromDataCenter()
@@ -56,8 +57,8 @@ public class Player : BaseUnit
             var playerState = DataCenter.Instance.playerstate;
             
             baseAttack = playerState.atk;
-            maxHealth = playerState.hp;
-            currentHealth = maxHealth;
+            maxHealth = playerState.maxhp > 0 ? playerState.maxhp : playerState.hp;
+            currentHealth = playerState.hp;
             
             UpdateCardStats();
             RefreshUI();
@@ -67,6 +68,21 @@ public class Player : BaseUnit
             Debug.LogWarning("Player: DataCenter.Instance is null. Using default values.");
             baseAttack = 5;
         }
+    }
+
+    private void SubscribeDataCenterHpEvent()
+    {
+        if (DataCenter.Instance != null)
+        {
+            DataCenter.Instance.playerHpEvent += OnPlayerHPChanged;
+        }
+    }
+
+    private void OnPlayerHPChanged(int hpChange)
+    {
+        // DataCenter의 SetPlayerHP에서 변경량을 전달받아 현재 체력에 적용
+        int newHealth = Mathf.Clamp(currentHealth + hpChange, 0, maxHealth);
+        SetCurrentHealth(newHealth);
     }
 
     /// 공격 시 카드 스탯을 업데이트합니다.
@@ -407,6 +423,8 @@ public class Player : BaseUnit
     
     protected override void OnDestroy()
     {
+        SubscribeDataCenterHpEvent();
+        
         base.OnDestroy();
         
         if (attackTextTweener != null && attackTextTweener.IsActive())
@@ -417,6 +435,14 @@ public class Player : BaseUnit
         if (protectionTweener != null && protectionTweener.IsActive())
         {
             protectionTweener.Kill();
+        }
+    }
+
+    private void UnsubscribeDataCenterHpEvent()
+    {
+        if (DataCenter.Instance != null)
+        {
+            DataCenter.Instance.playerHpEvent -= OnPlayerHPChanged;
         }
     }
 }

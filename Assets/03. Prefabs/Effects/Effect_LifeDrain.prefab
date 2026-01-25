@@ -4853,6 +4853,7 @@ GameObject:
   m_Component:
   - component: {fileID: 536002234989904936}
   - component: {fileID: 7279601666183062594}
+  - component: {fileID: 6840662989125757698}
   m_Layer: 0
   m_Name: Effect_LifeDrain
   m_TagString: Untagged
@@ -4889,5 +4890,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ps: {fileID: 7264483378807126722}
-  playerTransform: {fileID: 536002234989904936}
   curveStrength: 3
+--- !u!114 &6840662989125757698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6720001741172940176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf64bc98ee5c21541801d15106b9b982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkAnimator: 0
+  checkParticleSystem: 1
+  delayAfterEnd: 0
