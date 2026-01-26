@@ -8,6 +8,9 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
     public bool IsInitialized => isInitialized;
 
+    [Header("드로우 버튼 → 핸드 이펙터")]
+    [SerializeField] private DrawCardEffector m_draw_card_effector;
+
     public void Initialize(BattleManager manager)
     {
         if (isInitialized)
@@ -88,6 +91,7 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         // count가 -1이면 기본값(MaxHandCount) 사용, 그 외에는 지정된 개수만큼 드로우
         int drawCount = count >= 0 ? count : turnManager.MaxHandCount;
         
+        List<BattleCardData> card_data_list = new(); 
         for (int i = 0; i < drawCount; i++)
         {
             var cardData = GameData.Instance.NextDeckSet(1);
@@ -96,8 +100,10 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
                 Debug.LogWarning($"BattleTurnEndController: 카드를 뽑을 수 없습니다. (뽑은 횟수: {i}/{drawCount})");
                 break;
             }
-            handPresenter.InstantiateCard(cardData);
+            card_data_list.Add(cardData);
+            //handPresenter.InstantiateCard(cardData);
         }
+        m_draw_card_effector.CreateCardStartToEnd(card_data_list.ToArray(), 0.4f, 0f, 0.1f, 0.075f);
     }
 
     private void DiscardAllHandCards()
