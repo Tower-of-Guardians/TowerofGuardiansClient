@@ -1392,6 +1392,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Img_Shadow_S
       objectReference: {fileID: 0}
+    - target: {fileID: 5388983867141033735, guid: 7385a3ec1f0aee74a8b32d85e8ec4aae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7677341524531373605, guid: 7385a3ec1f0aee74a8b32d85e8ec4aae, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.25
