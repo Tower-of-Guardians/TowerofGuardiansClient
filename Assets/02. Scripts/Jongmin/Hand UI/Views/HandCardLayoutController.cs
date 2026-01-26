@@ -83,7 +83,7 @@ public class HandCardLayoutController : MonoBehaviour
         concrete_card.transform.DOLocalMove(new Vector3(target.Position.x, 
                                                         card == m_presenter.HoverCard ? m_designer.HoverY 
                                                                                       : target.Position.y, 
-                                                        target.Position.z), m_designer.AnimeSPD).SetEase(Ease.OutBack);
+                                                        target.Position.z), m_designer.AnimeSPD);
         concrete_card.transform.DOLocalRotate(target.Rotation, m_designer.AnimeSPD).SetEase(Ease.OutBack);
         concrete_card.transform.DOScale(target.Scale, m_designer.AnimeSPD).SetEase(Ease.OutBack);
     }

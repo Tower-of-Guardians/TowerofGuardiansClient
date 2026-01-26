@@ -29,6 +29,21 @@ public class TemporaryCardController : MonoBehaviour
                                 interval));
     }
 
+    public void PlayAnimeWithRandomArc(BattleCardData[] card_datas,
+                                       Vector3 start_position,
+                                       Vector3 end_position,
+                                       float scale,
+                                       float duration,
+                                       float interval)
+    {
+        StartCoroutine(Co_AnimeWithRandomArc(card_datas,
+                                             start_position,
+                                             end_position,
+                                             scale,
+                                             duration,
+                                             interval));
+    }
+
     public void PlayAnime(BattleCardData card_data,
                           Vector3 start_position,
                           Vector3 end_position,
@@ -80,6 +95,26 @@ public class TemporaryCardController : MonoBehaviour
                                arc_power,
                                duration);      
         }  
+    }
+
+    private IEnumerator Co_AnimeWithRandomArc(BattleCardData[] card_datas,
+                                              Vector3 start_position,
+                                              Vector3 end_position,
+                                              float scale,
+                                              float duration,
+                                              float interval)
+    {
+        for(int i = 0; i < card_datas.Length; i++)
+        {
+            yield return new WaitForSeconds(interval);
+
+            m_animator.Animate(card_datas[i],
+                               start_position,
+                               end_position,
+                               scale,
+                               UnityEngine.Random.Range(-150f, 150f),
+                               duration);      
+        }          
     }
 
     private IEnumerator Co_AnimeFromThis(BattleCardData[] card_datas,
