@@ -55,8 +55,9 @@ public class GameData : Singleton<GameData>
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
-    public BattleCardData NextDeckSet(int count)
+    public List<BattleCardData> NextDeckSet(int count)
     {
+        List<BattleCardData> returnDatas = new List<BattleCardData>();
         BattleCardData getdata = new BattleCardData();
         for (int i = 0; i < count; i++)
         {
@@ -73,15 +74,15 @@ public class GameData : Singleton<GameData>
             });
             handDeck.Add(notuseDeck[0]);
             notuseDeck.RemoveAt(0);
+            getdata.index = handDeck.Count - 1;
+            returnDatas.Add(getdata);
         }
-
-        getdata.index = handDeck.Count - 1;
 
         Debug.LogFormat("ID : {0} , [{1}] , index : {2} .", getdata.data.id, getdata.data.itemName, getdata.index);
 
         InvokeDeckCountChange(DeckType.Draw);
         InvokeDeckCountChange(DeckType.Throw);
-        return getdata;
+        return returnDatas;
     }
 
     /// <summary>

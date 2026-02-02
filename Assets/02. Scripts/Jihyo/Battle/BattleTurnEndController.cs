@@ -95,15 +95,14 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         for (int i = 0; i < drawCount; i++)
         {
             var cardData = GameData.Instance.NextDeckSet(1);
-            if (cardData == null || cardData.data == null)
+            if (cardData.Count <= 0 || cardData == null)
             {
                 Debug.LogWarning($"BattleTurnEndController: 카드를 뽑을 수 없습니다. (뽑은 횟수: {i}/{drawCount})");
                 break;
             }
-            card_data_list.Add(cardData);
+            card_data_list = cardData;
             //handPresenter.InstantiateCard(cardData);
         }
-        m_draw_card_effector.CreateCardStartToEnd(card_data_list.ToArray(), 0.4f, 0f, 0.1f, 0.075f);
     }
 
     private void DiscardAllHandCards()
