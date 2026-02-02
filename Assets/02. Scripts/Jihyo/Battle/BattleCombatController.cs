@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 public class BattleCombatController : MonoBehaviour, IBattleController
 {
     [SerializeField] private bool playerAttackHitsAll;
-    [SerializeField] private float monsterAttackDelay = 0.5f;
     [SerializeField] private float statAnimationWaitTime = 1.0f;
 
     private BattleManager battleManager;
@@ -201,12 +200,7 @@ public class BattleCombatController : MonoBehaviour, IBattleController
                 continue;
             }
 
-            monster.PerformAttack(player);
-
-            if (monsterAttackDelay > 0f)
-            {
-                yield return new WaitForSeconds(monsterAttackDelay);
-            }
+            yield return StartCoroutine(monster.PerformAttack(player));
 
             if (!player.IsAlive)
             {

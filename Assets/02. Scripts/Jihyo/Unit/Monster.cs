@@ -17,6 +17,19 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     [Header("Animation")]
     private MonsterAnimation monsterAnimation;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    [Header("Movement")]
+    [SerializeField] private float attackMoveOffset = 0f;
+    [SerializeField] private float attackMoveDuration = 0.2f;
+    
+    [Header("Attack Timing")]
+    [SerializeField] private float damageApplyDelay = 0.5f;
+
+    private Vector3 initialSpriteLocalPosition;
+    private bool hasSavedInitialPosition;
+    private const int NormalSortingOrder = 5;
+    private const int AttackSortingOrder = 7;
 
     public event Action<Monster> Clicked;
     private BattleManager battleManager;
@@ -27,6 +40,7 @@ public class Monster : BaseUnit, IPointerClickHandler
         base.Awake();
         currentHealth = maxHealth;
         InitializeAnimation();
+        SaveInitialPosition();
         SetTargeted(false);
         RegisterBattleManager();
     }
@@ -74,12 +88,30 @@ public class Monster : BaseUnit, IPointerClickHandler
         return Attack;
     }
 
-    public void PerformAttack(IDamageable target)
+    public IEnumerator PerformAttack(IDamageable target)
     {
         if (target == null || !target.IsAlive)
         {
-            return;
+            yield break;
         }
+
+        SaveInitialPosition();
+
+        SetSortingOrder(AttackSortingOrder);
+
+        if (attackMoveOffset > 0f)
+        {
+            Vector3 targetPosition = GetTargetAttackPosition(target);
+            yield return StartCoroutine(MoveSpriteToPosition(targetPosition, attackMoveDuration));
+        }
+
+        if (monsterAnimation != null)
+        {
+            monsterAnimation.PlayAttackAnimation();
+        }
+
+        // 공격 중 체력이 감소하는 타이밍
+        yield return new WaitForSeconds(damageApplyDelay);
 
         int damage = GetAttackValue();
         if (damage > 0)
@@ -89,7 +121,90 @@ public class Monster : BaseUnit, IPointerClickHandler
 
         if (monsterAnimation != null)
         {
-            monsterAnimation.PlayAttackAnimation();
+            yield return StartCoroutine(monsterAnimation.WaitForAttackAnimationComplete());
+        }
+
+        if (attackMoveOffset > 0f)
+        {
+            yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, attackMoveDuration));
+        }
+
+        SetSortingOrder(NormalSortingOrder);
+    }
+
+    private Vector3 GetTargetAttackPosition(IDamageable target)
+    {
+        if (target == null)
+        {
+            return initialSpriteLocalPosition;
+        }
+
+        MonoBehaviour targetMono = target as MonoBehaviour;
+        if (targetMono == null)
+        {
+            return initialSpriteLocalPosition;
+        }
+
+        Vector3 targetWorldPosition = targetMono.transform.position;
+        
+        Transform parent = transform.parent;
+        Vector3 targetLocal = parent != null
+            ? parent.InverseTransformPoint(targetWorldPosition)
+            : targetWorldPosition;
+
+        Vector3 direction = (targetLocal - initialSpriteLocalPosition).normalized;
+        Vector3 attackPosition = targetLocal - direction * attackMoveOffset;
+        
+        attackPosition.y = initialSpriteLocalPosition.y;
+
+        return attackPosition;
+    }
+
+    private void SaveInitialPosition()
+    {
+        if (!hasSavedInitialPosition)
+        {
+            initialSpriteLocalPosition = transform.localPosition;
+            hasSavedInitialPosition = true;
+        }
+    }
+
+    private IEnumerator MoveSpriteToPosition(Vector3 targetPosition, float duration)
+    {
+        targetPosition.y = initialSpriteLocalPosition.y;
+        
+        if (duration <= 0f)
+        {
+            Vector3 finalPosition = transform.localPosition;
+            finalPosition.x = targetPosition.x;
+            finalPosition.y = initialSpriteLocalPosition.y;
+            transform.localPosition = finalPosition;
+            yield break;
+        }
+
+        Vector3 startPosition = transform.localPosition;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
+            currentPosition.y = initialSpriteLocalPosition.y;
+            transform.localPosition = currentPosition;
+            yield return null;
+        }
+
+        Vector3 finalPos = targetPosition;
+        finalPos.y = initialSpriteLocalPosition.y;
+        transform.localPosition = finalPos;
+    }
+
+    private void SetSortingOrder(int sortingOrder)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingOrder = sortingOrder;
         }
     }
 
@@ -199,6 +314,11 @@ public class Monster : BaseUnit, IPointerClickHandler
     public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
+        
+        if (monsterAnimation != null && IsAlive)
+        {
+            monsterAnimation.PlayHitAnimation();
+        }
         
         if (!IsAlive && !isMarkedForDeath)
         {

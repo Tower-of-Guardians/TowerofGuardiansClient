@@ -14,15 +14,14 @@ public class Player : BaseUnit
 
     [Header("Animation")]
     private PlayerAnimation playerAnimation;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Effects")]
     [SerializeField] private GameObject effectShield;
 
-    [Header("Sprite")]
-    [SerializeField] private Transform spriteTransform;
+    [Header("Movement")]
     [SerializeField] private float singleTargetAttackOffset = 3.5f;
     [SerializeField] private float attackMoveDuration = 0.2f;
-    [SerializeField] private float returnMoveDuration = 0.2f;
 
     private Vector3 initialSpriteLocalPosition;
     private bool hasCachedSpriteOrigin;
@@ -35,6 +34,8 @@ public class Player : BaseUnit
     
     private Tweener attackTextTweener;
     private Tweener protectionTweener;
+    private const int NormalSortingOrder = 5;
+    private const int AttackSortingOrder = 7;
 
     public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus);
     public float DefenseValue => cardDefenseBonus;
@@ -140,31 +141,29 @@ public class Player : BaseUnit
         
         CacheSpriteOrigin();
 
-        if (spriteTransform != null)
+       
+        Vector3 attackPosition = initialSpriteLocalPosition;
+
+        if (isAreaAttack)
         {
-            Vector3 attackPosition = initialSpriteLocalPosition;
-
-            if (isAreaAttack)
-            {
-                attackPosition.x = 0f;
-            }
-            else if (primaryTargetWorldPosition.HasValue)
-            {
-                Transform parent = spriteTransform.parent;
-                Vector3 targetLocal = parent != null
-                    ? parent.InverseTransformPoint(primaryTargetWorldPosition.Value)
-                    : primaryTargetWorldPosition.Value;
-
-                attackPosition.x = targetLocal.x - Mathf.Abs(singleTargetAttackOffset);
-            }
-            else
-            {
-                attackPosition.x = initialSpriteLocalPosition.x - Mathf.Abs(singleTargetAttackOffset);
-            }
-
-            // 공격 위치로 이동
-            yield return StartCoroutine(MoveSpriteToPosition(attackPosition, attackMoveDuration));
+            attackPosition.x = 0f;
         }
+        else if (primaryTargetWorldPosition.HasValue)
+        {
+            Transform parent = transform.parent;
+            Vector3 targetLocal = parent != null
+                ? parent.InverseTransformPoint(primaryTargetWorldPosition.Value)
+                : primaryTargetWorldPosition.Value;
+
+            attackPosition.x = targetLocal.x - Mathf.Abs(singleTargetAttackOffset);
+        }
+        else
+        {
+            attackPosition.x = initialSpriteLocalPosition.x - Mathf.Abs(singleTargetAttackOffset);
+        }
+
+        // 공격 위치로 이동
+        yield return StartCoroutine(MoveSpriteToPosition(attackPosition, attackMoveDuration));
 
         // 현재 공격력 계산
         int currentAttack = AttackValue;
@@ -197,43 +196,45 @@ public class Player : BaseUnit
             yield return StartCoroutine(playerAnimation.WaitForAttackAnimationComplete(currentAttack));
         }
 
-        // 제자리로 복귀
-        if (spriteTransform != null)
-        {
-            yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, returnMoveDuration));
-        }
+        yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, attackMoveDuration));
     }
 
     private IEnumerator MoveSpriteToPosition(Vector3 targetPosition, float duration)
     {
-        if (spriteTransform == null || duration <= 0f)
+        targetPosition.y = initialSpriteLocalPosition.y;
+        
+        if (duration <= 0f)
         {
-            if (spriteTransform != null)
-            {
-                spriteTransform.localPosition = targetPosition;
-            }
+            Vector3 finalPosition = transform.localPosition;
+            finalPosition.x = targetPosition.x;
+            finalPosition.y = initialSpriteLocalPosition.y;
+            transform.localPosition = finalPosition;
             yield break;
         }
 
-        Vector3 startPosition = spriteTransform.localPosition;
+        Vector3 startPosition = transform.localPosition;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
-            spriteTransform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);
+            Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
+            currentPosition.y = initialSpriteLocalPosition.y;
+            transform.localPosition = currentPosition;
             yield return null;
         }
 
-        spriteTransform.localPosition = targetPosition;
+        Vector3 finalPos = targetPosition;
+        finalPos.y = initialSpriteLocalPosition.y;
+        transform.localPosition = finalPos;
     }
 
     private void CacheSpriteOrigin()
     {
-        if (spriteTransform != null && !hasCachedSpriteOrigin)
+        if (!hasCachedSpriteOrigin)
         {
-            initialSpriteLocalPosition = spriteTransform.localPosition;
+            initialSpriteLocalPosition = transform.localPosition;
             hasCachedSpriteOrigin = true;
         }
     }
@@ -242,10 +243,7 @@ public class Player : BaseUnit
     {
         CacheSpriteOrigin();
         
-        if (spriteTransform == null)
-        {
-            yield break;
-        }
+        SetSortingOrder(AttackSortingOrder);
         
         Vector3 attackPosition = initialSpriteLocalPosition;
         
@@ -255,7 +253,7 @@ public class Player : BaseUnit
         }
         else if (attackAnchorPosition.HasValue)
         {
-            Transform parent = spriteTransform.parent;
+            Transform parent = transform.parent;
             Vector3 targetLocal = parent != null
                 ? parent.InverseTransformPoint(attackAnchorPosition.Value)
                 : attackAnchorPosition.Value;
@@ -272,10 +270,7 @@ public class Player : BaseUnit
     
     public IEnumerator ReturnToOriginalPosition()
     {
-        if (spriteTransform != null)
-        {
-            yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, returnMoveDuration));
-        }
+        yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, attackMoveDuration));
     }
 
     public override void TakeDamage(int amount)
@@ -421,6 +416,19 @@ public class Player : BaseUnit
         }
     }
     
+    private void SetSortingOrder(int sortingOrder)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingOrder = sortingOrder;
+            Debug.Log($"Player: Order In Layer를 {sortingOrder}로 변경했습니다. (SpriteRenderer: {spriteRenderer.name})");
+        }
+        else
+        {
+            Debug.LogWarning("Player: spriteRenderer가 null입니다. Inspector에서 SpriteRenderer를 할당해주세요.");
+        }
+    }
+
     protected override void OnDestroy()
     {
         SubscribeDataCenterHpEvent();

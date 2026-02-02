@@ -54,10 +54,7 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 등록된 모든 이펙트 프리팹을 ObjectPoolManager에 자동으로 등록합니다.
-    /// 타입별로 그룹화하여 풀을 관리합니다.
-    /// </summary>
+    // 타입별로 등록된 이펙트 프리팹을 ObjectPoolManager에 자동으로 등록
     private void RegisterEffectPools()
     {
         if (ObjectPoolManager.Instance == null)
@@ -70,7 +67,7 @@ public class EffectManager : MonoBehaviour
         {
             if (effectData.prefab != null && !ObjectPoolManager.Instance.HasPool(effectData.prefab))
             {
-                // 타입별로 풀 설정 (필요시 타입에 따라 다른 설정 가능)
+                // 타입별로 풀 설정
                 int initialSize = GetInitialPoolSizeForType(effectData.effectType);
                 int maxSize = GetMaxPoolSizeForType(effectData.effectType);
 
@@ -84,9 +81,7 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 이펙트 타입에 따른 초기 풀 크기를 반환합니다.
-    /// </summary>
+    // 이펙트 타입에 따른 초기 풀 크기를 반환
     private int GetInitialPoolSizeForType(EffectType effectType)
     {
         return effectType switch
@@ -99,9 +94,7 @@ public class EffectManager : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// 이펙트 타입에 따른 최대 풀 크기를 반환합니다.
-    /// </summary>
+    // 이펙트 타입에 따른 최대 풀 크기를 반환
     private int GetMaxPoolSizeForType(EffectType effectType)
     {
         return effectType switch
