@@ -45,8 +45,6 @@ public class ThrowPresenter : IDisposable
     public void OnClickedOpenUI()
     {
         m_controller.OpenUI();
-        m_service.IsThrowed = false;
-
         OnUpdatedToggleUI?.Invoke(true);
     }
 
@@ -54,18 +52,12 @@ public class ThrowPresenter : IDisposable
     {
         m_controller.CloseUI();
 
-        // TODO: 카드가 다시 패로 이동
-
-        m_service.RemoveAll();
-
         OnUpdatedToggleUI?.Invoke(false);
     }
 
     public void OnClickedThrowCards()
     {
-        m_service.IsThrowed = true;
         m_controller.ThrowUI();
-        m_service.RemoveAll();
         m_turn_manager.UpdateThrowAction(false);
 
         OnUpdatedToggleUI?.Invoke(false);
@@ -83,22 +75,18 @@ public class ThrowPresenter : IDisposable
             m_controller.ToggleManual(active);
     }
 
+    public IThrowCardView GetCardView(BattleCardData battle_card_data)
+        => m_container.GetCardView(battle_card_data);
+
+    public IThrowCardView[] GetCardViews()
+        => m_container.GetCardViews();
+
     public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
     public BattleCardData GetCardData(IThrowCardView card_view)
         => m_container.GetData(card_view);
 
-    public void OnTempCardAnimeEnd(BattleCardData card_data)
-    {
-        if(!m_service.IsThrowed)
-            m_hand_presenter.InstantiateCard(card_data);
-        else
-        {
-            GameData.Instance.garbageDeck.Add(card_data.data.id);
-            GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
-        }
-    }
     public void OnDroped(IHandCardView card_view)
     {
         if(!m_turn_manager.CanThrow())

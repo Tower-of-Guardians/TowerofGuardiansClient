@@ -58,7 +58,7 @@ public class GameData : Singleton<GameData>
     public List<BattleCardData> NextDeckSet(int count)
     {
         List<BattleCardData> returnDatas = new List<BattleCardData>();
-        BattleCardData getdata = new BattleCardData();
+        
         for (int i = 0; i < count; i++)
         {
             if (notuseDeck.Count <= 0)
@@ -67,6 +67,8 @@ public class GameData : Singleton<GameData>
                 Shuffle();
                 garbageDeck.Clear();
             }
+
+            BattleCardData getdata = new BattleCardData();
 
             DataCenter.Instance.GetCardData(notuseDeck[0], (data) =>
             {
@@ -77,8 +79,6 @@ public class GameData : Singleton<GameData>
             getdata.index = handDeck.Count - 1;
             returnDatas.Add(getdata);
         }
-
-        Debug.LogFormat("ID : {0} , [{1}] , index : {2} .", getdata.data.id, getdata.data.itemName, getdata.index);
 
         InvokeDeckCountChange(DeckType.Draw);
         InvokeDeckCountChange(DeckType.Throw);

@@ -11,15 +11,12 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
 
     private ThrowCardEventController m_event_controller;
     private ThrowCardLayoutController m_layout_controller;
-    private ThrowAnimeController m_anime_controller;
 
     public void Inject(ThrowCardEventController event_controller,
-                       ThrowCardLayoutController layout_controller,
-                       ThrowAnimeController anime_controller)
+                       ThrowCardLayoutController layout_controller)
     {
         m_event_controller = event_controller;
         m_layout_controller = layout_controller;
-        m_anime_controller = anime_controller;
     }
 
     public IThrowCardView InstantiateCardView()
@@ -37,7 +34,7 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
 
     public void ReturnCard(IThrowCardView card_view, BattleCardData card_data)
     {
-        m_anime_controller.PlayRemove(card_view, card_data);
+        ObjectPoolManager.Instance.Return((card_view as ThrowCardView).gameObject); 
         m_event_controller.Unsubscribe(card_view);
         m_layout_controller.UpdateLayout(false, true);
     }

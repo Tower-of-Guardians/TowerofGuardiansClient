@@ -93,6 +93,7 @@ public class HandPresenter : IDisposable
         GameData.Instance.FieldToHandMove(card_data);
 
         m_throw_presenter.RemoveCard(card_view);
+        InstantiateCard(card_data);
     }
 
     public void OnDroped(IFieldCardView card_view)

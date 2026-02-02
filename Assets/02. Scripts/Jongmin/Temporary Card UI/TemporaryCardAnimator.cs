@@ -4,31 +4,45 @@ using DG.Tweening;
 
 public class TemporaryCardAnimator : MonoBehaviour
 {
-    [Header("임시 카드 팩토리")]
     [SerializeField] private TemporaryCardFactory m_factory;
 
-    public event Action<BattleCardData> OnAnimationEnd;
-
-    public void Animate(BattleCardData card_data,
-                        Vector3 start_position,
-                        Vector3 end_position,
-                        float scale,
-                        float arc_power,
-                        float duration)
+    public Tween AnimateOne(
+        BattleCardData data,
+        Vector3 start_position,
+        Vector3 end_position,
+        TemporaryCardSettings s,
+        Action<BattleCardData> on_start = null,
+        Action<BattleCardData> on_complete = null)
     {
-        var temp_card = m_factory.InstantiateCard(card_data);
-        temp_card.transform.position = start_position;
-        //temp_card.transform.localScale = Vector3.forward;
+        on_start?.Invoke(data);
 
-        var sequence_animator = DOTween.Sequence();
-        sequence_animator.Append(temp_card.transform.DOScale(scale, duration).SetEase(Ease.OutBack));
-        sequence_animator.Join(temp_card.transform.DOJump(end_position, arc_power, 1, duration).SetEase(Ease.InQuad));
-        sequence_animator.OnComplete(() => { OnAnimationEnd?.Invoke(card_data); 
-                                             ReturnCard(temp_card); });
-    }
+        var card_object = m_factory.InstantiateCard(data);
+        var t = card_object.transform;
 
-    private void ReturnCard(GameObject temp_card)
-    {
-        ObjectPoolManager.Instance.Return(temp_card);
+        t.position = start_position;
+
+        if (s.ForceStartScale) t.localScale = s.StartScale;
+        if (s.ForceStartRotation) t.eulerAngles = s.StartEuler;
+
+        var seq = DOTween.Sequence();
+
+        if (s.UseJump)
+            seq.Join(t.DOJump(end_position, s.JumpPower, 1, s.Duration).SetEase(s.MoveEase));
+        else
+            seq.Join(t.DOMove(end_position, s.Duration).SetEase(s.MoveEase));
+
+        if (s.UseScale)
+            seq.Join(t.DOScale(s.Scale, s.Duration).SetEase(s.ScaleEase));
+
+        if (s.UseRotation)
+            seq.Join(t.DORotate(s.TargetEuler, s.Duration, s.RotateMode).SetEase(s.RotateEase));
+
+        seq.OnComplete(() =>
+        {
+            on_complete?.Invoke(data);
+            m_factory.ReturnCard(card_object);
+        });
+
+        return seq;
     }
 }

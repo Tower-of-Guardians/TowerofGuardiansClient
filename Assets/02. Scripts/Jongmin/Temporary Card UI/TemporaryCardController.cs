@@ -4,142 +4,41 @@ using UnityEngine;
 
 public class TemporaryCardController : MonoBehaviour
 {
-    [Header("임시 카드 애니메이터")]
     [SerializeField] private TemporaryCardAnimator m_animator;
 
-    public event Action<BattleCardData> OnAnimationEnd;
+    public event Action<BattleCardData> OnCardAnimationBegin; 
+    public event Action<BattleCardData> OnCardAnimationEnd;
+    public event Action OnFinalAnimationEnd;
 
-    private void Awake()
-        => m_animator.OnAnimationEnd += AnimationEndHandler;
+    private Coroutine m_running;
 
-    public void PlayAnime(BattleCardData[] card_datas,
-                          Vector3 start_position,
-                          Vector3 end_position,
-                          float scale,
-                          float arc_power,
-                          float duration,
-                          float interval)
+    public void Play(TemporaryCardAnimeRequest req)
     {
-        StartCoroutine(Co_Anime(card_datas,
-                                start_position,
-                                end_position,
-                                scale,
-                                arc_power,
-                                duration,
-                                interval));
+        if (m_running != null) StopCoroutine(m_running);
+        m_running = StartCoroutine(Co_Play(req));
     }
 
-    public void PlayAnimeWithRandomArc(BattleCardData[] card_datas,
-                                       Vector3 start_position,
-                                       Vector3 end_position,
-                                       float scale,
-                                       float duration,
-                                       float interval)
+    private IEnumerator Co_Play(TemporaryCardAnimeRequest req)
     {
-        StartCoroutine(Co_AnimeWithRandomArc(card_datas,
-                                             start_position,
-                                             end_position,
-                                             scale,
-                                             duration,
-                                             interval));
-    }
-
-    public void PlayAnime(BattleCardData card_data,
-                          Vector3 start_position,
-                          Vector3 end_position,
-                          float scale,
-                          float arc_power,
-                          float duration)
-    {
-        m_animator.Animate(card_data,
-                           start_position,
-                           end_position,
-                           scale,
-                           arc_power,
-                           duration);  
-    }
-
-    public void PlayAnimeFromThis(BattleCardData[] card_datas,
-                                  Vector3[] start_positions,
-                                  Vector3 end_position,
-                                  float scale,
-                                  float arc_power,
-                                  float duration,
-                                  float interval)
-    {
-        StartCoroutine(Co_AnimeFromThis(card_datas,
-                                        start_positions,
-                                        end_position,
-                                        scale,
-                                        arc_power,
-                                        duration,
-                                        interval));
-    }
-
-    private IEnumerator Co_Anime(BattleCardData[] card_datas,
-                                 Vector3 start_position,
-                                 Vector3 end_position,
-                                 float scale,
-                                 float arc_power,
-                                 float duration,
-                                 float interval)
-    {
-        for(int i = 0; i < card_datas.Length; i++)
+        for (int i = 0; i < req.CardDatas.Length; i++)
         {
-            yield return new WaitForSeconds(interval);
+            if (req.Interval > 0f)
+                yield return new WaitForSeconds(req.Interval);
 
-            m_animator.Animate(card_datas[i],
-                               start_position,
-                               end_position,
-                               scale,
-                               arc_power,
-                               duration);      
-        }  
-    }
+            var s = req.GetSettings(i);
 
-    private IEnumerator Co_AnimeWithRandomArc(BattleCardData[] card_datas,
-                                              Vector3 start_position,
-                                              Vector3 end_position,
-                                              float scale,
-                                              float duration,
-                                              float interval)
-    {
-        for(int i = 0; i < card_datas.Length; i++)
-        {
-            yield return new WaitForSeconds(interval);
+            m_animator.AnimateOne(
+                req.CardDatas[i],
+                req.GetStartPosition(i),
+                req.EndPosition,
+                s,
+                d => OnCardAnimationBegin?.Invoke(d),
+                d => OnCardAnimationEnd?.Invoke(d)
+            );
+        }
 
-            m_animator.Animate(card_datas[i],
-                               start_position,
-                               end_position,
-                               scale,
-                               UnityEngine.Random.Range(-150f, 150f),
-                               duration);      
-        }          
-    }
+        OnFinalAnimationEnd?.Invoke();
 
-    private IEnumerator Co_AnimeFromThis(BattleCardData[] card_datas,
-                                         Vector3[] start_positions,
-                                         Vector3 end_position,
-                                         float scale,
-                                         float arc_power,
-                                         float duration,
-                                         float interval)
-    {
-        for(int i = 0; i < card_datas.Length; i++)
-        {
-            yield return new WaitForSeconds(interval);
-
-            m_animator.Animate(card_datas[i],
-                               start_positions[i],
-                               end_position,
-                               scale,
-                               arc_power,
-                               duration);      
-        }          
-    }
-
-    private void AnimationEndHandler(BattleCardData card_data)
-    {
-        OnAnimationEnd?.Invoke(card_data);
+        m_running = null;
     }
 }

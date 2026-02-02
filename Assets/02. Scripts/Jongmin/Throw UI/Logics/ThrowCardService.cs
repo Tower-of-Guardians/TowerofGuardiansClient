@@ -5,7 +5,6 @@ public class ThrowCardService
     private readonly ThrowCardContainer m_container;
     private readonly TurnManager m_turn_manager;
     
-    public bool IsThrowed { get; set; }
     public int Count => m_container.Cards.Count;
 
     public ThrowCardService(IThrowView view,
