@@ -90,6 +90,7 @@ public class TurnManager : MonoBehaviour
 
     public void UpdateThrowAction(bool active)
     {
+        UnityEngine.Debug.Log(active);
         m_is_can_throw = active;
         OnUpdatedThrowActionState?.Invoke(m_is_can_throw);
     }

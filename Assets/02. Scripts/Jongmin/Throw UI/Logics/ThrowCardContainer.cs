@@ -59,6 +59,23 @@ public class ThrowCardContainer
         => m_card_dict.Values.Select(x => x.CardData)
                              .ToArray();
 
+    public IThrowCardView[] GetCardViews()
+        => m_card_list.ToArray();
+
+    public IThrowCardView GetCardView(BattleCardData card_data)
+    {
+        if (card_data == null) 
+            return null;
+
+        foreach(IThrowCardView card_view in m_card_list)
+        {
+            if(m_card_dict[card_view].CardData.data.id == card_data.data.id)
+                return card_view;
+        }
+
+        return null;
+    }
+
     public BattleCardData GetData(IThrowCardView card_view)
         => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
                                                                  : null;

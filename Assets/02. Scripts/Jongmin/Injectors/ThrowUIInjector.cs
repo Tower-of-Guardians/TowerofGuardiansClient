@@ -6,9 +6,6 @@ public class ThrowUIInjector : MonoBehaviour, IInjector
     [Header("레이아웃 교체 뷰")]
     [SerializeField] private LayoutThrowView m_layout_throw_view;
 
-    [Header("교체 카드 애니메이션 관리자")]
-    [SerializeField] private ThrowAnimeController m_anime_controller;
-
     [Header("교체 카드 이벤트 관리자")]
     [SerializeField] private ThrowCardEventController m_event_controller;
 
@@ -43,13 +40,10 @@ public class ThrowUIInjector : MonoBehaviour, IInjector
                                                  DIContainer.Resolve<TurnManager>());
         DIContainer.Register<ThrowPresenter>(throw_presenter);
 
-        m_layout_throw_view.Inject(m_anime_controller,
-                                   throw_card_container,
+        m_layout_throw_view.Inject(throw_card_container,
                                    m_throw_ui_designer,
                                    m_layout_controller,
                                    m_event_controller,
                                    m_throw_card_factory);
-
-        m_anime_controller.Inject(throw_card_container);
     }
 }

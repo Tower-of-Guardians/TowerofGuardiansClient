@@ -33,10 +33,10 @@ public class ThrowViewController
         => m_view.ToggleManual(active);
 
     public void UpdateThrowState(bool active)
-        => m_view.UpdateUI(active, active);
+        => m_view.UpdateOpenButton(active);
     
     public void UpdateThrowCount(ActionData data)
-        => m_view.UpdateUI(true, data.Current > 0);
+        => m_view.UpdateThrowButton(data.Current > 0);
     
     public void Notify(string notify_message)
         => m_notice.Notify(notify_message);

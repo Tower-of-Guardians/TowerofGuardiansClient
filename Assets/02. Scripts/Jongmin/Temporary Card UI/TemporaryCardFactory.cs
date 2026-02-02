@@ -15,9 +15,13 @@ public class TemporaryCardFactory : MonoBehaviour
         m_temp_card_obj.transform.SetParent(m_canvas.transform);
 
         var temp_card_view = m_temp_card_obj.GetComponent<TemporaryCardView>();
-        var temp_card_presenter = new TemporaryCardPresenter(temp_card_view,
-                                                             card_data);
+        _ = new TemporaryCardPresenter(temp_card_view, card_data);
 
         return m_temp_card_obj;
+    }
+
+    public void ReturnCard(GameObject temp_card_obj)
+    {
+        ObjectPoolManager.Instance.Return(temp_card_obj);
     }
 }
