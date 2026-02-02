@@ -9,11 +9,15 @@ public class BattleManager : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private BattleSetupController setupController;
     [SerializeField] private BattleActionController actionController;
-    [SerializeField] private BattleCombatController combatController;
     [SerializeField] private BattleTurnEndController turnEndController;
+    [SerializeField] private BattleCombatController combatController;
 
     private bool isInitialized;
-    private readonly List<IBattleController> controllers = new();
+    
+    [Header("Combat Pipeline")]
+    private TurnPipeline combatAttackPipeline;
+    private ElementContext elementContext;
+    private bool isProcessingAttack;
 
     private void Awake()
     {
@@ -22,48 +26,47 @@ public class BattleManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        CleanupAllControllers();
+        CleanupControllers();
     }
 
     private void InitializeControllers()
     {
         if (setupController != null)
         {
-            controllers.Add(setupController);
+            setupController.Initialize(this);
         }
         if (actionController != null)
         {
-            controllers.Add(actionController);
-        }
-        if (combatController != null)
-        {
-            controllers.Add(combatController);
+            actionController.Initialize(this);
         }
         if (turnEndController != null)
         {
-            controllers.Add(turnEndController);
+            turnEndController.Initialize(this);
         }
-
-        // 각 Controller 초기화
-        foreach (var controller in controllers)
+        if (combatController != null)
         {
-            controller.Initialize(this);
-        }
-
-        // Controller 간 의존성 설정
-        if (combatController != null && setupController != null)
-        {
-            combatController.SetSetupController(setupController);
+            combatController.Initialize(this);
         }
     }
 
-    private void CleanupAllControllers()
+    private void CleanupControllers()
     {
-        foreach (var controller in controllers)
+        if (setupController != null)
         {
-            controller.Cleanup();
+            setupController.Cleanup();
         }
-        controllers.Clear();
+        if (actionController != null)
+        {
+            actionController.Cleanup();
+        }
+        if (turnEndController != null)
+        {
+            turnEndController.Cleanup();
+        }
+        if (combatController != null)
+        {
+            combatController.Cleanup();
+        }
     }
 
     public void Initialize(Player playerUnit, IEnumerable<Monster> monsters, Button attackBtn)
@@ -83,7 +86,52 @@ public class BattleManager : MonoBehaviour
         setupController.SetupBattle(playerUnit, monsters, attackBtn);
         isInitialized = true;
 
+        InitializePipeline();
         StartCoroutine(StartFirstTurnDelayed());
+    }
+
+    private void InitializePipeline()
+    {
+        // ElementContext 생성 및 의존성 주입
+        elementContext = new ElementContext();
+        
+        // DI Container에서 의존성 가져오기 (등록될 때까지 대기 필요)
+        StartCoroutine(InitializePipelineDelayed());
+    }
+
+    private IEnumerator InitializePipelineDelayed()
+    {
+        // 필요한 의존성들이 등록될 때까지 대기
+        yield return new WaitUntil(() => DIContainer.IsRegistered<TurnManager>());
+        yield return new WaitUntil(() => DIContainer.IsRegistered<HandPresenter>());
+        yield return new WaitUntil(() => DIContainer.IsRegistered<AttackFieldPresenter>());
+
+        // ElementContext에 의존성 주입
+        elementContext.turn_manager = DIContainer.Resolve<TurnManager>();
+        elementContext.hand_presenter = DIContainer.Resolve<HandPresenter>();
+        elementContext.field_presenter = DIContainer.Resolve<AttackFieldPresenter>();
+        elementContext.battle_action_controller = actionController;
+        elementContext.setup_controller = setupController;
+        elementContext.battle_manager = this; // 코루틴 실행 및 기타 기능을 위한 참조
+
+        // 전투 공격 파이프라인 생성 및 파이프라인 요소 등록
+        combatAttackPipeline = new TurnPipeline();
+        
+        // BattleCombatController에서 설정값 가져오기
+        bool playerAttackHitsAll = combatController != null ? combatController.GetPlayerAttackHitsAll() : false;
+        float statAnimationWaitTime = combatController != null ? combatController.GetStatAnimationWaitTime() : 1.0f;
+        
+        // AttackSequence를 파이프라인 요소들로 등록
+        combatAttackPipeline.Register(new CombatInitializationElement(playerAttackHitsAll));
+        combatAttackPipeline.Register(new PlayerAttackCalculationElement(statAnimationWaitTime));
+        combatAttackPipeline.Register(new PlayerEnforceAnimationElement());
+        combatAttackPipeline.Register(new PlayerDefenseEffectElement());
+        combatAttackPipeline.Register(new PlayerMoveToAttackElement());
+        combatAttackPipeline.Register(new PlayerAttackTriggerElement());
+        combatAttackPipeline.Register(new RemoveDeadMonstersElement()); // 플레이어 공격 후 죽은 몬스터 제거
+        combatAttackPipeline.Register(new VictoryCheckElement(this)); // 플레이어 공격 후 승리 체크
+        combatAttackPipeline.Register(new MonsterAttackSequenceElement(this)); // 몬스터 공격 (내부에서 RemoveDeadMonstersElement와 승리 체크 포함)
+        combatAttackPipeline.Register(new TurnEndRequestElement(this)); // 턴 종료 요청
     }
 
     private IEnumerator StartFirstTurnDelayed()
@@ -101,16 +149,9 @@ public class BattleManager : MonoBehaviour
 
     public void OnAttackButtonClicked()
     {
-        if (combatController == null)
-        {
-            Debug.LogWarning("BattleCombatController is not assigned.");
-            return;
-        }
+        if (isProcessingAttack) return;
 
-        if (combatController.IsProcessingAttack)
-        {
-            return;
-        }
+        if (combatAttackPipeline == null || elementContext == null) return;
 
         // 턴 시작 처리
         if (actionController != null)
@@ -118,8 +159,15 @@ public class BattleManager : MonoBehaviour
             actionController.OnTurnStart();
         }
 
-        // 공격 시퀀스 시작
-        combatController.StartAttackSequence();
+        isProcessingAttack = true;
+        combatAttackPipeline.Execute(elementContext, OnCombatAttackPipelineComplete);
+    }
+
+    private void OnCombatAttackPipelineComplete()
+    {
+        isProcessingAttack = false;
+        
+        // 공격 완료 후 처리
     }
 
     public void RequestDrawCards(int count = -1)
@@ -262,6 +310,6 @@ public class BattleManager : MonoBehaviour
 
     public bool IsProcessingAttack()
     {
-        return combatController != null && combatController.IsProcessingAttack;
+        return isProcessingAttack;
     }
 }
