@@ -134,7 +134,7 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     private Vector3 GetTargetAttackPosition(IDamageable target)
     {
-        if (target == null)
+        if (target == null || spriteRenderer == null)
         {
             return initialSpriteLocalPosition;
         }
@@ -147,9 +147,9 @@ public class Monster : BaseUnit, IPointerClickHandler
 
         Vector3 targetWorldPosition = targetMono.transform.position;
         
-        Transform parent = transform.parent;
-        Vector3 targetLocal = parent != null
-            ? parent.InverseTransformPoint(targetWorldPosition)
+        Transform spriteParent = spriteRenderer.transform.parent;
+        Vector3 targetLocal = spriteParent != null
+            ? spriteParent.InverseTransformPoint(targetWorldPosition)
             : targetWorldPosition;
 
         Vector3 direction = (targetLocal - initialSpriteLocalPosition).normalized;
@@ -162,27 +162,32 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     private void SaveInitialPosition()
     {
-        if (!hasSavedInitialPosition)
+        if (!hasSavedInitialPosition && spriteRenderer != null)
         {
-            initialSpriteLocalPosition = transform.localPosition;
+            initialSpriteLocalPosition = spriteRenderer.transform.localPosition;
             hasSavedInitialPosition = true;
         }
     }
 
     private IEnumerator MoveSpriteToPosition(Vector3 targetPosition, float duration)
     {
+        if (spriteRenderer == null)
+        {
+            yield break;
+        }
+
         targetPosition.y = initialSpriteLocalPosition.y;
         
         if (duration <= 0f)
         {
-            Vector3 finalPosition = transform.localPosition;
+            Vector3 finalPosition = spriteRenderer.transform.localPosition;
             finalPosition.x = targetPosition.x;
             finalPosition.y = initialSpriteLocalPosition.y;
-            transform.localPosition = finalPosition;
+            spriteRenderer.transform.localPosition = finalPosition;
             yield break;
         }
 
-        Vector3 startPosition = transform.localPosition;
+        Vector3 startPosition = spriteRenderer.transform.localPosition;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -191,13 +196,13 @@ public class Monster : BaseUnit, IPointerClickHandler
             float t = Mathf.Clamp01(elapsedTime / duration);
             Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
             currentPosition.y = initialSpriteLocalPosition.y;
-            transform.localPosition = currentPosition;
+            spriteRenderer.transform.localPosition = currentPosition;
             yield return null;
         }
 
         Vector3 finalPos = targetPosition;
         finalPos.y = initialSpriteLocalPosition.y;
-        transform.localPosition = finalPos;
+        spriteRenderer.transform.localPosition = finalPos;
     }
 
     private void SetSortingOrder(int sortingOrder)

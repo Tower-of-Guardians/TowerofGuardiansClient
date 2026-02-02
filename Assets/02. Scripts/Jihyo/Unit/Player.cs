@@ -148,11 +148,11 @@ public class Player : BaseUnit
         {
             attackPosition.x = 0f;
         }
-        else if (primaryTargetWorldPosition.HasValue)
+        else if (primaryTargetWorldPosition.HasValue && spriteRenderer != null)
         {
-            Transform parent = transform.parent;
-            Vector3 targetLocal = parent != null
-                ? parent.InverseTransformPoint(primaryTargetWorldPosition.Value)
+            Transform spriteParent = spriteRenderer.transform.parent;
+            Vector3 targetLocal = spriteParent != null
+                ? spriteParent.InverseTransformPoint(primaryTargetWorldPosition.Value)
                 : primaryTargetWorldPosition.Value;
 
             attackPosition.x = targetLocal.x - Mathf.Abs(singleTargetAttackOffset);
@@ -201,18 +201,23 @@ public class Player : BaseUnit
 
     private IEnumerator MoveSpriteToPosition(Vector3 targetPosition, float duration)
     {
+        if (spriteRenderer == null)
+        {
+            yield break;
+        }
+
         targetPosition.y = initialSpriteLocalPosition.y;
         
         if (duration <= 0f)
         {
-            Vector3 finalPosition = transform.localPosition;
+            Vector3 finalPosition = spriteRenderer.transform.localPosition;
             finalPosition.x = targetPosition.x;
             finalPosition.y = initialSpriteLocalPosition.y;
-            transform.localPosition = finalPosition;
+            spriteRenderer.transform.localPosition = finalPosition;
             yield break;
         }
 
-        Vector3 startPosition = transform.localPosition;
+        Vector3 startPosition = spriteRenderer.transform.localPosition;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -221,20 +226,20 @@ public class Player : BaseUnit
             float t = Mathf.Clamp01(elapsedTime / duration);
             Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, t);
             currentPosition.y = initialSpriteLocalPosition.y;
-            transform.localPosition = currentPosition;
+            spriteRenderer.transform.localPosition = currentPosition;
             yield return null;
         }
 
         Vector3 finalPos = targetPosition;
         finalPos.y = initialSpriteLocalPosition.y;
-        transform.localPosition = finalPos;
+        spriteRenderer.transform.localPosition = finalPos;
     }
 
     private void CacheSpriteOrigin()
     {
-        if (!hasCachedSpriteOrigin)
+        if (!hasCachedSpriteOrigin && spriteRenderer != null)
         {
-            initialSpriteLocalPosition = transform.localPosition;
+            initialSpriteLocalPosition = spriteRenderer.transform.localPosition;
             hasCachedSpriteOrigin = true;
         }
     }
@@ -251,11 +256,11 @@ public class Player : BaseUnit
         {
             attackPosition.x = 0f;
         }
-        else if (attackAnchorPosition.HasValue)
+        else if (attackAnchorPosition.HasValue && spriteRenderer != null)
         {
-            Transform parent = transform.parent;
-            Vector3 targetLocal = parent != null
-                ? parent.InverseTransformPoint(attackAnchorPosition.Value)
+            Transform spriteParent = spriteRenderer.transform.parent;
+            Vector3 targetLocal = spriteParent != null
+                ? spriteParent.InverseTransformPoint(attackAnchorPosition.Value)
                 : attackAnchorPosition.Value;
             
             attackPosition.x = targetLocal.x - Mathf.Abs(singleTargetAttackOffset);
