@@ -35,7 +35,7 @@ public class CardView : MonoBehaviour, ICardView
     protected virtual void Awake()
     {
         m_star_objects = m_star_group.GetComponentsInChildren<Image>();
-        // m_synergy_frame_objects = m_synergy_frame_group.GetComponentsInChildren<Image>();
+        m_synergy_frame_objects = m_synergy_frame_group.GetComponentsInChildren<Image>();
     }
 
     public virtual void InitUI(CardData card_data)
@@ -53,8 +53,8 @@ public class CardView : MonoBehaviour, ICardView
         for(int i = 0; i < card_data.star; i++)
             m_star_objects[i].gameObject.SetActive(true);
 
-        // for(int i = 0; i < m_synergy_frame_objects.Length; i++)
-        //     m_synergy_frame_objects[i].sprite = card_data.synergyFrameImage;
+        for(int i = 0; i < m_synergy_frame_objects.Length; i++)
+            m_synergy_frame_objects[i].sprite = card_data.synergyFrameImage;
     }
 
     public virtual void Return()
