@@ -426,11 +426,6 @@ public class Player : BaseUnit
         if (spriteRenderer != null)
         {
             spriteRenderer.sortingOrder = sortingOrder;
-            Debug.Log($"Player: Order In Layer를 {sortingOrder}로 변경했습니다. (SpriteRenderer: {spriteRenderer.name})");
-        }
-        else
-        {
-            Debug.LogWarning("Player: spriteRenderer가 null입니다. Inspector에서 SpriteRenderer를 할당해주세요.");
         }
     }
 
