@@ -49,8 +49,7 @@ public class HandCardToThrowEffector : CardEffector
     public override void Execute()
     {
         m_temp_card_anime_request.CardDatas = m_hand_presenter.GetCardDatas();
-        foreach(BattleCardData card_data in m_temp_card_anime_request.CardDatas)
-            Debug.Log(card_data.data.id);
+
         List<Vector3> hand_card_positions = new();
         foreach(IHandCardView card_view in m_hand_presenter.GetCardViews())
             hand_card_positions.Add((card_view as HandCardView).transform.position);

@@ -108,66 +108,67 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
     private void DiscardAllHandCards()
     {
-        // 사용 카드 버리기
-        if (GameData.Instance != null)
-        {
-            var attackFieldCards = new List<CardData>(GameData.Instance.attackField);
-            foreach (var cardData in attackFieldCards)
-            {
-                if (cardData != null)
-                {
-                    GameData.Instance.UseCard(cardData.id);
-                }
-            }
-            GameData.Instance.attackField.Clear();
-            
-            var defenseFieldCards = new List<CardData>(GameData.Instance.defenseField);
-            foreach (var cardData in defenseFieldCards)
-            {
-                if (cardData != null)
-                {
-                    GameData.Instance.UseCard(cardData.id);
-                }
-            }
-            GameData.Instance.defenseField.Clear();
-        }
-        
-        // Hand UI 카드 제거
-        // if (DIContainer.IsRegistered<HandPresenter>())
+
+        // // 사용 카드 버리기
+        // if (GameData.Instance != null)
         // {
-        //     var handPresenter = DIContainer.Resolve<HandPresenter>();
-            
-        //     // 핸드 카드 버리기
-        //     var handCards = handPresenter.GetCardDatas();
-        //     if (handCards != null && handCards.Length > 0)
+        //     var attackFieldCards = new List<CardData>(GameData.Instance.attackField);
+        //     foreach (var cardData in attackFieldCards)
         //     {
-        //         foreach (var cardData in handCards)
+        //         if (cardData != null)
         //         {
-        //             if (cardData != null && cardData.data != null)
-        //             {
-        //                 // 버리는 덱에 추가
-        //                 GameData.Instance.UseCard(cardData.data.id);
-        //             }
+        //             GameData.Instance.UseCard(cardData.id);
         //         }
         //     }
-
-        //     handPresenter.ClearAllCards();
-        //     GameData.Instance.handDeck.Clear();
+        //     GameData.Instance.attackField.Clear();
+            
+        //     var defenseFieldCards = new List<CardData>(GameData.Instance.defenseField);
+        //     foreach (var cardData in defenseFieldCards)
+        //     {
+        //         if (cardData != null)
+        //         {
+        //             GameData.Instance.UseCard(cardData.id);
+        //         }
+        //     }
+        //     GameData.Instance.defenseField.Clear();
         // }
         
-        // Attacking Field UI 카드 제거
-        if (DIContainer.IsRegistered<AttackFieldPresenter>())
-        {
-            var attackFieldPresenter = DIContainer.Resolve<AttackFieldPresenter>();
-            attackFieldPresenter.RemoveAll();
-        }
+        // // Hand UI 카드 제거
+        // // if (DIContainer.IsRegistered<HandPresenter>())
+        // // {
+        // //     var handPresenter = DIContainer.Resolve<HandPresenter>();
+            
+        // //     // 핸드 카드 버리기
+        // //     var handCards = handPresenter.GetCardDatas();
+        // //     if (handCards != null && handCards.Length > 0)
+        // //     {
+        // //         foreach (var cardData in handCards)
+        // //         {
+        // //             if (cardData != null && cardData.data != null)
+        // //             {
+        // //                 // 버리는 덱에 추가
+        // //                 GameData.Instance.UseCard(cardData.data.id);
+        // //             }
+        // //         }
+        // //     }
+
+        // //     handPresenter.ClearAllCards();
+        // //     GameData.Instance.handDeck.Clear();
+        // // }
         
-        // Defending Field UI 카드 제거
-        if (DIContainer.IsRegistered<DefendFieldPresenter>())
-        {
-            var defendFieldPresenter = DIContainer.Resolve<DefendFieldPresenter>();
-            defendFieldPresenter.RemoveAll();
-        }
+        // // Attacking Field UI 카드 제거
+        // if (DIContainer.IsRegistered<AttackFieldPresenter>())
+        // {
+        //     var attackFieldPresenter = DIContainer.Resolve<AttackFieldPresenter>();
+        //     attackFieldPresenter.RemoveAll();
+        // }
+        
+        // // Defending Field UI 카드 제거
+        // if (DIContainer.IsRegistered<DefendFieldPresenter>())
+        // {
+        //     var defendFieldPresenter = DIContainer.Resolve<DefendFieldPresenter>();
+        //     defendFieldPresenter.RemoveAll();
+        // }
     }
 }
 

@@ -58,9 +58,27 @@ public class FieldCardContainer
         m_card_dict.Clear();
     }
 
+    public IFieldCardView[] GetCardViews()
+        => m_card_list.ToArray();
+
+    public IFieldCardView GetCardView(BattleCardData card_data)
+    {
+        if (card_data == null) 
+            return null;
+
+        foreach(IFieldCardView card_view in m_card_list)
+        {
+            if(m_card_dict[card_view].CardData.data.id == card_data.data.id)
+                return card_view;
+        }
+
+        return null;
+    }
+
     public BattleCardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.CardData)
-                             .ToArray();
+        => m_card_list
+                .Select(view => m_card_dict[view].CardData)
+                .ToArray();
 
     public BattleCardData GetData(IFieldCardView card_view)
         => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
