@@ -23,10 +23,18 @@ public class ThrowCardContainer
 
     public void Swap(IThrowCardView from_card_view, IThrowCardView to_card_view)
     {
-        var index = m_card_list.IndexOf(to_card_view);
+        int from_index = m_card_list.IndexOf(from_card_view);
+        int to_index   = m_card_list.IndexOf(to_card_view);
         
-        m_card_list.Remove(from_card_view);
-        m_card_list.Insert(index, from_card_view);
+        if (from_index < 0 || to_index < 0 || from_index == to_index) 
+            return;
+
+        m_card_list.RemoveAt(from_index);
+
+        if (from_index < to_index) 
+            to_index--;
+
+        m_card_list.Insert(to_index, from_card_view);
     }
 
     public bool IsPriority(IThrowCardView from_card_view, IThrowCardView to_card_view)
@@ -56,8 +64,9 @@ public class ThrowCardContainer
     }
 
     public BattleCardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.CardData)
-                             .ToArray();
+        => m_card_list
+                .Select(view => m_card_dict[view].CardData)
+                .ToArray();
 
     public IThrowCardView[] GetCardViews()
         => m_card_list.ToArray();

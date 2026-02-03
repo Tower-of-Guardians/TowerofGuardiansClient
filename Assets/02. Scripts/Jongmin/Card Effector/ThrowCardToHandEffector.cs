@@ -50,7 +50,6 @@ public class ThrowCardToHandEffector : CardEffector
         List<Vector3> throw_card_positions = new();
         foreach(IThrowCardView card_view in m_throw_presenter.GetCardViews())
             throw_card_positions.Add((card_view as ThrowCardView).transform.position);
-        throw_card_positions.Reverse();
 
         m_temp_card_anime_request.StartPositions = throw_card_positions.ToArray(); 
 

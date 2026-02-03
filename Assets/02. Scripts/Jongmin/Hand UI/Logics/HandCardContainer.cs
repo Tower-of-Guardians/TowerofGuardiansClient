@@ -26,10 +26,18 @@ public class HandCardContainer
 
     public void Swap(IHandCardView from_card_view, IHandCardView to_card_view)
     {
-        var index = m_card_list.IndexOf(to_card_view);
+        int from_index = m_card_list.IndexOf(from_card_view);
+        int to_index   = m_card_list.IndexOf(to_card_view);
         
-        m_card_list.Remove(from_card_view);
-        m_card_list.Insert(index, from_card_view);
+        if (from_index < 0 || to_index < 0 || from_index == to_index) 
+            return;
+
+        m_card_list.RemoveAt(from_index);
+
+        if (from_index < to_index) 
+            to_index--;
+
+        m_card_list.Insert(to_index, from_card_view);
     }
 
     public bool IsPriority(IHandCardView from_card_view, IHandCardView to_card_view)
@@ -58,9 +66,27 @@ public class HandCardContainer
         m_card_dict.Clear();
     }
 
+    public IHandCardView GetHandCardView(BattleCardData battle_card_data)
+    {
+        if(battle_card_data == null)
+            return null;
+
+        foreach(IHandCardView card_view in m_card_list)
+        {
+            if(m_card_dict[card_view].CardData.data.id == battle_card_data.data.id)
+                return card_view;
+        }
+
+        return null;
+    }
+
+    public IHandCardView[] GetHandCardViews()
+        => m_card_list.ToArray();
+
     public BattleCardData[] GetDatas()
-        => m_card_dict.Values.Select(x => x.CardData)
-                             .ToArray();
+        => m_card_list
+                .Select(view => m_card_dict[view].CardData)
+                .ToArray();
 
     public BattleCardData GetData(IHandCardView card_view)
         => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
