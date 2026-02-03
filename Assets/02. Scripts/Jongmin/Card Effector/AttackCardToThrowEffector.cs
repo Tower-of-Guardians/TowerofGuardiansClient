@@ -33,6 +33,10 @@ public class AttackCardToThrowEffector : CardEffector
             RotateMode = RotateMode.LocalAxisAdd,
             RotateEase = Ease.InOutQuad,
 
+            UseOpacity = true,
+            Opacity = 0.5f,
+            OpacityEase = Ease.Unset,
+
             ForceStartScale = true,
             StartScale = Vector3.one * 0.66f,
 

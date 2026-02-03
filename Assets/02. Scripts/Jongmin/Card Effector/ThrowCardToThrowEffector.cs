@@ -12,10 +12,10 @@ public class ThrowCardToThrowEffector : CardEffector
 
         m_temp_card_settings = new()
         {
-            Duration = 0.35f,
+            Duration = 0.5f,
 
             UseJump = true,
-            JumpPower = -150f,
+            JumpPower = -50f,
             MoveEase = Ease.InQuad,
 
             UseScale = true,
@@ -24,8 +24,12 @@ public class ThrowCardToThrowEffector : CardEffector
 
             UseRotation = false,
 
+            UseOpacity = true,
+            Opacity = 0.5f,
+            OpacityEase = Ease.Unset,
+
             ForceStartScale = true,
-            StartScale = Vector3.one * 0.66f,
+            StartScale = Vector3.one * 0.44f,
 
             ForceStartRotation = false,
         };

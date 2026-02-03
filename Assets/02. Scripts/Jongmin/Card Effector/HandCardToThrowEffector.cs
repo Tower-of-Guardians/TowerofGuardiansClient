@@ -29,10 +29,16 @@ public class HandCardToThrowEffector : CardEffector
             RotateMode = RotateMode.LocalAxisAdd,
             RotateEase = Ease.Unset,
 
+            UseOpacity = true,
+            Opacity = 0.5f,
+            OpacityEase = Ease.Unset,
+
             ForceStartScale = true,
             StartScale = Vector3.one * 0.66f,
 
             ForceStartRotation = true,
+
+            ForceStartOpacity = false,
         };
 
         m_temp_card_anime_request = new()
