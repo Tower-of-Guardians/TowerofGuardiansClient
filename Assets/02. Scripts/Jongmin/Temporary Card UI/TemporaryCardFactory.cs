@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TemporaryCardFactory : MonoBehaviour
@@ -9,10 +10,10 @@ public class TemporaryCardFactory : MonoBehaviour
     [Header("임시 카드 프리펩")]
     [SerializeField] private GameObject m_temp_card_prefab;
 
-    public GameObject InstantiateCard(BattleCardData card_data)
+    public GameObject InstantiateCard(BattleCardData card_data, Transform transform)
     {
         var m_temp_card_obj = ObjectPoolManager.Instance.Get(m_temp_card_prefab);
-        m_temp_card_obj.transform.SetParent(m_canvas.transform);
+        m_temp_card_obj.transform.SetParent(transform == null ? m_canvas.transform : transform);
 
         var temp_card_view = m_temp_card_obj.GetComponent<TemporaryCardView>();
         _ = new TemporaryCardPresenter(temp_card_view, card_data);

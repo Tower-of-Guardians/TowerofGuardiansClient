@@ -1,6 +1,6 @@
 using System;
 
-public class HandPresenter : IDisposable
+public class HandPresenter
 {
     private readonly FieldPresenter m_attack_field_presenter;
     private readonly FieldPresenter m_defend_field_presenter;
@@ -38,8 +38,6 @@ public class HandPresenter : IDisposable
         m_throw_presenter = throw_presenter;
         m_turn_manager = turn_manager;
 
-        m_turn_manager.EndCurrentTurn += ClearAllCards;
-
         view.Inject(this);
         m_attack_field_presenter.Inject(this);
         m_defend_field_presenter.Inject(this);
@@ -49,8 +47,8 @@ public class HandPresenter : IDisposable
     public void InstantiateCard(BattleCardData card_data)
         => m_service.Add(card_data);
 
-    public void RemoveCard(IHandCardView card_view)
-        => m_service.Remove(card_view);
+    public void RemoveCard(IHandCardView card_view, bool layout_update = true)
+        => m_service.Remove(card_view, layout_update);
 
     public void ClearAllCards()
     {
@@ -87,6 +85,12 @@ public class HandPresenter : IDisposable
     public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
+    public IHandCardView GetCardView(BattleCardData battle_card_data)
+        => m_container.GetHandCardView(battle_card_data);
+
+    public IHandCardView[] GetCardViews()
+        => m_container.GetHandCardViews();
+
     public void OnDroped(IThrowCardView card_view)
     {
         var card_data = m_throw_presenter.GetCardData(card_view);
@@ -109,11 +113,5 @@ public class HandPresenter : IDisposable
             m_defend_field_presenter.Remove(card_view);
 
         InstantiateCard(card_data);
-    }
-
-    public void Dispose()
-    {
-        if(m_turn_manager != null)
-            m_turn_manager.EndCurrentTurn -= ClearAllCards;
     }
 }

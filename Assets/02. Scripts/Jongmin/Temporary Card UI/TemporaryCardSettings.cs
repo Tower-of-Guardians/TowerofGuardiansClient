@@ -24,5 +24,4 @@ public class TemporaryCardSettings
     public Vector3 StartScale = Vector3.one;
 
     public bool ForceStartRotation = false;
-    public Vector3 StartEuler;
 }

@@ -11,6 +11,9 @@ public class CardEffectorInjector : MonoBehaviour, IInjector
     [Header("교체 → 교체")]
     [SerializeField] private ThrowCardToThrowEffector m_throw_card_to_throw_effector;
 
+    [Header("핸드 → 교체")]
+    [SerializeField] private HandCardToThrowEffector m_hand_card_to_throw_effector;
+
     public void Inject()
     {
         m_draw_card_effector.Inject(DIContainer.Resolve<HandPresenter>(),
@@ -20,5 +23,7 @@ public class CardEffectorInjector : MonoBehaviour, IInjector
                                              DIContainer.Resolve<HandPresenter>());
 
         m_throw_card_to_throw_effector.Inject(DIContainer.Resolve<ThrowPresenter>());
+
+        m_hand_card_to_throw_effector.Inject(DIContainer.Resolve<HandPresenter>());
     }
 }

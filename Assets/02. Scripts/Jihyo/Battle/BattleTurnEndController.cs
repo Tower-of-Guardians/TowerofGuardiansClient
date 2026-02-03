@@ -133,27 +133,27 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         }
         
         // Hand UI 카드 제거
-        if (DIContainer.IsRegistered<HandPresenter>())
-        {
-            var handPresenter = DIContainer.Resolve<HandPresenter>();
+        // if (DIContainer.IsRegistered<HandPresenter>())
+        // {
+        //     var handPresenter = DIContainer.Resolve<HandPresenter>();
             
-            // 핸드 카드 버리기
-            var handCards = handPresenter.GetCardDatas();
-            if (handCards != null && handCards.Length > 0)
-            {
-                foreach (var cardData in handCards)
-                {
-                    if (cardData != null && cardData.data != null)
-                    {
-                        // 버리는 덱에 추가
-                        GameData.Instance.UseCard(cardData.data.id);
-                    }
-                }
-            }
+        //     // 핸드 카드 버리기
+        //     var handCards = handPresenter.GetCardDatas();
+        //     if (handCards != null && handCards.Length > 0)
+        //     {
+        //         foreach (var cardData in handCards)
+        //         {
+        //             if (cardData != null && cardData.data != null)
+        //             {
+        //                 // 버리는 덱에 추가
+        //                 GameData.Instance.UseCard(cardData.data.id);
+        //             }
+        //         }
+        //     }
 
-            handPresenter.ClearAllCards();
-            GameData.Instance.handDeck.Clear();
-        }
+        //     handPresenter.ClearAllCards();
+        //     GameData.Instance.handDeck.Clear();
+        // }
         
         // Attacking Field UI 카드 제거
         if (DIContainer.IsRegistered<AttackFieldPresenter>())

@@ -2003,6 +2003,8 @@ GameObject:
   - component: {fileID: 114737541}
   - component: {fileID: 114737540}
   - component: {fileID: 114737539}
+  - component: {fileID: 114737543}
+  - component: {fileID: 114737542}
   m_Layer: 5
   m_Name: Hand UI
   m_TagString: Untagged
@@ -2022,7 +2024,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1253629280}
+  - {fileID: 1963005402}
+  - {fileID: 324803411}
   m_Father: {fileID: 1287728833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -2120,7 +2123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_canvas: {fileID: 944360013}
-  m_slot_root: {fileID: 114737534}
+  m_slot_root: {fileID: 324803411}
   m_preview_object: {fileID: 1253629279}
 --- !u!114 &114737541
 MonoBehaviour:
@@ -2134,8 +2137,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4385817337cb9364d9ba2922395aea89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_slot_root: {fileID: 114737534}
+  m_slot_root: {fileID: 324803411}
   m_field_card_prefab: {fileID: 4632322973663511511, guid: e704874701f2ed143a085f7ec915c0df, type: 3}
+--- !u!114 &114737542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114737533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d96e198296b884a8a2e40911d26198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_start_transform: {fileID: 114737534}
+  m_end_transform: {fileID: 695951010}
+  m_card_root: {fileID: 1963005402}
+--- !u!114 &114737543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114737533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415539d29fcf3044abd50705bb3c64f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animator: {fileID: 1363336726}
 --- !u!1 &130570018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4913,7 +4944,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAttackHitsAll: 0
-  monsterAttackDelay: 0.5
   statAnimationWaitTime: 1
 --- !u!1 &296395802
 GameObject:
@@ -5478,6 +5508,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
+--- !u!1 &324803410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324803411}
+  m_Layer: 5
+  m_Name: Interaction Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &324803411
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324803410}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1253629280}
+  m_Father: {fileID: 114737534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &333157740
 GameObject:
   m_ObjectHideFlags: 0
@@ -11516,6 +11582,7 @@ MonoBehaviour:
   actionController: {fileID: 1775223068}
   combatController: {fileID: 293398561}
   turnEndController: {fileID: 1274724506}
+  m_hand_card_to_throw_effector: {fileID: 114737542}
 --- !u!1001 &821172038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13334,7 +13401,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1950586836}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99606365
+  m_Size: 0.9457816
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15917,7 +15984,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0003744294}
+  m_AnchoredPosition: {x: 0, y: 1.2251873}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -15976,7 +16043,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 114737534}
+  m_Father: {fileID: 324803411}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -22912,6 +22979,7 @@ MonoBehaviour:
   m_draw_card_effector: {fileID: 1697323248}
   m_throw_card_to_hand_effector: {fileID: 675287250}
   m_throw_card_to_throw_effector: {fileID: 1659362902}
+  m_hand_card_to_throw_effector: {fileID: 114737542}
 --- !u!1 &1775223066
 GameObject:
   m_ObjectHideFlags: 0
@@ -25385,6 +25453,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1953841486}
   m_CullTransparentMesh: 1
+--- !u!1 &1963005401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963005402}
+  m_Layer: 5
+  m_Name: Effect Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1963005402
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963005401}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 114737534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1971919553
 GameObject:
   m_ObjectHideFlags: 0

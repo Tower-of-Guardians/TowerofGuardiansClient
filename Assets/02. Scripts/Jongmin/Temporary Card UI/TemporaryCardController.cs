@@ -28,9 +28,11 @@ public class TemporaryCardController : MonoBehaviour
             var s = req.GetSettings(i);
 
             m_animator.AnimateOne(
+                req.TargetRoot,
                 req.CardDatas[i],
                 req.GetStartPosition(i),
                 req.EndPosition,
+                req.GetStartRotation(i),
                 s,
                 d => OnCardAnimationBegin?.Invoke(d),
                 d => OnCardAnimationEnd?.Invoke(d)
