@@ -30,10 +30,6 @@ public class ThrowCardContainer
             return;
 
         m_card_list.RemoveAt(from_index);
-
-        if (from_index < to_index) 
-            to_index--;
-
         m_card_list.Insert(to_index, from_card_view);
     }
 
