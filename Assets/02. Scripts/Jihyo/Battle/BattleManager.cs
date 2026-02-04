@@ -15,8 +15,13 @@ public class BattleManager : MonoBehaviour
     private bool isInitialized;
     private readonly List<IBattleController> controllers = new();
 
-    [Header("핸드 → 쓰로우 버튼 이펙터")]
+    [Header("핸드 → 교체 이펙터")]
     [SerializeField] private HandCardToThrowEffector m_hand_card_to_throw_effector;
+
+    [Header("공격 → 교체 이펙터")]
+    [SerializeField] private AttackCardToThrowEffector m_attack_card_effector;
+
+
 
     private void Awake()
     {
@@ -122,6 +127,7 @@ public class BattleManager : MonoBehaviour
         }
 
         m_hand_card_to_throw_effector.Execute();
+        m_attack_card_effector.Execute();
         // 공격 시퀀스 시작
         combatController.StartAttackSequence();
     }

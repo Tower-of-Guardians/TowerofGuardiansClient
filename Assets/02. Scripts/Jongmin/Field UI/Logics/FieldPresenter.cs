@@ -40,7 +40,6 @@ public abstract class FieldPresenter : IDisposable
         m_throw_presenter = throw_presenter;
 
         m_throw_presenter.OnUpdatedToggleUI += ToggleActive;
-        m_turn_manager.EndCurrentTurn += RemoveAll;
 
         m_view.Inject(this);
     }
@@ -76,6 +75,12 @@ public abstract class FieldPresenter : IDisposable
     public BattleCardData GetCardData(IFieldCardView card_view)
         => m_container.GetData(card_view);
 
+    public IFieldCardView[] GetCardViews()
+        => m_container.GetCardViews();
+
+    public IFieldCardView GetCardView(BattleCardData card_data)
+        => m_container.GetCardView(card_data);
+
     public void OnDroped(IHandCardView card_view)
     {
         if(!Active)
@@ -99,9 +104,6 @@ public abstract class FieldPresenter : IDisposable
     {
         if(m_throw_presenter != null)
             m_throw_presenter.OnUpdatedToggleUI -= ToggleActive;
-        
-        if(m_turn_manager != null)
-            m_turn_manager.EndCurrentTurn -= RemoveAll;
     }
 
     protected void ToggleActive(bool active)
