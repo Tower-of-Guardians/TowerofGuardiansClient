@@ -10,14 +10,11 @@ public class BattleCombatController : MonoBehaviour, IBattleController
     [SerializeField] private float statAnimationWaitTime = 1.0f;
 
     private BattleManager battleManager;
+    private bool isInitialized;
 
     public float GetStatAnimationWaitTime() => statAnimationWaitTime;
-    private BattleSetupController setupController;
-    private bool isInitialized;
-    private bool isProcessingAttack;
-
+    public bool GetPlayerAttackHitsAll() => playerAttackHitsAll;
     public bool IsInitialized => isInitialized;
-    public bool IsProcessingAttack => isProcessingAttack;
 
     public void Initialize(BattleManager manager)
     {
@@ -33,36 +30,19 @@ public class BattleCombatController : MonoBehaviour, IBattleController
 
     public void Cleanup()
     {
-        isProcessingAttack = false;
         battleManager = null;
-        setupController = null;
         isInitialized = false;
     }
 
-    public void SetSetupController(BattleSetupController controller)
+    /// <summary>
+    /// 전투 초기화 및 타겟 선택
+    /// </summary>
+    public CombatInitializationResult InitializeCombat(BattleSetupController setupController)
     {
-        setupController = controller;
-    }
-
-    public void StartAttackSequence()
-    {
-        if (isProcessingAttack || setupController == null)
-        {
-            return;
-        }
-
-        StartCoroutine(AttackSequence());
-    }
-
-    private IEnumerator AttackSequence()
-    {
-        isProcessingAttack = true;
-
         if (setupController == null)
         {
-            Debug.LogWarning("BattleSetupController is not set.");
-            isProcessingAttack = false;
-            yield break;
+            Debug.LogError("BattleCombatController: setupController가 null입니다.");
+            return null;
         }
 
         var player = setupController.GetPlayer();
@@ -70,19 +50,18 @@ public class BattleCombatController : MonoBehaviour, IBattleController
 
         if (player == null)
         {
-            Debug.LogWarning("Player is null.");
-            isProcessingAttack = false;
-            yield break;
+            Debug.LogWarning("BattleCombatController: Player가 null입니다.");
+            return null;
         }
 
         List<Monster> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
         if (aliveMonsters.Count == 0)
         {
-            Debug.Log("No monsters available to attack.");
-            isProcessingAttack = false;
-            yield break;
+            Debug.Log("BattleCombatController: 공격할 몬스터가 없습니다.");
+            return null;
         }
 
+        // 타겟 선택
         List<IDamageable> playerTargets = new();
         Monster primaryMonsterTarget = null;
         Monster selectedTarget = setupController.GetSelectedTarget();
@@ -97,35 +76,81 @@ public class BattleCombatController : MonoBehaviour, IBattleController
         }
         else
         {
-            Monster target = selectedTarget != null && selectedTarget.IsAlive ? selectedTarget : aliveMonsters[Random.Range(0, aliveMonsters.Count)];
+            Monster target = selectedTarget != null && selectedTarget.IsAlive 
+                ? selectedTarget 
+                : aliveMonsters[Random.Range(0, aliveMonsters.Count)];
             primaryMonsterTarget = target;
             playerTargets.Add(target);
         }
 
-        Vector3? attackAnchorPosition = primaryMonsterTarget != null ? primaryMonsterTarget.AttackAnchor.position : null;
+        Vector3? attackAnchorPosition = primaryMonsterTarget != null 
+            ? primaryMonsterTarget.AttackAnchor.position 
+            : null;
+
+        // 애니메이션 리셋
         var playerAnimation = player.GetComponent<PlayerAnimation>();
+        if (playerAnimation != null)
+        {
+            playerAnimation.ResetAnimationState();
+        }
 
-        playerAnimation.ResetAnimationState();
+        return new CombatInitializationResult
+        {
+            player = player,
+            playerTargets = playerTargets,
+            primaryMonsterTarget = primaryMonsterTarget,
+            attackAnchorPosition = attackAnchorPosition,
+            playerAnimation = playerAnimation
+        };
+    }
 
-        // TODO: 시너지 발동, 즉발 카드 효과 발동
-        // yield return StartCoroutine(ActivateSynergyAndInstantCards());
+    /// <summary>
+    /// 플레이어 공격력 계산 및 적용
+    /// </summary>
+    public int CalculatePlayerAttack(Player player)
+    {
+        if (player == null) return 0;
 
-        // 공격력 적용 및 이펙트
         player.ApplyAttackStats();
-        yield return new WaitForSeconds(statAnimationWaitTime);
+        return player.AttackValue;
+    }
 
-        // 공격력 확인
-        int currentAttack = player.AttackValue;
+    /// <summary>
+    /// 플레이어 강화 애니메이션 재생
+    /// </summary>
+    public IEnumerator PlayEnforceAnimation(PlayerAnimation playerAnimation, int attackValue)
+    {
+        if (playerAnimation == null) yield break;
 
-        playerAnimation.TriggerAttackByValue(currentAttack);
+        playerAnimation.TriggerAttackByValue(attackValue);
+        yield return playerAnimation.WaitForEnforceAnimationComplete(attackValue);
+    }
 
-        yield return StartCoroutine(playerAnimation.WaitForEnforceAnimationComplete(currentAttack));
+    /// <summary>
+    /// 플레이어 방어력 이펙트 적용
+    /// </summary>
+    public IEnumerator ApplyDefenseEffect(Player player)
+    {
+        if (player == null) yield break;
+        yield return player.ApplyDefenseStatsWithEffect();
+    }
 
-        // 방어력 이펙트
-        yield return StartCoroutine(player.ApplyDefenseStatsWithEffect());
+    /// <summary>
+    /// 플레이어를 공격 위치로 이동
+    /// </summary>
+    public IEnumerator MovePlayerToAttackPosition(Player player, Vector3? attackAnchorPosition, bool isAreaAttack)
+    {
+        if (player == null) yield break;
+        yield return player.MoveToAttackPosition(attackAnchorPosition, isAreaAttack);
+    }
 
-        // 공격 위치로 이동
-        yield return StartCoroutine(player.MoveToAttackPosition(attackAnchorPosition, playerAttackHitsAll));
+    /// <summary>
+    /// 플레이어 공격 트리거 및 데미지 적용
+    /// </summary>
+    public IEnumerator ExecutePlayerAttack(Player player, PlayerAnimation playerAnimation, 
+        int currentAttack, List<IDamageable> targets)
+    {
+        if (player == null || targets == null) yield break;
 
         // Attack 트리거 발동
         if (playerAnimation != null)
@@ -133,65 +158,62 @@ public class BattleCombatController : MonoBehaviour, IBattleController
             playerAnimation.TriggerAttack();
         }
 
-        // TODO: 공격 애니메이션 대기 후 데미지 적용(하드코딩)
-        if (currentAttack < 10)
-        {
-            yield return new WaitForSeconds(1.0f);
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.8f);
-        }
+        // 공격 애니메이션 대기 후 데미지 적용
+        float waitTime = currentAttack < 10 ? 1.0f : 0.8f;
+        yield return new WaitForSeconds(waitTime);
 
-        // 공격 실행
-        if (playerTargets != null)
+        // 데미지 적용
+        foreach (IDamageable target in targets)
         {
-            foreach (IDamageable target in playerTargets)
+            if (target != null && target.IsAlive)
             {
-                if (target != null && target.IsAlive)
-                {
-                    target.TakeDamage(currentAttack);
-                }
+                target.TakeDamage(currentAttack);
             }
         }
 
         // 공격 애니메이션 완료 대기
         if (playerAnimation != null)
         {
-            yield return StartCoroutine(playerAnimation.WaitForAttackAnimationComplete(currentAttack));
+            yield return playerAnimation.WaitForAttackAnimationComplete(currentAttack);
         }
 
-        // 0.5초 대기 후 제자리로 복귀(하드코딩)
+        // 0.5초 대기 후 제자리로 복귀
         yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(player.ReturnToOriginalPosition());
+        yield return player.ReturnToOriginalPosition();
 
         // 애니메이션 종료 후 트리거 취소하여 BaseLayer로 복귀
         if (playerAnimation != null)
         {
             playerAnimation.ResetAnimationState();
         }
+    }
 
-        // 공격 후 발동 카드 효과 발동
+    /// <summary>
+    /// 몬스터 공격 시퀀스 실행
+    /// </summary>
+    public IEnumerator ExecuteMonsterAttackSequence(BattleSetupController setupController)
+    {
+        if (setupController == null) yield break;
 
-        // 공격 완료 후 죽은 몬스터들 제거
-        RemoveDeadMonsters(primaryMonsters);
+        var player = setupController.GetPlayer();
+        var primaryMonsters = setupController.GetPrimaryMonsters();
 
-        // 모든 몬스터 처치 확인
-        aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
-        if (aliveMonsters.Count == 0)
-        {
-            isProcessingAttack = false;
-            yield return StartCoroutine(battleManager.HandleVictory());
-            yield break;
-        }
+        if (player == null) yield break;
 
         // 몬스터 공격 대기
         yield return new WaitForSeconds(0.5f);
 
         // 타겟 선택 해제
-        ClearTargetSelection(primaryMonsters);
+        foreach (Monster monster in primaryMonsters)
+        {
+            if (monster != null)
+            {
+                monster.SetTargeted(false);
+            }
+        }
+        setupController.ClearSelectedTarget();
 
-        aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
+        List<Monster> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
 
         foreach (Monster monster in aliveMonsters)
         {
@@ -200,68 +222,42 @@ public class BattleCombatController : MonoBehaviour, IBattleController
                 continue;
             }
 
-            yield return StartCoroutine(monster.PerformAttack(player));
+            yield return monster.PerformAttack(player);
 
             if (!player.IsAlive)
             {
                 Debug.Log("Player defeated.");
-                isProcessingAttack = false;
-                yield return StartCoroutine(battleManager.HandleDefeat());
+                if (battleManager != null)
+                {
+                    yield return battleManager.HandleDefeat();
+                }
                 yield break;
             }
         }
-
-        aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
-        if (aliveMonsters.Count == 0)
-        {
-            isProcessingAttack = false;
-            yield return StartCoroutine(battleManager.HandleVictory());
-            yield break;
-        }
-
-        // 몬스터 공격 후 죽은 몬스터들 제거
-        RemoveDeadMonsters(primaryMonsters);
-
-        isProcessingAttack = false;
-
-        // 턴 종료 처리 요청
-        if (battleManager != null)
-        {
-            battleManager.RequestTurnEnd();
-        }
     }
 
-    private void RemoveDeadMonsters(List<Monster> monsters)
+    /// <summary>
+    /// 승리 체크
+    /// </summary>
+    public bool CheckVictory(BattleSetupController setupController)
     {
-        var monstersToRemove = monsters.Where(m => m != null && !m.IsAlive).ToList();
+        if (setupController == null) return false;
 
-        foreach (Monster monster in monstersToRemove)
-        {
-            if (monster != null)
-            {
-                monster.DestroyMonster();
-                if (setupController != null)
-                {
-                    setupController.UnregisterMonster(monster);
-                }
-            }
-        }
+        var primaryMonsters = setupController.GetPrimaryMonsters();
+        List<Monster> aliveMonsters = primaryMonsters.Where(m => m != null && m.IsAlive).ToList();
+        return aliveMonsters.Count == 0;
     }
+}
 
-    private void ClearTargetSelection(List<Monster> monsters)
-    {
-        foreach (Monster monster in monsters)
-        {
-            if (monster != null)
-            {
-                monster.SetTargeted(false);
-            }
-        }
-
-        if (setupController != null)
-        {
-            setupController.ClearSelectedTarget();
-        }
-    }
+/// <summary>
+/// 전투 초기화 결과
+/// </summary>
+public class CombatInitializationResult
+{
+    public Player player { get; set; }
+    public List<IDamageable> playerTargets { get; set; }
+    public Monster primaryMonsterTarget { get; set; }
+    public Vector3? attackAnchorPosition { get; set; }
+    public PlayerAnimation playerAnimation { get; set; }
 }
 

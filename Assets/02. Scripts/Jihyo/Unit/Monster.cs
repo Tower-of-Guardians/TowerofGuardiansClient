@@ -29,7 +29,7 @@ public class Monster : BaseUnit, IPointerClickHandler
     private Vector3 initialSpriteLocalPosition;
     private bool hasSavedInitialPosition;
     private const int NormalSortingOrder = 5;
-    private const int AttackSortingOrder = 7;
+    private const int AttackSortingOrder = 8;
 
     public event Action<Monster> Clicked;
     private BattleManager battleManager;
