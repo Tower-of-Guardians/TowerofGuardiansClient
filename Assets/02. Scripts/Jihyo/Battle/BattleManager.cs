@@ -9,19 +9,11 @@ public class BattleManager : MonoBehaviour
     [Header("Controllers")]
     [SerializeField] private BattleSetupController setupController;
     [SerializeField] private BattleActionController actionController;
-    [SerializeField] private BattleCombatController combatController;
     [SerializeField] private BattleTurnEndController turnEndController;
+    [SerializeField] private BattleCombatController combatController;
 
     private bool isInitialized;
-    private readonly List<IBattleController> controllers = new();
-
-    [Header("핸드 → 교체 이펙터")]
-    [SerializeField] private HandCardToThrowEffector m_hand_card_to_throw_effector;
-
-    [Header("공격 → 교체 이펙터")]
-    [SerializeField] private AttackCardToThrowEffector m_attack_card_effector;
-
-
+    private bool isProcessingAttack;
 
     private void Awake()
     {
@@ -30,48 +22,47 @@ public class BattleManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        CleanupAllControllers();
+        CleanupControllers();
     }
 
     private void InitializeControllers()
     {
         if (setupController != null)
         {
-            controllers.Add(setupController);
+            setupController.Initialize(this);
         }
         if (actionController != null)
         {
-            controllers.Add(actionController);
-        }
-        if (combatController != null)
-        {
-            controllers.Add(combatController);
+            actionController.Initialize(this);
         }
         if (turnEndController != null)
         {
-            controllers.Add(turnEndController);
+            turnEndController.Initialize(this);
         }
-
-        // 각 Controller 초기화
-        foreach (var controller in controllers)
+        if (combatController != null)
         {
-            controller.Initialize(this);
-        }
-
-        // Controller 간 의존성 설정
-        if (combatController != null && setupController != null)
-        {
-            combatController.SetSetupController(setupController);
+            combatController.Initialize(this);
         }
     }
 
-    private void CleanupAllControllers()
+    private void CleanupControllers()
     {
-        foreach (var controller in controllers)
+        if (setupController != null)
         {
-            controller.Cleanup();
+            setupController.Cleanup();
         }
-        controllers.Clear();
+        if (actionController != null)
+        {
+            actionController.Cleanup();
+        }
+        if (turnEndController != null)
+        {
+            turnEndController.Cleanup();
+        }
+        if (combatController != null)
+        {
+            combatController.Cleanup();
+        }
     }
 
     public void Initialize(Player playerUnit, IEnumerable<Monster> monsters, Button attackBtn)
@@ -109,16 +100,7 @@ public class BattleManager : MonoBehaviour
 
     public void OnAttackButtonClicked()
     {
-        if (combatController == null)
-        {
-            Debug.LogWarning("BattleCombatController is not assigned.");
-            return;
-        }
-
-        if (combatController.IsProcessingAttack)
-        {
-            return;
-        }
+        if (isProcessingAttack) return;
 
         // 턴 시작 처리
         if (actionController != null)
@@ -126,10 +108,96 @@ public class BattleManager : MonoBehaviour
             actionController.OnTurnStart();
         }
 
-        m_hand_card_to_throw_effector.Execute();
-        m_attack_card_effector.Execute();
-        // 공격 시퀀스 시작
-        combatController.StartAttackSequence();
+        isProcessingAttack = true;
+        StartCoroutine(ProcessAttackSequence());
+    }
+
+    private IEnumerator ProcessAttackSequence()
+    {
+        if (setupController == null || combatController == null)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 전투 초기화 및 타겟 선택
+        var initResult = combatController.InitializeCombat(setupController);
+        if (initResult == null)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 공격력 애니메이션 대기
+        float statAnimationWaitTime = combatController.GetStatAnimationWaitTime();
+        if (statAnimationWaitTime > 0f)
+        {
+            yield return new WaitForSeconds(statAnimationWaitTime);
+        }
+
+        // 플레이어 공격력 계산 및 적용
+        int currentAttack = combatController.CalculatePlayerAttack(initResult.player);
+
+        // 플레이어 강화 애니메이션 재생
+        if (initResult.playerAnimation != null)
+        {
+            yield return combatController.PlayEnforceAnimation(initResult.playerAnimation, currentAttack);
+        }
+
+        // 플레이어 방어력 이펙트 적용
+        yield return combatController.ApplyDefenseEffect(initResult.player);
+
+        // 플레이어를 공격 위치로 이동
+        bool playerAttackHitsAll = combatController.GetPlayerAttackHitsAll();
+        yield return combatController.MovePlayerToAttackPosition(
+            initResult.player, 
+            initResult.attackAnchorPosition, 
+            playerAttackHitsAll
+        );
+
+        // 플레이어 공격 트리거 및 데미지 적용
+        yield return combatController.ExecutePlayerAttack(
+            initResult.player,
+            initResult.playerAnimation,
+            currentAttack,
+            initResult.playerTargets
+        );
+
+        // 플레이어 공격 후 죽은 몬스터 제거
+        setupController.RemoveDeadMonsters();
+
+        // 승리 체크
+        if (combatController.CheckVictory(setupController))
+        {
+            yield return HandleVictory();
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 몬스터 공격 시퀀스
+        yield return combatController.ExecuteMonsterAttackSequence(setupController);
+
+        // 플레이어가 죽었는지 확인
+        if (initResult.player != null && !initResult.player.IsAlive)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 몬스터 공격 후 죽은 몬스터들 제거
+        setupController.RemoveDeadMonsters();
+
+        // 최종 승리 체크
+        if (combatController.CheckVictory(setupController))
+        {
+            yield return HandleVictory();
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 턴 종료 요청
+        RequestTurnEnd();
+        isProcessingAttack = false;
     }
 
     public void RequestDrawCards(int count = -1)
@@ -272,6 +340,6 @@ public class BattleManager : MonoBehaviour
 
     public bool IsProcessingAttack()
     {
-        return combatController != null && combatController.IsProcessingAttack;
+        return isProcessingAttack;
     }
 }
