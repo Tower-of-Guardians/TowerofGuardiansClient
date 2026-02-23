@@ -13,10 +13,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private BattleCombatController combatController;
 
     private bool isInitialized;
-    
-    [Header("Combat Pipeline")]
-    private TurnPipeline combatAttackPipeline;
-    private ElementContext elementContext;
     private bool isProcessingAttack;
 
     private void Awake()
@@ -86,52 +82,7 @@ public class BattleManager : MonoBehaviour
         setupController.SetupBattle(playerUnit, monsters, attackBtn);
         isInitialized = true;
 
-        InitializePipeline();
         StartCoroutine(StartFirstTurnDelayed());
-    }
-
-    private void InitializePipeline()
-    {
-        // ElementContext 생성 및 의존성 주입
-        elementContext = new ElementContext();
-        
-        // DI Container에서 의존성 가져오기 (등록될 때까지 대기 필요)
-        StartCoroutine(InitializePipelineDelayed());
-    }
-
-    private IEnumerator InitializePipelineDelayed()
-    {
-        // 필요한 의존성들이 등록될 때까지 대기
-        yield return new WaitUntil(() => DIContainer.IsRegistered<TurnManager>());
-        yield return new WaitUntil(() => DIContainer.IsRegistered<HandPresenter>());
-        yield return new WaitUntil(() => DIContainer.IsRegistered<AttackFieldPresenter>());
-
-        // ElementContext에 의존성 주입
-        elementContext.turn_manager = DIContainer.Resolve<TurnManager>();
-        elementContext.hand_presenter = DIContainer.Resolve<HandPresenter>();
-        elementContext.field_presenter = DIContainer.Resolve<AttackFieldPresenter>();
-        elementContext.battle_action_controller = actionController;
-        elementContext.setup_controller = setupController;
-        elementContext.battle_manager = this; // 코루틴 실행 및 기타 기능을 위한 참조
-
-        // 전투 공격 파이프라인 생성 및 파이프라인 요소 등록
-        combatAttackPipeline = new TurnPipeline();
-        
-        // BattleCombatController에서 설정값 가져오기
-        bool playerAttackHitsAll = combatController != null ? combatController.GetPlayerAttackHitsAll() : false;
-        float statAnimationWaitTime = combatController != null ? combatController.GetStatAnimationWaitTime() : 1.0f;
-        
-        // AttackSequence를 파이프라인 요소들로 등록
-        combatAttackPipeline.Register(new CombatInitializationElement(playerAttackHitsAll));
-        combatAttackPipeline.Register(new PlayerAttackCalculationElement(statAnimationWaitTime));
-        combatAttackPipeline.Register(new PlayerEnforceAnimationElement());
-        combatAttackPipeline.Register(new PlayerDefenseEffectElement());
-        combatAttackPipeline.Register(new PlayerMoveToAttackElement());
-        combatAttackPipeline.Register(new PlayerAttackTriggerElement());
-        combatAttackPipeline.Register(new RemoveDeadMonstersElement()); // 플레이어 공격 후 죽은 몬스터 제거
-        combatAttackPipeline.Register(new VictoryCheckElement(this)); // 플레이어 공격 후 승리 체크
-        combatAttackPipeline.Register(new MonsterAttackSequenceElement(this)); // 몬스터 공격 (내부에서 RemoveDeadMonstersElement와 승리 체크 포함)
-        combatAttackPipeline.Register(new TurnEndRequestElement(this)); // 턴 종료 요청
     }
 
     private IEnumerator StartFirstTurnDelayed()
@@ -151,8 +102,6 @@ public class BattleManager : MonoBehaviour
     {
         if (isProcessingAttack) return;
 
-        if (combatAttackPipeline == null || elementContext == null) return;
-
         // 턴 시작 처리
         if (actionController != null)
         {
@@ -160,14 +109,95 @@ public class BattleManager : MonoBehaviour
         }
 
         isProcessingAttack = true;
-        combatAttackPipeline.Execute(elementContext, OnCombatAttackPipelineComplete);
+        StartCoroutine(ProcessAttackSequence());
     }
 
-    private void OnCombatAttackPipelineComplete()
+    private IEnumerator ProcessAttackSequence()
     {
+        if (setupController == null || combatController == null)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 전투 초기화 및 타겟 선택
+        var initResult = combatController.InitializeCombat(setupController);
+        if (initResult == null)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 공격력 애니메이션 대기
+        float statAnimationWaitTime = combatController.GetStatAnimationWaitTime();
+        if (statAnimationWaitTime > 0f)
+        {
+            yield return new WaitForSeconds(statAnimationWaitTime);
+        }
+
+        // 플레이어 공격력 계산 및 적용
+        int currentAttack = combatController.CalculatePlayerAttack(initResult.player);
+
+        // 플레이어 강화 애니메이션 재생
+        if (initResult.playerAnimation != null)
+        {
+            yield return combatController.PlayEnforceAnimation(initResult.playerAnimation, currentAttack);
+        }
+
+        // 플레이어 방어력 이펙트 적용
+        yield return combatController.ApplyDefenseEffect(initResult.player);
+
+        // 플레이어를 공격 위치로 이동
+        bool playerAttackHitsAll = combatController.GetPlayerAttackHitsAll();
+        yield return combatController.MovePlayerToAttackPosition(
+            initResult.player, 
+            initResult.attackAnchorPosition, 
+            playerAttackHitsAll
+        );
+
+        // 플레이어 공격 트리거 및 데미지 적용
+        yield return combatController.ExecutePlayerAttack(
+            initResult.player,
+            initResult.playerAnimation,
+            currentAttack,
+            initResult.playerTargets
+        );
+
+        // 플레이어 공격 후 죽은 몬스터 제거
+        setupController.RemoveDeadMonsters();
+
+        // 승리 체크
+        if (combatController.CheckVictory(setupController))
+        {
+            yield return HandleVictory();
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 몬스터 공격 시퀀스
+        yield return combatController.ExecuteMonsterAttackSequence(setupController);
+
+        // 플레이어가 죽었는지 확인
+        if (initResult.player != null && !initResult.player.IsAlive)
+        {
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 몬스터 공격 후 죽은 몬스터들 제거
+        setupController.RemoveDeadMonsters();
+
+        // 최종 승리 체크
+        if (combatController.CheckVictory(setupController))
+        {
+            yield return HandleVictory();
+            isProcessingAttack = false;
+            yield break;
+        }
+
+        // 턴 종료 요청
+        RequestTurnEnd();
         isProcessingAttack = false;
-        
-        // 공격 완료 후 처리
     }
 
     public void RequestDrawCards(int count = -1)

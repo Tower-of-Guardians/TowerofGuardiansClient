@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -135,6 +136,23 @@ public class BattleSetupController : MonoBehaviour, IBattleController
         {
             selectedTarget.SetTargeted(false);
             selectedTarget = null;
+        }
+    }
+
+    /// <summary>
+    /// 죽은 몬스터들을 제거
+    /// </summary>
+    public void RemoveDeadMonsters()
+    {
+        var monstersToRemove = primaryMonsters.Where(m => m != null && !m.IsAlive).ToList();
+
+        foreach (Monster monster in monstersToRemove)
+        {
+            if (monster != null)
+            {
+                monster.DestroyMonster();
+                UnregisterMonster(monster);
+            }
         }
     }
 
