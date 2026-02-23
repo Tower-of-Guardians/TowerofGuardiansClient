@@ -50,6 +50,13 @@ public class DrawCardEffector : CardEffector
         base.Execute();
     }
 
+    public void Execute(int count)
+    {
+        m_temp_card_anime_request.CardDatas = GameData.Instance.NextDeckSet(count).ToArray();
+
+        base.Execute();
+    }
+
     protected override void OnTempCardAnimeEnd(BattleCardData card_data)
         => m_hand_presenter.InstantiateCard(card_data);
 }

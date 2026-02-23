@@ -10,6 +10,12 @@ public class AttackCardToThrowEffector : CardEffector
     [Header("방어 → 교체 이펙터")]
     [SerializeField] private DefendCardToThrowEffector m_defend_card_effector;
 
+    [Header("공격 필드 비활성화 패널")]
+    [SerializeField] private UILocker m_attack_field_locker;
+
+    [Header("방어 필드 비활성화 패널")]
+    [SerializeField] private UILocker m_defend_field_locker;
+
     private AttackFieldPresenter m_attack_field_presenter;
 
     public void Inject(AttackFieldPresenter attack_field_presenter)
@@ -59,6 +65,9 @@ public class AttackCardToThrowEffector : CardEffector
 
     public override void Execute()
     {
+        m_attack_field_locker.Lock(true);
+        m_defend_field_locker.Lock(true);
+
         m_temp_card_anime_request.CardDatas = m_attack_field_presenter.GetCardDatas();
 
         List<Vector3> field_card_positions = new();

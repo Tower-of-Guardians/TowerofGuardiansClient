@@ -61,7 +61,6 @@ public class BattleCombatController : MonoBehaviour, IBattleController
             return null;
         }
 
-        // 타겟 선택
         List<IDamageable> playerTargets = new();
         Monster primaryMonsterTarget = null;
         Monster selectedTarget = setupController.GetSelectedTarget();

@@ -6,6 +6,10 @@ public class HandCardToThrowEffector : CardEffector
 {
     [Header("카드 부모 트랜스폼")]
     [SerializeField] private Transform m_card_root;
+
+    [Header("전투 비활성화 패널")]
+    [SerializeField] private UILocker m_battle_locker;
+
     private HandPresenter m_hand_presenter;
 
     public void Inject(HandPresenter hand_presenter)
@@ -54,6 +58,8 @@ public class HandCardToThrowEffector : CardEffector
 
     public override void Execute()
     {
+        m_battle_locker.Lock(true);
+
         m_temp_card_anime_request.CardDatas = m_hand_presenter.GetCardDatas();
 
         List<Vector3> hand_card_positions = new();

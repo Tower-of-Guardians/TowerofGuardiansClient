@@ -90,6 +90,10 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
         // // count가 -1이면 기본값(MaxHandCount) 사용, 그 외에는 지정된 개수만큼 드로우
         // int drawCount = count >= 0 ? count : turnManager.MaxHandCount;
+        if(count >= 0)
+            m_draw_card_effector.Execute(count);
+        else
+            m_draw_card_effector.Execute();
         
         // List<BattleCardData> card_data_list = new(); 
         // for (int i = 0; i < drawCount; i++)
@@ -103,7 +107,6 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         //     card_data_list = cardData;
         //     //handPresenter.InstantiateCard(cardData);
         // }
-        m_draw_card_effector.Execute();
     }
 
     private void DiscardAllHandCards()
