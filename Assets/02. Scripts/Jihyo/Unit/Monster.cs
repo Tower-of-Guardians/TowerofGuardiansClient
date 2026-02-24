@@ -334,6 +334,10 @@ public class Monster : BaseUnit, IPointerClickHandler
     private void HandleDeath()
     {
         isMarkedForDeath = true;
+        if (monsterAnimation != null)
+        {
+            monsterAnimation.PlayDeadAnimation();
+        }
     }
 
     public void DestroyMonster()

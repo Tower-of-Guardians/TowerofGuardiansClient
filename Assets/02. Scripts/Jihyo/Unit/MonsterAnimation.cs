@@ -9,6 +9,7 @@ public class MonsterAnimation : MonoBehaviour
     [Header("Animator Parameters")]
     private static readonly int AttackHash = Animator.StringToHash("Attack");
     private static readonly int HitHash = Animator.StringToHash("Hit");
+    private static readonly int DeadHash = Animator.StringToHash("Dead");
 
     private void Awake()
     {
@@ -39,12 +40,21 @@ public class MonsterAnimation : MonoBehaviour
         }
     }
 
+    public void PlayDeadAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(DeadHash);
+        }
+    }
+
     public void ResetAnimationState()
     {
         if (animator != null)
         {
             animator.ResetTrigger(AttackHash);
             animator.ResetTrigger(HitHash);
+            animator.ResetTrigger(DeadHash);
         }
     }
 
