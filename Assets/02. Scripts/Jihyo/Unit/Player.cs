@@ -285,6 +285,18 @@ public class Player : BaseUnit
         
         // 보호력 먼저 감소, 남은 데미지는 체력으로
         base.TakeDamage(amount);
+
+        if (playerAnimation != null)
+        {
+            if (IsAlive)
+            {
+                playerAnimation.PlayHitAnimation();
+            }
+            else
+            {
+                playerAnimation.PlayDeadAnimation();
+            }
+        }
     }
     
     public void ApplyAttackStats()

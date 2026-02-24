@@ -11,6 +11,8 @@ public class PlayerAnimation : MonoBehaviour
     private static readonly int Attack1Hash = Animator.StringToHash("Attack1");
     private static readonly int Attack2Hash = Animator.StringToHash("Attack2");
     private static readonly int Attack3Hash = Animator.StringToHash("Attack3");
+    private static readonly int HitHash = Animator.StringToHash("Hit");
+    private static readonly int DeadHash = Animator.StringToHash("Dead");
 
     [Header("Animation State Names")]
     [SerializeField] private string attack1StateName = "Player1_Attack1";
@@ -70,6 +72,22 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
+    public void PlayHitAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(HitHash);
+        }
+    }
+
+    public void PlayDeadAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(DeadHash);
+        }
+    }
+
     public void ResetAnimationState()
     {
         if (animator != null)
@@ -78,6 +96,7 @@ public class PlayerAnimation : MonoBehaviour
             animator.ResetTrigger(Attack1Hash);
             animator.ResetTrigger(Attack2Hash);
             animator.ResetTrigger(Attack3Hash);
+            animator.ResetTrigger(HitHash);
         }
     }
 
