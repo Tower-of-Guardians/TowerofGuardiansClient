@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private BattleActionController actionController;
     [SerializeField] private BattleTurnEndController turnEndController;
     [SerializeField] private BattleCombatController combatController;
+
+    [Space(30f), Header("Effectors")]
+    [SerializeField] private HandCardToThrowEffector m_hand_to_throw_effector;
+    [SerializeField] private AttackCardToThrowEffector m_attack_to_throw_effector;
 
     private bool isInitialized;
     private bool isProcessingAttack;
@@ -120,6 +123,11 @@ public class BattleManager : MonoBehaviour
             yield break;
         }
 
+        // 카드 버리기 및 전투 UI 비활성화
+        yield return new WaitForSeconds(0.5f);
+        m_hand_to_throw_effector.Execute(); 
+        yield return new WaitForSeconds(1.0f);
+
         // 전투 초기화 및 타겟 선택
         var initResult = combatController.InitializeCombat(setupController);
         if (initResult == null)
@@ -186,6 +194,11 @@ public class BattleManager : MonoBehaviour
 
         // 몬스터 공격 후 죽은 몬스터들 제거
         setupController.RemoveDeadMonsters();
+
+        // 필드 카드 버리기
+        yield return new WaitForSeconds(0.5f);
+        m_attack_to_throw_effector.Execute();
+        yield return new WaitForSeconds(1.5f);
 
         // 최종 승리 체크
         if (combatController.CheckVictory(setupController))

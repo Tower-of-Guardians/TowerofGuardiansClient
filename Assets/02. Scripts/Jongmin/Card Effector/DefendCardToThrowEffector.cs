@@ -7,6 +7,15 @@ public class DefendCardToThrowEffector : CardEffector
     [Header("카드 부모 트랜스폼")]
     [SerializeField] private Transform m_card_root;
 
+    [Header("전투 비활성화 패널")]
+    [SerializeField] private UILocker m_battle_locker;
+
+    [Header("공격 필드 비활성화 패널")]
+    [SerializeField] private UILocker m_attack_field_locker;
+
+    [Header("방어 필드 비활성화 패널")]
+    [SerializeField] private UILocker m_defend_field_locker;
+
     private DefendFieldPresenter m_defend_field_presenter;
 
     public void Inject(DefendFieldPresenter defend_field_presenter)
@@ -75,5 +84,12 @@ public class DefendCardToThrowEffector : CardEffector
         GameData.Instance.defenseField.Remove(card_data.data);
         GameData.Instance.UseCard(card_data.data.id);
         GameData.Instance.InvokeDeckCountChange(DeckType.Throw);    
+    }
+
+    protected override void OnFinalAnimeEnd()
+    {
+        m_battle_locker.Lock(false);
+        m_attack_field_locker.Lock(false);
+        m_defend_field_locker.Lock(false);
     }
 }
