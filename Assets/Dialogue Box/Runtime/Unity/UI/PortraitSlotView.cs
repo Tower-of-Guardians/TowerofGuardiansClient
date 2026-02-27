@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace DialogueBox
 
         private string m_character_id;
         private string m_default_key = "default";
+
+        private Coroutine m_alpha_coroutine;
 
         public string CharacterID => m_character_id;
 
@@ -72,9 +75,37 @@ namespace DialogueBox
             if(m_portrait_image == null)
                 return;
 
-            Color color = m_portrait_image.color;
-            color.a = alpha;
-            m_portrait_image.color = color;
+            if(m_alpha_coroutine != null)
+                StopCoroutine(m_alpha_coroutine);
+
+            m_alpha_coroutine = StartCoroutine(FadeAlphaRoutine(alpha, 0.3f));
+        }
+
+        private IEnumerator FadeAlphaRoutine(float target_alpha, float duration)
+        {
+            Color start_color = m_portrait_image.color;
+            float start_alpha = start_color.a;
+
+            float elapsed = 0f;
+
+            while(elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+
+                float t = elapsed / duration;
+                float new_alpha = Mathf.Lerp(start_alpha, target_alpha, t);
+
+                start_color.a = new_alpha;
+                m_portrait_image.color = start_color;
+
+                yield return null;
+            }
+
+            // 마지막 보정
+            start_color.a = target_alpha;
+            m_portrait_image.color = start_color;
+
+            m_alpha_coroutine = null;
         }
     }
 }
