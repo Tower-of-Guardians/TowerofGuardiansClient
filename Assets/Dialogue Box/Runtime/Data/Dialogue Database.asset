@@ -15,6 +15,8 @@ MonoBehaviour:
   m_entries:
   - DialogueID: test
     EntryNodeID: n1
+  - DialogueID: test2
+    EntryNodeID: n8
   m_nodes:
   - ID: n1
     Type: 0
@@ -85,6 +87,38 @@ MonoBehaviour:
     Options: []
     TargetID: 
   - ID: n7
+    Type: 3
+    Speaker: 0
+    CharacterID: 
+    Text: 
+    PortraitKey: 
+    NextID: 
+    Prompt: 
+    Options: []
+    TargetID: 
+  - ID: n8
+    Type: 0
+    Speaker: 1
+    CharacterID: xyilbia
+    Text: "\uC544\uC9C1\uB3C4 \uCD9C\uBC1C\uC744 \uC548\uD558\uC2E0\uAC74\uAC00\uC694?"
+    PortraitKey: default
+    NextID: n9
+    Prompt: 
+    Options: []
+    TargetID: 
+  - ID: n9
+    Type: 0
+    Speaker: 1
+    CharacterID: xyilbia
+    Text: "\uC774\uBBF8 \uC218\uB9CE\uC740 \uD0D0\uD5D8\uAC00\uBD84\uB4E4\uC774 \uC2DC\uB828\uC758
+      \uD0D1\uC73C\uB85C \uD5A5\uD558\uC168\uC5B4\uC694.\n\uADF8\uB7EC\uB2E4 \uB204\uAD70\uAC00
+      \uBA3C\uC800 \uC2DC\uB828\uC744 \uB2E4 \uB05D\uB0BC\uC9C0\uB3C4 \uBAB0\uB77C\uC694."
+    PortraitKey: defulat
+    NextID: n10
+    Prompt: 
+    Options: []
+    TargetID: 
+  - ID: n10
     Type: 3
     Speaker: 0
     CharacterID: 
