@@ -1,0 +1,11 @@
+DialogueID,NodeID,Type,Speaker,CharacterID,PortraitKey,Text,NextID
+test,n1,LINE,NPC,xyilbia,default,"어서오세요. 낯이 익은 얼굴이네요.",n2
+test,n2,LINE,PLAYER,player,default,"우리 어디서 만난 적이 있던가?",n3
+test,n3,LINE,NPC,xyilbia,smile,"그거야 모르죠. 언젠가는 알게 될지도...\n무슨 일로 여기에 오셨나요?",n4
+test,n4,CHOICE,,,"무슨 일로 여기에 오셨나요?",
+test,n5,LINE,NPC,xyilbia,default,"많이 변했군요.\n여긴 놀이터가 아니에요. 돌아가세요.",n7
+test,n6,LINE,NPC,xyilbia,smile,"그렇군요. 나아가기 쉽지 않을거에요.\n행운을 빌게요.",n7
+test,n7,END,,,,,,
+test2,n8,LINE,NPC,xyilbia,default,"아직도 출발을 안하신건가요?",n9
+test2,n9,LINE,NPC,xyilbia,defulat,"이미 수많은 탐험가분들이 시련의 탑으로 향하셨어요.\n그러다 누군가 먼저 시련을 다 끝낼지도 몰라요.", n10
+test2,n10,END,,,,,,
