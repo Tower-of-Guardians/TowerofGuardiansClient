@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InteractableObject : MonoBehaviour
 {
@@ -9,14 +10,37 @@ public class InteractableObject : MonoBehaviour
     public event Action OnMouseUpAction;
 
     protected virtual void OnMouseEnter()
-        => OnMouseEnterAction?.Invoke();
+    {
+        if(IsPointerOverUI())
+            return;
+
+        OnMouseEnterAction?.Invoke();
+    }
 
     protected virtual void OnMouseExit()
         => OnMouseExitAction?.Invoke();
 
     protected virtual void OnMouseDown()
-        => OnMouseDownAction?.Invoke();
+    {
+        if(IsPointerOverUI())
+            return;
+
+        OnMouseDownAction?.Invoke();
+    }
 
     protected virtual void OnMouseUp()
-        => OnMouseUpAction?.Invoke();
+    {
+        if(IsPointerOverUI())
+            return;
+            
+        OnMouseUpAction?.Invoke();
+    }
+
+    private bool IsPointerOverUI()
+    {
+        if(EventSystem.current == null)
+            return false;
+
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 }
