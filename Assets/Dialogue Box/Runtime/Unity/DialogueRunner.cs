@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace DialogueBox
@@ -12,9 +13,15 @@ namespace DialogueBox
 
         private DialogueEngine m_engine;
 
+        private string m_current_dialogue_id;
+        private bool m_is_running = false;
+
+        public event Action<string> OnDialogueStarted;
+        public event Action<string> OnDialogueEnded;
+
         private void Awake()
         {
-            if(m_db == null | m_view == null)
+            if(m_db == null || m_view == null)
             {
                 enabled = false;
                 return;
@@ -41,7 +48,17 @@ namespace DialogueBox
 
         public void StartDialogue(string dialogue_id)
         {
+            if(string.IsNullOrEmpty(dialogue_id))
+                return;
+
+            if(m_is_running)
+                return;
+
+            m_is_running = true;
+            m_current_dialogue_id = dialogue_id;
+
             m_view.OpenView();
+            OnDialogueStarted?.Invoke(m_current_dialogue_id);
             m_engine.Start(dialogue_id);
         }
 
@@ -52,6 +69,12 @@ namespace DialogueBox
             => m_view.ShowChoice(e.Prompt, e.Options);
 
         private void HandleEnded()
-            => m_view.CloseView();
+        {
+            m_view.CloseView();
+            OnDialogueEnded?.Invoke(m_current_dialogue_id);
+
+            m_is_running = false;
+            m_current_dialogue_id = null;
+        }
     }
 }
