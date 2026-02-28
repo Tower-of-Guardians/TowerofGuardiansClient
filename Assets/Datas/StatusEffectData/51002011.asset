@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: 51002011
   m_EditorClassIdentifier: 
   Id: 51002011
-  Name: "\uC751\uC9D53"
+  Name: "\uC218\uC2B5\uC0DD"
   Apply: 2
   BuffType: 1
-  NumType: 2
+  NumType: 0
   DurationType: 1
   ReleaseCondition: 0
-  Description: "\uAE30\uBCF8 \uACF5\uACA9\uB825\uC774 3\uBC30\uAC00 \uB429\uB2C8\uB2E4."
+  Description: "\uC774\uBC88 \uD134\uC5D0 \uCE74\uB4DC\uB97C {0}\uC7A5 \uB354 \uC0AC\uC6A9\uD560
+    \uC218 \uC788\uC2B5\uB2C8\uB2E4."

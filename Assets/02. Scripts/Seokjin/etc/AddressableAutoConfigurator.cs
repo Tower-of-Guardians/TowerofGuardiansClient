@@ -55,6 +55,13 @@ public class AddressableAutoConfigurator : Editor
         class_name = typeof(SynergyData);
         ConfigureItemSOsAsAddressable();
     }
+    [MenuItem("Tools/Addressables/EffectData for Addressables")]
+    public static void SetEffectData()
+    {
+        GROUP_NAME = "EffectData";
+        class_name = typeof(EffectData);
+        ConfigureItemSOsAsAddressable();
+    }
 
     public static void ConfigureItemSOsAsAddressable()
     {

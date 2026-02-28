@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 210003
   Name: Synergy_Overwhelming
-  Description: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C N\uC758 \uACE0\uC815\uD53C\uD574\uB97C
+  Description: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C {0}\uC758 \uACE0\uC815\uD53C\uD574\uB97C
     \uC989\uC2DC \uC785\uD799\uB2C8\uB2E4."
   Tier: 5
-  Effect1ID: 
+  Effect1ID: 1110025
   Effect1Synergy1: 5
   Effect1Synergy2: 10
   Effect1Synergy3: 20

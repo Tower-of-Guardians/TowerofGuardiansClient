@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 210006
   Name: Synergy_Mystery
-  Description: "n\uB4F1\uAE09\uC758 \uBB34\uC791\uC704 \uB9C8\uBC95\uCE74\uB4DC \uBC1C\uB3D9"
+  Description: "{0}\uB4F1\uAE09\uC758 \uBB34\uC791\uC704 \uB9C8\uBC95 \uC0DD\uC131"
   Tier: 7
-  Effect1ID: 
+  Effect1ID: 1110028
   Effect1Synergy1: 0
   Effect1Synergy2: 1
   Effect1Synergy3: 2

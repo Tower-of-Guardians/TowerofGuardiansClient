@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 210011
   Name: Synergy_Excellent Strategy
-  Description: "\uC774\uBC88 \uC804\uD22C\uB3D9\uC548 \uC0AC\uC6A9\uD55C \uB9C8\uBC95\uCE74\uB4DC
-    \uC218*N\uC758 \uCD94\uAC00\uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
+  Description: "(\uC774\uBC88 \uC804\uD22C\uB3D9\uC548 \uC0AC\uC6A9\uD55C \uB9C8\uBC95
+    \uC218)*{0}\uC758 \uCD94\uAC00\uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
   Tier: 9
-  Effect1ID: 
+  Effect1ID: 1110033
   Effect1Synergy1: 0
   Effect1Synergy2: 2
   Effect1Synergy3: 4

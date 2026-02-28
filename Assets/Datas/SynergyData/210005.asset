@@ -15,9 +15,9 @@ MonoBehaviour:
   ID: 210005
   Name: Synergy_Plunder
   Description: "(\uACF5\uACA9 \uBC30\uCE58 \uD55C \uC57D\uD0C8 \uC2DC\uB108\uC9C0
-    \uCE74\uB4DC)*N\uC758 \uACE8\uB4DC \uD68D\uB4DD"
+    \uCE74\uB4DC)*{0}\uC758 \uACE8\uB4DC \uD68D\uB4DD"
   Tier: 3
-  Effect1ID: 
+  Effect1ID: 1110027
   Effect1Synergy1: 0
   Effect1Synergy2: 2
   Effect1Synergy3: 5

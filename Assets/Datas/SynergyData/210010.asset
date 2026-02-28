@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 210010
   Name: Synergy_Weapon of Guardian
-  Description: "N\uC758 \uBCF4\uD638\uB9C9\uC744 \uC5BB\uC2B5\uB2C8\uB2E4. \uC774\uBC88
-    \uD134\uC5D0 \uACF5\uACA9\uB825\uC774 N \uC0C1\uC2B9\uD569\uB2C8\uB2E4. \uB2E4\uC74C
-    \uD134\uC5D0 \uD328\uB97C \uD55C \uC7A5 \uB354 \uBF51\uC2B5\uB2C8\uB2E4."
+  Description: "{0}\uC758 \uBCF4\uD638\uB9C9\uC744 \uC5BB\uC2B5\uB2C8\uB2E4. \uC774\uBC88
+    \uACF5\uACA9\uC774 {1}\uC758 \uCD94\uAC00\uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4.
+    \uB2E4\uC74C \uD134\uC5D0 \uD328\uB97C {2} \uC7A5 \uB354 \uBF51\uC2B5\uB2C8\uB2E4."
   Tier: 11
-  Effect1ID: 
+  Effect1ID: 1110031
   Effect1Synergy1: 0
   Effect1Synergy2: 0
   Effect1Synergy3: 20
   Effect1Synergy4: 0
   Effect1Synergy5: 0
-  Effect2ID: 
+  Effect2ID: 1110012
   Effect2Synergy1: 0
   Effect2Synergy2: 0
   Effect2Synergy3: 30
   Effect2Synergy4: 0
   Effect2Synergy5: 0
-  Effect3ID: 
+  Effect3ID: 1110032
   Effect3Synergy1: 0
   Effect3Synergy2: 0
   Effect3Synergy3: 1

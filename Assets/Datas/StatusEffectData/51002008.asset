@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: "\uAD11\uC5ED"
   Apply: 2
   BuffType: 1
-  NumType: 1
+  NumType: 0
   DurationType: 1
   ReleaseCondition: 0
   Description: "\uC774\uBC88 \uACF5\uACA9\uC774 \uBAA8\uB4E0 \uC801\uC744 \uB300\uC0C1\uC73C\uB85C

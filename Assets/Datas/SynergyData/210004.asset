@@ -15,13 +15,13 @@ MonoBehaviour:
   ID: 210004
   Name: Synergy_Blood Sucking
   Description: "\uC774\uBC88 \uACF5\uACA9\uC73C\uB85C \uC785\uD788\uB294 \uD53C\uD574\uC758
-    N%\uB9CC\uD07C \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
+    {0}%\uB9CC\uD07C \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
   Tier: 6
-  Effect1ID: 
+  Effect1ID: 1110026
   Effect1Synergy1: 0
-  Effect1Synergy2: 4
-  Effect1Synergy3: 10
-  Effect1Synergy4: 30
+  Effect1Synergy2: 1
+  Effect1Synergy3: 2
+  Effect1Synergy4: 3
   Effect1Synergy5: 0
   Effect2ID: 
   Effect2Synergy1: 0

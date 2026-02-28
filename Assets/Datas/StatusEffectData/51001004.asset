@@ -16,8 +16,8 @@ MonoBehaviour:
   Name: "\uC800\uC8FC\uC758 \uAC00\uC2DC"
   Apply: 1
   BuffType: 1
-  NumType: 1
+  NumType: 0
   DurationType: 1
   ReleaseCondition: 0
   Description: "\uACF5\uACA9\uBC1B\uC744 \uB54C \uACF5\uACA9\uD55C \uB300\uC0C1\uC5D0\uAC8C
-    \uC800\uC8FC\uB97C N \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+    \uC800\uC8FC\uB97C {0} \uBD80\uC5EC\uD569\uB2C8\uB2E4."

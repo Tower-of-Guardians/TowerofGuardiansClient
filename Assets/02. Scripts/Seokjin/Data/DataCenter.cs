@@ -53,18 +53,25 @@ public class DataCenter : Singleton<DataCenter>
     public static bool IsMonsterEncounterDataLoaded { get; private set; } = false;
     //////////////////////////
 
-    ////// 이팩트 관련 ///////
-    public static Dictionary<string, StatusEffectData> status_effect_datas = new Dictionary<string, StatusEffectData>(); // 이팩트 데이터
+    ////// 스테이 터스 이팩트 관련 ///////
+    public static Dictionary<string, StatusEffectData> status_effect_datas = new Dictionary<string, StatusEffectData>(); // 스테이 터스 이팩트 데이터
     private static AsyncOperationHandle<IList<StatusEffectData>> status_effect_datas_loadHandle; // 메모리 관리를 위한 핸들
 
     public static bool IsStatusEffectDataLoaded { get; private set; } = false;
     //////////////////////////
 
-    ////// 이팩트 관련 ///////
-    public static Dictionary<string, SynergyData> synergy_datas = new Dictionary<string, SynergyData>(); // 이팩트 데이터
+    ////// 시너지 관련 ///////
+    public static Dictionary<string, SynergyData> synergy_datas = new Dictionary<string, SynergyData>(); // 시너지 데이터
     private static AsyncOperationHandle<IList<SynergyData>> synergy_datas_loadHandle; // 메모리 관리를 위한 핸들
 
     public static bool IsSynergyDataLoaded { get; private set; } = false;
+    //////////////////////////
+
+    ////// 이팩트 관련 ///////
+    public static Dictionary<string, EffectData> effect_datas = new Dictionary<string, EffectData>(); // 이팩트 데이터
+    private static AsyncOperationHandle<IList<EffectData>> effect_datas_loadHandle; // 메모리 관리를 위한 핸들
+
+    public static bool IsEffectDataLoaded { get; private set; } = false;
     //////////////////////////
 
     protected override void Awake()
@@ -85,6 +92,7 @@ public class DataCenter : Singleton<DataCenter>
         await AllMonsterEncounterData();
         await AllStatusEffectData();
         await AllSynergyData();
+        await AllEffectData();
     }
 
     public void LoadPlayerData()
@@ -266,6 +274,31 @@ public class DataCenter : Singleton<DataCenter>
         else
         {
             UnityEngine.Debug.LogError($"StatusEffectData 로드 실패: {synergy_datas_loadHandle.OperationException}");
+        }
+    }
+    public async Task AllEffectData()
+    {
+        effect_datas_loadHandle = Addressables.LoadAssetsAsync<EffectData>(
+            "EffectData",
+            (item) =>
+            {
+                if (item != null)
+                {
+                    effect_datas[item.Id] = item;
+                }
+            }
+        );
+
+        await effect_datas_loadHandle.Task;
+
+        if (effect_datas_loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IsEffectDataLoaded = true;
+            UnityEngine.Debug.Log($"EffectData 로드 완료: {effect_datas.Count}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError($"EffectData 로드 실패: {effect_datas_loadHandle.OperationException}");
         }
     }
     public void ReleaseDataHandle()
@@ -461,6 +494,24 @@ public class DataCenter : Singleton<DataCenter>
     }
 
     /// <summary>
+    /// 이팩트 데이터 받기
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    public void GetEffectData(string id, Action<EffectData> data)
+    {
+        if (IsEffectDataLoaded && effect_datas.TryGetValue(id, out EffectData itemData))
+        {
+            data?.Invoke(itemData);
+        }
+        else
+        {
+            UnityEngine.Debug.Log($"ID {id}에 해당하는 아이템 데이터가 로드되지 않았습니다. IsEffectDataLoaded = {IsEffectDataLoaded}.");
+            data?.Invoke(null);
+        }
+    }
+
+    /// <summary>
     /// 카드ID를 통한 해당 아이디의 모든 성급의 카드 데이터 리스트 리턴
     /// </summary>
     /// <param name="card_id"></param>
@@ -482,6 +533,29 @@ public class DataCenter : Singleton<DataCenter>
         }
 
         return cards;
+    }
+
+    public SynergyTotalData GetSynergyTotalData(string synergyId)
+    {
+        var data = new SynergyTotalData();
+        data.synergyData = ScriptableObject.CreateInstance<SynergyData>();
+        data.statusEffectDataa = ScriptableObject.CreateInstance<StatusEffectData>();
+        data.effectData = ScriptableObject.CreateInstance<EffectData>();
+
+        GetSynergyData(synergyId , (load_data) =>
+        {
+            data.synergyData = load_data;
+        });
+        GetEffectData(data.synergyData.Effect1ID, (load_data) =>
+        {
+            data.effectData = load_data;
+        });
+        GetStatusEffectData(data.effectData.StatusEffect, (load_data) =>
+        {
+            data.statusEffectDataa = load_data;
+        });
+
+        return data;
     }
     #endregion
 

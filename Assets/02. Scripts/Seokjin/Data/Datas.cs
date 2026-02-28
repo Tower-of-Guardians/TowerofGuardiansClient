@@ -30,3 +30,10 @@ public class PlayerState
     public int maxmagic;
     public int money;
 }
+[Serializable]
+public class SynergyTotalData
+{
+    public SynergyData synergyData;
+    public EffectData effectData;
+    public StatusEffectData statusEffectDataa;
+}

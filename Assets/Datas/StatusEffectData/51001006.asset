@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: "\uBD88\uC0AC"
   Apply: 1
   BuffType: 1
-  NumType: 1
+  NumType: 0
   DurationType: 1
   ReleaseCondition: 0
   Description: "HP\uAC00 1 \uC774\uD558\uB85C \uAC10\uC18C\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."

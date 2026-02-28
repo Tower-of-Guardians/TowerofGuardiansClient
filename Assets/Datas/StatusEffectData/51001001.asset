@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: "\uC57D\uC810\uB178\uCD9C"
   Apply: 1
   BuffType: 2
-  NumType: 2
+  NumType: 0
   DurationType: 3
   ReleaseCondition: 1
   Description: "\uB2E4\uC74C\uC73C\uB85C \uBC1B\uB294 \uACF5\uACA9\uC758 \uD53C\uD574\uB7C9\uC774

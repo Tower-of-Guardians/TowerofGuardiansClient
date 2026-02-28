@@ -13,7 +13,8 @@ enum CSVData
     MonsterData,
     MonsterEncounterData,
     StatusEffectData,
-    SynergyData
+    SynergyData,
+    EffectData
 }
 
 // 에디터 폴더에 위치해야 함
@@ -76,6 +77,14 @@ public class CSVToScriptableObject
         soFolderPath = "Assets/Datas/" + csv_name;
         GenerateItemSOs();
     }
+    [MenuItem("Tools/Generate Data/EffectData")]
+    public static void EffectDataCreate()
+    {
+        csv_data = CSVData.EffectData;
+        csv_name = "EffectData";
+        soFolderPath = "Assets/Datas/" + csv_name;
+        GenerateItemSOs();
+    }
 
     static string soFolderPath; // ScriptableObject를 저장할 폴더
     static string imageResourcesPath;// Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
@@ -124,6 +133,9 @@ public class CSVToScriptableObject
                 break;
             case CSVData.SynergyData:
                 SynergyDataCreate(allLines);
+                break;
+            case CSVData.EffectData:
+                EffectDataCreate(allLines);
                 break;
         }
 
@@ -415,6 +427,33 @@ public class CSVToScriptableObject
             if (int.TryParse(values[n++].Trim(), out int es3_5)) newItem.Effect3Synergy5 = es3_5;
 
             string fileName = newItem.ID + ".asset";
+
+            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
+        }
+    }
+    private static void EffectDataCreate(string[] allLines)
+    {
+        foreach (string line in allLines.Skip(1))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] values = line.Split(',');
+
+            EffectData newItem = ScriptableObject.CreateInstance<EffectData>();
+            int n = 0;
+
+            newItem.Id = values[n++].Trim();
+            newItem.Name = values[n++].Trim();
+            newItem.Effect = values[n++].Trim();
+
+            if (int.TryParse(values[n++].Trim(), out int target)) newItem.Target = target;
+            if (int.TryParse(values[n++].Trim(), out int choice)) newItem.Choice = choice;
+
+            newItem.CreateMagic = values[n++].Trim();
+            newItem.StatusEffect = values[n++].Trim();
+            newItem.NumType = values[n++].Trim();
+
+            string fileName = newItem.Id + ".asset";
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
         }

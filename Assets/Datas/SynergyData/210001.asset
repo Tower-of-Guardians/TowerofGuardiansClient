@@ -15,9 +15,9 @@ MonoBehaviour:
   ID: 210001
   Name: Synergy_Honesty
   Description: "\uC774\uBC88 \uC804\uD22C \uB3D9\uC548 \uAE30\uBCF8 \uACF5\uACA9\uB825
-    N \uC99D\uAC00"
+    {0} \uC99D\uAC00"
   Tier: 1
-  Effect1ID: 
+  Effect1ID: 1110023
   Effect1Synergy1: 0
   Effect1Synergy2: 2
   Effect1Synergy3: 4
