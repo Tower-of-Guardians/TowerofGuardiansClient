@@ -6,6 +6,8 @@ public class ClickableObject : MonoBehaviour
     protected InteractableObject m_interactable_object;
     private Animator m_animator;
 
+    private static readonly int m_clicked_parameter = Animator.StringToHash("Clicked");
+
     private void Awake()
     {
         m_interactable_object = GetComponent<InteractableObject>();
@@ -25,8 +27,8 @@ public class ClickableObject : MonoBehaviour
     }
 
     private void MouseDownAction()
-        => m_animator.SetBool("Clicked", true);
+        => m_animator.SetBool(m_clicked_parameter, true);
 
     private void MouseUpAction()
-        => m_animator.SetBool("Clicked", false);
+        => m_animator.SetBool(m_clicked_parameter, false);
 }
