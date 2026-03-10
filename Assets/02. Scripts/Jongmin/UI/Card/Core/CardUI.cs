@@ -41,7 +41,7 @@ public class CardUI : MonoBehaviour, ICardUI
         _cardFrameImage.sprite = cardData.cardimage;
         _cardItemImage.sprite = cardData.iconimage;
 
-        _cardNameLabel.text = cardData.name;
+        _cardNameLabel.text = cardData.itemName;
         _cardDescriptionLabel.text = cardData.effectDescription;
         _cardATKLabel.text = cardData.ATK.ToString();
         _cardDEFLabel.text = cardData.DEF.ToString();
