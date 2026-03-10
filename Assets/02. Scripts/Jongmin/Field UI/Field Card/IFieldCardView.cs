@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public interface IFieldCardView : ICardView,
+public interface IFieldCardView : ICardUI,
                                   IBeginDragHandler,
                                   IDragHandler,
                                   IEndDragHandler

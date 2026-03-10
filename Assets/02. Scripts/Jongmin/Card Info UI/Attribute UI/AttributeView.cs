@@ -9,7 +9,7 @@ public class AttributeView : MonoBehaviour, IAttributeView
     [SerializeField] private CanvasGroup m_canvas_group;
 
     [Header("카드 뷰")]
-    [SerializeField] private CardView m_card_view;
+    [SerializeField] private CardUI m_card_view;
 
     [Header("시너지 그룹")]
     [SerializeField] private Transform m_synergy_group;
@@ -32,7 +32,7 @@ public class AttributeView : MonoBehaviour, IAttributeView
     }
 
     public void UpdateCard(CardData card_data)
-        => m_card_view.InitUI(card_data);
+        => m_card_view.UpdateUI(card_data);
 
     public void UpdateSynergy(List<string> synergy_desc_list)
     {

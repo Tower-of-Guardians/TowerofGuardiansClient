@@ -2,7 +2,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-public interface IThrowCardView : ICardView,
+public interface IThrowCardView : ICardUI,
                                   IBeginDragHandler,
                                   IDragHandler,
                                   IEndDragHandler

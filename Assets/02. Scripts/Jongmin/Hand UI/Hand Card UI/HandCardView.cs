@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using System;
 using DG.Tweening;
 
-public class HandCardView : CardView, IHandCardView
+public class HandCardView : CardUI, IHandCardView
 {
     [Space(30f), Header("추가 UI 관련 컴포넌트")]
     [Header("캔버스 그룹")]
@@ -15,12 +15,6 @@ public class HandCardView : CardView, IHandCardView
     public event Action<Vector2> OnDragAction;
     public event Action OnEndDragAction;
     public event Action OnPointerClickAction;
-
-    public override void Return()
-    {
-        transform.DOKill();
-        base.Return();
-    }
 
     private void ToggleRaycast(bool active)
         => m_canvas_group.blocksRaycasts = active;

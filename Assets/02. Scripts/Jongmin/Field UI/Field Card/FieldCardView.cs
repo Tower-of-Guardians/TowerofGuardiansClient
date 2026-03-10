@@ -2,7 +2,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-public class FieldCardView : CardView, IFieldCardView
+public class FieldCardView : CardUI, IFieldCardView
 {
     [Space(30f), Header("추가 UI 관련 컴포넌트")]
     [Header("캔버스 그룹")]
@@ -40,7 +40,7 @@ public class FieldCardView : CardView, IFieldCardView
 
     public void InitUI(CardData card_data, bool is_atk)
     {
-        InitUI(card_data);
+        UpdateUI(card_data);
 
         m_atk_lock_image.SetActive(!is_atk);
         m_def_lock_image.SetActive(is_atk);

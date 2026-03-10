@@ -1,2 +1,2 @@
-public interface IDeckStatusCardView : ICardView
+public interface IDeckStatusCardView : ICardUI
 {}

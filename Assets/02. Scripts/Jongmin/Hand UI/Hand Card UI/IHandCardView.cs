@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public interface IHandCardView : ICardView,
+public interface IHandCardView : ICardUI,
                                  IPointerEnterHandler, 
                                  IPointerExitHandler,
                                  IBeginDragHandler,

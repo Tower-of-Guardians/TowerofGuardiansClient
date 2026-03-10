@@ -1,4 +1,4 @@
 using UnityEngine;
 
-public class DeckStatusCardView : CardView, IDeckStatusCardView
+public class DeckStatusCardView : CardUI, IDeckStatusCardView
 {}

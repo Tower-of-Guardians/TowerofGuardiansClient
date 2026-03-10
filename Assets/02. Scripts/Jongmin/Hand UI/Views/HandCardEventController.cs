@@ -188,7 +188,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         for (int i = 0; i < views.Count; i++)
         {
             var presenter = m_container.GetPresenter(views[i]);
-            var card_id = presenter.CardData.data.id;
+            var card_id = presenter.CardData.id;
 
             if (i < GameData.Instance.handDeck.Count)
                 GameData.Instance.handDeck[i] = card_id;

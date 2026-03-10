@@ -2,15 +2,14 @@ public class HandCardPresenter : CardPresenter
 {
     private readonly IHandCardView m_view;
 
+    public CardData CardData => BattleCardData.data;
+
     public HandCardPresenter(IHandCardView view,
                              BattleCardData card_data)
     {
         m_view = view;
-        m_card_data = card_data;
+        BattleCardData = card_data;
 
-        m_view.InitUI(card_data.data);
+        m_view.UpdateUI(card_data.data);
     }
-
-    public override void Return()
-        => m_view.Return();
 }

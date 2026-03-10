@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ThrowCardView : CardView, IThrowCardView
+public class ThrowCardView : CardUI, IThrowCardView
 {
     [Space(30f), Header("추가 UI 관련 컴포넌트")]
     [Header("캔버스 그룹")]

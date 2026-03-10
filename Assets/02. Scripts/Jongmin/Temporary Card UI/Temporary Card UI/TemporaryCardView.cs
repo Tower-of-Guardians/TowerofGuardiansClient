@@ -1,1 +1,1 @@
-public class TemporaryCardView : CardView {}
+public class TemporaryCardView : CardUI {}

@@ -68,7 +68,7 @@ public class FieldCardContainer
 
         foreach(IFieldCardView card_view in m_card_list)
         {
-            if(m_card_dict[card_view].CardData.data.id == card_data.data.id)
+            if(m_card_dict[card_view].CardData.id == card_data.data.id)
                 return card_view;
         }
 
@@ -77,10 +77,10 @@ public class FieldCardContainer
 
     public BattleCardData[] GetDatas()
         => m_card_list
-                .Select(view => m_card_dict[view].CardData)
+                .Select(view => m_card_dict[view].BattleCardData)
                 .ToArray();
 
     public BattleCardData GetData(IFieldCardView card_view)
-        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.CardData
+        => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.BattleCardData
                                                                  : null;
 }

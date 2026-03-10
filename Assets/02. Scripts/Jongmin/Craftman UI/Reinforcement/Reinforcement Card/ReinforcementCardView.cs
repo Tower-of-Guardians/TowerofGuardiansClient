@@ -1,32 +1,37 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class ReinforcementCardView : CardView, IReinforcementCardView
+public class ReinforcementCardView : CardUI, IReinforcementCardView
 {
     private Animator m_animator;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         m_animator = GetComponent<Animator>();
     }
 
     public void UpgradeATK(float atk)
     {
-       m_card_atk_label.text = atk.ToString();
+       UpdateATKTextLabel(atk);
        m_animator.SetTrigger("ATK");
     }
 
     public void UpgradeBoth(float atk, float def)
     {
-        m_card_atk_label.text = atk.ToString();
-        m_card_def_label.text = def.ToString();
+        UpdateATKTextLabel(atk);
+        UpdateDEFTextLabel(def);
         m_animator.SetTrigger("Both");
     }
 
     public void UpgradeDEF(float def)
     {
-        m_card_def_label.text = def.ToString();
+        UpdateDEFTextLabel(def);
         m_animator.SetTrigger("DEF");
     }
+
+    private void UpdateATKTextLabel(float atk)
+        => _cardATKLabel.text = atk.ToString();
+
+    private void UpdateDEFTextLabel(float def)
+        => _cardDEFLabel.text = def.ToString();
 }

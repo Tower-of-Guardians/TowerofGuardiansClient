@@ -32,7 +32,7 @@ public class ThrowCardService
         if(m_container.Dict.TryGetValue(card_view, out var presenter))
         {
             m_container.Remove(card_view);
-            m_factory.ReturnCard(card_view, presenter.CardData);
+            m_factory.ReturnCard(card_view, presenter.BattleCardData);
             m_turn_manager.UpdateThrowCount(-1);
         }
     }

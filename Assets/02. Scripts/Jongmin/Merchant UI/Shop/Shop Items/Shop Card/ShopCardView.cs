@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopCardView : CardView, IShopCardView
+public class ShopCardView : CardUI, IShopCardView
 {
     [Space(30f), Header("추가 UI 관련 컴포넌트")]
     [Header("카드 가격 텍스트")]
@@ -28,7 +28,7 @@ public class ShopCardView : CardView, IShopCardView
 
     public void InitUI(ShopCardData card_data, bool can_purchase)
     {
-        InitUI(card_data.Card.data);   
+        UpdateUI(card_data.Card.data);   
         SetPurchaseButtonAlpha(1f);   
         m_already_purchased_image.SetActive(false);  
 

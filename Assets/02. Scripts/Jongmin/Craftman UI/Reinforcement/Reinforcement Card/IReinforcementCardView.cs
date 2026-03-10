@@ -1,4 +1,4 @@
-public interface IReinforcementCardView : ICardView
+public interface IReinforcementCardView : ICardUI
 {
     void UpgradeATK(float atk);
     void UpgradeBoth(float atk, float def);
