@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class HandCardView : CardUI, IHandCardUI
+public class HandCardUI : CardUI, IHandCardUI
 {
     [Space(20f), Header("Canvas Group")]
     [SerializeField] private CanvasGroup _canvasGroup;

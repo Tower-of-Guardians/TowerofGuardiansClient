@@ -199,7 +199,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
     private void CheckAndInvokeDropHandler()
     {
         var hand_hit = CheckField(out var pointer_data);
-        var drop_handler = hand_hit?.gameObject.GetComponent<HandView>();
+        var drop_handler = hand_hit?.gameObject.GetComponent<HandUI>();
         if(drop_handler != null)
             ExecuteEvents.Execute(hand_hit?.gameObject, pointer_data, ExecuteEvents.dropHandler);
     }

@@ -7,7 +7,7 @@ public class HandUIInjector : MonoBehaviour, IInjector
     [SerializeField] private HandUIDesigner m_hand_ui_designer;
 
     [Header("핸드 뷰")]
-    [SerializeField] private HandView m_hand_view;
+    [SerializeField] private HandUI m_hand_view;
 
     [Header("핸드 카드 팩토리")]
     [SerializeField] private HandCardFactory m_hand_card_factory;
@@ -32,9 +32,9 @@ public class HandUIInjector : MonoBehaviour, IInjector
 
     private void InjectHand()
     {
-        DIContainer.Register<IHandView>(m_hand_view);
+        DIContainer.Register<IHandCardUI>(m_hand_view);
 
-        var hand_card_container = new HandCardContainer();
+        var hand_card_container = new CardContainer<IHandCardUI, HandCardPresenter>();
 
         var hand_presenter = new HandPresenter(m_hand_view,
                                                hand_card_container,
@@ -42,17 +42,8 @@ public class HandUIInjector : MonoBehaviour, IInjector
                                                m_hand_card_layout_controller,
                                                DIContainer.Resolve<AttackFieldPresenter>(),
                                                DIContainer.Resolve<DefendFieldPresenter>(),
-                                               DIContainer.Resolve<ThrowPresenter>(),
-                                               m_turn_manager);
+                                               DIContainer.Resolve<ThrowPresenter>());
         DIContainer.Register<HandPresenter>(hand_presenter);
-
-        m_hand_view.Inject(m_hand_ui_designer,
-                           hand_card_container,
-                           m_hand_card_factory,
-                           m_hand_card_layout_controller,
-                           m_hand_card_event_controller,
-                           m_card_info_ui,
-                           m_turn_manager);
     }
 
     private void InjectTurnManager()

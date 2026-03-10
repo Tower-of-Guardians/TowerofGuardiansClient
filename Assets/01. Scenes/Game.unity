@@ -1415,14 +1415,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4554bb27671b424eb9e8a9ea8a8e8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 71747263}
-  m_card_item_image: {fileID: 1848906934}
-  m_card_name_label: {fileID: 1318438121}
-  m_card_description_label: {fileID: 1151271251}
-  m_card_atk_label: {fileID: 1264861073}
-  m_card_def_label: {fileID: 1006862411}
-  m_star_group: {fileID: 313280294}
-  m_synergy_frame_group: {fileID: 1025186225}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
 --- !u!95 &71747261
 Animator:
   serializedVersion: 7
@@ -2148,7 +2148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808ec4682c230ea419287b80197a9bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas_group: {fileID: 114737536}
+  _canvasGroup: {fileID: 114737536}
 --- !u!225 &114737536
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2211,8 +2211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc59dd7aa519a77478159d37b23eba3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_designer: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
-  m_preview_object: {fileID: 1253629279}
+  _handUIDesigner: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
 --- !u!114 &114737540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2225,9 +2224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b002f4df65944f439c2ce72d748f678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas: {fileID: 944360013}
-  m_slot_root: {fileID: 324803411}
-  m_preview_object: {fileID: 1253629279}
+  _handPreviewCard: {fileID: 1253629279}
 --- !u!114 &114737541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2240,8 +2237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4385817337cb9364d9ba2922395aea89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_slot_root: {fileID: 324803411}
-  m_field_card_prefab: {fileID: 4632322973663511511, guid: e704874701f2ed143a085f7ec915c0df, type: 3}
+  _slotRoot: {fileID: 324803411}
+  _cardPrefab: {fileID: 4632322973663511511, guid: e704874701f2ed143a085f7ec915c0df, type: 3}
 --- !u!114 &114737542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2256,8 +2253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_start_transform: {fileID: 114737534}
   m_end_transform: {fileID: 695951010}
-  m_card_root: {fileID: 1963005402}
-  m_battle_locker: {fileID: 1303847439}
+  _handCardRoot: {fileID: 1963005402}
+  _battleLocker: {fileID: 1303847439}
 --- !u!114 &114737543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5881,14 +5878,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0807fa95b314af54c9fce0e063e96bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 334615219}
-  m_card_item_image: {fileID: 676183309}
-  m_card_name_label: {fileID: 1379081753}
-  m_card_description_label: {fileID: 1137853421}
-  m_card_atk_label: {fileID: 1424878914}
-  m_card_def_label: {fileID: 45024617}
-  m_star_group: {fileID: 2023570851}
-  m_synergy_frame_group: {fileID: 357291533}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
 --- !u!225 &334615218
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7456,14 +7453,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0807fa95b314af54c9fce0e063e96bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 562587242}
-  m_card_item_image: {fileID: 34452842}
-  m_card_name_label: {fileID: 1025711741}
-  m_card_description_label: {fileID: 1360696103}
-  m_card_atk_label: {fileID: 2047550908}
-  m_card_def_label: {fileID: 1350434204}
-  m_star_group: {fileID: 1300507183}
-  m_synergy_frame_group: {fileID: 872725730}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
 --- !u!225 &562587241
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13679,7 +13676,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1950586836}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9975945
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15275,6 +15272,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137853419}
   m_CullTransparentMesh: 1
+--- !u!1 &1139086714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1139086716}
+  - component: {fileID: 1139086715}
+  m_Layer: 0
+  m_Name: Game Lifetime Scope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1139086715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139086714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433953d53a5920f4cb87ac1b60affaf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
+  _handUIDesigner: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
+--- !u!4 &1139086716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139086714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 750.7513, y: 279.87018, z: 1.4744157}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1151271249
 GameObject:
   m_ObjectHideFlags: 0
@@ -16263,7 +16309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0010030526}
+  m_AnchoredPosition: {x: 0, y: 0.00009720358}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -20986,14 +21032,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0807fa95b314af54c9fce0e063e96bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 1600129455}
-  m_card_item_image: {fileID: 745662044}
-  m_card_name_label: {fileID: 2132065388}
-  m_card_description_label: {fileID: 25327424}
-  m_card_atk_label: {fileID: 1524969721}
-  m_card_def_label: {fileID: 208399283}
-  m_star_group: {fileID: 1848777543}
-  m_synergy_frame_group: {fileID: 707883469}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
 --- !u!225 &1600129454
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -32349,14 +32395,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0807fa95b314af54c9fce0e063e96bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 6169968379789679847}
-  m_card_item_image: {fileID: 8101201731272788021}
-  m_card_name_label: {fileID: 319723968653437749}
-  m_card_description_label: {fileID: 2379143734142405148}
-  m_card_atk_label: {fileID: 295968268905226149}
-  m_card_def_label: {fileID: 4499500543203075771}
-  m_star_group: {fileID: 5371039870064478540}
-  m_synergy_frame_group: {fileID: 619964976}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
 --- !u!114 &6171180833626089177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33553,3 +33599,4 @@ SceneRoots:
   - {fileID: 353037374}
   - {fileID: 1101993775}
   - {fileID: 1765458417}
+  - {fileID: 1139086716}

@@ -58,5 +58,5 @@ public class DrawCardEffector : CardEffector
     }
 
     protected override void OnTempCardAnimeEnd(BattleCardData card_data)
-        => m_hand_presenter.InstantiateCard(card_data);
+        => m_hand_presenter.CreateCard(card_data);
 }

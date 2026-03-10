@@ -1,20 +1,23 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using System;
+using VContainer;
 
 public class HandCardToThrowEffector : CardEffector
 {
-    [Header("카드 부모 트랜스폼")]
-    [SerializeField] private Transform m_card_root;
+    [SerializeField] private Transform _handCardRoot;
+    [SerializeField] private UILocker _battleLocker;
 
-    [Header("전투 비활성화 패널")]
-    [SerializeField] private UILocker m_battle_locker;
+    private HandPresenter _handPresenter;
+    private CardContainer<IHandCardUI, HandCardPresenter> _handCardContainer;
 
-    private HandPresenter m_hand_presenter;
-
-    public void Inject(HandPresenter hand_presenter)
+    [Inject]
+    private void Construct(HandPresenter handPresenter,
+                           CardContainer<IHandCardUI, HandCardPresenter> handCardContainer)
     {
-        m_hand_presenter = hand_presenter;
+        _handPresenter = handPresenter;
+        _handCardContainer = handCardContainer;
 
         m_temp_card_settings = new()
         {
@@ -47,7 +50,52 @@ public class HandCardToThrowEffector : CardEffector
 
         m_temp_card_anime_request = new()
         {
-            TargetRoot = m_card_root,
+            TargetRoot = _handCardRoot,
+            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
+
+            Interval = 0.1f,
+
+            Settings = m_temp_card_settings,
+        };        
+    }
+
+    [Obsolete]
+    public void Inject(HandPresenter handPresenter)
+    {
+        _handPresenter = handPresenter;
+
+        m_temp_card_settings = new()
+        {
+            Duration = 0.5f,
+
+            UseJump = true,
+            JumpPower = 50f,
+            MoveEase = Ease.Unset,
+
+            UseScale = true,
+            Scale = Vector3.one * 0.11f,
+            ScaleEase = Ease.InQuad,
+
+            UseRotation = true,
+            TargetEuler = new Vector3(0f, 0f, -180f),
+            RotateMode = RotateMode.LocalAxisAdd,
+            RotateEase = Ease.Unset,
+
+            UseOpacity = true,
+            Opacity = 0.5f,
+            OpacityEase = Ease.Unset,
+
+            ForceStartScale = true,
+            StartScale = Vector3.one * 0.66f,
+
+            ForceStartRotation = true,
+
+            ForceStartOpacity = false,
+        };
+
+        m_temp_card_anime_request = new()
+        {
+            TargetRoot = _handCardRoot,
             EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
 
             Interval = 0.1f,
@@ -58,27 +106,50 @@ public class HandCardToThrowEffector : CardEffector
 
     public override void Execute()
     {
-        m_battle_locker.Lock(true);
+        _battleLocker.Lock(true);
 
-        m_temp_card_anime_request.CardDatas = m_hand_presenter.GetCardDatas();
+        m_temp_card_anime_request.CardDatas = _handCardContainer.GetAllDatas();
 
-        List<Vector3> hand_card_positions = new();
-        foreach(IHandCardUI card_view in m_hand_presenter.GetCardViews())
-            hand_card_positions.Add((card_view as HandCardView).transform.position);
+        List<Vector3> handCardPositionList = new();
+        if(!_handCardContainer.TryGetAllUIs(out IHandCardUI[] handCardArray))
+        {
+            return;
+        }
 
-        List<Vector3> hand_card_rotations = new();
-        foreach(IHandCardUI card_view in m_hand_presenter.GetCardViews())
-            hand_card_rotations.Add((card_view as HandCardView).transform.eulerAngles);
+        foreach(IHandCardUI cardUI in handCardArray)
+        {
+            HandCardUI concreteCardUI = cardUI as HandCardUI;
+            handCardPositionList.Add(concreteCardUI.transform.position);
+        }
 
-        m_temp_card_anime_request.StartPositions = hand_card_positions.ToArray(); 
-        m_temp_card_anime_request.StartRotations = hand_card_rotations.ToArray();
+        List<Vector3> handCardRotationList = new();
+        if(!_handCardContainer.TryGetAllUIs(out handCardArray))
+        {
+            return;
+        }
+
+        foreach(IHandCardUI card_view in handCardArray)
+        {
+            HandCardUI concreteCardUI = card_view as HandCardUI;
+            handCardRotationList.Add(concreteCardUI.transform.eulerAngles);
+        }
+
+        m_temp_card_anime_request.StartPositions = handCardPositionList.ToArray(); 
+        m_temp_card_anime_request.StartRotations = handCardRotationList.ToArray();
 
         base.Execute();
     }
 
 
     protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_hand_presenter.RemoveCard(m_hand_presenter.GetCardView(card_data), false);
+    {
+        if(!_handCardContainer.TryGetUI(card_data, out IHandCardUI cardUI))
+        {
+            return;
+        }
+
+        _handPresenter.RemoveCard(cardUI);
+    }
 
     protected override void OnTempCardAnimeEnd(BattleCardData card_data)
     {
