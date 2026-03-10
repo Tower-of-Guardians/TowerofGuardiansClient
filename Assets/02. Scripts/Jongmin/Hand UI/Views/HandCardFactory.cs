@@ -14,19 +14,19 @@ public class HandCardFactory : MonoBehaviour, IHandCardFactory
     public void Inject(HandCardEventController event_controller)
         => m_event_controller = event_controller;
 
-    public IHandCardView InstantiateCardView()
+    public IHandCardUI InstantiateCardView()
     {
         var card_obj = ObjectPoolManager.Instance.Get(m_field_card_prefab);
         card_obj.transform.SetParent(m_slot_root, false);
         card_obj.transform.localScale = Vector3.one;
 
-        var card_view = card_obj.GetComponent<IHandCardView>();
+        var card_view = card_obj.GetComponent<IHandCardUI>();
         m_event_controller.Subscribe(card_view);
 
         return card_view;
     }
 
-    public void ReturnCard(IHandCardView card_view)
+    public void ReturnCard(IHandCardUI card_view)
     {
         var target_card = card_view as HandCardView;
         
@@ -36,7 +36,7 @@ public class HandCardFactory : MonoBehaviour, IHandCardFactory
 
     public void ReturnCards()
     {
-        var card_views = m_slot_root.GetComponentsInChildren<IHandCardView>();
+        var card_views = m_slot_root.GetComponentsInChildren<IHandCardUI>();
         foreach(var card_view in card_views)
         {
             m_event_controller.Unsubscribe(card_view);

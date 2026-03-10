@@ -21,7 +21,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private CardInfoUI m_card_info_ui;
     private TurnManager m_turn_manager;
 
-    private Dictionary<IHandCardView, HandCardEventBundle> m_event_dict = new();
+    private Dictionary<IHandCardUI, HandCardEventBundle> m_event_dict = new();
 
     public void Inject(HandUIDesigner designer,
                        HandPresenter presenter,
@@ -38,7 +38,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         m_turn_manager = turn_manager;
     }
 
-    public void Subscribe(IHandCardView card_view)
+    public void Subscribe(IHandCardUI card_view)
     {
         var new_bundle = new HandCardEventBundle
         {
@@ -60,7 +60,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         card_view.OnPointerClickAction += new_bundle.OnPointerClick;
     }
 
-    public void Unsubscribe(IHandCardView card_view)
+    public void Unsubscribe(IHandCardUI card_view)
     {
         if(m_event_dict.TryGetValue(card_view, out var bundle))
         {
@@ -73,7 +73,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         }
     }
 
-    private void OnPointerEnterInCard(IHandCardView card_view)
+    private void OnPointerEnterInCard(IHandCardUI card_view)
     {
         m_presenter.HoverCard = card_view;
         m_layout_controller.UpdateLayout();
@@ -211,7 +211,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
         foreach(var hit in ray_hits)
         {
-            var card_hit = hit.gameObject.GetComponent<IHandCardView>();
+            var card_hit = hit.gameObject.GetComponent<IHandCardUI>();
             if(card_hit != null && m_presenter.HoverCard != card_hit)
                 return hit;
 
@@ -227,13 +227,13 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         return null;
     }
 
-    private IHandCardView GetIHandCardView()
+    private IHandCardUI GetIHandCardView()
     {
         var hit = CheckField(out _);
-        return hit?.gameObject.GetComponent<IHandCardView>();
+        return hit?.gameObject.GetComponent<IHandCardUI>();
     }
 
-    private void SwapInSameField(IHandCardView hand_card, Vector2 position)
+    private void SwapInSameField(IHandCardUI hand_card, Vector2 position)
     {
         var target_card = m_presenter.HoverCard;
         var concrete_card = hand_card as HandCardView;

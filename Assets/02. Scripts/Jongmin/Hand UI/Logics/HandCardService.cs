@@ -23,7 +23,7 @@ public class HandCardService
         m_layout_controller.UpdateLayout();
     }
 
-    public void Remove(IHandCardView card_view, bool layout_update)
+    public void Remove(IHandCardUI card_view, bool layout_update)
     {
         if(m_container.Dict.TryGetValue(card_view, out _))
         {

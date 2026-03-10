@@ -81,7 +81,7 @@ public abstract class FieldPresenter : IDisposable
     public IFieldCardView GetCardView(BattleCardData card_data)
         => m_container.GetCardView(card_data);
 
-    public void OnDroped(IHandCardView card_view)
+    public void OnDroped(IHandCardUI card_view)
     {
         if(!Active)
             return;

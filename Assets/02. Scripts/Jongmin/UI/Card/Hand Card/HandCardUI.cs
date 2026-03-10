@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
-using DG.Tweening;
 
-public class HandCardView : CardUI, IHandCardView
+public class HandCardView : CardUI, IHandCardUI
 {
-    [Space(30f), Header("추가 UI 관련 컴포넌트")]
-    [Header("캔버스 그룹")]
-    [SerializeField] private CanvasGroup m_canvas_group;
+    [Space(20f), Header("Canvas Group")]
+    [SerializeField] private CanvasGroup _canvasGroup;
 
     public event Action OnPointerEnterAction;
     public event Action OnPointerExitAction;
@@ -16,10 +14,6 @@ public class HandCardView : CardUI, IHandCardView
     public event Action OnEndDragAction;
     public event Action OnPointerClickAction;
 
-    private void ToggleRaycast(bool active)
-        => m_canvas_group.blocksRaycasts = active;
-
-#region Events
     public void OnPointerEnter(PointerEventData eventData)
         => OnPointerEnterAction?.Invoke();
 
@@ -32,6 +26,10 @@ public class HandCardView : CardUI, IHandCardView
     public void OnDrag(PointerEventData eventData)
         => OnDragAction?.Invoke(eventData.position);
 
+    /// <summary>
+    /// 드래그 종료 처리 중 드랍 판정을 방해하지 않도록
+    /// 레이캐스트를 잠시 비활성화한 뒤 다시 복구합니다.
+    /// </summary>
     public void OnEndDrag(PointerEventData eventData)
     {
         ToggleRaycast(false);
@@ -39,10 +37,17 @@ public class HandCardView : CardUI, IHandCardView
         ToggleRaycast(true);
     }
 
+    /// <summary>
+    /// 마우스 우클릭 시에만 반응합니다.
+    /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
+        {
             OnPointerClickAction?.Invoke();
+        }
     }
-    #endregion Events
+
+    private void ToggleRaycast(bool isActive)
+        => _canvasGroup.blocksRaycasts = isActive;
 }

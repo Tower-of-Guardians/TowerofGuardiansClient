@@ -11,9 +11,9 @@ public class HandPresenter
     private readonly HandCardViewController m_view_controller;
     private readonly TurnManager m_turn_manager;
 
-    private IHandCardView m_hover_card;
+    private IHandCardUI m_hover_card;
 
-    public IHandCardView HoverCard
+    public IHandCardUI HoverCard
     {
         get => m_hover_card;
         set => m_hover_card = value;
@@ -47,7 +47,7 @@ public class HandPresenter
     public void InstantiateCard(BattleCardData card_data)
         => m_service.Add(card_data);
 
-    public void RemoveCard(IHandCardView card_view, bool layout_update = true)
+    public void RemoveCard(IHandCardUI card_view, bool layout_update = true)
         => m_service.Remove(card_view, layout_update);
 
     public void ClearAllCards()
@@ -79,16 +79,16 @@ public class HandPresenter
         m_throw_presenter.ToggleManual(active);
     }
 
-    public BattleCardData GetCardData(IHandCardView card_view)
+    public BattleCardData GetCardData(IHandCardUI card_view)
         => m_container.GetData(card_view);
 
     public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
-    public IHandCardView GetCardView(BattleCardData battle_card_data)
+    public IHandCardUI GetCardView(BattleCardData battle_card_data)
         => m_container.GetHandCardView(battle_card_data);
 
-    public IHandCardView[] GetCardViews()
+    public IHandCardUI[] GetCardViews()
         => m_container.GetHandCardViews();
 
     public void OnDroped(IThrowCardView card_view)

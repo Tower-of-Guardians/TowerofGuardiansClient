@@ -54,7 +54,7 @@ public class HandCardLayoutController : MonoBehaviour
     }
 
     private void ApplyHoverEffect(CardLayoutData target,
-                                  IHandCardView card_view,
+                                  IHandCardUI card_view,
                                   int index)
     {
         if (card_view == m_presenter.HoverCard)
@@ -75,7 +75,7 @@ public class HandCardLayoutController : MonoBehaviour
     }
 
     private void AnimateCardTransform(CardLayoutData target,
-                                      IHandCardView card)
+                                      IHandCardUI card)
     {
         var concrete_card = card as HandCardView; 
 

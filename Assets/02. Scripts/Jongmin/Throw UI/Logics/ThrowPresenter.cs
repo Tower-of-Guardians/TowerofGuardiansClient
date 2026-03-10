@@ -87,7 +87,7 @@ public class ThrowPresenter : IDisposable
     public BattleCardData GetCardData(IThrowCardView card_view)
         => m_container.GetData(card_view);
 
-    public void OnDroped(IHandCardView card_view)
+    public void OnDroped(IHandCardUI card_view)
     {
         if(!m_turn_manager.CanThrow())
         {

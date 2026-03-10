@@ -63,11 +63,11 @@ public class HandCardToThrowEffector : CardEffector
         m_temp_card_anime_request.CardDatas = m_hand_presenter.GetCardDatas();
 
         List<Vector3> hand_card_positions = new();
-        foreach(IHandCardView card_view in m_hand_presenter.GetCardViews())
+        foreach(IHandCardUI card_view in m_hand_presenter.GetCardViews())
             hand_card_positions.Add((card_view as HandCardView).transform.position);
 
         List<Vector3> hand_card_rotations = new();
-        foreach(IHandCardView card_view in m_hand_presenter.GetCardViews())
+        foreach(IHandCardUI card_view in m_hand_presenter.GetCardViews())
             hand_card_rotations.Add((card_view as HandCardView).transform.eulerAngles);
 
         m_temp_card_anime_request.StartPositions = hand_card_positions.ToArray(); 

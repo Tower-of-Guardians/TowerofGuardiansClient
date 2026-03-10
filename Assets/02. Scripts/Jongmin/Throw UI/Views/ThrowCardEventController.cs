@@ -109,7 +109,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         var dropped_object = eventData.pointerDrag;
         if(dropped_object != null)
         {
-            var card_view = dropped_object.GetComponent<IHandCardView>();
+            var card_view = dropped_object.GetComponent<IHandCardUI>();
             if(card_view != null)
                 m_presenter.OnDroped(card_view);
         }
