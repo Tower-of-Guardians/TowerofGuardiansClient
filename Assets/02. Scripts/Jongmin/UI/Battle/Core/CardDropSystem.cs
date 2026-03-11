@@ -21,7 +21,7 @@ public class CardDropSystem
     /// <summary>
     /// 해당 필드 카드를 [공격/방어 필드]에서 [핸드 필드]로 내립니다.
     /// </summary>
-    public void OnDropedFieldToHand(IFieldCardView cardUI)
+    public void OnDropedFieldToHand(IFieldCardUI cardUI)
     {
         if(!_atkFieldDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
         {

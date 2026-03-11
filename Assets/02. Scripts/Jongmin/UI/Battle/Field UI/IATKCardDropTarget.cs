@@ -1,4 +1,4 @@
-public interface IATKCardDropTarget : ICardDropTarget<IFieldCardView>
+public interface IATKCardDropTarget : ICardDropTarget<IFieldCardUI>
 {
-    bool IsExist(IFieldCardView cardUI);
+    bool IsExist(IFieldCardUI cardUI);
 }

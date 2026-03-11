@@ -68,8 +68,8 @@ public class DefendCardToThrowEffector : CardEffector
         m_temp_card_anime_request.CardDatas = m_defend_field_presenter.GetCardDatas();
 
         List<Vector3> field_card_positions = new();
-        foreach(IFieldCardView card_view in m_defend_field_presenter.GetCardViews())
-            field_card_positions.Add((card_view as FieldCardView).transform.position);
+        foreach(IFieldCardUI card_view in m_defend_field_presenter.GetCardViews())
+            field_card_positions.Add((card_view as FieldCardUI).transform.position);
 
         m_temp_card_anime_request.StartPositions = field_card_positions.ToArray(); 
 

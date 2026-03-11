@@ -16,21 +16,21 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
         m_event_controller = event_controller;
     }
 
-    public IFieldCardView InstantiateCardView()
+    public IFieldCardUI InstantiateCardView()
     {
         var card_obj = ObjectPoolManager.Instance.Get(m_field_card_prefab);
         card_obj.transform.SetParent(m_slot_root, false);
         card_obj.transform.localScale = Vector3.one;
 
-        var card_view = card_obj.GetComponent<IFieldCardView>();
+        var card_view = card_obj.GetComponent<IFieldCardUI>();
         m_event_controller.Subscribe(card_view);
 
         return card_view;
     }
 
-    public void ReturnCard(IFieldCardView card_view)
+    public void ReturnCard(IFieldCardUI card_view)
     {
-        var target_card = card_view as FieldCardView;
+        var target_card = card_view as FieldCardUI;
         
         m_event_controller.Unsubscribe(card_view);
         ObjectPoolManager.Instance.Return(target_card.gameObject);
@@ -38,12 +38,12 @@ public class FieldCardFactory : MonoBehaviour, IFieldCardFactory
 
     public void ReturnCards()
     {
-        var card_views = m_slot_root.GetComponentsInChildren<IFieldCardView>();
+        var card_views = m_slot_root.GetComponentsInChildren<IFieldCardUI>();
         foreach(var card_view in card_views)
         {
             m_event_controller.Unsubscribe(card_view);
             
-            var card_obj = (card_view as FieldCardView).gameObject;
+            var card_obj = (card_view as FieldCardUI).gameObject;
             ObjectPoolManager.Instance.Return(card_obj);
         }              
     }

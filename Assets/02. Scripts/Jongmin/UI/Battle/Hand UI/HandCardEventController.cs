@@ -198,7 +198,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
                 _cardDropSystem.OnDropedDiscardToHand(throwCardUI);
             }
 
-            IFieldCardView fieldCardUI = droppedObject.GetComponent<IFieldCardView>();
+            IFieldCardUI fieldCardUI = droppedObject.GetComponent<IFieldCardUI>();
             if(fieldCardUI != null)
             {
                 _cardDropSystem.OnDropedFieldToHand(fieldCardUI);

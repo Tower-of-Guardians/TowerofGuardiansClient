@@ -11,10 +11,10 @@ public abstract class FieldPresenter : IDisposable
     private HandPresenter m_hand_presenter;
     private readonly ThrowPresenter m_throw_presenter;
 
-    private IFieldCardView m_hover_card;
+    private IFieldCardUI m_hover_card;
 
     protected bool Active { get; private set; } = true;
-    public IFieldCardView HoverCard
+    public IFieldCardUI HoverCard
     {
         get => m_hover_card;
         set => m_hover_card = value;
@@ -60,25 +60,25 @@ public abstract class FieldPresenter : IDisposable
             m_controller.ToggleManual(false);
     }
 
-    public bool IsExist(IFieldCardView card_view)
+    public bool IsExist(IFieldCardUI card_view)
         => m_container.IsExist(card_view);
 
     public virtual void RemoveAll()
         => m_service.RemoveAll();
 
-    public void Remove(IFieldCardView card_view)
+    public void Remove(IFieldCardUI card_view)
         => m_service.Remove(card_view);
 
     public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
-    public BattleCardData GetCardData(IFieldCardView card_view)
+    public BattleCardData GetCardData(IFieldCardUI card_view)
         => m_container.GetData(card_view);
 
-    public IFieldCardView[] GetCardViews()
+    public IFieldCardUI[] GetCardViews()
         => m_container.GetCardViews();
 
-    public IFieldCardView GetCardView(BattleCardData card_data)
+    public IFieldCardUI GetCardView(BattleCardData card_data)
         => m_container.GetCardView(card_data);
 
     public void OnDroped(IHandCardUI card_view)

@@ -38,7 +38,7 @@ public class FieldCardService
         m_turn_manager.UpdateActionCount(1);
     }
 
-    public void Remove(IFieldCardView card_view)
+    public void Remove(IFieldCardUI card_view)
     {
         if(m_container.Dict.TryGetValue(card_view, out var presenter))
         {

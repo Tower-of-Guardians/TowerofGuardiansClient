@@ -25,7 +25,7 @@ public class FieldCardLayoutController : MonoBehaviour
         var card_views = m_container.Cards;
         var card_count = card_views.Count;
 
-        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as FieldCardView).transform as RectTransform).anchoredPosition 
+        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as FieldCardUI).transform as RectTransform).anchoredPosition 
                                                          : CardLayoutCalculator.CalculatedFieldCardPosition(0, m_designer.ATKLimit, m_designer.Space); 
         
         for(int i = 0; i < card_views.Count; i++)
@@ -34,7 +34,7 @@ public class FieldCardLayoutController : MonoBehaviour
                 continue;
             
             var target_position = CardLayoutCalculator.CalculatedFieldCardPosition(i, m_designer.ATKLimit, m_designer.Space);
-            var concrete_card = (card_views[i] as FieldCardView).transform as RectTransform;
+            var concrete_card = (card_views[i] as FieldCardUI).transform as RectTransform;
             
             concrete_card.transform.DOKill();
 

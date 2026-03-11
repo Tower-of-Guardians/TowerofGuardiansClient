@@ -27,7 +27,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     private FieldUIDesigner m_designer;
     private List<CardData> m_model;
 
-    private readonly Dictionary<IFieldCardView, FieldCardEventBundle> m_event_dict = new();
+    private readonly Dictionary<IFieldCardUI, FieldCardEventBundle> m_event_dict = new();
 
     public void Inject(IFieldView view,
                        FieldPresenter this_presenter,
@@ -48,7 +48,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         m_model = model;
     }
 
-    public void Subscribe(IFieldCardView card_view)
+    public void Subscribe(IFieldCardUI card_view)
     {
         var new_bundle = new FieldCardEventBundle
         {
@@ -64,7 +64,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         card_view.OnEndDragAction += new_bundle.OnEndDrag;        
     }
 
-    public void Unsubscribe(IFieldCardView card_view)
+    public void Unsubscribe(IFieldCardUI card_view)
     {
         if(m_event_dict.TryGetValue(card_view, out var bundle))
         {
@@ -76,7 +76,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         }
     }
 
-    public void OnBeginDragCard(IFieldCardView card_view)
+    public void OnBeginDragCard(IFieldCardUI card_view)
     {
         m_this_presenter.HoverCard = card_view;
 
@@ -163,7 +163,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     {
         pointer_data = new PointerEventData(EventSystem.current);
         pointer_data.position = Input.mousePosition;
-        pointer_data.pointerDrag = (m_this_presenter.HoverCard as FieldCardView).gameObject;
+        pointer_data.pointerDrag = (m_this_presenter.HoverCard as FieldCardUI).gameObject;
 
         var ray_hits = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointer_data, ray_hits);
@@ -174,7 +174,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
             if(field != null && field != this)
                 return hit;
 
-            var card_view = hit.gameObject.GetComponent<IFieldCardView>();
+            var card_view = hit.gameObject.GetComponent<IFieldCardUI>();
             if(card_view != null && card_view != m_this_presenter.HoverCard)
                 return hit;
 
@@ -197,27 +197,27 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
     private void SetCardParentToCanvas()
     {
-        var target_card = m_this_presenter.HoverCard as FieldCardView;
+        var target_card = m_this_presenter.HoverCard as FieldCardUI;
         target_card.transform.DOKill();
         target_card.transform.SetParent(m_canvas.transform, false);
     }
 
     private void MoveCardToMousePosition(Vector2 position)
     {
-        var target_card = m_this_presenter.HoverCard as FieldCardView;
+        var target_card = m_this_presenter.HoverCard as FieldCardUI;
         target_card.transform.position = position;
     }
 
-    private IFieldCardView GetIFieldCardView()
+    private IFieldCardUI GetIFieldCardView()
     {
         var hit = CheckField(out var _);
-        return hit?.gameObject.GetComponent<IFieldCardView>();        
+        return hit?.gameObject.GetComponent<IFieldCardUI>();        
     }
 
-    private void SwapInSameField(IFieldCardView field_card, Vector2 position)
+    private void SwapInSameField(IFieldCardUI field_card, Vector2 position)
     {
         var target_card = m_this_presenter.HoverCard;
-        var concrete_card = field_card as FieldCardView;
+        var concrete_card = field_card as FieldCardUI;
 
         if(m_container.IsPriority(target_card, field_card))
         {
@@ -261,7 +261,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
     private void SwapInDifferentFieldWithCard(out bool card_flag)
     {
         var card_hit = CheckField(out var _);
-        var field_card = card_hit?.gameObject.GetComponent<IFieldCardView>();
+        var field_card = card_hit?.gameObject.GetComponent<IFieldCardUI>();
         if(field_card != null)
             if(!m_container.IsExist(field_card))
                 SwapInDifferentField();
@@ -274,7 +274,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
         SwapInDifferentFieldWithField(out var field_flag);
         SwapInDifferentFieldWithCard(out var card_flag);
 
-        var target_card = m_this_presenter.HoverCard as FieldCardView;
+        var target_card = m_this_presenter.HoverCard as FieldCardUI;
 
         var world_position = target_card.transform.position;
         target_card.transform.SetParent(field_flag || card_flag ? m_another_slot_root : m_slot_root, false);
