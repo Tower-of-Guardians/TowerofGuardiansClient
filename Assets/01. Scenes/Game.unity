@@ -4197,6 +4197,7 @@ GameObject:
   - component: {fileID: 240647222}
   - component: {fileID: 240647221}
   - component: {fileID: 240647223}
+  - component: {fileID: 240647224}
   m_Layer: 5
   m_Name: Attacking Field UI
   m_TagString: Untagged
@@ -4274,7 +4275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821da7669936e104ca5442ce707b4a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_preview_object: {fileID: 1648229353}
+  _previewObject: {fileID: 1648229353}
 --- !u!114 &240647221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4287,8 +4288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88aa6e91bc66d604e943d988bd37ff4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_slot_root: {fileID: 591988420}
-  m_field_card_prefab: {fileID: 7154318988373132520, guid: 70c0afcac28237c4694963c75d5c0c3a, type: 3}
+  _cardRoot: {fileID: 591988420}
+  _fieldCardPrefab: {fileID: 7154318988373132520, guid: 70c0afcac28237c4694963c75d5c0c3a, type: 3}
 --- !u!114 &240647222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4301,10 +4302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3adfc40c98c6b0147a29bbf7147b4e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas: {fileID: 944360013}
-  m_slot_root: {fileID: 591988420}
-  m_another_slot_root: {fileID: 570606291}
-  m_preview_object: {fileID: 1648229353}
+  _canvas: {fileID: 944360013}
+  _ownerCardRoot: {fileID: 591988420}
+  _oppositeCardRoot: {fileID: 570606291}
+  _fieldPreviewCard: {fileID: 1648229353}
 --- !u!114 &240647223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4317,8 +4318,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6283f1ad254a14fbb8351b17ead185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_designer: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
-  m_preview_object: {fileID: 1648229353}
+  _fieldUIDesigner: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
+  _previewObject: {fileID: 1648229353}
+--- !u!114 &240647224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240647215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6306aae35087f4c82e32be6113dbf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fieldType: 1
+  _fieldUI: {fileID: 240647220}
+  _fieldCardLayout: {fileID: 240647223}
+  _fieldCardEvent: {fileID: 240647222}
+  _fieldCardFactory: {fileID: 240647221}
 --- !u!1 &242036124
 GameObject:
   m_ObjectHideFlags: 0
@@ -5561,10 +5579,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_start_transform: {fileID: 1936468230}
   m_end_transform: {fileID: 695951010}
-  m_card_root: {fileID: 322417168}
-  m_battle_locker: {fileID: 1303847439}
-  m_attack_field_locker: {fileID: 585145177}
-  m_defend_field_locker: {fileID: 61154655}
+  _battleLocker: {fileID: 0}
+  _atkFieldLocker: {fileID: 0}
+  _defFieldLocker: {fileID: 0}
 --- !u!114 &322417170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9290,8 +9307,8 @@ MonoBehaviour:
   lineProvider: {fileID: 0}
   saliencyStrategy: 0
   dialoguePresenters:
-  - {fileID: 324268544}
-  - {fileID: 1945940814}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 1163766763}
   verboseLogging: 0
   autoStart: 0
@@ -13676,7 +13693,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1950586836}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.999922
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15306,6 +15323,11 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _handUIDesigner: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
+  _fieldUIDesigner: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
+  _throwUIDesigner: {fileID: 11400000, guid: 2d2e1ce2b7175714a88d2412d679da6e, type: 2}
+  _turnRuleDesigner: {fileID: 11400000, guid: e76e66a7ddf67e94bba4f3481e9cbbff, type: 2}
+  _atkFieldContext: {fileID: 240647224}
+  _defFieldContext: {fileID: 1936468238}
 --- !u!4 &1139086716
 Transform:
   m_ObjectHideFlags: 0
@@ -16309,7 +16331,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00009720358}
+  m_AnchoredPosition: {x: 0, y: 0.00006463497}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -24536,10 +24558,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_start_transform: {fileID: 240647216}
   m_end_transform: {fileID: 695951010}
-  m_card_root: {fileID: 1875628686}
-  m_defend_card_effector: {fileID: 322417169}
-  m_attack_field_locker: {fileID: 585145177}
-  m_defend_field_locker: {fileID: 61154655}
+  _defendCardEffector: {fileID: 0}
+  _atkFieldLocker: {fileID: 0}
+  _defFieldLocker: {fileID: 0}
 --- !u!114 &1875628688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25372,6 +25393,7 @@ GameObject:
   - component: {fileID: 1936468236}
   - component: {fileID: 1936468235}
   - component: {fileID: 1936468237}
+  - component: {fileID: 1936468238}
   m_Layer: 5
   m_Name: Defending Field UI
   m_TagString: Untagged
@@ -25449,7 +25471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821da7669936e104ca5442ce707b4a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_preview_object: {fileID: 1673037289}
+  _previewObject: {fileID: 1673037289}
 --- !u!114 &1936468235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25462,8 +25484,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88aa6e91bc66d604e943d988bd37ff4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_slot_root: {fileID: 570606291}
-  m_field_card_prefab: {fileID: 7154318988373132520, guid: 70c0afcac28237c4694963c75d5c0c3a, type: 3}
+  _cardRoot: {fileID: 570606291}
+  _fieldCardPrefab: {fileID: 7154318988373132520, guid: 70c0afcac28237c4694963c75d5c0c3a, type: 3}
 --- !u!114 &1936468236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25476,10 +25498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3adfc40c98c6b0147a29bbf7147b4e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas: {fileID: 944360013}
-  m_slot_root: {fileID: 570606291}
-  m_another_slot_root: {fileID: 591988420}
-  m_preview_object: {fileID: 1673037289}
+  _canvas: {fileID: 944360013}
+  _ownerCardRoot: {fileID: 570606291}
+  _oppositeCardRoot: {fileID: 591988420}
+  _fieldPreviewCard: {fileID: 1673037289}
 --- !u!114 &1936468237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25492,8 +25514,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6283f1ad254a14fbb8351b17ead185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_designer: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
-  m_preview_object: {fileID: 1673037289}
+  _fieldUIDesigner: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
+  _previewObject: {fileID: 1673037289}
+--- !u!114 &1936468238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936468229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6306aae35087f4c82e32be6113dbf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fieldType: 2
+  _fieldUI: {fileID: 1936468234}
+  _fieldCardLayout: {fileID: 1936468237}
+  _fieldCardEvent: {fileID: 1936468236}
+  _fieldCardFactory: {fileID: 1936468235}
 --- !u!1 &1936710982
 GameObject:
   m_ObjectHideFlags: 0

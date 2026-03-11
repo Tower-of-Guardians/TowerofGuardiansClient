@@ -15,19 +15,15 @@ public class HandPresenter : ICardDropTarget<IHandCardUI>, IInitializable
     public HandPresenter(IHandUI handUI,
                          CardContainer<IHandCardUI, HandCardPresenter> handCardContainer,
                          ICardFactory<IHandCardUI> handCardFactory,
-                         HandCardLayoutController handCardLayout,
-                         FieldPresenter attack_field_presenter,
-                         FieldPresenter defend_field_presenter,
-                         ThrowPresenter throw_presenter)
+                         HandCardLayoutController handCardLayout
+                         /*ThrowPresenter throw_presenter*/)
     {
         _handUI = handUI;
         _handCardContainer = handCardContainer;
         _handCardFactory = handCardFactory;
         _handCardLayout = handCardLayout;
 
-        attack_field_presenter.Inject(this);
-        defend_field_presenter.Inject(this);
-        throw_presenter.Inject(this);
+        //throw_presenter.Inject(this);
     }
 
     public void Initialize()

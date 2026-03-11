@@ -66,6 +66,12 @@ public class HandCardLayoutController : MonoBehaviour
                                   IHandCardUI cardUI,
                                   int cardIndex)
     {
+        if(_handPresenter.HoverCard != null && !_handCardContainer.IsExist(_handPresenter.HoverCard))
+        {
+            _handPresenter.HoverCard = null;
+            return;
+        }
+
         if (_handPresenter.HoverCard == cardUI)
         {
             targetTransform.Scale = Vector3.one * _handUIDesigner.Scale;

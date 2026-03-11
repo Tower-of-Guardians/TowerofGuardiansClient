@@ -1,6 +1,6 @@
 using System;
 
-public class ThrowPresenter : IDisposable
+public class ThrowPresenter : IDisposable, ICardDropTarget<IThrowCardView>
 {
     private readonly IThrowView m_view;
     private readonly IThrowCardFactory m_factory;
@@ -63,8 +63,17 @@ public class ThrowPresenter : IDisposable
         OnUpdatedToggleUI?.Invoke(false);
     }
 
-    public void RemoveCard(IThrowCardView card_view)
+    public void CreateCard(BattleCardData battleCardData)
+        => m_service.Add(battleCardData);
+
+    public void RemoveCard(IThrowCardView card_view, bool isUpdateLayout = true)
         => m_service.Remove(card_view);
+
+    public bool TryGetBattleCardData(IThrowCardView card_view, out BattleCardData battleCardData)
+    {
+        battleCardData = m_container.GetData(card_view);
+        return battleCardData != null;
+    }
 
     public void ToggleManual(bool active)
     {

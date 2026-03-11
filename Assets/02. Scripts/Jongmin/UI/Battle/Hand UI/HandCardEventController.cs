@@ -16,7 +16,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     private CardInfoUI _cardInfoUI;
     private TurnManager _turnManager;
 
-    private Dictionary<IHandCardUI, HandCardEventBundle> m_event_dict = new();
+    private Dictionary<IHandCardUI, HandCardEventBundle> _eventDict = new();
 
     [Inject]
     private void Construct(HandUIDesigner handUIDesigner,
@@ -52,7 +52,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             OnPointerClick =    ()          => { OnPointerClickCard(); }
         };
 
-        m_event_dict[cardUI] = newBundle;
+        _eventDict[cardUI] = newBundle;
 
         cardUI.OnPointerEnterAction += newBundle.OnPointerEnter;
         cardUI.OnPointerExitAction += newBundle.OnPointerExit;
@@ -67,7 +67,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
     /// </summary>
     public void Unsubscribe(IHandCardUI cardUI)
     {
-        if(m_event_dict.TryGetValue(cardUI, out var bundle))
+        if(_eventDict.TryGetValue(cardUI, out var bundle))
         {
             cardUI.OnPointerEnterAction -= bundle.OnPointerEnter;
             cardUI.OnPointerExitAction -= bundle.OnPointerExit;
@@ -80,6 +80,11 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
     private void OnPointerEnterInCard(IHandCardUI cardUI)
     {
+        if(!_handCardContainer.IsExist(cardUI))
+        {
+            return;
+        }
+
         _handPresenter.HoverCard = cardUI;
         _handCardLayout.UpdateLayout();
     }
@@ -122,6 +127,14 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             return;
         }
 
+        if(!_handCardContainer.IsExist(_handPresenter.HoverCard))
+        {
+            _handPresenter.HoverCard = null;
+            _handPreviewCard.SetActive(false);
+            _handCardLayout.UpdateLayout();
+            return;
+        }
+
         HandCardUI concreteHoverCard = _handPresenter.HoverCard as HandCardUI;
         concreteHoverCard.transform.position = position;
 
@@ -161,6 +174,15 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
             return;
         }
 
+        if(!_handCardContainer.IsExist(_handPresenter.HoverCard))
+        {
+            _handPresenter.HoverCard = null;
+            _handPresenter.ToggleFieldPreview(false);
+            _handPreviewCard.SetActive(false);
+            _handCardLayout.UpdateLayout();
+            return;
+        }
+
         RaycastResult? hit = CheckField(out var pointer_data);
         IDropHandler dropHandler = hit?.gameObject.GetComponent<IDropHandler>();
 
@@ -179,6 +201,11 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
     private void OnPointerClickCard()
     {
+        if(_handPresenter.HoverCard == null || !_handCardContainer.IsExist(_handPresenter.HoverCard))
+        {
+            return;
+        }
+
         if(!_handCardContainer.TryGetCardData(_handPresenter.HoverCard, out BattleCardData battleCardData))
         {
             return;
@@ -297,6 +324,12 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
 
     private void CalculatePreviewPosition()
     {
+        if(_handPresenter.HoverCard == null || !_handCardContainer.IsExist(_handPresenter.HoverCard))
+        {
+            _handPreviewCard.SetActive(false);
+            return;
+        }
+
         if(!_handCardContainer.TryGetCardIndex(_handPresenter.HoverCard, out int hoverCardIndex))
         {
             return;

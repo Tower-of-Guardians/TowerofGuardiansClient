@@ -1021,7 +1021,7 @@ MonoBehaviour:
   - {fileID: 9045912532660476962}
   - {fileID: 3797538130670595212}
   - {fileID: 1587592511651795395}
-  m_canvas_group: {fileID: 4243630549167518125}
+  _canvasGroup: {fileID: 4243630549167518125}
 --- !u!1 &4753977120518850897
 GameObject:
   m_ObjectHideFlags: 0

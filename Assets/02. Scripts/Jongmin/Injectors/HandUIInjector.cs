@@ -32,6 +32,11 @@ public class HandUIInjector : MonoBehaviour, IInjector
 
     private void InjectHand()
     {
+        if(DIContainer.IsRegistered<HandPresenter>())
+        {
+            return;
+        }
+
         DIContainer.Register<IHandCardUI>(m_hand_view);
 
         var hand_card_container = new CardContainer<IHandCardUI, HandCardPresenter>();
@@ -39,13 +44,18 @@ public class HandUIInjector : MonoBehaviour, IInjector
         var hand_presenter = new HandPresenter(m_hand_view,
                                                hand_card_container,
                                                m_hand_card_factory,
-                                               m_hand_card_layout_controller,
-                                               DIContainer.Resolve<AttackFieldPresenter>(),
-                                               DIContainer.Resolve<DefendFieldPresenter>(),
-                                               DIContainer.Resolve<ThrowPresenter>());
+                                               m_hand_card_layout_controller
+                                               /*DIContainer.Resolve<ThrowPresenter>()*/);
         DIContainer.Register<HandPresenter>(hand_presenter);
     }
 
     private void InjectTurnManager()
-        => m_turn_manager.Inject(DIContainer.Resolve<HandPresenter>());
+    {
+        if(!DIContainer.IsRegistered<HandPresenter>())
+        {
+            return;
+        }
+
+        m_turn_manager.Inject(DIContainer.Resolve<HandPresenter>());
+    }
 }

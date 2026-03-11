@@ -1161,9 +1161,9 @@ MonoBehaviour:
   - {fileID: 5820067705249687785}
   - {fileID: 216466274163926883}
   - {fileID: 4019626156839168047}
-  m_canvas_group: {fileID: 4229501210860241730}
-  m_atk_lock_image: {fileID: 3519918085230263738}
-  m_def_lock_image: {fileID: 7496036098124992281}
+  _canvasGroup: {fileID: 4229501210860241730}
+  _atkLockImage: {fileID: 3519918085230263738}
+  _defLockImage: {fileID: 7496036098124992281}
 --- !u!225 &4229501210860241730
 CanvasGroup:
   m_ObjectHideFlags: 0

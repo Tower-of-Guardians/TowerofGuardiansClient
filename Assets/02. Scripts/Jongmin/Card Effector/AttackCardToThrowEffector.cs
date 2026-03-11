@@ -4,23 +4,23 @@ using System.Collections.Generic;
 
 public class AttackCardToThrowEffector : CardEffector
 {
-    [Header("카드 부모 트랜스폼")]
-    [SerializeField] private Transform m_card_root;
-
     [Header("방어 → 교체 이펙터")]
-    [SerializeField] private DefendCardToThrowEffector m_defend_card_effector;
+    [SerializeField] private DefendCardToThrowEffector _defendCardEffector;
 
     [Header("공격 필드 비활성화 패널")]
-    [SerializeField] private UILocker m_attack_field_locker;
+    [SerializeField] private UILocker _atkFieldLocker;
 
     [Header("방어 필드 비활성화 패널")]
-    [SerializeField] private UILocker m_defend_field_locker;
+    [SerializeField] private UILocker _defFieldLocker;
 
-    private AttackFieldPresenter m_attack_field_presenter;
+    private AttackFieldPresenter _atkFieldPresenter;
+    private CardContainer<IFieldCardUI, FieldCardPresenter> _atkFieldCardContainer;
 
-    public void Inject(AttackFieldPresenter attack_field_presenter)
+    public void Inject(AttackFieldPresenter attackFieldPresenter,
+                       CardContainer<IFieldCardUI, FieldCardPresenter> atkFieldCardContainer)
     {
-        m_attack_field_presenter = attack_field_presenter;
+        _atkFieldPresenter = attackFieldPresenter;
+        _atkFieldCardContainer = atkFieldCardContainer;
 
         m_temp_card_settings = new()
         {
@@ -65,22 +65,38 @@ public class AttackCardToThrowEffector : CardEffector
 
     public override void Execute()
     {
-        m_attack_field_locker.Lock(true);
-        m_defend_field_locker.Lock(true);
+        _atkFieldLocker.Lock(true);
+        _defFieldLocker.Lock(true);
 
-        m_temp_card_anime_request.CardDatas = m_attack_field_presenter.GetCardDatas();
+        
+        m_temp_card_anime_request.CardDatas = _atkFieldCardContainer.GetAllDatas();
 
-        List<Vector3> field_card_positions = new();
-        foreach(IFieldCardUI card_view in m_attack_field_presenter.GetCardViews())
-            field_card_positions.Add((card_view as FieldCardUI).transform.position);
+        List<Vector3> fieldCardPositionList = new();
+        if(!_atkFieldCardContainer.TryGetAllUIs(out IFieldCardUI[] fieldUIArray))
+        {
+            return;
+        }
 
-        m_temp_card_anime_request.StartPositions = field_card_positions.ToArray(); 
+        foreach(IFieldCardUI cardUI in fieldUIArray)
+        {
+            FieldCardUI concreteCardUI = cardUI as FieldCardUI;
+            fieldCardPositionList.Add(concreteCardUI.transform.position);
+        }
+
+        m_temp_card_anime_request.StartPositions = fieldCardPositionList.ToArray(); 
 
         base.Execute();
     }
 
     protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_attack_field_presenter.Remove(m_attack_field_presenter.GetCardView(card_data));
+    {
+        if(!_atkFieldCardContainer.TryGetUI(card_data, out IFieldCardUI cardUI))
+        {
+            return;
+        }
+
+        _atkFieldPresenter.RemoveCard(cardUI);
+    }
 
     protected override void OnTempCardAnimeEnd(BattleCardData card_data)
     {
@@ -91,6 +107,6 @@ public class AttackCardToThrowEffector : CardEffector
 
     protected override void OnFinalAnimeEnd()
     {
-        m_defend_card_effector.Execute();
+        _defendCardEffector.Execute();
     }
 }

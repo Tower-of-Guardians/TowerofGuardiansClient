@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using VContainer;
 
 public class HandCardFactory : MonoBehaviour, ICardFactory<IHandCardUI>
 {
@@ -10,20 +9,13 @@ public class HandCardFactory : MonoBehaviour, ICardFactory<IHandCardUI>
 
     private HandCardEventController _handCardEvent;
 
-    [Inject]
-    private void Construct(HandCardEventController handCardEvent)
+    public void Construct(HandCardEventController handCardEvent)
         => _handCardEvent = handCardEvent;
-
-    [Obsolete]
-    public void Inject(HandCardEventController handCardEvent)
-        => _handCardEvent = handCardEvent;
-
 
     /// <summary>
     /// 핸드 카드를 오브젝트 풀로부터 꺼내어 초기화합니다.
     /// 이벤트 리스너에 자동으로 등록됩니다.
     /// </summary>
-    /// <returns></returns>
     public IHandCardUI Create()
     {
         GameObject cardObject = ObjectPoolManager.Instance.Get(_cardPrefab);
@@ -40,7 +32,6 @@ public class HandCardFactory : MonoBehaviour, ICardFactory<IHandCardUI>
     /// 핸드 카드를 오브젝트 풀에 반환합니다.
     /// 이벤트 리스너로부터 자동으로 해제됩니다.
     /// </summary>
-    /// <param name="cardUI"></param>
     public void Release(IHandCardUI cardUI)
     {
         _handCardEvent.Unsubscribe(cardUI);

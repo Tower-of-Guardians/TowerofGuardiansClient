@@ -28,6 +28,11 @@ public class ThrowUIInjector : MonoBehaviour, IInjector
 
     private void InjectThrow()
     {
+        if(DIContainer.IsRegistered<ThrowPresenter>())
+        {
+            return;
+        }
+
         DIContainer.Register<IThrowView>(m_layout_throw_view);
 
         var throw_card_container = new ThrowCardContainer();

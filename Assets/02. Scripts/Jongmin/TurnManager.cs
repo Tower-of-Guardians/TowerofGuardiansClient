@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using VContainer;
 
 public class TurnManager : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class TurnManager : MonoBehaviour
     public event Action<int> OnTurnNumberChanged;
 
 
+    [Inject]
     public void Inject(ITurnRuleService turn_rule_service)
     {
         m_turn_rule_service = turn_rule_service;

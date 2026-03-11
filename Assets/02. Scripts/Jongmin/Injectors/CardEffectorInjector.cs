@@ -32,7 +32,7 @@ public class CardEffectorInjector : MonoBehaviour, IInjector
 
         m_hand_card_to_throw_effector.Inject(DIContainer.Resolve<HandPresenter>());
 
-        m_attack_card_to_throw_effector.Inject(DIContainer.Resolve<AttackFieldPresenter>());
-        m_defense_card_to_throw_effector.Inject(DIContainer.Resolve<DefendFieldPresenter>());
+        // m_attack_card_to_throw_effector.Inject(DIContainer.Resolve<AttackFieldPresenter>());
+        // m_defense_card_to_throw_effector.Inject(DIContainer.Resolve<DefendFieldPresenter>());
     }
 }

@@ -13,6 +13,11 @@ public class TurnManagerInjector : MonoBehaviour, IInjector
 
     private void InjectManager()
     {
+        if(DIContainer.IsRegistered<TurnManager>())
+        {
+            return;
+        }
+
         DIContainer.Register<TurnManager>(m_turn_manager);
         m_turn_manager.Inject(DIContainer.Resolve<ITurnRuleService>());
     }
