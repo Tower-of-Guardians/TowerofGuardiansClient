@@ -1,6 +1,6 @@
 using System;
 
-public class ThrowPresenter : IDisposable, ICardDropTarget<IThrowCardView>
+public class ThrowPresenter : IDisposable, ICardDropTarget<IDiscardCardUI>
 {
     private readonly IThrowView m_view;
     private readonly IThrowCardFactory m_factory;
@@ -10,10 +10,10 @@ public class ThrowPresenter : IDisposable, ICardDropTarget<IThrowCardView>
     private readonly TurnManager m_turn_manager;
     
     private HandPresenter m_hand_presenter;
-    private IThrowCardView m_hover_card;
+    private IDiscardCardUI m_hover_card;
     public event Action<bool> OnUpdatedToggleUI;
 
-    public IThrowCardView HoverCard
+    public IDiscardCardUI HoverCard
     {
         get => m_hover_card;
         set => m_hover_card = value;
@@ -66,10 +66,10 @@ public class ThrowPresenter : IDisposable, ICardDropTarget<IThrowCardView>
     public void CreateCard(BattleCardData battleCardData)
         => m_service.Add(battleCardData);
 
-    public void RemoveCard(IThrowCardView card_view, bool isUpdateLayout = true)
+    public void RemoveCard(IDiscardCardUI card_view, bool isUpdateLayout = true)
         => m_service.Remove(card_view);
 
-    public bool TryGetBattleCardData(IThrowCardView card_view, out BattleCardData battleCardData)
+    public bool TryGetBattleCardData(IDiscardCardUI card_view, out BattleCardData battleCardData)
     {
         battleCardData = m_container.GetData(card_view);
         return battleCardData != null;
@@ -84,16 +84,16 @@ public class ThrowPresenter : IDisposable, ICardDropTarget<IThrowCardView>
             m_controller.ToggleManual(active);
     }
 
-    public IThrowCardView GetCardView(BattleCardData battle_card_data)
+    public IDiscardCardUI GetCardView(BattleCardData battle_card_data)
         => m_container.GetCardView(battle_card_data);
 
-    public IThrowCardView[] GetCardViews()
+    public IDiscardCardUI[] GetCardViews()
         => m_container.GetCardViews();
 
     public BattleCardData[] GetCardDatas()
         => m_container.GetDatas();
 
-    public BattleCardData GetCardData(IThrowCardView card_view)
+    public BattleCardData GetCardData(IDiscardCardUI card_view)
         => m_container.GetData(card_view);
 
     public void OnDroped(IHandCardUI card_view)

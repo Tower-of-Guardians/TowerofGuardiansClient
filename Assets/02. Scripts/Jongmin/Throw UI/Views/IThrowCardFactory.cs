@@ -1,6 +1,6 @@
 public interface IThrowCardFactory
 {
-    IThrowCardView InstantiateCardView();
-    void ReturnCard(IThrowCardView card_view, BattleCardData card_data);
+    IDiscardCardUI InstantiateCardView();
+    void ReturnCard(IDiscardCardUI card_view, BattleCardData card_data);
     void ReturnCards();
 }

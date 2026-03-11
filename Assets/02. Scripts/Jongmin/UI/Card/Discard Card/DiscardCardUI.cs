@@ -2,10 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ThrowCardView : CardUI, IThrowCardView
+public class DiscardCardUI : CardUI, IDiscardCardUI
 {
-    [Space(30f), Header("추가 UI 관련 컴포넌트")]
-    [Header("캔버스 그룹")]
+    [Space(20f), Header("Object References")]
     [SerializeField] private CanvasGroup m_canvas_group;
 
     public event Action OnBeginDragAction;
@@ -15,6 +14,10 @@ public class ThrowCardView : CardUI, IThrowCardView
     public void OnBeginDrag(PointerEventData eventData)
         => OnBeginDragAction?.Invoke();
 
+    /// <summary>
+    /// 드래그 처리 중 드랍 판정을 방해하지 않도록
+    /// 레이캐스트를 잠시 비활성화한 뒤 다시 복구합니다.
+    /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
         ToggleRaycast(false);
@@ -22,6 +25,10 @@ public class ThrowCardView : CardUI, IThrowCardView
         ToggleRaycast(true);
     }
 
+    /// <summary>
+    /// 드래그 종료 처리 중 드랍 판정을 방해하지 않도록
+    /// 레이캐스트를 잠시 비활성화한 뒤 다시 복구합니다.
+    /// </summary>
     public void OnEndDrag(PointerEventData eventData)
     {
         ToggleRaycast(false);

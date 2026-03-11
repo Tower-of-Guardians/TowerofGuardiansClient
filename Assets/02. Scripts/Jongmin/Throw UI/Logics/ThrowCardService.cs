@@ -27,7 +27,7 @@ public class ThrowCardService
         m_turn_manager.UpdateThrowCount(1);
     }
 
-    public void Remove(IThrowCardView card_view)
+    public void Remove(IDiscardCardUI card_view)
     {
         if(m_container.Dict.TryGetValue(card_view, out var presenter))
         {

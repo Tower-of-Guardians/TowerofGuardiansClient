@@ -19,34 +19,34 @@ public class ThrowCardFactory : MonoBehaviour, IThrowCardFactory
         m_layout_controller = layout_controller;
     }
 
-    public IThrowCardView InstantiateCardView()
+    public IDiscardCardUI InstantiateCardView()
     {
         var card_obj = ObjectPoolManager.Instance.Get(m_throw_card_prefab);
         card_obj.transform.SetParent(m_slot_root, false); 
         card_obj.transform.localScale = Vector3.one;
 
-        var card_view = card_obj.GetComponent<IThrowCardView>();
+        var card_view = card_obj.GetComponent<IDiscardCardUI>();
         m_event_controller.Subscribe(card_view);    
         m_layout_controller.UpdateLayout(false, false);
         
         return card_view;
     }
 
-    public void ReturnCard(IThrowCardView card_view, BattleCardData card_data)
+    public void ReturnCard(IDiscardCardUI card_view, BattleCardData card_data)
     {
-        ObjectPoolManager.Instance.Return((card_view as ThrowCardView).gameObject); 
+        ObjectPoolManager.Instance.Return((card_view as DiscardCardUI).gameObject); 
         m_event_controller.Unsubscribe(card_view);
         m_layout_controller.UpdateLayout(false, true);
     }
 
     public void ReturnCards()
     {
-        var card_views = m_slot_root.GetComponentsInChildren<IThrowCardView>();
+        var card_views = m_slot_root.GetComponentsInChildren<IDiscardCardUI>();
         foreach(var card_view in card_views)
         {
             m_event_controller.Unsubscribe(card_view);
 
-            var card_obj = (card_view as ThrowCardView).gameObject;
+            var card_obj = (card_view as DiscardCardUI).gameObject;
             ObjectPoolManager.Instance.Return(card_obj);
         }        
     }

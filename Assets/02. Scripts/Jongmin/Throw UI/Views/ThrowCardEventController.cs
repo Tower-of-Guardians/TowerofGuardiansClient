@@ -21,7 +21,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
     private ThrowCardContainer m_container;
     private ThrowCardLayoutController m_layout_controller;
 
-    private Dictionary<IThrowCardView, ThrowCardEventBundle> m_event_dict = new();
+    private Dictionary<IDiscardCardUI, ThrowCardEventBundle> m_event_dict = new();
 
     public void Inject(IThrowView view,
                        ThrowPresenter presenter,
@@ -36,7 +36,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         m_layout_controller = layout_controller;
     }
 
-    public void Subscribe(IThrowCardView card_view)
+    public void Subscribe(IDiscardCardUI card_view)
     {
         var new_bundle = new ThrowCardEventBundle
         {
@@ -52,7 +52,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         card_view.OnEndDragAction += new_bundle.OnEndDrag;
     }
 
-    public void Unsubscribe(IThrowCardView card_view)
+    public void Unsubscribe(IDiscardCardUI card_view)
     {
         if(m_event_dict.TryGetValue(card_view, out var bundle))
         {
@@ -64,7 +64,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
         }
     }
 
-    public void OnBeginDragCard(IThrowCardView card_view)
+    public void OnBeginDragCard(IDiscardCardUI card_view)
     {
         m_presenter.HoverCard = card_view;
 
@@ -120,14 +120,14 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
     {
         pointer_data = new PointerEventData(EventSystem.current);
         pointer_data.position = Input.mousePosition;
-        pointer_data.pointerDrag = (m_presenter.HoverCard as ThrowCardView).gameObject;
+        pointer_data.pointerDrag = (m_presenter.HoverCard as DiscardCardUI).gameObject;
 
         var ray_hits = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointer_data, ray_hits);
 
         foreach(var hit in ray_hits)
         {
-            var card_view = hit.gameObject.GetComponent<IThrowCardView>();
+            var card_view = hit.gameObject.GetComponent<IDiscardCardUI>();
             if(card_view != null && card_view != m_presenter.HoverCard)
                 return hit;
 
@@ -150,27 +150,27 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
 
     private void SetCardParentToCanvas()
     {
-        var target_card = m_presenter.HoverCard as ThrowCardView;
+        var target_card = m_presenter.HoverCard as DiscardCardUI;
         target_card.transform.DOKill();
         target_card.transform.SetParent(m_canvas.transform, false);
     }
 
     private void MoveCardToMousePosition(Vector2 position)
     {
-        var target_card = m_presenter.HoverCard as ThrowCardView;
+        var target_card = m_presenter.HoverCard as DiscardCardUI;
         target_card.transform.position = position;
     }
 
-    private IThrowCardView GetIThrowCardView()
+    private IDiscardCardUI GetIThrowCardView()
     {
         var hit = CheckField(out var _);
-        return hit?.gameObject.GetComponent<IThrowCardView>();        
+        return hit?.gameObject.GetComponent<IDiscardCardUI>();        
     }
 
-    private void SwapInSameField(IThrowCardView throw_card, Vector2 position)
+    private void SwapInSameField(IDiscardCardUI throw_card, Vector2 position)
     {
         var target_card = m_presenter.HoverCard;
-        var concrete_card = throw_card as ThrowCardView;
+        var concrete_card = throw_card as DiscardCardUI;
 
         if(m_container.IsPriority(target_card, throw_card))
         {
@@ -192,7 +192,7 @@ public class ThrowCardEventController : MonoBehaviour, IDropHandler
 
     private void SetCardParentToRoot()
     {
-        var target_card = m_presenter.HoverCard as ThrowCardView;
+        var target_card = m_presenter.HoverCard as DiscardCardUI;
         target_card.transform.SetParent(m_slot_root, false);
     }
 

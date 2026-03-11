@@ -29,7 +29,7 @@ public class ThrowCardLayoutController : MonoBehaviour
         if(card_count == 0)
             return;
 
-        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as ThrowCardView).transform as RectTransform).anchoredPosition
+        var prev_preview_position = card_views.Count > 0 ? ((card_views[^1] as DiscardCardUI).transform as RectTransform).anchoredPosition
                                                           : Vector2.zero; 
 
         for(int i = 0; i < card_views.Count; i++)
@@ -38,7 +38,7 @@ public class ThrowCardLayoutController : MonoBehaviour
                 continue;
 
             var target_position = CardLayoutCalculator.CalculatedThrowCardPosition(i, card_count, m_designer.Space);
-            var concrete_card = (card_views[i] as ThrowCardView).transform as RectTransform;
+            var concrete_card = (card_views[i] as DiscardCardUI).transform as RectTransform;
 
             concrete_card.DOKill();
             if(is_sorting || is_anime)

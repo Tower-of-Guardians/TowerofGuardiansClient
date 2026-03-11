@@ -219,10 +219,10 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         GameObject droppedObject = eventData.pointerDrag;
         if(droppedObject != null)
         {
-            IThrowCardView throwCardUI = droppedObject.GetComponent<IThrowCardView>();
-            if(throwCardUI != null)
+            IDiscardCardUI discardCardUI = droppedObject.GetComponent<IDiscardCardUI>();
+            if(discardCardUI != null)
             {
-                _cardDropSystem.OnDropedDiscardToHand(throwCardUI);
+                _cardDropSystem.OnDropedDiscardToHand(discardCardUI);
             }
 
             IFieldCardUI fieldCardUI = droppedObject.GetComponent<IFieldCardUI>();

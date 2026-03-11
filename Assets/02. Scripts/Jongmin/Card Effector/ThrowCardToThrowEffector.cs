@@ -49,8 +49,8 @@ public class ThrowCardToThrowEffector : CardEffector
         m_temp_card_anime_request.CardDatas = m_throw_presenter.GetCardDatas();
 
         List<Vector3> throw_card_positions = new();
-        foreach(IThrowCardView card_view in m_throw_presenter.GetCardViews())
-            throw_card_positions.Add((card_view as ThrowCardView).transform.position);
+        foreach(IDiscardCardUI card_view in m_throw_presenter.GetCardViews())
+            throw_card_positions.Add((card_view as DiscardCardUI).transform.position);
 
         m_temp_card_anime_request.StartPositions = throw_card_positions.ToArray(); 
 

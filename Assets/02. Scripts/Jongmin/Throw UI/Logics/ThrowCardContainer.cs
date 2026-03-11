@@ -3,25 +3,25 @@ using System.Linq;
 
 public class ThrowCardContainer
 {
-    private readonly List<IThrowCardView> m_card_list = new();
-    private readonly Dictionary<IThrowCardView, ThrowCardPresenter> m_card_dict = new();
+    private readonly List<IDiscardCardUI> m_card_list = new();
+    private readonly Dictionary<IDiscardCardUI, ThrowCardPresenter> m_card_dict = new();
 
-    public IReadOnlyList<IThrowCardView> Cards => m_card_list;
-    public IReadOnlyDictionary<IThrowCardView, ThrowCardPresenter> Dict => m_card_dict;
+    public IReadOnlyList<IDiscardCardUI> Cards => m_card_list;
+    public IReadOnlyDictionary<IDiscardCardUI, ThrowCardPresenter> Dict => m_card_dict;
 
-    public void Add(IThrowCardView card_view, ThrowCardPresenter card_presenter)
+    public void Add(IDiscardCardUI card_view, ThrowCardPresenter card_presenter)
     {
         m_card_list.Add(card_view);
         m_card_dict[card_view] = card_presenter;
     }
 
-    public void Remove(IThrowCardView card_view)
+    public void Remove(IDiscardCardUI card_view)
     {
         m_card_list.Remove(card_view);
         m_card_dict.Remove(card_view);
     }
 
-    public void Swap(IThrowCardView from_card_view, IThrowCardView to_card_view)
+    public void Swap(IDiscardCardUI from_card_view, IDiscardCardUI to_card_view)
     {
         int from_index = m_card_list.IndexOf(from_card_view);
         int to_index   = m_card_list.IndexOf(to_card_view);
@@ -33,7 +33,7 @@ public class ThrowCardContainer
         m_card_list.Insert(to_index, from_card_view);
     }
 
-    public bool IsPriority(IThrowCardView from_card_view, IThrowCardView to_card_view)
+    public bool IsPriority(IDiscardCardUI from_card_view, IDiscardCardUI to_card_view)
     {
         var from_index = m_card_list.IndexOf(from_card_view);
         var to_index = m_card_list.IndexOf(to_card_view);
@@ -41,7 +41,7 @@ public class ThrowCardContainer
         return from_index < to_index;
     }
 
-    public bool IsExist(IThrowCardView target_card_view)
+    public bool IsExist(IDiscardCardUI target_card_view)
     {
         foreach(var card_view in m_card_list)
             if(card_view == target_card_view)
@@ -50,7 +50,7 @@ public class ThrowCardContainer
         return false;
     }
 
-    public int GetIndex(IThrowCardView card_view)
+    public int GetIndex(IDiscardCardUI card_view)
         => m_card_list.IndexOf(card_view);
 
     public void Clear()
@@ -64,15 +64,15 @@ public class ThrowCardContainer
                 .Select(view => m_card_dict[view].BattleCardData)
                 .ToArray();
 
-    public IThrowCardView[] GetCardViews()
+    public IDiscardCardUI[] GetCardViews()
         => m_card_list.ToArray();
 
-    public IThrowCardView GetCardView(BattleCardData card_data)
+    public IDiscardCardUI GetCardView(BattleCardData card_data)
     {
         if (card_data == null) 
             return null;
 
-        foreach(IThrowCardView card_view in m_card_list)
+        foreach(IDiscardCardUI card_view in m_card_list)
         {
             if(m_card_dict[card_view].CardData.id == card_data.data.id)
                 return card_view;
@@ -81,7 +81,7 @@ public class ThrowCardContainer
         return null;
     }
 
-    public BattleCardData GetData(IThrowCardView card_view)
+    public BattleCardData GetData(IDiscardCardUI card_view)
         => m_card_dict.TryGetValue(card_view, out var presenter) ? presenter.BattleCardData
                                                                  : null;
 }

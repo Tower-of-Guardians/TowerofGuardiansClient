@@ -5,7 +5,7 @@ public class CardDropSystem
     private readonly ICardDropTarget<IHandCardUI> _handDropTarget;
     private readonly IATKCardDropTarget _atkFieldDropTarget;
     private readonly IDEFCardDropTarget _defFieldDropTarget;
-    private readonly ICardDropTarget<IThrowCardView> _discardDropTarget;
+    private readonly ICardDropTarget<IDiscardCardUI> _discardDropTarget;
 
     private TurnManager _turnManager;
     private INotice _notifier;
@@ -13,7 +13,7 @@ public class CardDropSystem
     public CardDropSystem(ICardDropTarget<IHandCardUI> handDropTarget,
                           IATKCardDropTarget atkfieldDropTarget,
                           IDEFCardDropTarget defFieldDropTarget,
-                          ICardDropTarget<IThrowCardView> discardDropTarget,
+                          ICardDropTarget<IDiscardCardUI> discardDropTarget,
                           TurnManager turnManager,
                           INotice notifier)
     {
@@ -56,7 +56,7 @@ public class CardDropSystem
     /// <summary>
     /// 해당 교체 카드를 [교체 필드]에서 [핸드 필드]로 내립니다. 
     /// </summary>
-    public void OnDropedDiscardToHand(IThrowCardView cardUI)
+    public void OnDropedDiscardToHand(IDiscardCardUI cardUI)
     {
         if(!_discardDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
         {

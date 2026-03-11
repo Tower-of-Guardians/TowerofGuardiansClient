@@ -41,7 +41,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<ThrowCardFactory>().AsSelf().As<IThrowCardFactory>();
         builder.Register<ThrowPresenter>(Lifetime.Singleton)
                .AsSelf()
-               .As<ICardDropTarget<IThrowCardView>>();
+               .As<ICardDropTarget<IDiscardCardUI>>();
 
         builder.RegisterBuildCallback(resolver =>
         {
