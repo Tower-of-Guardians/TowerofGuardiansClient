@@ -283,7 +283,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
                 return hit;
             }
 
-            var discardHandler = hit.gameObject.GetComponent<ThrowCardEventController>();
+            var discardHandler = hit.gameObject.GetComponent<DiscardCardEventController>();
             if(discardHandler != null)
             {
                 return hit;

@@ -25,16 +25,16 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
 
     private readonly Dictionary<IFieldCardUI, FieldCardEventBundle> _eventDict = new();
 
-    public void Inject(FieldPresenter ownerFieldPresenter,
-                       FieldPresenter oppositeFieldPresenter,
-                       CardContainer<IFieldCardUI, FieldCardPresenter> ownerFieldCardContainer,
-                       CardContainer<IFieldCardUI, FieldCardPresenter> oppositeFieldCardContainer, 
-                       FieldCardLayoutController ownerFieldCardLayout,
-                       FieldCardLayoutController oppositeFieldCardLayout,
-                       FieldCardEventController oppositeFieldCardEvent,
-                       CardDropSystem cardDropSystem,
-                       FieldUIDesigner fieldUIDesigner,
-                       List<CardData> ownerFieldModel)
+    public void Construct(FieldPresenter ownerFieldPresenter,
+                          FieldPresenter oppositeFieldPresenter,
+                          CardContainer<IFieldCardUI, FieldCardPresenter> ownerFieldCardContainer,
+                          CardContainer<IFieldCardUI, FieldCardPresenter> oppositeFieldCardContainer, 
+                          FieldCardLayoutController ownerFieldCardLayout,
+                          FieldCardLayoutController oppositeFieldCardLayout,
+                          FieldCardEventController oppositeFieldCardEvent,
+                          CardDropSystem cardDropSystem,
+                          FieldUIDesigner fieldUIDesigner,
+                          List<CardData> ownerFieldModel)
     {
         _ownerFieldPresenter = ownerFieldPresenter;
         _oppositeFieldPresenter = oppositeFieldPresenter;

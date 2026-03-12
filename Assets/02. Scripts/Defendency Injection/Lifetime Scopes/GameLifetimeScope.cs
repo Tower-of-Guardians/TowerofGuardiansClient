@@ -7,7 +7,7 @@ public class GameLifetimeScope : LifetimeScope
     [Header("Designer")]
     [SerializeField] private HandUIDesigner _handUIDesigner;
     [SerializeField] private FieldUIDesigner _fieldUIDesigner;
-    [SerializeField] private ThrowUIDesigner _throwUIDesigner;
+    [SerializeField] private DiscardUIDesigner _discardUIDesigner;
     [SerializeField] private TurnRuleDesigner _turnRuleDesigner;
 
     [Space(20), Header("Field Context")]
@@ -17,7 +17,7 @@ public class GameLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         ConfigureCore(builder);
-        ConfigureThrowUI(builder);
+        ConfigureDiscardUI(builder);
         ConfigureHandUI(builder);
         ConfigureFieldUI(builder);
     }
@@ -28,36 +28,49 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<TurnManager>();
         builder.RegisterComponentInHierarchy<Notice>().As<INotice>();
         builder.RegisterComponentInHierarchy<CardInfoUI>();
+        builder.RegisterComponentInHierarchy<DrawCardEffector>();
+        builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();
+        builder.RegisterComponentInHierarchy<DefendCardToThrowEffector>();
         builder.Register<CardDropSystem>(Lifetime.Singleton);
     }
 
-    private void ConfigureThrowUI(IContainerBuilder builder)
+    private void ConfigureDiscardUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_throwUIDesigner);
-        builder.RegisterInstance(new ThrowCardContainer());
-        builder.RegisterComponentInHierarchy<LayoutThrowView>().AsSelf().As<IThrowView>();
-        builder.RegisterComponentInHierarchy<ThrowCardEventController>();
-        builder.RegisterComponentInHierarchy<ThrowCardLayoutController>();
-        builder.RegisterComponentInHierarchy<ThrowCardFactory>().AsSelf().As<IThrowCardFactory>();
-        builder.Register<ThrowPresenter>(Lifetime.Singleton)
+        builder.RegisterInstance(_discardUIDesigner);
+        builder.RegisterInstance(new CardContainer<IDiscardCardUI, DiscardCardPresenter>());
+        builder.RegisterComponentInHierarchy<DiscardUI>().AsSelf().As<IDiscardUI>();
+        builder.RegisterComponentInHierarchy<DiscardCardEventController>();
+        builder.RegisterComponentInHierarchy<DiscardCardLayoutController>();
+        builder.RegisterComponentInHierarchy<DiscardCardFactory>().AsSelf().As<ICardFactory<IDiscardCardUI>>();
+        builder.RegisterComponentInHierarchy<ThrowCardToHandEffector>();
+        builder.RegisterComponentInHierarchy<ThrowCardToThrowEffector>();
+        builder.RegisterEntryPoint<DiscardPresenter>()
                .AsSelf()
                .As<ICardDropTarget<IDiscardCardUI>>();
 
         builder.RegisterBuildCallback(resolver =>
         {
-            _ = resolver.Resolve<ThrowPresenter>();
-            var throwView = resolver.Resolve<LayoutThrowView>();
-            var throwContainer = resolver.Resolve<ThrowCardContainer>();
-            var throwDesigner = resolver.Resolve<ThrowUIDesigner>();
-            var throwLayout = resolver.Resolve<ThrowCardLayoutController>();
-            var throwEvent = resolver.Resolve<ThrowCardEventController>();
-            var throwFactory = resolver.Resolve<ThrowCardFactory>();
+            var discardPresenter = resolver.Resolve<DiscardPresenter>();
+            var discardUIDesigner = resolver.Resolve<DiscardUIDesigner>();
+            var discardUI = resolver.Resolve<DiscardUI>();
+            var discardContainer = resolver.Resolve<CardContainer<IDiscardCardUI, DiscardCardPresenter>>();
+            var discardLayout = resolver.Resolve<DiscardCardLayoutController>();
+            var discardEvent = resolver.Resolve<DiscardCardEventController>();
+            var discardFactory = resolver.Resolve<DiscardCardFactory>();
+            var cardDropSystem = resolver.Resolve<CardDropSystem>();
+            var discardToHandEffector = resolver.Resolve<ThrowCardToHandEffector>();
+            var discardToDiscardEffector = resolver.Resolve<ThrowCardToThrowEffector>();
 
-            throwView.Inject(throwContainer,
-                             throwDesigner,
-                             throwLayout,
-                             throwEvent,
-                             throwFactory);
+            discardEvent.Construct(discardUIDesigner,
+                                   discardPresenter,
+                                   discardContainer,
+                                   discardLayout,
+                                   cardDropSystem);
+            discardFactory.Construct(discardEvent);
+            discardUI.BindPresenter(discardPresenter);
+            discardPresenter.BindEffectors(discardToHandEffector, discardToDiscardEffector);
+
+            DIContainer.Register<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(discardContainer);
         });
     }
 
@@ -81,12 +94,14 @@ public class GameLifetimeScope : LifetimeScope
             handFactory.Construct(handEvent);
 
             var handPresenter = resolver.Resolve<HandPresenter>();
-            var throwPresenter = resolver.Resolve<ThrowPresenter>();
+            var discardPresenter = resolver.Resolve<DiscardPresenter>();
             var turnManager = resolver.Resolve<TurnManager>();
+            var drawCardEffector = resolver.Resolve<DrawCardEffector>();
             turnManager.Inject(handPresenter);
+            drawCardEffector.Inject(handPresenter, turnManager);
 
             DIContainer.Register<HandPresenter>(handPresenter);
-            DIContainer.Register<ThrowPresenter>(throwPresenter);
+            DIContainer.Register<DiscardPresenter>(discardPresenter);
             DIContainer.Register<TurnManager>(turnManager);
         });
     }
@@ -137,31 +152,35 @@ public class GameLifetimeScope : LifetimeScope
 
             var atkEvent = resolver.Resolve<FieldCardEventController>(FieldType.Attack);
             var defEvent = resolver.Resolve<FieldCardEventController>(FieldType.Defense);
+            var atkCardToThrowEffector = resolver.Resolve<AttackCardToThrowEffector>();
+            var defCardToThrowEffector = resolver.Resolve<DefendCardToThrowEffector>();
 
-            atkEvent.Inject(atkPresenter,
-                            defPresenter,
-                            atkContainer,
-                            defContainer,
-                            atkLayout,
-                            defLayout,
-                            defEvent,
-                            cardDropSystem,
-                            fieldUIDesigner,
-                            GameData.Instance.attackField);
+            atkEvent.Construct(atkPresenter,
+                               defPresenter,
+                               atkContainer,
+                               defContainer,
+                               atkLayout,
+                               defLayout,
+                               defEvent,
+                               cardDropSystem,
+                               fieldUIDesigner,
+                               GameData.Instance.attackField);
 
-            defEvent.Inject(defPresenter,
-                            atkPresenter,
-                            defContainer,
-                            atkContainer,
-                            defLayout,
-                            atkLayout,
-                            atkEvent,
-                            cardDropSystem,
-                            fieldUIDesigner,
-                            GameData.Instance.defenseField);
+            defEvent.Construct(defPresenter,
+                               atkPresenter,
+                               defContainer,
+                               atkContainer,
+                               defLayout,
+                               atkLayout,
+                               atkEvent,
+                               cardDropSystem,
+                               fieldUIDesigner,
+                               GameData.Instance.defenseField);
 
             _atkFieldContext.FieldCardFactory.Construct(atkEvent);
             _defFieldContext.FieldCardFactory.Construct(defEvent);
+            atkCardToThrowEffector.Inject(atkPresenter, atkContainer);
+            defCardToThrowEffector.Inject(defPresenter, defContainer);
 
             handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
             handPresenter.OnTogglePreviews += defPresenter.TogglePreview;

@@ -25,10 +25,12 @@ public class CardEffectorInjector : MonoBehaviour, IInjector
         m_draw_card_effector.Inject(DIContainer.Resolve<HandPresenter>(),
                                     DIContainer.Resolve<TurnManager>());
 
-        m_throw_card_to_hand_effector.Inject(DIContainer.Resolve<ThrowPresenter>(),
-                                             DIContainer.Resolve<HandPresenter>());
+        m_throw_card_to_hand_effector.Construct(DIContainer.Resolve<DiscardPresenter>(),
+                                                DIContainer.Resolve<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(),
+                                                DIContainer.Resolve<HandPresenter>());
 
-        m_throw_card_to_throw_effector.Inject(DIContainer.Resolve<ThrowPresenter>());
+        m_throw_card_to_throw_effector.Inject(DIContainer.Resolve<DiscardPresenter>(),
+                                              DIContainer.Resolve<CardContainer<IDiscardCardUI, DiscardCardPresenter>>());
 
         m_hand_card_to_throw_effector.Inject(DIContainer.Resolve<HandPresenter>());
 

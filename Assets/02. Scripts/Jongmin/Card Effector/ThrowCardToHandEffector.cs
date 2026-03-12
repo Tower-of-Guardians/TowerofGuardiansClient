@@ -1,17 +1,22 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using VContainer;
 
 public class ThrowCardToHandEffector : CardEffector
 {
-    private ThrowPresenter m_throw_presenter;
-    private HandPresenter m_hand_presenter;
+    private DiscardPresenter _discardPresenter;
+    private CardContainer<IDiscardCardUI, DiscardCardPresenter> _discardCardContainer;
+    private HandPresenter _handPresenter;
 
-    public void Inject(ThrowPresenter throw_presenter,
-                       HandPresenter hand_presenter)
+    [Inject]
+    public void Construct(DiscardPresenter discardPresenter,
+                          CardContainer<IDiscardCardUI, DiscardCardPresenter> discardCardContainer,
+                          HandPresenter handPresenter)
     {
-        m_throw_presenter = throw_presenter;
-        m_hand_presenter = hand_presenter;
+        _discardPresenter = discardPresenter;
+        _discardCardContainer = discardCardContainer;
+        _handPresenter = handPresenter;
 
         m_temp_card_settings = new()
         {
@@ -45,20 +50,35 @@ public class ThrowCardToHandEffector : CardEffector
 
     public override void Execute()
     {
-        m_temp_card_anime_request.CardDatas = m_throw_presenter.GetCardDatas();
+        m_temp_card_anime_request.CardDatas = _discardCardContainer.GetAllDatas();
 
-        List<Vector3> throw_card_positions = new();
-        foreach(IDiscardCardUI card_view in m_throw_presenter.GetCardViews())
-            throw_card_positions.Add((card_view as DiscardCardUI).transform.position);
+        List<Vector3> discardCardPositionList = new();
+        if(!_discardCardContainer.TryGetAllUIs(out IDiscardCardUI[] discardCardUIArray))
+        {
+            return;
+        }
 
-        m_temp_card_anime_request.StartPositions = throw_card_positions.ToArray(); 
+        foreach(IDiscardCardUI cardUI in discardCardUIArray)
+        {
+            DiscardCardUI concreteCardUI = cardUI as DiscardCardUI;
+            discardCardPositionList.Add(concreteCardUI.transform.position);
+        }
+
+        m_temp_card_anime_request.StartPositions = discardCardPositionList.ToArray(); 
 
         base.Execute();
     }
 
-    protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_throw_presenter.RemoveCard(m_throw_presenter.GetCardView(card_data));
+    protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
+    {
+        if(!_discardCardContainer.TryGetUI(battleCardData, out IDiscardCardUI cardUI))
+        {
+            return;
+        }
 
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
-        => m_hand_presenter.CreateCard(card_data);
+        _discardPresenter.RemoveCard(cardUI);
+    }
+
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
+        => _handPresenter.CreateCard(battleCardData);
 }

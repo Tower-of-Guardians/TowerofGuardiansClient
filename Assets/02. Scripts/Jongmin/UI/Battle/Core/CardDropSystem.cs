@@ -94,7 +94,28 @@ public class CardDropSystem
             _defFieldDropTarget.CreateCard(battleCardData);
         }
 
-        GameData.Instance.HandToFieldMove(battleCardData);
         _handDropTarget.RemoveCard(cardUI);
+        GameData.Instance.HandToFieldMove(battleCardData);
+    }
+
+    /// <summary>
+    /// 해당 핸드 카드를 [핸드 필드]에서 [교체 필드]로 올립니다.
+    /// </summary>
+    public void OnDropedHandToDiscard(IHandCardUI cardUI)
+    {
+        if(!_turnManager.CanThrow())
+        {
+            _notifier.Notify("<color=red>더 이상 버릴 수 없습니다.</color>");
+            return;
+        }
+
+        if(!_handDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
+        {
+            return;
+        }
+
+        _discardDropTarget.CreateCard(battleCardData);
+        _handDropTarget.RemoveCard(cardUI);
+        GameData.Instance.HandToFieldMove(battleCardData);
     }
 }

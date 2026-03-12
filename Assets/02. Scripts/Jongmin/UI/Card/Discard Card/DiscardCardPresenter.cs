@@ -1,11 +1,11 @@
-public class ThrowCardPresenter : CardPresenter
+public class DiscardCardPresenter : CardPresenter
 {
     private readonly IDiscardCardUI _cardUI;
 
     public CardData CardData => BattleCardData.data;
 
-    public ThrowCardPresenter(IDiscardCardUI cardUI, 
-                              BattleCardData battleCardData)
+    public DiscardCardPresenter(IDiscardCardUI cardUI, 
+                                BattleCardData battleCardData)
     {
         _cardUI = cardUI;
         BattleCardData = battleCardData;
