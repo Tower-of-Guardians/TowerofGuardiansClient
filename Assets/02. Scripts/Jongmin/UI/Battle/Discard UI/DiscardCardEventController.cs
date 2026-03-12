@@ -102,7 +102,7 @@ public class DiscardCardEventController : MonoBehaviour, IDropHandler
 
         _discardPresenter.HoverCard = null;
 
-        _discardCardLayout.UpdateLayout(false, true, true);
+        _discardCardLayout.UpdateLayout(false);
         _discardPreviewCardUI.SetActive(false);
     }
 

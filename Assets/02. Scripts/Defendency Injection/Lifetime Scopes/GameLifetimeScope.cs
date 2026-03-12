@@ -25,7 +25,9 @@ public class GameLifetimeScope : LifetimeScope
     private void ConfigureCore(IContainerBuilder builder)
     {
         builder.RegisterInstance<ITurnRuleService>(_turnRuleDesigner);
-        builder.RegisterComponentInHierarchy<TurnManager>();
+        builder.RegisterComponentInHierarchy<TurnManager>()
+               .AsSelf()
+               .As<ITurnHandLimitPort>();
         builder.RegisterComponentInHierarchy<Notice>().As<INotice>();
         builder.RegisterComponentInHierarchy<CardInfoUI>();
         builder.RegisterComponentInHierarchy<DrawCardEffector>();
@@ -46,6 +48,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<ThrowCardToThrowEffector>();
         builder.RegisterEntryPoint<DiscardPresenter>()
                .AsSelf()
+               .As<IDiscardCardRemovePort>()
                .As<ICardDropTarget<IDiscardCardUI>>();
 
         builder.RegisterBuildCallback(resolver =>
@@ -60,6 +63,7 @@ public class GameLifetimeScope : LifetimeScope
             var cardDropSystem = resolver.Resolve<CardDropSystem>();
             var discardToHandEffector = resolver.Resolve<ThrowCardToHandEffector>();
             var discardToDiscardEffector = resolver.Resolve<ThrowCardToThrowEffector>();
+            var handPresenter = resolver.Resolve<HandPresenter>();
 
             discardEvent.Construct(discardUIDesigner,
                                    discardPresenter,
@@ -71,6 +75,8 @@ public class GameLifetimeScope : LifetimeScope
             discardPresenter.BindEffectors(discardToHandEffector, discardToDiscardEffector);
 
             DIContainer.Register<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(discardContainer);
+
+            handPresenter.OnTogglePreviews += discardPresenter.TogglePreview;
         });
     }
 
@@ -85,6 +91,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<HandCardToThrowEffector>();
         builder.RegisterEntryPoint<HandPresenter>()
                .AsSelf()
+               .As<IHandCardCreatePort>()
+               .As<IHandCardRemovePort>()
                .As<ICardDropTarget<IHandCardUI>>();
 
         builder.RegisterBuildCallback(resolver =>
@@ -131,9 +139,11 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<AttackFieldPresenter>()
                .AsSelf()
+               .As<IAttackFieldCardRemovePort>()
                .As<IATKCardDropTarget>();
         builder.RegisterEntryPoint<DefendFieldPresenter>()
                .AsSelf()
+               .As<IDefendFieldCardRemovePort>()
                .As<IDEFCardDropTarget>();
 
         builder.RegisterBuildCallback(resolver =>
@@ -141,6 +151,7 @@ public class GameLifetimeScope : LifetimeScope
             var atkPresenter = resolver.Resolve<AttackFieldPresenter>();
             var defPresenter = resolver.Resolve<DefendFieldPresenter>();
             var handPresenter = resolver.Resolve<HandPresenter>();
+            var discardPresenter = resolver.Resolve<DiscardPresenter>();
             var cardDropSystem = resolver.Resolve<CardDropSystem>();
             var fieldUIDesigner = resolver.Resolve<FieldUIDesigner>();
 
@@ -179,11 +190,14 @@ public class GameLifetimeScope : LifetimeScope
 
             _atkFieldContext.FieldCardFactory.Construct(atkEvent);
             _defFieldContext.FieldCardFactory.Construct(defEvent);
-            atkCardToThrowEffector.Inject(atkPresenter, atkContainer);
-            defCardToThrowEffector.Inject(defPresenter, defContainer);
+            atkCardToThrowEffector.Construct(atkPresenter, atkContainer);
+            defCardToThrowEffector.Construct(defPresenter, defContainer);
 
             handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
             handPresenter.OnTogglePreviews += defPresenter.TogglePreview;
+
+            discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
+            discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;
         });
     }
 }

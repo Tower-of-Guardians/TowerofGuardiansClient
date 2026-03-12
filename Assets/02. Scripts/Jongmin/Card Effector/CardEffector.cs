@@ -1,46 +1,49 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(TemporaryCardController))]
 public abstract class CardEffector : MonoBehaviour
 {
-    [Header("시작점")]
-    [SerializeField] protected Transform m_start_transform;
+    [Header("Start Point")]
+    [FormerlySerializedAs("m_start_transform")]
+    [SerializeField] protected Transform _startTransform;
 
-    [Header("도착점")]
-    [SerializeField] protected Transform m_end_transform;
+    [Header("End Point")]
+    [FormerlySerializedAs("m_end_transform")]
+    [SerializeField] protected Transform _endTransform;
 
-    protected TemporaryCardController m_temp_card_controller;
-    protected TemporaryCardSettings m_temp_card_settings;
-    protected TemporaryCardAnimeRequest m_temp_card_anime_request;
+    protected TemporaryCardController _tempCardController;
+    protected TemporaryCardSettings _tempCardSettings;
+    protected TemporaryCardAnimeRequest _tempCardAnimeRequest;
 
     private void Awake()
     {
-        m_temp_card_controller = GetComponent<TemporaryCardController>();
+        _tempCardController = GetComponent<TemporaryCardController>();
 
-        m_temp_card_settings = new();
-        m_temp_card_anime_request = new();
+        _tempCardSettings ??= new();
+        _tempCardAnimeRequest ??= new();
 
-        m_temp_card_controller.OnCardAnimationBegin += OnTempCardAnimeStart;
-        m_temp_card_controller.OnCardAnimationEnd += OnTempCardAnimeEnd;
-        m_temp_card_controller.OnFinalAnimationEnd += OnFinalAnimeEnd;
+        _tempCardController.OnCardAnimationBegin += OnTempCardAnimeStart;
+        _tempCardController.OnCardAnimationEnd += OnTempCardAnimeEnd;
+        _tempCardController.OnFinalAnimationEnd += OnFinalAnimeEnd;
     }
 
     private void OnDestroy()
     {
-        if(m_temp_card_controller != null)
+        if(_tempCardController != null)
         {
-            m_temp_card_controller.OnCardAnimationBegin -= OnTempCardAnimeStart;
-            m_temp_card_controller.OnCardAnimationEnd -= OnTempCardAnimeEnd;
-            m_temp_card_controller.OnFinalAnimationEnd -= OnFinalAnimeEnd;
+            _tempCardController.OnCardAnimationBegin -= OnTempCardAnimeStart;
+            _tempCardController.OnCardAnimationEnd -= OnTempCardAnimeEnd;
+            _tempCardController.OnFinalAnimationEnd -= OnFinalAnimeEnd;
         }
     }
 
     public virtual void Execute()
     {
-        m_temp_card_controller.Play(m_temp_card_anime_request);
+        _tempCardController.Play(_tempCardAnimeRequest);
     }
 
-    protected virtual void OnTempCardAnimeStart(BattleCardData card_data) {}
-    protected virtual void OnTempCardAnimeEnd(BattleCardData card_data) {}
+    protected virtual void OnTempCardAnimeStart(BattleCardData battleCardData) {}
+    protected virtual void OnTempCardAnimeEnd(BattleCardData battleCardData) {}
     protected virtual void OnFinalAnimeEnd() {}
 }

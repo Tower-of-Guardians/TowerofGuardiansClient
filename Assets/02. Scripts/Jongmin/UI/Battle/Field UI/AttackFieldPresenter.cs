@@ -1,6 +1,6 @@
 using VContainer;
 
-public class AttackFieldPresenter : FieldPresenter, IATKCardDropTarget
+public class AttackFieldPresenter : FieldPresenter, IATKCardDropTarget, IAttackFieldCardRemovePort
 {
     private readonly INotice _notifier;
 

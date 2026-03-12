@@ -20,6 +20,9 @@ public class TemporaryCardController : MonoBehaviour
 
     private IEnumerator Co_Play(TemporaryCardAnimeRequest req)
     {
+        int startedCount = 0;
+        int completedCount = 0;
+
         for (int i = 0; i < req.CardDatas.Length; i++)
         {
             if (req.Interval > 0f)
@@ -34,9 +37,22 @@ public class TemporaryCardController : MonoBehaviour
                 req.EndPosition,
                 req.GetStartRotation(i),
                 s,
-                d => OnCardAnimationBegin?.Invoke(d),
-                d => OnCardAnimationEnd?.Invoke(d)
+                d =>
+                {
+                    startedCount++;
+                    OnCardAnimationBegin?.Invoke(d);
+                },
+                d =>
+                {
+                    completedCount++;
+                    OnCardAnimationEnd?.Invoke(d);
+                }
             );
+        }
+
+        if (startedCount > 0)
+        {
+            yield return new WaitUntil(() => completedCount >= startedCount);
         }
 
         OnFinalAnimationEnd?.Invoke();

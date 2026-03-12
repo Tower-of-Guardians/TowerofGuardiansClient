@@ -1,28 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 
 public class AttackCardToThrowEffector : CardEffector
 {
-    [Header("방어 → 교체 이펙터")]
+    [Header("Chain Effector")]
     [SerializeField] private DefendCardToThrowEffector _defendCardEffector;
 
-    [Header("공격 필드 비활성화 패널")]
+    [Header("Attack Field Locker")]
     [SerializeField] private UILocker _atkFieldLocker;
 
-    [Header("방어 필드 비활성화 패널")]
+    [Header("Defense Field Locker")]
     [SerializeField] private UILocker _defFieldLocker;
 
-    private AttackFieldPresenter _atkFieldPresenter;
+    private IAttackFieldCardRemovePort _atkFieldCardRemovePort;
     private CardContainer<IFieldCardUI, FieldCardPresenter> _atkFieldCardContainer;
 
-    public void Inject(AttackFieldPresenter attackFieldPresenter,
-                       CardContainer<IFieldCardUI, FieldCardPresenter> atkFieldCardContainer)
+    public void Construct(IAttackFieldCardRemovePort atkFieldCardRemovePort,
+                          CardContainer<IFieldCardUI, FieldCardPresenter> atkFieldCardContainer)
     {
-        _atkFieldPresenter = attackFieldPresenter;
+        _atkFieldCardRemovePort = atkFieldCardRemovePort;
         _atkFieldCardContainer = atkFieldCardContainer;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.5f,
 
@@ -49,17 +49,12 @@ public class AttackCardToThrowEffector : CardEffector
             ForceStartRotation = true,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
-            //TargetRoot = m_card_root,
-
-            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
-
+            EndPosition = _endTransform == null ? Vector3.zero : _endTransform.position,
             StartRotation = Vector3.zero,
-
             Interval = 0.1f,
-
-            Settings = m_temp_card_settings,
+            Settings = _tempCardSettings,
         };
     }
 
@@ -68,8 +63,7 @@ public class AttackCardToThrowEffector : CardEffector
         _atkFieldLocker.Lock(true);
         _defFieldLocker.Lock(true);
 
-        
-        m_temp_card_anime_request.CardDatas = _atkFieldCardContainer.GetAllDatas();
+        _tempCardAnimeRequest.CardDatas = _atkFieldCardContainer.GetAllDatas();
 
         List<Vector3> fieldCardPositionList = new();
         if(!_atkFieldCardContainer.TryGetAllUIs(out IFieldCardUI[] fieldUIArray))
@@ -83,26 +77,19 @@ public class AttackCardToThrowEffector : CardEffector
             fieldCardPositionList.Add(concreteCardUI.transform.position);
         }
 
-        m_temp_card_anime_request.StartPositions = fieldCardPositionList.ToArray(); 
+        _tempCardAnimeRequest.StartPositions = fieldCardPositionList.ToArray();
 
         base.Execute();
     }
 
-    protected override void OnTempCardAnimeStart(BattleCardData card_data)
-    {
-        if(!_atkFieldCardContainer.TryGetUI(card_data, out IFieldCardUI cardUI))
-        {
-            return;
-        }
+    protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
+        => _atkFieldCardRemovePort.TryRemoveCard(battleCardData);
 
-        _atkFieldPresenter.RemoveCard(cardUI);
-    }
-
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
     {
-        GameData.Instance.attackField.Remove(card_data.data);
-        GameData.Instance.UseCard(card_data.data.id);
-        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);    
+        GameData.Instance.attackField.Remove(battleCardData.data);
+        GameData.Instance.UseCard(battleCardData.data.id);
+        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
     }
 
     protected override void OnFinalAnimeEnd()

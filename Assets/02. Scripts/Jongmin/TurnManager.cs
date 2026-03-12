@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using VContainer;
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : MonoBehaviour, ITurnHandLimitPort
 {
     private ITurnRuleService m_turn_rule_service;
     private int m_current_action_count;

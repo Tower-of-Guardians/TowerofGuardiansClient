@@ -74,6 +74,16 @@ public class CardDropSystem
     /// </summary>
     public void OnDropedHandToField(IHandCardUI cardUI, bool isAtk)
     {
+        if(isAtk && !_atkFieldDropTarget.CanInteraction)
+        {
+            return;
+        }
+        
+        if(!isAtk && !_defFieldDropTarget.CanInteraction)
+        {
+            return;
+        }
+
         if(!_turnManager.CanAction())
         {
             _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");

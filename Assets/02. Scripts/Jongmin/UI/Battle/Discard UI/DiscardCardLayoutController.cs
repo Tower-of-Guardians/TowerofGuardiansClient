@@ -33,26 +33,24 @@ public class DiscardCardLayoutController : MonoBehaviour
             return;
         }
 
-        DiscardCardUI lastConcreteCardUI = cardUIList[^1] as DiscardCardUI;
-        RectTransform lastConcreteCardRectTransform = lastConcreteCardUI.transform as RectTransform;
-        Vector2 prevPreviewPosition = realCardCount > 0 ? lastConcreteCardRectTransform.anchoredPosition
+        Vector2 prevPreviewPosition = realCardCount > 0 ? ((cardUIList[^1] as DiscardCardUI).transform as RectTransform).anchoredPosition
                                                         : Vector2.zero;
 
 
-        CalculateCardLayout(cardUIList, virtualCardCount, isAnime, isSorting);
+        CalculateCardLayout(cardUIList, realCardCount, virtualCardCount, isAnime, isSorting);
         CalculatePreview(isIncludePreview, virtualCardCount, prevPreviewPosition);
     }
 
-    private void CalculateCardLayout(IReadOnlyList<IDiscardCardUI> cardUIList, int cardCount, bool isAnime, bool isSorting)
+    private void CalculateCardLayout(IReadOnlyList<IDiscardCardUI> cardUIList, int realCardCount, int virtualCardCount, bool isAnime, bool isSorting)
     {
-        for(int cardIndex = 0; cardIndex < cardCount; cardIndex++)
+        for(int cardIndex = 0; cardIndex < realCardCount; cardIndex++)
         {
             if(_discardPresenter.HoverCard == cardUIList[cardIndex])
             {
                 continue;
             }
 
-            Vector2 layoutPosition = CardLayoutCalculator.CalculatedThrowCardPosition(cardIndex, cardCount, _discardUIDesigner.Space);
+            Vector2 layoutPosition = CardLayoutCalculator.CalculatedThrowCardPosition(cardIndex, virtualCardCount, _discardUIDesigner.Space);
             DiscardCardUI concreteCardUI = cardUIList[cardIndex] as DiscardCardUI;
             RectTransform concreteCardUIRectTransform = concreteCardUI.transform as RectTransform;
 

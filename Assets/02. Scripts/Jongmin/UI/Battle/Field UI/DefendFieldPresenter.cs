@@ -1,6 +1,6 @@
 using VContainer;
 
-public class DefendFieldPresenter : FieldPresenter, IDEFCardDropTarget
+public class DefendFieldPresenter : FieldPresenter, IDEFCardDropTarget, IDefendFieldCardRemovePort
 {
     private readonly INotice _notifier;
 

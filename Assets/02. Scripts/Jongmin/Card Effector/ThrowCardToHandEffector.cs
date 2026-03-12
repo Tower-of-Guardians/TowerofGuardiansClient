@@ -5,20 +5,20 @@ using VContainer;
 
 public class ThrowCardToHandEffector : CardEffector
 {
-    private DiscardPresenter _discardPresenter;
+    private IDiscardCardRemovePort _discardCardRemovePort;
     private CardContainer<IDiscardCardUI, DiscardCardPresenter> _discardCardContainer;
-    private HandPresenter _handPresenter;
+    private IHandCardCreatePort _handCardCreatePort;
 
     [Inject]
-    public void Construct(DiscardPresenter discardPresenter,
+    private void Construct(IDiscardCardRemovePort discardCardRemovePort,
                           CardContainer<IDiscardCardUI, DiscardCardPresenter> discardCardContainer,
-                          HandPresenter handPresenter)
+                          IHandCardCreatePort handCardCreatePort)
     {
-        _discardPresenter = discardPresenter;
+        _discardCardRemovePort = discardCardRemovePort;
         _discardCardContainer = discardCardContainer;
-        _handPresenter = handPresenter;
+        _handCardCreatePort = handCardCreatePort;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.35f,
 
@@ -38,19 +38,19 @@ public class ThrowCardToHandEffector : CardEffector
             ForceStartRotation = false,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
-            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
+            EndPosition = _endTransform == null ? Vector3.zero : _endTransform.position,
 
             Interval = 0f,
 
-            Settings = m_temp_card_settings,
+            Settings = _tempCardSettings,
         };
     }
 
     public override void Execute()
     {
-        m_temp_card_anime_request.CardDatas = _discardCardContainer.GetAllDatas();
+        _tempCardAnimeRequest.CardDatas = _discardCardContainer.GetAllDatas();
 
         List<Vector3> discardCardPositionList = new();
         if(!_discardCardContainer.TryGetAllUIs(out IDiscardCardUI[] discardCardUIArray))
@@ -64,21 +64,14 @@ public class ThrowCardToHandEffector : CardEffector
             discardCardPositionList.Add(concreteCardUI.transform.position);
         }
 
-        m_temp_card_anime_request.StartPositions = discardCardPositionList.ToArray(); 
+        _tempCardAnimeRequest.StartPositions = discardCardPositionList.ToArray(); 
 
         base.Execute();
     }
 
     protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
-    {
-        if(!_discardCardContainer.TryGetUI(battleCardData, out IDiscardCardUI cardUI))
-        {
-            return;
-        }
-
-        _discardPresenter.RemoveCard(cardUI);
-    }
+        => _discardCardRemovePort.TryRemoveCard(battleCardData);
 
     protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
-        => _handPresenter.CreateCard(battleCardData);
+        => _handCardCreatePort.CreateCard(battleCardData);
 }

@@ -32,7 +32,7 @@ public class TemporaryCardAnimator : MonoBehaviour
         canvas_group.alpha = s.ForceStartOpacity ? s.StartOpacity : 1f;
 
         if (s.UseOpacity)
-            seq.Join(canvas_group.DOFade(s.Opacity, s.Duration)).SetEase(s.OpacityEase);
+            seq.Join(canvas_group.DOFade(s.Opacity, s.Duration).SetEase(s.OpacityEase));
 
         if (s.UseJump)
             seq.Join(t.DOJump(end_position, s.JumpPower, 1, s.Duration).SetEase(s.MoveEase));

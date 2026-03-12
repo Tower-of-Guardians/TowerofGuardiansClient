@@ -1,7 +1,7 @@
 using System;
 using VContainer.Unity;
 
-public class HandPresenter : ICardDropTarget<IHandCardUI>, IInitializable
+public class HandPresenter : ICardDropTarget<IHandCardUI>, IHandCardCreatePort, IHandCardRemovePort, IInitializable
 {
     private readonly IHandUI _handUI;
     private readonly CardContainer<IHandCardUI, HandCardPresenter> _handCardContainer;
@@ -59,6 +59,17 @@ public class HandPresenter : ICardDropTarget<IHandCardUI>, IInitializable
             if(isUpdateLayout)
                 _handCardLayout.UpdateLayout();
         }
+    }
+
+    public bool TryRemoveCard(BattleCardData battleCardData)
+    {
+        if(!_handCardContainer.TryGetUI(battleCardData, out IHandCardUI handCardUI))
+        {
+            return false;
+        }
+
+        RemoveCard(handCardUI);
+        return true;
     }
 
     /// <summary>

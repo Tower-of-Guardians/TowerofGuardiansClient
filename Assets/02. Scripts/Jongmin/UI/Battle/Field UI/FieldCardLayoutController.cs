@@ -69,7 +69,7 @@ public class FieldCardLayoutController : MonoBehaviour
 
     private void CalculatePreview(bool isCalculate, int cardCount, Vector2 prevPreviewPosition)
     {
-        if(isCalculate)
+        if(!isCalculate)
         {
             return;
         }

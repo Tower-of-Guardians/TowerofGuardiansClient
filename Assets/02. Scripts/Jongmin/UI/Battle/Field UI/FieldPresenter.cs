@@ -15,6 +15,7 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
     
     const int MaxCardCount = 4;
     protected bool CanAdd => _fieldCardContainer.CardList.Count < MaxCardCount; 
+    public bool CanInteraction { get; private set; } = true;
     
     public IFieldCardUI HoverCard { get; set; }
      
@@ -32,9 +33,7 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
     }
 
     public void Initialize()
-    {
-        _fieldCardLayout.Construct(_fieldCardContainer, this);
-    }
+        => _fieldCardLayout.Construct(_fieldCardContainer, this);
     
     /// <summary>
     /// battleCardData에 해당하는 카드를 생성합니다.
@@ -62,23 +61,42 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
         }
     }
 
+    public bool TryRemoveCard(BattleCardData battleCardData)
+    {
+        if(!_fieldCardContainer.TryGetUI(battleCardData, out IFieldCardUI cardUI))
+        {
+            return false;
+        }
+
+        RemoveCard(cardUI);
+        return true;
+    }
+
     /// <summary>
     /// 카드를 통해 카드의 데이터와 탐색 성공 여부를 반환합니다.
     /// </summary>
     public bool TryGetBattleCardData(IFieldCardUI cardUI, out BattleCardData battleCardData)
         => _fieldCardContainer.TryGetCardData(cardUI, out battleCardData);
 
-    public void TogglePreview(bool active)
+    public void TogglePreview(bool isActive)
     {
-        if(active && CanAdd)
+        if(!CanInteraction)
         {
-            _fieldCardLayout.UpdateLayout(true);
-            _fieldUI.TogglePreview(true);
+            return;
         }
-        else if(!active)
+        
+        if(isActive && CanAdd)
+        {
+            _fieldUI.TogglePreview(true);
+            _fieldCardLayout.UpdateLayout(true);
+        }
+        else if(!isActive)
         {
             _fieldCardLayout.UpdateLayout(false);
             _fieldUI.TogglePreview(false);
         }
     }
+
+    public void UpdateInteraction(bool isActive)
+        => CanInteraction = !isActive;
 }

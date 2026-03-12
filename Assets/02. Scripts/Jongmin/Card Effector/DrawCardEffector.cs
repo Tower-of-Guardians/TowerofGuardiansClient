@@ -3,16 +3,16 @@ using DG.Tweening;
 
 public class DrawCardEffector : CardEffector
 {
-    private HandPresenter m_hand_presenter;
-    private TurnManager m_turn_manager;
+    private IHandCardCreatePort _handCardCreatePort;
+    private ITurnHandLimitPort _turnHandLimitPort;
 
-    public void Inject(HandPresenter hand_presenter,
-                       TurnManager turn_manager)
+    public void Inject(IHandCardCreatePort handCardCreatePort,
+                       ITurnHandLimitPort turnHandLimitPort)
     {
-        m_hand_presenter = hand_presenter;
-        m_turn_manager = turn_manager;
+        _handCardCreatePort = handCardCreatePort;
+        _turnHandLimitPort = turnHandLimitPort;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.25f,
 
@@ -32,31 +32,31 @@ public class DrawCardEffector : CardEffector
             ForceStartRotation = false,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
             StartPositions = null,
-            StartPosition = m_start_transform != null ? m_start_transform.position : Vector3.zero,
-            EndPosition = m_end_transform != null ? m_end_transform.position : Vector3.zero,
+            StartPosition = _startTransform != null ? _startTransform.position : Vector3.zero,
+            EndPosition = _endTransform != null ? _endTransform.position : Vector3.zero,
 
             Interval = 0.075f,
-            Settings = m_temp_card_settings,
+            Settings = _tempCardSettings,
         };
     }
 
     public override void Execute()
     {
-        m_temp_card_anime_request.CardDatas = GameData.Instance.NextDeckSet(m_turn_manager.MaxHandCount).ToArray();
+        _tempCardAnimeRequest.CardDatas = GameData.Instance.NextDeckSet(_turnHandLimitPort.MaxHandCount).ToArray();
 
         base.Execute();
     }
 
     public void Execute(int count)
     {
-        m_temp_card_anime_request.CardDatas = GameData.Instance.NextDeckSet(count).ToArray();
+        _tempCardAnimeRequest.CardDatas = GameData.Instance.NextDeckSet(count).ToArray();
 
         base.Execute();
     }
 
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
-        => m_hand_presenter.CreateCard(card_data);
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
+        => _handCardCreatePort.CreateCard(battleCardData);
 }

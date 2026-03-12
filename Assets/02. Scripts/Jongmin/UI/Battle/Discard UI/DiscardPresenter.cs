@@ -1,7 +1,7 @@
 using System;
 using VContainer.Unity;
 
-public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDiscardCardUI>
+public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDiscardCardUI>, IDiscardCardRemovePort
 {
     private readonly IDiscardUI _discardUI;
     private readonly CardContainer<IDiscardCardUI, DiscardCardPresenter> _discardCardContainer;
@@ -75,6 +75,17 @@ public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDi
         _turnManager.UpdateThrowCount(-1);
     }
 
+    public bool TryRemoveCard(BattleCardData battleCardData)
+    {
+        if(!_discardCardContainer.TryGetUI(battleCardData, out IDiscardCardUI cardUI))
+        {
+            return false;
+        }
+
+        RemoveCard(cardUI);
+        return true;
+    }
+
     /// <summary>
     /// 카드를 통해 카드의 데이터와 탐색 성공 여부를 반환합니다.
     /// </summary>
@@ -88,6 +99,7 @@ public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDi
     {
         if(_turnManager.CanThrow() || !isActive)
         {
+            _discardCardLayout.UpdateLayout(isActive, isActive, isActive);
             _discardUI.TogglePreview(isActive);
         }
     }
