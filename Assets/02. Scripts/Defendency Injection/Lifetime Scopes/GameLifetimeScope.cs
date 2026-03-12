@@ -105,7 +105,6 @@ public class GameLifetimeScope : LifetimeScope
             var discardPresenter = resolver.Resolve<DiscardPresenter>();
             var turnManager = resolver.Resolve<TurnManager>();
             var drawCardEffector = resolver.Resolve<DrawCardEffector>();
-            turnManager.Inject(handPresenter);
             drawCardEffector.Inject(handPresenter, turnManager);
 
             DIContainer.Register<HandPresenter>(handPresenter);

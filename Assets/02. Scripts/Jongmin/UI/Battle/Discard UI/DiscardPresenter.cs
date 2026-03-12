@@ -97,7 +97,7 @@ public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDi
     /// </summary>
     public void TogglePreview(bool isActive)
     {
-        if(_turnManager.CanThrow() || !isActive)
+        if(_turnManager.CanThrow || !isActive)
         {
             _discardCardLayout.UpdateLayout(isActive, isActive, isActive);
             _discardUI.TogglePreview(isActive);

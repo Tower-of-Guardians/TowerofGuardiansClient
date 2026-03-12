@@ -7,8 +7,8 @@ public class CardDropSystem
     private readonly IDEFCardDropTarget _defFieldDropTarget;
     private readonly ICardDropTarget<IDiscardCardUI> _discardDropTarget;
 
-    private TurnManager _turnManager;
-    private INotice _notifier;
+    private readonly TurnManager _turnManager;
+    private readonly INotice _notifier;
 
     public CardDropSystem(ICardDropTarget<IHandCardUI> handDropTarget,
                           IATKCardDropTarget atkfieldDropTarget,
@@ -84,7 +84,7 @@ public class CardDropSystem
             return;
         }
 
-        if(!_turnManager.CanAction())
+        if(!_turnManager.CanAction)
         {
             _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
             return;
@@ -113,7 +113,7 @@ public class CardDropSystem
     /// </summary>
     public void OnDropedHandToDiscard(IHandCardUI cardUI)
     {
-        if(!_turnManager.CanThrow())
+        if(!_turnManager.CanThrow)
         {
             _notifier.Notify("<color=red>더 이상 버릴 수 없습니다.</color>");
             return;

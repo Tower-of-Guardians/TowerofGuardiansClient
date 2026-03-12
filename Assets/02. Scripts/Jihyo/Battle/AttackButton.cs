@@ -221,7 +221,7 @@ public class AttackButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             
             if (turnManager != null)
             {
-                turnManager.StartNewTurn += OnTurnStart;
+                turnManager.OnStartNewTurn += OnTurnStart;
             }
             yield break;
         }
@@ -229,7 +229,7 @@ public class AttackButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         turnManager = DIContainer.Resolve<TurnManager>();
         if (turnManager != null)
         {
-            turnManager.StartNewTurn += OnTurnStart;
+            turnManager.OnStartNewTurn += OnTurnStart;
         }
     }
 
@@ -237,7 +237,7 @@ public class AttackButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (turnManager != null)
         {
-            turnManager.StartNewTurn -= OnTurnStart;
+            turnManager.OnStartNewTurn -= OnTurnStart;
             turnManager = null;
         }
     }

@@ -109,7 +109,7 @@ public class HandCardEventController : MonoBehaviour, IDropHandler
         HandCardUI concreteHoverCard = _handPresenter.HoverCard as HandCardUI; 
         concreteHoverCard.transform.DOKill();
 
-        if(_turnManager.CanAction())
+        if(_turnManager.CanAction)
         {
             _handPresenter.ToggleFieldPreview(true);
             CalculatePreviewPosition();

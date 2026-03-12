@@ -19,5 +19,5 @@ public class ThrowManualPresenter : IDisposable
         => m_turn_manager.OnUpdatedActionCount -= UpdateUI;
 
     public void UpdateUI(ActionData action_data)
-        => m_view.UpdateUI(action_data, m_turn_manager.CanThrow());
+        => m_view.UpdateUI(action_data, m_turn_manager.CanThrow);
 }

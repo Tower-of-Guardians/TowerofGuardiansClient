@@ -19,6 +19,6 @@ public class TurnManagerInjector : MonoBehaviour, IInjector
         }
 
         DIContainer.Register<TurnManager>(m_turn_manager);
-        m_turn_manager.Inject(DIContainer.Resolve<ITurnRuleService>());
+        m_turn_manager.Construct(DIContainer.Resolve<ITurnRuleService>());
     }
 }

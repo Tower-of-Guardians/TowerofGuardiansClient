@@ -4,13 +4,17 @@ using UnityEngine;
 public class TurnRuleDesigner : ScriptableObject, ITurnRuleService
 {
     [Header("턴 규칙 목록")]
-    [SerializeField] private TurnRuleData[] m_turn_rule_data;
+    [SerializeField] private TurnRuleData[] _turnRuleArray;
 
-    public TurnRuleData GetRule(int card_count)
+    public TurnRuleData GetRule(int cardCount)
     {
-        foreach(var rule in m_turn_rule_data)
-            if(rule.Min <= card_count && card_count < rule.Max)
+        foreach(var rule in _turnRuleArray)
+        {
+            if(rule.Min <= cardCount && cardCount < rule.Max)
+            {
                 return rule;
+            }
+        }
 
         return null;
     }
