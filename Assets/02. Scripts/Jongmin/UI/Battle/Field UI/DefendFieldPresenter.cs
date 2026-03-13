@@ -8,8 +8,9 @@ public class DefendFieldPresenter : FieldPresenter, IDEFCardDropTarget, IDefendF
                                 [Key(FieldType.Defense)]CardContainer<IFieldCardUI, FieldCardPresenter> fieldCardContainer,
                                 [Key(FieldType.Defense)]ICardFactory<IFieldCardUI> fieldCardFactory,
                                 [Key(FieldType.Defense)]FieldCardLayoutController fieldCardLayout,
+                                TurnManager turnManager,
                                 INotice notifier) 
-        : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, false)
+        : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, false, turnManager)
     {
         _notifier = notifier;
     }

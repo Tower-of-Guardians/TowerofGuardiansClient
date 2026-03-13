@@ -8,8 +8,9 @@ public class AttackFieldPresenter : FieldPresenter, IATKCardDropTarget, IAttackF
                                 [Key(FieldType.Attack)]CardContainer<IFieldCardUI, FieldCardPresenter> fieldCardContainer,
                                 [Key(FieldType.Attack)]ICardFactory<IFieldCardUI> fieldCardFactory,
                                 [Key(FieldType.Attack)]FieldCardLayoutController fieldCardLayout,
+                                TurnManager turnManager,
                                 INotice notifier) 
-        : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, true)
+        : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, true, turnManager)
     {
         _notifier = notifier;
     }

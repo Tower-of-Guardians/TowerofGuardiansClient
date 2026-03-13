@@ -7,8 +7,8 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
     protected readonly CardContainer<IFieldCardUI, FieldCardPresenter> _fieldCardContainer;
     protected readonly ICardFactory<IFieldCardUI> _fieldCardFactory;
     protected readonly FieldCardLayoutController _fieldCardLayout;
-
-    public event Action<int> OnUpdateActionCount;
+    
+    private readonly TurnManager _turnManager;
 
     protected readonly bool _isAtk;
     public bool IsAtk => _isAtk;
@@ -23,13 +23,15 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
                           CardContainer<IFieldCardUI, FieldCardPresenter> fieldCardContainer,
                           ICardFactory<IFieldCardUI> fieldCardFactory,
                           FieldCardLayoutController fieldCardLayout,
-                          bool isAtk)
+                          bool isAtk,
+                          TurnManager turnManager)
     {
         _fieldUI = fieldUI;
         _fieldCardContainer = fieldCardContainer;
         _fieldCardFactory = fieldCardFactory;
         _fieldCardLayout = fieldCardLayout;
         _isAtk = isAtk;
+        _turnManager = turnManager;
     }
 
     public void Initialize()
@@ -45,7 +47,7 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
 
         _fieldCardContainer.Add(fieldCardUI, fieldCardPresenter);
         _fieldCardLayout.UpdateLayout(false, false, false);
-        OnUpdateActionCount?.Invoke(1);
+        _turnManager.UpdateActionCount(1);
     }
 
     /// <summary>
@@ -56,8 +58,7 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
         if(_fieldCardContainer.Remove(cardUI))
         {
             _fieldCardFactory.Release(cardUI);
-            OnUpdateActionCount?.Invoke(-1);
-            //m_turn_manager.UpdateActionCount(-1);
+            _turnManager.UpdateActionCount(-1);
         }
     }
 
