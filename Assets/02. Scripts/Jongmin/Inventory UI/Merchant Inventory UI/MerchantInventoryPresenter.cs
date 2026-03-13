@@ -6,7 +6,7 @@ public class MerchantInventoryPresenter : CardInventoryPresenter
     public MerchantInventoryPresenter(ICardInventoryView view, 
                                       CardInventoryFactory factory,
                                       ICardBehavior behavior,
-                                      INotice notice,
+                                      INotifierUI notice,
                                       MerchantDialogueBubblePresenter dialogue_bubble_presenter) 
         : base(view, factory, behavior, notice)
     {

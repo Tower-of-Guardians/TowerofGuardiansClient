@@ -8,14 +8,14 @@ public class CardDropSystem
     private readonly ICardDropTarget<IDiscardCardUI> _discardDropTarget;
 
     private readonly TurnManager _turnManager;
-    private readonly INotice _notifier;
+    private readonly INotifierUI _notifier;
 
     public CardDropSystem(ICardDropTarget<IHandCardUI> handDropTarget,
                           IATKCardDropTarget atkfieldDropTarget,
                           IDEFCardDropTarget defFieldDropTarget,
                           ICardDropTarget<IDiscardCardUI> discardDropTarget,
                           TurnManager turnManager,
-                          INotice notifier)
+                          INotifierUI notifier)
     {
         _handDropTarget = handDropTarget;
         _atkFieldDropTarget = atkfieldDropTarget;

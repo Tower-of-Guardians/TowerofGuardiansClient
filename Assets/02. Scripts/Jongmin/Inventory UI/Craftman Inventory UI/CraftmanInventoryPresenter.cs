@@ -6,7 +6,7 @@ public class CraftmanInventoryPresenter : CardInventoryPresenter, ICardSelection
     public CraftmanInventoryPresenter(ICardInventoryView view, 
                                       CardInventoryFactory factory,
                                       ICardBehavior behavior,
-                                      INotice notice,
+                                      INotifierUI notice,
                                       CraftmanDialogueBubblePresenter dialogue_bubble_presenter,
                                       ReinforcementPresenter reinforcement_presenter) 
         : base(view, factory, behavior, notice)

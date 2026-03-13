@@ -29,7 +29,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<TurnManager>()
                .AsSelf()
                .As<ITurnHandLimitPort>();
-        builder.RegisterComponentInHierarchy<Notice>().As<INotice>();
+        builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();
         builder.RegisterComponentInHierarchy<CardInfoUI>();
         builder.RegisterComponentInHierarchy<DrawCardEffector>();
         builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();

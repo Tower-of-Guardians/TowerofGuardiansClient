@@ -2,14 +2,14 @@ using VContainer;
 
 public class DefendFieldPresenter : FieldPresenter, IDEFCardDropTarget, IDefendFieldCardRemovePort
 {
-    private readonly INotice _notifier;
+    private readonly INotifierUI _notifier;
 
     public DefendFieldPresenter([Key(FieldType.Defense)]IFieldUI fieldUI,
                                 [Key(FieldType.Defense)]CardContainer<IFieldCardUI, FieldCardPresenter> fieldCardContainer,
                                 [Key(FieldType.Defense)]ICardFactory<IFieldCardUI> fieldCardFactory,
                                 [Key(FieldType.Defense)]FieldCardLayoutController fieldCardLayout,
                                 TurnManager turnManager,
-                                INotice notifier) 
+                                INotifierUI notifier) 
         : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, false, turnManager)
     {
         _notifier = notifier;

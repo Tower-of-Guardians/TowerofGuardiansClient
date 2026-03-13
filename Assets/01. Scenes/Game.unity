@@ -5444,7 +5444,6 @@ MonoBehaviour:
   m_shop_view: {fileID: 27459119}
   m_shop_dispenser: {fileID: 27459118}
   m_dialogue_ui: {fileID: 652604518}
-  m_notice: {fileID: 616374863}
   m_card_root: {fileID: 333157741}
   m_potion_view: {fileID: 1062590612}
   m_inventory_view: {fileID: 225780355}
@@ -8496,7 +8495,7 @@ GameObject:
   - component: {fileID: 616374862}
   - component: {fileID: 616374863}
   m_Layer: 5
-  m_Name: Notice UI
+  m_Name: Notifier UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8533,7 +8532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21d6a4555e3045d4ab406ae6a14b776e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_notice_prefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
+  noticePrefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -16172,7 +16171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00022072809}
+  m_AnchoredPosition: {x: 0, y: 0.0000060591515}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -22818,7 +22817,6 @@ MonoBehaviour:
   m_reinforcement_view: {fileID: 1658715249}
   m_card_view: {fileID: 71747260}
   m_reinforcement_db: {fileID: 11400000, guid: d1a1a1436bedd814d8a71cae4c8c632f, type: 2}
-  m_notice: {fileID: 616374863}
 --- !u!1 &1748609922
 GameObject:
   m_ObjectHideFlags: 0
@@ -25496,7 +25494,6 @@ MonoBehaviour:
   m_inventory_view: {fileID: 285023491}
   m_inventory_card_factory: {fileID: 285023490}
   m_battle_shop_card_factory: {fileID: 7434402730899846451}
-  m_notice: {fileID: 616374863}
 --- !u!1 &1947663639
 GameObject:
   m_ObjectHideFlags: 0

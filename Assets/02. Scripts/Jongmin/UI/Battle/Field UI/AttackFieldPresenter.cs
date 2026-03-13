@@ -2,14 +2,14 @@ using VContainer;
 
 public class AttackFieldPresenter : FieldPresenter, IATKCardDropTarget, IAttackFieldCardRemovePort
 {
-    private readonly INotice _notifier;
+    private readonly INotifierUI _notifier;
 
     public AttackFieldPresenter([Key(FieldType.Attack)]IFieldUI fieldUI,
                                 [Key(FieldType.Attack)]CardContainer<IFieldCardUI, FieldCardPresenter> fieldCardContainer,
                                 [Key(FieldType.Attack)]ICardFactory<IFieldCardUI> fieldCardFactory,
                                 [Key(FieldType.Attack)]FieldCardLayoutController fieldCardLayout,
                                 TurnManager turnManager,
-                                INotice notifier) 
+                                INotifierUI notifier) 
         : base(fieldUI, fieldCardContainer, fieldCardFactory, fieldCardLayout, true, turnManager)
     {
         _notifier = notifier;

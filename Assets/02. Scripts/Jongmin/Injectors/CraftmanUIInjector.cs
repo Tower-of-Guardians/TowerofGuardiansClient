@@ -22,7 +22,7 @@ public class CraftmanUIInjector : MonoBehaviour, IInjector
     [SerializeField] private ReinforcementDataBase m_reinforcement_db;
 
     [Header("알리미 UI")]
-    [SerializeField] private Notice m_notice;
+    [SerializeField] private INotifierUI m_notice;
 
     public void Inject()
     {

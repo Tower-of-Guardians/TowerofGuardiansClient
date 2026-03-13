@@ -5,7 +5,7 @@ public class CardInventoryPresenter : ICardSelectionRequester
 {
     protected readonly ICardInventoryView m_view;
     protected readonly CardInventoryService m_service;
-    protected readonly INotice m_notice;
+    protected readonly INotifierUI m_notice;
 
     protected readonly HashSet<InventoryCardPresenter> m_selected_cards = new();
     protected readonly int MAX_SELECT = 3;
@@ -15,7 +15,7 @@ public class CardInventoryPresenter : ICardSelectionRequester
     public CardInventoryPresenter(ICardInventoryView view,
                                   CardInventoryFactory factory,
                                   ICardBehavior behavior,
-                                  INotice notice)
+                                  INotifierUI notice)
     {
         m_view = view;
         m_notice = notice;

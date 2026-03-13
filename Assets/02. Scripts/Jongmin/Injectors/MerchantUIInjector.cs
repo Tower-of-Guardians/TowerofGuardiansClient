@@ -17,7 +17,7 @@ public class MerchantUIInjector : MonoBehaviour, IInjector
     [SerializeField] private YarnDialogueUI m_dialogue_ui;
 
     [Header("알리미 UI")]
-    [SerializeField] private Notice m_notice;
+    [SerializeField] private INotifierUI m_notice;
 
     [Space(30f), Header("카드 아이템 부모")]
     [SerializeField] private Transform m_card_root;
