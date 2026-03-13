@@ -1116,7 +1116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9705594740b01da44868650764ba5830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_action_label: {fileID: 2078836348}
+  actionLabel: {fileID: 2078836348}
 --- !u!1 &45024615
 GameObject:
   m_ObjectHideFlags: 0
@@ -15163,12 +15163,12 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _handUIDesigner: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
-  _fieldUIDesigner: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
-  _discardUIDesigner: {fileID: 11400000, guid: 2d2e1ce2b7175714a88d2412d679da6e, type: 2}
-  _turnRuleDesigner: {fileID: 11400000, guid: e76e66a7ddf67e94bba4f3481e9cbbff, type: 2}
-  _atkFieldContext: {fileID: 240647224}
-  _defFieldContext: {fileID: 1936468238}
+  handUIDesigner: {fileID: 11400000, guid: a02e5bbe621707f4d8edc4d12a9d4faf, type: 2}
+  fieldUIDesigner: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
+  discardUIDesigner: {fileID: 11400000, guid: 2d2e1ce2b7175714a88d2412d679da6e, type: 2}
+  turnRuleDesigner: {fileID: 11400000, guid: e76e66a7ddf67e94bba4f3481e9cbbff, type: 2}
+  atkFieldContext: {fileID: 240647224}
+  defFieldContext: {fileID: 1936468238}
 --- !u!4 &1139086716
 Transform:
   m_ObjectHideFlags: 0
@@ -15685,7 +15685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba38d69406c3c141813a2467e6ea8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_action_label: {fileID: 2125137304}
+  actionLabel: {fileID: 2125137304}
 --- !u!114 &1173115325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16172,7 +16172,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000085082975}
+  m_AnchoredPosition: {x: 0, y: 0.00022072809}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -20487,7 +20487,6 @@ Transform:
   m_Children:
   - {fileID: 2143972645}
   - {fileID: 601113786}
-  - {fileID: 1818847159}
   - {fileID: 516897187}
   - {fileID: 1946078234}
   - {fileID: 506545084}
@@ -23521,52 +23520,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3216048658661345793, guid: 0b611343a048868409c5a40181ff8137, type: 3}
   m_PrefabInstance: {fileID: 1803359723}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1818847158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1818847159}
-  - component: {fileID: 1818847160}
-  m_Layer: 0
-  m_Name: Action Manual UI Injector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1818847159
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818847158}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1570301012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1818847160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818847158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfd8f96a70c0afd4dafd97628c381f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_action_manual_view: {fileID: 1173115324}
-  m_throw_manual_view: {fileID: 39356077}
 --- !u!1 &1819190314
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,18 +5,19 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [Header("Designer")]
-    [SerializeField] private HandUIDesigner _handUIDesigner;
-    [SerializeField] private FieldUIDesigner _fieldUIDesigner;
-    [SerializeField] private DiscardUIDesigner _discardUIDesigner;
-    [SerializeField] private TurnRuleDesigner _turnRuleDesigner;
+    [SerializeField] private HandUIDesigner handUIDesigner;
+    [SerializeField] private FieldUIDesigner fieldUIDesigner;
+    [SerializeField] private DiscardUIDesigner discardUIDesigner;
+    [SerializeField] private TurnRuleDesigner turnRuleDesigner;
 
     [Space(20), Header("Field Context")]
-    [SerializeField] private FieldContext _atkFieldContext;
-    [SerializeField] private FieldContext _defFieldContext;
+    [SerializeField] private FieldContext atkFieldContext;
+    [SerializeField] private FieldContext defFieldContext;
 
     protected override void Configure(IContainerBuilder builder)
     {
         ConfigureCore(builder);
+        ConfigureManualUI(builder);
         ConfigureDiscardUI(builder);
         ConfigureHandUI(builder);
         ConfigureFieldUI(builder);
@@ -24,7 +25,7 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureCore(IContainerBuilder builder)
     {
-        builder.RegisterInstance<ITurnRuleService>(_turnRuleDesigner);
+        builder.RegisterInstance<ITurnRuleService>(turnRuleDesigner);
         builder.RegisterComponentInHierarchy<TurnManager>()
                .AsSelf()
                .As<ITurnHandLimitPort>();
@@ -36,9 +37,17 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<CardDropSystem>(Lifetime.Singleton);
     }
 
+    private void ConfigureManualUI(IContainerBuilder builder)
+    {
+        builder.RegisterComponentInHierarchy<ActionManualUI>().As<IActionManualUI>();
+        builder.RegisterEntryPoint<ActionManualPresenter>(Lifetime.Scoped);
+        builder.RegisterComponentInHierarchy<DiscardManualUI>().As<IDiscardManualUI>();
+        builder.RegisterEntryPoint<DiscardManualPresenter>(Lifetime.Scoped);
+    }
+
     private void ConfigureDiscardUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_discardUIDesigner);
+        builder.RegisterInstance(discardUIDesigner);
         builder.RegisterInstance(new CardContainer<IDiscardCardUI, DiscardCardPresenter>());
         builder.RegisterComponentInHierarchy<DiscardUI>().AsSelf().As<IDiscardUI>();
         builder.RegisterComponentInHierarchy<DiscardCardEventController>();
@@ -82,7 +91,7 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureHandUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_handUIDesigner);
+        builder.RegisterInstance(handUIDesigner);
         builder.RegisterInstance(new CardContainer<IHandCardUI, HandCardPresenter>());
         builder.RegisterComponentInHierarchy<HandUI>().As<IHandUI>();
         builder.RegisterComponentInHierarchy<HandCardEventController>();
@@ -115,26 +124,26 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureFieldUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_fieldUIDesigner);
-        builder.RegisterInstance(_atkFieldContext).Keyed(FieldType.Attack);
-        builder.RegisterInstance(_defFieldContext).Keyed(FieldType.Defense);
+        builder.RegisterInstance(fieldUIDesigner);
+        builder.RegisterInstance(atkFieldContext).Keyed(FieldType.Attack);
+        builder.RegisterInstance(defFieldContext).Keyed(FieldType.Defense);
 
-        builder.RegisterInstance<IFieldUI>(_atkFieldContext.FieldUI).Keyed(FieldType.Attack);
-        builder.RegisterInstance<IFieldUI>(_defFieldContext.FieldUI).Keyed(FieldType.Defense);
+        builder.RegisterInstance<IFieldUI>(atkFieldContext.FieldUI).Keyed(FieldType.Attack);
+        builder.RegisterInstance<IFieldUI>(defFieldContext.FieldUI).Keyed(FieldType.Defense);
 
         builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Attack);
         builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Defense);
 
-        builder.RegisterInstance(_atkFieldContext.FieldCardLayout).Keyed(FieldType.Attack);
-        builder.RegisterInstance(_defFieldContext.FieldCardLayout).Keyed(FieldType.Defense);
+        builder.RegisterInstance(atkFieldContext.FieldCardLayout).Keyed(FieldType.Attack);
+        builder.RegisterInstance(defFieldContext.FieldCardLayout).Keyed(FieldType.Defense);
 
-        builder.RegisterInstance(_atkFieldContext.FieldCardEvent).Keyed(FieldType.Attack);
-        builder.RegisterInstance(_defFieldContext.FieldCardEvent).Keyed(FieldType.Defense);
+        builder.RegisterInstance(atkFieldContext.FieldCardEvent).Keyed(FieldType.Attack);
+        builder.RegisterInstance(defFieldContext.FieldCardEvent).Keyed(FieldType.Defense);
 
-        builder.RegisterInstance(_atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
-        builder.RegisterInstance(_defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
-        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(_atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
-        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(_defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
+        builder.RegisterInstance(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
+        builder.RegisterInstance(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
+        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
+        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
 
         builder.RegisterEntryPoint<AttackFieldPresenter>()
                .AsSelf()
@@ -187,8 +196,8 @@ public class GameLifetimeScope : LifetimeScope
                                fieldUIDesigner,
                                GameData.Instance.defenseField);
 
-            _atkFieldContext.FieldCardFactory.Construct(atkEvent);
-            _defFieldContext.FieldCardFactory.Construct(defEvent);
+            atkFieldContext.FieldCardFactory.Construct(atkEvent);
+            defFieldContext.FieldCardFactory.Construct(defEvent);
             atkCardToThrowEffector.Construct(atkPresenter, atkContainer);
             defCardToThrowEffector.Construct(defPresenter, defContainer);
 
