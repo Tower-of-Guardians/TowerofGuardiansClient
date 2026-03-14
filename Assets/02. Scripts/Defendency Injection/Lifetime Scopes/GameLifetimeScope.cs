@@ -30,12 +30,17 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<TurnManager>()
                .AsSelf()
                .As<ITurnHandLimitPort>();
+
+        builder.RegisterComponentInHierarchy<StatusUI>().As<IStatusUI>();
+        builder.Register<CardDropSystem>(Lifetime.Singleton);
+        
         builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();
+        
         builder.RegisterComponentInHierarchy<CardInfoUI>();
+        
         builder.RegisterComponentInHierarchy<DrawCardEffector>();
         builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();
         builder.RegisterComponentInHierarchy<DefendCardToThrowEffector>();
-        builder.Register<CardDropSystem>(Lifetime.Singleton);
     }
 
     private void ConfigureManualUI(IContainerBuilder builder)

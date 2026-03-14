@@ -1,7 +1,5 @@
-public interface IStatusView
+public interface IStatusUI
 {
-    void Inject(StatusPresenter presenter);
-    
     void UpdateLevel(int level, float exp);
     void UpdateGold(int gold);
 }
