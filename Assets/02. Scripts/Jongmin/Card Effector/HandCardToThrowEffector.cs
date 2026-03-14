@@ -1,22 +1,24 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using VContainer;
 
 public class HandCardToThrowEffector : CardEffector
 {
-    [Header("카드 부모 트랜스폼")]
-    [SerializeField] private Transform m_card_root;
+    [SerializeField] private Transform _handCardRoot;
+    [SerializeField] private UILocker _battleLocker;
 
-    [Header("전투 비활성화 패널")]
-    [SerializeField] private UILocker m_battle_locker;
+    private IHandCardRemovePort _handCardRemovePort;
+    private CardContainer<IHandCardUI, HandCardPresenter> _handCardContainer;
 
-    private HandPresenter m_hand_presenter;
-
-    public void Inject(HandPresenter hand_presenter)
+    [Inject]
+    private void Construct(IHandCardRemovePort handCardRemovePort,
+                           CardContainer<IHandCardUI, HandCardPresenter> handCardContainer)
     {
-        m_hand_presenter = hand_presenter;
+        _handCardRemovePort = handCardRemovePort;
+        _handCardContainer = handCardContainer;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.5f,
 
@@ -45,45 +47,61 @@ public class HandCardToThrowEffector : CardEffector
             ForceStartOpacity = false,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
-            TargetRoot = m_card_root,
-            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
+            TargetRoot = _handCardRoot,
+            EndPosition = _endTransform == null ? Vector3.zero : _endTransform.position,
 
             Interval = 0.1f,
 
-            Settings = m_temp_card_settings,
-        };
+            Settings = _tempCardSettings,
+        };        
     }
 
     public override void Execute()
     {
-        m_battle_locker.Lock(true);
+        _battleLocker.Lock(true);
 
-        m_temp_card_anime_request.CardDatas = m_hand_presenter.GetCardDatas();
+        _tempCardAnimeRequest.CardDatas = _handCardContainer.GetAllDatas();
 
-        List<Vector3> hand_card_positions = new();
-        foreach(IHandCardView card_view in m_hand_presenter.GetCardViews())
-            hand_card_positions.Add((card_view as HandCardView).transform.position);
+        List<Vector3> handCardPositionList = new();
+        if(!_handCardContainer.TryGetAllUIs(out IHandCardUI[] handCardArray))
+        {
+            return;
+        }
 
-        List<Vector3> hand_card_rotations = new();
-        foreach(IHandCardView card_view in m_hand_presenter.GetCardViews())
-            hand_card_rotations.Add((card_view as HandCardView).transform.eulerAngles);
+        foreach(IHandCardUI cardUI in handCardArray)
+        {
+            HandCardUI concreteCardUI = cardUI as HandCardUI;
+            handCardPositionList.Add(concreteCardUI.transform.position);
+        }
 
-        m_temp_card_anime_request.StartPositions = hand_card_positions.ToArray(); 
-        m_temp_card_anime_request.StartRotations = hand_card_rotations.ToArray();
+        List<Vector3> handCardRotationList = new();
+        if(!_handCardContainer.TryGetAllUIs(out handCardArray))
+        {
+            return;
+        }
+
+        foreach(IHandCardUI card_view in handCardArray)
+        {
+            HandCardUI concreteCardUI = card_view as HandCardUI;
+            handCardRotationList.Add(concreteCardUI.transform.eulerAngles);
+        }
+
+        _tempCardAnimeRequest.StartPositions = handCardPositionList.ToArray(); 
+        _tempCardAnimeRequest.StartRotations = handCardRotationList.ToArray();
 
         base.Execute();
     }
 
 
-    protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_hand_presenter.RemoveCard(m_hand_presenter.GetCardView(card_data), false);
+    protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
+        => _handCardRemovePort.TryRemoveCard(battleCardData);
 
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
     {
-        GameData.Instance.handDeck.Remove(card_data.data.id);
-        GameData.Instance.UseCard(card_data.data.id);
+        GameData.Instance.handDeck.Remove(battleCardData.data.id);
+        GameData.Instance.UseCard(battleCardData.data.id);
         GameData.Instance.InvokeDeckCountChange(DeckType.Throw);        
     }
 }

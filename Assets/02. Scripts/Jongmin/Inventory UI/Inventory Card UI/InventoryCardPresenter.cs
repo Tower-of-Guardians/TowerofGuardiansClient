@@ -1,12 +1,12 @@
 public class InventoryCardPresenter : CardPresenter
 {    
     protected readonly IInventoryCardView m_view;
-    protected readonly new CardData m_card_data;
+    protected readonly CardData m_card_data;
     protected readonly ICardBehavior m_behavior;
     private readonly ICardSelectionRequester m_selection_requester;
     private readonly ICardSelectionController m_selection_controller;
 
-    public new CardData CardData => m_card_data;
+    public CardData CardData => m_card_data;
 
     private bool m_is_selected;
 
@@ -23,7 +23,7 @@ public class InventoryCardPresenter : CardPresenter
         m_selection_controller = selection_controller;
 
         m_view.Inject(this);
-        m_view.InitUI(card_data);
+        m_view.UpdateUI(card_data);
     }
 
     public virtual void OnClick()
@@ -54,7 +54,4 @@ public class InventoryCardPresenter : CardPresenter
 
     public void DeselectRequest()
         => m_selection_requester?.RequestDeselect(this);
-
-    public override void Return()
-        => m_view.Return();
 }

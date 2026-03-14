@@ -11,11 +11,11 @@ public class SeriesView : MonoBehaviour, ISeriesView
     [Header("시리즈 카드 그룹")]
     [SerializeField] private Transform m_card_group;
 
-    private CardView[] m_card_list;
+    private CardUI[] m_card_list;
     private Coroutine m_fade_coroutine;
 
     private void Awake()
-        => m_card_list = m_card_group.GetComponentsInChildren<CardView>();
+        => m_card_list = m_card_group.GetComponentsInChildren<CardUI>();
 
     public void OpenUI()
         => ToggleUI(true);
@@ -35,7 +35,7 @@ public class SeriesView : MonoBehaviour, ISeriesView
         for(int i = 0; i < card_data_count; i++)
         {
             m_card_list[i].gameObject.SetActive(true);
-            m_card_list[i].InitUI(card_data_list[i]);
+            m_card_list[i].UpdateUI(card_data_list[i]);
         }
     }
 

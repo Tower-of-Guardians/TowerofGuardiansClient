@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryCardView : CardView, IInventoryCardView, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventoryCardView : CardUI, IInventoryCardView, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("선택 완료 이미지")]
     [SerializeField] private GameObject m_selected_image;

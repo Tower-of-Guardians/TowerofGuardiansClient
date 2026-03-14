@@ -32,7 +32,7 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
         var turnManager = DIContainer.Resolve<TurnManager>();
         if (turnManager != null)
         {
-            turnManager.StartNewTurn += OnStartNewTurn;
+            turnManager.OnStartNewTurn += OnStartNewTurn;
         }
     }
 
@@ -43,7 +43,7 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
             var turnManager = DIContainer.Resolve<TurnManager>();
             if (turnManager != null)
             {
-                turnManager.StartNewTurn -= OnStartNewTurn;
+                turnManager.OnStartNewTurn -= OnStartNewTurn;
             }
         }
 

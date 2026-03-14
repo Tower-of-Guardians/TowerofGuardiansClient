@@ -1,16 +1,21 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using VContainer;
 
 public class ThrowCardToThrowEffector : CardEffector
 {
-    private ThrowPresenter m_throw_presenter;
+    private IDiscardCardRemovePort _discardCardRemovePort;
+    private CardContainer<IDiscardCardUI, DiscardCardPresenter> _discardCardContainer;
 
-    public void Inject(ThrowPresenter throw_presenter)
+    [Inject]
+    private void Construct(IDiscardCardRemovePort discardCardRemovePort,
+                           CardContainer<IDiscardCardUI, DiscardCardPresenter> discardCardContainer)
     {
-        m_throw_presenter = throw_presenter;
+        _discardCardRemovePort = discardCardRemovePort;
+        _discardCardContainer = discardCardContainer;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.5f,
 
@@ -34,35 +39,42 @@ public class ThrowCardToThrowEffector : CardEffector
             ForceStartRotation = false,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
-            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
+            EndPosition = _endTransform == null ? Vector3.zero : _endTransform.position,
 
             Interval = 0.05f,
 
-            Settings = m_temp_card_settings,
+            Settings = _tempCardSettings,
         };
     }
 
     public override void Execute()
     {
-        m_temp_card_anime_request.CardDatas = m_throw_presenter.GetCardDatas();
+        _tempCardAnimeRequest.CardDatas = _discardCardContainer.GetAllDatas();
 
-        List<Vector3> throw_card_positions = new();
-        foreach(IThrowCardView card_view in m_throw_presenter.GetCardViews())
-            throw_card_positions.Add((card_view as ThrowCardView).transform.position);
+        List<Vector3> discardCardPositionList = new();
+        if(!_discardCardContainer.TryGetAllUIs(out IDiscardCardUI[] discardCardUIArray))
+        {
+            return;
+        }
 
-        m_temp_card_anime_request.StartPositions = throw_card_positions.ToArray(); 
+        foreach(IDiscardCardUI cardUI in discardCardUIArray)
+        {
+            DiscardCardUI concreteCardUI = cardUI as DiscardCardUI;
+            discardCardPositionList.Add(concreteCardUI.transform.position);
+        }
+        _tempCardAnimeRequest.StartPositions = discardCardPositionList.ToArray(); 
 
         base.Execute();
     }
 
-    protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_throw_presenter.RemoveCard(m_throw_presenter.GetCardView(card_data));
+    protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
+        => _discardCardRemovePort.TryRemoveCard(battleCardData);
 
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
     {
-        GameData.Instance.UseCard(card_data.data.id);
+        GameData.Instance.UseCard(battleCardData.data.id);
         GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
     }
 }

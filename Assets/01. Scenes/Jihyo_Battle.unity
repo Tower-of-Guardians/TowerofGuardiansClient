@@ -3272,7 +3272,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 573556879}
-  - component: {fileID: 573556880}
   m_Layer: 0
   m_Name: Throw UI Injector
   m_TagString: Untagged
@@ -3295,24 +3294,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1570301012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &573556880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573556878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c79b6d0980676dd4b8dc20189a85c802, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_layout_throw_view: {fileID: 1936710986}
-  m_anime_controller: {fileID: 1936710988}
-  m_event_controller: {fileID: 1936710989}
-  m_layout_controller: {fileID: 1936710987}
-  m_throw_card_factory: {fileID: 1936710990}
-  m_notice: {fileID: 616374863}
 --- !u!1 &584538473
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,7 +4038,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 691267929}
-  - component: {fileID: 691267930}
   m_Layer: 0
   m_Name: Field UI Injector
   m_TagString: Untagged
@@ -4080,21 +4060,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1570301012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &691267930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691267928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c8488c3750465d42ad8e33d85e1869b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_designer: {fileID: 11400000, guid: 7a8defbc05ee00c4c85ce669782984c1, type: 2}
-  m_attack_field_view: {fileID: 240647220}
-  m_defend_field_view: {fileID: 1936468234}
 --- !u!1 &738466076
 GameObject:
   m_ObjectHideFlags: 0
@@ -8621,7 +8586,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1712843085}
-  - component: {fileID: 1712843086}
   m_Layer: 0
   m_Name: Hand UI Injector
   m_TagString: Untagged
@@ -8644,19 +8608,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1570301012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1712843086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712843084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2b1dc0e537a8314c8dfa13a9f5a03d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_hand_view: {fileID: 114737535}
 --- !u!1 &1761650165
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleShopSlotView : CardView, IBattleShopSlotView
+public class BattleShopSlotView : CardUI, IBattleShopSlotView
 {
     [Header("UI 관련 컴포넌트")]
     [Header("애니메이터")]
@@ -16,9 +16,8 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
 
     private BattleShopSlotPresenter m_presenter;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         // TODO: 카드 구매 이벤트 등록
     }
 
@@ -30,7 +29,7 @@ public class BattleShopSlotView : CardView, IBattleShopSlotView
 
     public void InitUI(ShopCardData slot_data, bool can_purchase)
     {
-        InitUI(slot_data.Card.data);        
+        UpdateUI(slot_data.Card.data);        
         m_cost_label.text = can_purchase ? $"${slot_data.Cost}"
                                          : $"<color=red>${slot_data.Cost}</color>";
         m_purchase_button.interactable = can_purchase;

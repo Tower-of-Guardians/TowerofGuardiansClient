@@ -1,7 +1,7 @@
 public class ReinforcementCardPresenter : CardPresenter
 {
     private IReinforcementCardView m_view;
-    private new CardData m_card_data;
+    private CardData m_card_data;
 
     public ReinforcementCardPresenter(IReinforcementCardView view)
         => m_view = view;
@@ -9,7 +9,7 @@ public class ReinforcementCardPresenter : CardPresenter
     public void Inject(CardData card_data)
     {
         m_card_data = card_data;
-        m_view.InitUI(m_card_data);
+        m_view.UpdateUI(m_card_data);
     }
 
     public void ATKUpgrade(float atk)
@@ -30,7 +30,4 @@ public class ReinforcementCardPresenter : CardPresenter
         m_card_data.DEF += def;
         m_view.UpgradeDEF(m_card_data.DEF);
     }
-
-    public override void Return()
-        => m_view.Return();
 }

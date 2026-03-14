@@ -22,7 +22,7 @@ public class ResultUIInjector : MonoBehaviour, IInjector
     [SerializeField] private BattleShopCardFactory m_battle_shop_card_factory;
 
     [Header("알리미 UI")]
-    [SerializeField] private Notice m_notice;
+    [SerializeField] private INotifierUI m_notice;
 
     public void Inject()
     {

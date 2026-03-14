@@ -1,28 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 
 public class DefendCardToThrowEffector : CardEffector
 {
-    [Header("카드 부모 트랜스폼")]
-    [SerializeField] private Transform m_card_root;
+    [Header("Battle Locker")]
+    [SerializeField] private UILocker _battleLocker;
 
-    [Header("전투 비활성화 패널")]
-    [SerializeField] private UILocker m_battle_locker;
+    [Header("Attack Field Locker")]
+    [SerializeField] private UILocker _atkFieldLocker;
 
-    [Header("공격 필드 비활성화 패널")]
-    [SerializeField] private UILocker m_attack_field_locker;
+    [Header("Defense Field Locker")]
+    [SerializeField] private UILocker _defFieldLocker;
 
-    [Header("방어 필드 비활성화 패널")]
-    [SerializeField] private UILocker m_defend_field_locker;
+    private IDefendFieldCardRemovePort _defFieldCardRemovePort;
+    private CardContainer<IFieldCardUI, FieldCardPresenter> _defFieldCardContainer;
 
-    private DefendFieldPresenter m_defend_field_presenter;
-
-    public void Inject(DefendFieldPresenter defend_field_presenter)
+    public void Construct(IDefendFieldCardRemovePort defFieldCardRemovePort,
+                          CardContainer<IFieldCardUI, FieldCardPresenter> defFieldCardContainer)
     {
-        m_defend_field_presenter = defend_field_presenter;
+        _defFieldCardRemovePort = defFieldCardRemovePort;
+        _defFieldCardContainer = defFieldCardContainer;
 
-        m_temp_card_settings = new()
+        _tempCardSettings = new()
         {
             Duration = 0.5f,
 
@@ -49,47 +49,50 @@ public class DefendCardToThrowEffector : CardEffector
             ForceStartRotation = true,
         };
 
-        m_temp_card_anime_request = new()
+        _tempCardAnimeRequest = new()
         {
-            //TargetRoot = m_card_root,
-
-            EndPosition = m_end_transform == null ? Vector3.zero : m_end_transform.position,
-
+            EndPosition = _endTransform == null ? Vector3.zero : _endTransform.position,
             StartRotation = Vector3.zero,
-
             Interval = 0.1f,
-
-            Settings = m_temp_card_settings,
+            Settings = _tempCardSettings,
         };
     }
 
     public override void Execute()
     {
-        m_temp_card_anime_request.CardDatas = m_defend_field_presenter.GetCardDatas();
+        _tempCardAnimeRequest.CardDatas = _defFieldCardContainer.GetAllDatas();
 
-        List<Vector3> field_card_positions = new();
-        foreach(IFieldCardView card_view in m_defend_field_presenter.GetCardViews())
-            field_card_positions.Add((card_view as FieldCardView).transform.position);
+        List<Vector3> fieldCardPositionList = new();
+        if(!_defFieldCardContainer.TryGetAllUIs(out IFieldCardUI[] fieldUIArray))
+        {
+            return;
+        }
 
-        m_temp_card_anime_request.StartPositions = field_card_positions.ToArray(); 
+        foreach(IFieldCardUI cardUI in fieldUIArray)
+        {
+            FieldCardUI concreteCardUI = cardUI as FieldCardUI;
+            fieldCardPositionList.Add(concreteCardUI.transform.position);
+        }
+
+        _tempCardAnimeRequest.StartPositions = fieldCardPositionList.ToArray();
 
         base.Execute();
     }
 
-    protected override void OnTempCardAnimeStart(BattleCardData card_data)
-        => m_defend_field_presenter.Remove(m_defend_field_presenter.GetCardView(card_data));
+    protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
+        => _defFieldCardRemovePort.TryRemoveCard(battleCardData);
 
-    protected override void OnTempCardAnimeEnd(BattleCardData card_data)
+    protected override void OnTempCardAnimeEnd(BattleCardData battleCardData)
     {
-        GameData.Instance.defenseField.Remove(card_data.data);
-        GameData.Instance.UseCard(card_data.data.id);
-        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);    
+        GameData.Instance.defenseField.Remove(battleCardData.data);
+        GameData.Instance.UseCard(battleCardData.data.id);
+        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
     }
 
     protected override void OnFinalAnimeEnd()
     {
-        m_battle_locker.Lock(false);
-        m_attack_field_locker.Lock(false);
-        m_defend_field_locker.Lock(false);
+        _battleLocker.Lock(false);
+        _atkFieldLocker.Lock(false);
+        _defFieldLocker.Lock(false);
     }
 }
