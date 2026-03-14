@@ -18,6 +18,7 @@ public class GameLifetimeScope : LifetimeScope
     {
         ConfigureCore(builder);
         ConfigureManualUI(builder);
+        ConfigureDeckUI(builder);
         ConfigureDiscardUI(builder);
         ConfigureHandUI(builder);
         ConfigureFieldUI(builder);
@@ -43,6 +44,14 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ActionManualPresenter>(Lifetime.Scoped);
         builder.RegisterComponentInHierarchy<DiscardManualUI>().As<IDiscardManualUI>();
         builder.RegisterEntryPoint<DiscardManualPresenter>(Lifetime.Scoped);
+    }
+
+    private void ConfigureDeckUI(IContainerBuilder builder)
+    {
+        builder.RegisterComponentInHierarchy<DeckUI>().As<IDeckUI>();
+        builder.RegisterComponentInHierarchy<DeckCardFactory>().As<ICardFactory<IDeckCardUI>>();
+        builder.RegisterInstance(new CardContainer<IDeckCardUI, DeckCardPresenter>());
+        builder.RegisterEntryPoint<DeckPresenter>(Lifetime.Scoped);
     }
 
     private void ConfigureDiscardUI(IContainerBuilder builder)
