@@ -131,6 +131,7 @@ public class DiscardPresenter : IDisposable, IInitializable, ICardDropTarget<IDi
 
         _discardCardToDiscardDeckEffector.Execute();
         _discardUI.CloseUI();
+        _turnManager.UpdateThrowAction(false);
         OnDiscardUIVisibilityChanged?.Invoke(false);
     }
 

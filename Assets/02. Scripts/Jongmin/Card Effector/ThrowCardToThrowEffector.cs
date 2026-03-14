@@ -10,7 +10,7 @@ public class ThrowCardToThrowEffector : CardEffector
 
     [Inject]
     private void Construct(IDiscardCardRemovePort discardCardRemovePort,
-                          CardContainer<IDiscardCardUI, DiscardCardPresenter> discardCardContainer)
+                           CardContainer<IDiscardCardUI, DiscardCardPresenter> discardCardContainer)
     {
         _discardCardRemovePort = discardCardRemovePort;
         _discardCardContainer = discardCardContainer;
