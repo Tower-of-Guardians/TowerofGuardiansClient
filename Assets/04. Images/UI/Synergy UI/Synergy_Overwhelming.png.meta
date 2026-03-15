@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 02c6e1fbcdf6a294ab31e0a427c92b07
+guid: 727bd49ad9b67e347aaf6768b383d163
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7736074708708787471
-    second: HPBar2_0
+      213: 6673027515592355978
+    second: Synergy_Overwhelming_0
   - first:
-      213: -8572975716502785767
-    second: HPBar2_1
-  - first:
-      213: 4299599410190523236
-    second: HPBar2_2
-  - first:
-      213: 2759539255968267070
-    second: HPBar2_3
+      213: 6201698250997746309
+    second: Synergy_Overwhelming_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -109,67 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPBar2_0
+      name: Synergy_Overwhelming_0
       rect:
         serializedVersion: 2
-        x: 48
-        y: 135
-        width: 348
-        height: 36
+        x: 0
+        y: 7
+        width: 116
+        height: 89
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fa77873a01f3a490800000000000000
-      internalID: -7736074708708787471
+      spriteID: a803a439b2b5b9c50800000000000000
+      internalID: 6673027515592355978
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HPBar2_1
+      name: Synergy_Overwhelming_1
       rect:
         serializedVersion: 2
-        x: 54
-        y: 93
-        width: 336
+        x: 116
+        y: 52
+        width: 12
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9113dc5e10ca60980800000000000000
-      internalID: -8572975716502785767
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: HPBar2_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 39
-        width: 348
-        height: 36
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e3bfbb7255adb4620800000000000000
-      internalID: 2759539255968267070
+      spriteID: 58ac1e683bbd01650800000000000000
+      internalID: 6201698250997746309
       vertices: []
       indices: 
       edges: []
@@ -178,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2fe64dd5a216d04439a3c3241e31daa3
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -188,10 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HPBar2_0: -7736074708708787471
-      HPBar2_1: -8572975716502785767
-      HPBar2_2: 4299599410190523236
-      HPBar2_3: 2759539255968267070
+      Synergy_Overwhelming_0: 6673027515592355978
+      Synergy_Overwhelming_1: 6201698250997746309
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -109,35 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPBar_0
-      rect:
-        serializedVersion: 2
-        x: 340
-        y: 200
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0baa70958c36abf90800000000000000
-      internalID: -6937122563872544080
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: HPBar_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 135
-        width: 348
-        height: 36
+        x: 51
+        y: 138
+        width: 342
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,10 +134,10 @@ TextureImporter:
       name: HPBar_2
       rect:
         serializedVersion: 2
-        x: 57
-        y: 93
-        width: 330
-        height: 24
+        x: 58
+        y: 94
+        width: 328
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,10 +156,10 @@ TextureImporter:
       name: HPBar_3
       rect:
         serializedVersion: 2
-        x: 48
-        y: 39
-        width: 348
-        height: 36
+        x: 49
+        y: 40
+        width: 346
+        height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,7 +178,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c53a4d0e9f25a274d996a55559fdb82c
     internalID: 0
     vertices: []
     indices: 

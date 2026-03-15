@@ -395,9 +395,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 752
-        width: 52
-        height: 46
+        y: 750
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -413,35 +413,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_1
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 756
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1ec7314fc68e95000800000000000000
-      internalID: 25306827576278241
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_2
       rect:
         serializedVersion: 2
-        x: 304
-        y: 756
-        width: 44
-        height: 38
+        x: 250
+        y: 750
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -460,10 +438,10 @@ TextureImporter:
       name: Synergy Gauge_3
       rect:
         serializedVersion: 2
-        x: 350
-        y: 752
-        width: 52
-        height: 46
+        x: 300
+        y: 750
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -482,10 +460,10 @@ TextureImporter:
       name: Synergy Gauge_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 702
-        width: 52
-        height: 46
+        x: 350
+        y: 750
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -501,35 +479,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_5
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 706
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7df3dba2188f12210800000000000000
-      internalID: 1306598600565669847
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_6
       rect:
         serializedVersion: 2
-        x: 304
-        y: 706
-        width: 44
-        height: 38
+        x: 0
+        y: 700
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -545,35 +501,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_7
-      rect:
-        serializedVersion: 2
-        x: 350
-        y: 702
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ca7c49419d5191da0800000000000000
-      internalID: -5973719408632870996
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_8
       rect:
         serializedVersion: 2
-        x: 4
-        y: 656
-        width: 44
-        height: 38
+        x: 250
+        y: 700
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -592,10 +526,10 @@ TextureImporter:
       name: Synergy Gauge_9
       rect:
         serializedVersion: 2
-        x: 54
-        y: 656
-        width: 44
-        height: 38
+        x: 300
+        y: 700
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -614,10 +548,10 @@ TextureImporter:
       name: Synergy Gauge_10
       rect:
         serializedVersion: 2
-        x: 100
-        y: 652
-        width: 52
-        height: 46
+        x: 350
+        y: 700
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -633,35 +567,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_11
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 656
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ed40fde96ca6d7400800000000000000
-      internalID: 323532149542028510
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_12
       rect:
         serializedVersion: 2
-        x: 304
-        y: 656
-        width: 44
-        height: 38
+        x: 0
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -680,10 +592,10 @@ TextureImporter:
       name: Synergy Gauge_13
       rect:
         serializedVersion: 2
-        x: 350
-        y: 652
-        width: 52
-        height: 46
+        x: 50
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -702,10 +614,10 @@ TextureImporter:
       name: Synergy Gauge_14
       rect:
         serializedVersion: 2
-        x: 4
-        y: 606
-        width: 44
-        height: 38
+        x: 100
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -721,35 +633,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_15
-      rect:
-        serializedVersion: 2
-        x: 54
-        y: 606
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1679c82d74f681c00800000000000000
-      internalID: 871568882161981281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_16
       rect:
         serializedVersion: 2
-        x: 100
-        y: 602
-        width: 52
-        height: 46
+        x: 250
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -768,10 +658,10 @@ TextureImporter:
       name: Synergy Gauge_17
       rect:
         serializedVersion: 2
-        x: 254
-        y: 606
-        width: 44
-        height: 38
+        x: 300
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -790,10 +680,10 @@ TextureImporter:
       name: Synergy Gauge_18
       rect:
         serializedVersion: 2
-        x: 304
-        y: 606
-        width: 44
-        height: 38
+        x: 350
+        y: 650
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -809,35 +699,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_19
-      rect:
-        serializedVersion: 2
-        x: 350
-        y: 602
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9045799691a183250800000000000000
-      internalID: 5924514006253917193
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_20
       rect:
         serializedVersion: 2
-        x: 4
-        y: 556
-        width: 44
-        height: 38
+        x: 0
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -856,10 +724,10 @@ TextureImporter:
       name: Synergy Gauge_21
       rect:
         serializedVersion: 2
-        x: 54
-        y: 556
-        width: 44
-        height: 38
+        x: 50
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -879,9 +747,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 100
-        y: 552
-        width: 52
-        height: 46
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -897,35 +765,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_23
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 556
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 70b7f4c0980682430800000000000000
-      internalID: 3758360030774000391
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_24
       rect:
         serializedVersion: 2
-        x: 304
-        y: 556
-        width: 44
-        height: 38
+        x: 250
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -944,10 +790,10 @@ TextureImporter:
       name: Synergy Gauge_25
       rect:
         serializedVersion: 2
-        x: 350
-        y: 552
-        width: 52
-        height: 46
+        x: 300
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -966,10 +812,10 @@ TextureImporter:
       name: Synergy Gauge_26
       rect:
         serializedVersion: 2
-        x: 4
-        y: 506
-        width: 44
-        height: 38
+        x: 350
+        y: 600
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -985,35 +831,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_27
-      rect:
-        serializedVersion: 2
-        x: 54
-        y: 506
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fc94b326d852a9f40800000000000000
-      internalID: 5735938364578417103
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_28
       rect:
         serializedVersion: 2
-        x: 100
-        y: 502
-        width: 52
-        height: 46
+        x: 0
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1032,10 +856,10 @@ TextureImporter:
       name: Synergy Gauge_29
       rect:
         serializedVersion: 2
-        x: 254
-        y: 506
-        width: 44
-        height: 38
+        x: 50
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1054,10 +878,10 @@ TextureImporter:
       name: Synergy Gauge_30
       rect:
         serializedVersion: 2
-        x: 304
-        y: 506
-        width: 44
-        height: 38
+        x: 100
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1073,35 +897,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_31
-      rect:
-        serializedVersion: 2
-        x: 350
-        y: 502
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 36dfa7a230f8ee980800000000000000
-      internalID: -8507705402295911069
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_32
       rect:
         serializedVersion: 2
-        x: 4
-        y: 456
-        width: 44
-        height: 38
+        x: 250
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1120,10 +922,10 @@ TextureImporter:
       name: Synergy Gauge_33
       rect:
         serializedVersion: 2
-        x: 54
-        y: 456
-        width: 44
-        height: 38
+        x: 300
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1142,10 +944,10 @@ TextureImporter:
       name: Synergy Gauge_34
       rect:
         serializedVersion: 2
-        x: 104
-        y: 456
-        width: 44
-        height: 38
+        x: 350
+        y: 550
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1161,35 +963,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_35
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 452
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b16896964a9782dc0800000000000000
-      internalID: -3663544549815777765
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_36
       rect:
         serializedVersion: 2
-        x: 254
-        y: 456
-        width: 44
-        height: 38
+        x: 0
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1208,10 +988,10 @@ TextureImporter:
       name: Synergy Gauge_37
       rect:
         serializedVersion: 2
-        x: 304
-        y: 456
-        width: 44
-        height: 38
+        x: 50
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1230,10 +1010,10 @@ TextureImporter:
       name: Synergy Gauge_38
       rect:
         serializedVersion: 2
-        x: 350
-        y: 452
-        width: 52
-        height: 46
+        x: 100
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1249,35 +1029,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_39
-      rect:
-        serializedVersion: 2
-        x: 4
-        y: 406
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bdd699c5342064c00800000000000000
-      internalID: 884396865164504539
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_40
       rect:
         serializedVersion: 2
-        x: 54
-        y: 406
-        width: 44
-        height: 38
+        x: 250
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1296,10 +1054,10 @@ TextureImporter:
       name: Synergy Gauge_41
       rect:
         serializedVersion: 2
-        x: 104
-        y: 406
-        width: 44
-        height: 38
+        x: 300
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1318,10 +1076,10 @@ TextureImporter:
       name: Synergy Gauge_42
       rect:
         serializedVersion: 2
-        x: 150
-        y: 402
-        width: 52
-        height: 46
+        x: 350
+        y: 500
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1337,35 +1095,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_43
-      rect:
-        serializedVersion: 2
-        x: 254
-        y: 406
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5ca053f3daca1e660800000000000000
-      internalID: 7413396321718307525
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_44
       rect:
         serializedVersion: 2
-        x: 304
-        y: 406
-        width: 44
-        height: 38
+        x: 0
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1384,10 +1120,10 @@ TextureImporter:
       name: Synergy Gauge_45
       rect:
         serializedVersion: 2
-        x: 350
-        y: 402
-        width: 52
-        height: 46
+        x: 50
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1406,10 +1142,10 @@ TextureImporter:
       name: Synergy Gauge_46
       rect:
         serializedVersion: 2
-        x: 4
-        y: 356
-        width: 44
-        height: 38
+        x: 100
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1428,10 +1164,10 @@ TextureImporter:
       name: Synergy Gauge_47
       rect:
         serializedVersion: 2
-        x: 54
-        y: 356
-        width: 44
-        height: 38
+        x: 150
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1447,35 +1183,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_48
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 356
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 19ffbcd51ff6e2230800000000000000
-      internalID: 3615950633276538769
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_49
       rect:
         serializedVersion: 2
-        x: 150
-        y: 352
-        width: 52
-        height: 46
+        x: 250
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1494,10 +1208,10 @@ TextureImporter:
       name: Synergy Gauge_50
       rect:
         serializedVersion: 2
-        x: 252
-        y: 356
-        width: 44
-        height: 38
+        x: 300
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1516,10 +1230,10 @@ TextureImporter:
       name: Synergy Gauge_51
       rect:
         serializedVersion: 2
-        x: 302
-        y: 356
-        width: 44
-        height: 38
+        x: 350
+        y: 450
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1535,35 +1249,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_52
-      rect:
-        serializedVersion: 2
-        x: 352
-        y: 356
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 93fff4a2dd13e8ac0800000000000000
-      internalID: -3851085805387776199
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_53
       rect:
         serializedVersion: 2
-        x: 398
-        y: 352
-        width: 52
-        height: 46
+        x: 0
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1582,10 +1274,10 @@ TextureImporter:
       name: Synergy Gauge_54
       rect:
         serializedVersion: 2
-        x: 4
-        y: 306
-        width: 44
-        height: 38
+        x: 50
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1604,10 +1296,10 @@ TextureImporter:
       name: Synergy Gauge_55
       rect:
         serializedVersion: 2
-        x: 54
-        y: 306
-        width: 44
-        height: 38
+        x: 100
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1626,10 +1318,10 @@ TextureImporter:
       name: Synergy Gauge_56
       rect:
         serializedVersion: 2
-        x: 104
-        y: 306
-        width: 44
-        height: 38
+        x: 150
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1645,35 +1337,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_57
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 302
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7345a2208db8f31e0800000000000000
-      internalID: -2215898731777469385
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_58
       rect:
         serializedVersion: 2
-        x: 252
-        y: 306
-        width: 44
-        height: 38
+        x: 250
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1692,10 +1362,10 @@ TextureImporter:
       name: Synergy Gauge_59
       rect:
         serializedVersion: 2
-        x: 302
-        y: 306
-        width: 44
-        height: 38
+        x: 300
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1714,10 +1384,10 @@ TextureImporter:
       name: Synergy Gauge_60
       rect:
         serializedVersion: 2
-        x: 352
-        y: 306
-        width: 44
-        height: 38
+        x: 350
+        y: 400
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1733,35 +1403,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_61
-      rect:
-        serializedVersion: 2
-        x: 398
-        y: 302
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3d11e4f369865e750800000000000000
-      internalID: 6333583445482934739
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_62
       rect:
         serializedVersion: 2
-        x: 4
-        y: 256
-        width: 44
-        height: 38
+        x: 0
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1780,10 +1428,10 @@ TextureImporter:
       name: Synergy Gauge_63
       rect:
         serializedVersion: 2
-        x: 54
-        y: 256
-        width: 44
-        height: 38
+        x: 50
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1802,10 +1450,10 @@ TextureImporter:
       name: Synergy Gauge_64
       rect:
         serializedVersion: 2
-        x: 104
-        y: 256
-        width: 44
-        height: 38
+        x: 100
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1825,9 +1473,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 150
-        y: 252
-        width: 52
-        height: 46
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1843,35 +1491,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_66
-      rect:
-        serializedVersion: 2
-        x: 252
-        y: 256
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ca88f5ef47518b0b0800000000000000
-      internalID: -5712792535091410772
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_67
       rect:
         serializedVersion: 2
-        x: 302
-        y: 256
-        width: 44
-        height: 38
+        x: 250
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1890,10 +1516,10 @@ TextureImporter:
       name: Synergy Gauge_68
       rect:
         serializedVersion: 2
-        x: 352
-        y: 256
-        width: 44
-        height: 38
+        x: 300
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1912,10 +1538,10 @@ TextureImporter:
       name: Synergy Gauge_69
       rect:
         serializedVersion: 2
-        x: 398
-        y: 252
-        width: 52
-        height: 46
+        x: 350
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1934,10 +1560,10 @@ TextureImporter:
       name: Synergy Gauge_70
       rect:
         serializedVersion: 2
-        x: 4
-        y: 206
-        width: 44
-        height: 38
+        x: 400
+        y: 350
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1956,10 +1582,10 @@ TextureImporter:
       name: Synergy Gauge_71
       rect:
         serializedVersion: 2
-        x: 54
-        y: 206
-        width: 44
-        height: 38
+        x: 0
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1978,10 +1604,10 @@ TextureImporter:
       name: Synergy Gauge_72
       rect:
         serializedVersion: 2
-        x: 104
-        y: 206
-        width: 44
-        height: 38
+        x: 50
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2000,10 +1626,10 @@ TextureImporter:
       name: Synergy Gauge_73
       rect:
         serializedVersion: 2
-        x: 150
-        y: 202
-        width: 52
-        height: 46
+        x: 100
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2022,10 +1648,10 @@ TextureImporter:
       name: Synergy Gauge_74
       rect:
         serializedVersion: 2
-        x: 252
-        y: 206
-        width: 44
-        height: 38
+        x: 150
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2041,35 +1667,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_75
-      rect:
-        serializedVersion: 2
-        x: 302
-        y: 206
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 51a91f620f2b9c580800000000000000
-      internalID: -8806310851831031275
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_76
       rect:
         serializedVersion: 2
-        x: 352
-        y: 206
-        width: 44
-        height: 38
+        x: 250
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2088,10 +1692,10 @@ TextureImporter:
       name: Synergy Gauge_77
       rect:
         serializedVersion: 2
-        x: 398
-        y: 202
-        width: 52
-        height: 46
+        x: 300
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2110,10 +1714,10 @@ TextureImporter:
       name: Synergy Gauge_78
       rect:
         serializedVersion: 2
-        x: 4
-        y: 156
-        width: 44
-        height: 38
+        x: 350
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2132,10 +1736,10 @@ TextureImporter:
       name: Synergy Gauge_79
       rect:
         serializedVersion: 2
-        x: 54
-        y: 156
-        width: 44
-        height: 38
+        x: 400
+        y: 300
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2154,10 +1758,10 @@ TextureImporter:
       name: Synergy Gauge_80
       rect:
         serializedVersion: 2
-        x: 104
-        y: 156
-        width: 44
-        height: 38
+        x: 0
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2176,10 +1780,10 @@ TextureImporter:
       name: Synergy Gauge_81
       rect:
         serializedVersion: 2
-        x: 150
-        y: 152
-        width: 52
-        height: 46
+        x: 50
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2198,10 +1802,10 @@ TextureImporter:
       name: Synergy Gauge_82
       rect:
         serializedVersion: 2
-        x: 252
-        y: 156
-        width: 44
-        height: 38
+        x: 100
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2220,10 +1824,10 @@ TextureImporter:
       name: Synergy Gauge_83
       rect:
         serializedVersion: 2
-        x: 302
-        y: 156
-        width: 44
-        height: 38
+        x: 150
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2239,35 +1843,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_84
-      rect:
-        serializedVersion: 2
-        x: 352
-        y: 156
-        width: 44
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d7ebe924520bc0a80800000000000000
-      internalID: -8499224722676990339
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_85
       rect:
         serializedVersion: 2
-        x: 398
-        y: 152
-        width: 52
-        height: 46
+        x: 250
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2286,10 +1868,10 @@ TextureImporter:
       name: Synergy Gauge_86
       rect:
         serializedVersion: 2
-        x: 4
-        y: 106
-        width: 44
-        height: 38
+        x: 300
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2308,10 +1890,10 @@ TextureImporter:
       name: Synergy Gauge_87
       rect:
         serializedVersion: 2
-        x: 54
-        y: 106
-        width: 44
-        height: 38
+        x: 350
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2330,10 +1912,10 @@ TextureImporter:
       name: Synergy Gauge_88
       rect:
         serializedVersion: 2
-        x: 104
-        y: 106
-        width: 44
-        height: 38
+        x: 400
+        y: 250
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2352,10 +1934,10 @@ TextureImporter:
       name: Synergy Gauge_89
       rect:
         serializedVersion: 2
-        x: 150
-        y: 102
-        width: 52
-        height: 46
+        x: 0
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2374,10 +1956,10 @@ TextureImporter:
       name: Synergy Gauge_90
       rect:
         serializedVersion: 2
-        x: 4
-        y: 56
-        width: 44
-        height: 38
+        x: 50
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2396,10 +1978,10 @@ TextureImporter:
       name: Synergy Gauge_91
       rect:
         serializedVersion: 2
-        x: 54
-        y: 56
-        width: 44
-        height: 38
+        x: 100
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2418,10 +2000,10 @@ TextureImporter:
       name: Synergy Gauge_92
       rect:
         serializedVersion: 2
-        x: 104
-        y: 56
-        width: 44
-        height: 38
+        x: 150
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2437,35 +2019,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge_93
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 52
-        width: 52
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5c14f707f84caff90800000000000000
-      internalID: -6919001757154590267
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Synergy Gauge_94
       rect:
         serializedVersion: 2
-        x: 4
-        y: 6
-        width: 44
-        height: 38
+        x: 250
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2484,10 +2044,10 @@ TextureImporter:
       name: Synergy Gauge_95
       rect:
         serializedVersion: 2
-        x: 54
-        y: 6
-        width: 44
-        height: 38
+        x: 300
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2506,10 +2066,10 @@ TextureImporter:
       name: Synergy Gauge_96
       rect:
         serializedVersion: 2
-        x: 104
-        y: 6
-        width: 44
-        height: 38
+        x: 350
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2528,10 +2088,10 @@ TextureImporter:
       name: Synergy Gauge_97
       rect:
         serializedVersion: 2
-        x: 150
-        y: 2
-        width: 52
-        height: 46
+        x: 400
+        y: 200
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2546,11 +2106,451 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_98
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccca21bcb44aa6e49b4fbe5d37a4d56e
+      internalID: -2067738471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_99
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09ed527ace96abc44bbc1d8fbfb4fb09
+      internalID: -1393250013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_100
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbd81fdec539e804786b508610a21c40
+      internalID: 1683014741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_101
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3d021c3d5ece7d42adeb9b1f61f8e42
+      internalID: -1639904463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_103
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a39a323d4a6fec74f8b32398fa8b6a8d
+      internalID: 596716210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_104
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1d00d22a3d904147acaaf93cbc95b11
+      internalID: -1899786894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_105
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99c507d81dfca3e42bb00f73255db8ad
+      internalID: 347156204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_106
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 150
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efca08a0a8a167d4ea02ffe71032cbad
+      internalID: -176589653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_107
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1598c9410c5abd341944bc7e955343b5
+      internalID: 1134527185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_108
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 100
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c5425868f568784688cf888d2900d19
+      internalID: 771614699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_109
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 100
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6cacde3754a6b9428560de7fadca16a
+      internalID: -2049273544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_110
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 100
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90637a7b846908e448c5284f13ffb633
+      internalID: 1093595720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_112
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 50
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc7ee616fdac794408fa7f4fbb4acff5
+      internalID: -176681315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_113
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 50
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dc4f9f48cdd902469c676682ca857fd
+      internalID: -547832487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_114
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 50
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bc00494d26ea284a81fd4d031cae2e7
+      internalID: 491495051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_115
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 50
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae321dadb16c09741b1623f3f1ff20a3
+      internalID: -963207525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_117
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ee892166d0ce443abb8284f1742a45
+      internalID: -1389082832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_118
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 380038279c698e84f8f16a2ddc1163a6
+      internalID: 1016434568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_119
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22ee4e3f39ead614284f3eca33f34848
+      internalID: -545611368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy Gauge_120
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 0
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 365a5fa8e51a4b94ba7bb5f6b0d5dfc1
+      internalID: 314827357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d7311a1354fe4dc40a1c6c613091cbfc
     internalID: 0
     vertices: []
     indices: 
@@ -2563,8 +2563,30 @@ TextureImporter:
       Synergy Gauge_0: 5068607888594416882
       Synergy Gauge_1: 25306827576278241
       Synergy Gauge_10: 6546846617637216857
+      Synergy Gauge_100: 1683014741
+      Synergy Gauge_101: -1639904463
+      Synergy Gauge_102: -1834130518
+      Synergy Gauge_103: 596716210
+      Synergy Gauge_104: -1899786894
+      Synergy Gauge_105: 347156204
+      Synergy Gauge_106: -176589653
+      Synergy Gauge_107: 1134527185
+      Synergy Gauge_108: 771614699
+      Synergy Gauge_109: -2049273544
       Synergy Gauge_11: 323532149542028510
+      Synergy Gauge_110: 1093595720
+      Synergy Gauge_111: -1077026479
+      Synergy Gauge_112: -176681315
+      Synergy Gauge_113: -547832487
+      Synergy Gauge_114: 491495051
+      Synergy Gauge_115: -963207525
+      Synergy Gauge_116: 1847258337
+      Synergy Gauge_117: -1389082832
+      Synergy Gauge_118: 1016434568
+      Synergy Gauge_119: -545611368
       Synergy Gauge_12: -5344407946230429945
+      Synergy Gauge_120: 314827357
+      Synergy Gauge_121: 2078107995
       Synergy Gauge_13: -4987109374241895332
       Synergy Gauge_14: -4612882921248179979
       Synergy Gauge_15: 871568882161981281
@@ -2658,6 +2680,8 @@ TextureImporter:
       Synergy Gauge_95: -8291412446379258121
       Synergy Gauge_96: -6817202326129046750
       Synergy Gauge_97: 8599126385744962134
+      Synergy Gauge_98: -2067738471
+      Synergy Gauge_99: -1393250013
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

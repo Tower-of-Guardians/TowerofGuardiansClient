@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 02c6e1fbcdf6a294ab31e0a427c92b07
+guid: 6a6c972f98ab7c247907339692695bd7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7736074708708787471
-    second: HPBar2_0
+      213: -656581584617342807
+    second: Synergy_Basic_0
   - first:
-      213: -8572975716502785767
-    second: HPBar2_1
+      213: -7041848047562590471
+    second: Synergy_Basic_1
   - first:
-      213: 4299599410190523236
-    second: HPBar2_2
+      213: -4193675898532318777
+    second: Synergy_Basic_2
   - first:
-      213: 2759539255968267070
-    second: HPBar2_3
+      213: -8131693360435252478
+    second: Synergy_Basic_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -109,67 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPBar2_0
+      name: Synergy_Basic_0
       rect:
         serializedVersion: 2
-        x: 48
-        y: 135
-        width: 348
-        height: 36
+        x: 10
+        y: 62
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fa77873a01f3a490800000000000000
-      internalID: -7736074708708787471
+      spriteID: 9a8f1da078a53e6f0800000000000000
+      internalID: -656581584617342807
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HPBar2_1
+      name: Synergy_Basic_1
       rect:
         serializedVersion: 2
-        x: 54
-        y: 93
-        width: 336
-        height: 24
+        x: 12
+        y: 7
+        width: 104
+        height: 84
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9113dc5e10ca60980800000000000000
-      internalID: -8572975716502785767
+      spriteID: 9f6f0c29284564e90800000000000000
+      internalID: -7041848047562590471
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HPBar2_3
+      name: Synergy_Basic_2
       rect:
         serializedVersion: 2
-        x: 48
-        y: 39
-        width: 348
-        height: 36
+        x: 114
+        y: 46
+        width: 6
+        height: 6
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e3bfbb7255adb4620800000000000000
-      internalID: 2759539255968267070
+      spriteID: 7c13dd44df11dc5c0800000000000000
+      internalID: -4193675898532318777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Synergy_Basic_3
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 24
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 203bad4e8fb662f80800000000000000
+      internalID: -8131693360435252478
       vertices: []
       indices: 
       edges: []
@@ -178,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2fe64dd5a216d04439a3c3241e31daa3
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -188,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HPBar2_0: -7736074708708787471
-      HPBar2_1: -8572975716502785767
-      HPBar2_2: 4299599410190523236
-      HPBar2_3: 2759539255968267070
+      Synergy_Basic_0: -656581584617342807
+      Synergy_Basic_1: -7041848047562590471
+      Synergy_Basic_2: -4193675898532318777
+      Synergy_Basic_3: -8131693360435252478
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
