@@ -22,6 +22,7 @@ public class GameLifetimeScope : LifetimeScope
         ConfigureDiscardUI(builder);
         ConfigureHandUI(builder);
         ConfigureFieldUI(builder);
+        ConfigureResultUI(builder);
     }
 
     private void ConfigureCore(IContainerBuilder builder)
@@ -32,6 +33,7 @@ public class GameLifetimeScope : LifetimeScope
                .As<ITurnHandLimitPort>();
 
         builder.RegisterComponentInHierarchy<StatusUI>().As<IStatusUI>();
+        builder.RegisterEntryPoint<StatusPresenter>(Lifetime.Scoped).AsSelf();
         builder.Register<CardDropSystem>(Lifetime.Singleton);
         
         builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();
@@ -220,6 +222,33 @@ public class GameLifetimeScope : LifetimeScope
 
             discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
             discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;
+        });
+    }
+
+    private void ConfigureResultUI(IContainerBuilder builder)
+    {
+        builder.RegisterEntryPoint<ResultPresenter>(Lifetime.Scoped).AsSelf();
+        builder.RegisterComponentInHierarchy<ResultUI>().As<IResultUI>();
+        
+        builder.RegisterEntryPoint<ResultRewardPresenter>(Lifetime.Scoped).AsSelf();
+        builder.RegisterComponentInHierarchy<ResultRewardUI>().As<IResultRewardUI>();
+        
+        builder.RegisterEntryPoint<ResultShopPresenter>(Lifetime.Scoped).AsSelf();
+        builder.RegisterInstance(new CardContainer<IResultCardUI, ResultCardPresenter>());
+        builder.RegisterComponentInHierarchy<ResultCardFactory>();
+        builder.RegisterComponentInHierarchy<ResultShopUI>().As<IResultShopUI>();
+        
+        builder.RegisterComponentInHierarchy<ResultUISequencer>();
+
+        builder.RegisterBuildCallback(resolver =>
+        {
+            var resultPresenter = resolver.Resolve<ResultPresenter>();
+            var resultRewardPresenter = resolver.Resolve<ResultRewardPresenter>();
+            var resultUISequencer = resolver.Resolve<ResultUISequencer>();
+
+            DIContainer.Register<ResultPresenter>(resultPresenter);
+            DIContainer.Register<ResultRewardPresenter>(resultRewardPresenter);
+            DIContainer.Register<ResultUISequencer>(resultUISequencer);
         });
     }
 }

@@ -12,7 +12,14 @@ public class StatusPresenter : IDisposable, IInitializable
     {
         DataCenter.Instance.playerLevelEvent += UpdateLevel;
         DataCenter.Instance.playerMoneyEvent += UpdateGold;
+        DataCenter.Instance.playerStateEvent += Initialize;
         DataCenter.Instance.SetPlayerState();
+    }
+
+    private void Initialize(PlayerState playerState)
+    {
+        UpdateLevel(playerState.level, playerState.experience);
+        UpdateGold(playerState.money);
     }
 
     public void UpdateLevel(int level, int exp)
@@ -26,12 +33,8 @@ public class StatusPresenter : IDisposable, IInitializable
 
     public void Dispose()
     {
-        if (DataCenter.Instance == null)
-        {
-            return;
-        }
-        
         DataCenter.Instance.playerLevelEvent -= UpdateLevel;
         DataCenter.Instance.playerMoneyEvent -= UpdateGold;
+        DataCenter.Instance.playerStateEvent -= Initialize;
     }
 }

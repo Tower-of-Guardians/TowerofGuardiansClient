@@ -22,7 +22,7 @@ public class MerchantShopDispenser : MonoBehaviour
         var card_data_list = GetRandomCards();
 
         for(int i = 0; i < m_shop_card_presenter_list.Count; i++)
-            m_shop_card_presenter_list[i].Inject(new ShopCardData(card_data_list[i]));
+            m_shop_card_presenter_list[i].Inject(card_data_list[i]);
 
         m_shop_potion_presenter.Initialize();
     }

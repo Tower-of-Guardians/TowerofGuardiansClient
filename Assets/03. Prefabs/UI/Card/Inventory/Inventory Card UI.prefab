@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 6074210425848492177}
   - component: {fileID: 4243630549167518125}
   - component: {fileID: 304702042310879757}
+  - component: {fileID: 6682106584609559421}
   m_Layer: 5
   m_Name: Inventory Card UI
   m_TagString: Untagged
@@ -409,15 +410,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c14be4100880b8e4598c7c3839713fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_card_image: {fileID: 6074210425848492177}
-  m_card_item_image: {fileID: 3739394490521518726}
-  m_card_name_label: {fileID: 3260625888716593675}
-  m_card_description_label: {fileID: 5195933444688705507}
-  m_card_atk_label: {fileID: 1713942942202991125}
-  m_card_def_label: {fileID: 4704852784125959041}
-  m_star_group: {fileID: 7764994515312024319}
-  m_synergy_frame_group: {fileID: 1151622701553754327}
+  _cardFrameImage: {fileID: 0}
+  _cardItemImage: {fileID: 0}
+  _cardNameLabel: {fileID: 0}
+  _cardDescriptionLabel: {fileID: 0}
+  _cardATKLabel: {fileID: 0}
+  _cardDEFLabel: {fileID: 0}
+  _starObjectArray: []
+  _synergyImageArray: []
   m_selected_image: {fileID: 6280152249227632620}
+--- !u!114 &6682106584609559421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4632322973663511511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4930785005980030501
 GameObject:
   m_ObjectHideFlags: 0

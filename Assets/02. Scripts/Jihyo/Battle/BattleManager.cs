@@ -257,7 +257,7 @@ public class BattleManager : MonoBehaviour
 
         // Result 창 열기
         var resultPresenter = DIContainer.Resolve<ResultPresenter>();
-        var resultData = new ResultData(BattleResultType.Victory, totalGold, totalExp);
+        var resultData = new ResultData(totalGold, totalExp);
         resultPresenter.OpenUI(resultData);
     }
 
@@ -268,7 +268,7 @@ public class BattleManager : MonoBehaviour
 
         // Result 창 열기
         var resultPresenter = DIContainer.Resolve<ResultPresenter>();
-        var resultData = new ResultData(BattleResultType.Defeat, 0, 0);
+        var resultData = new ResultData(0, 0);
         resultPresenter.OpenUI(resultData);
     }
 

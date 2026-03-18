@@ -26,19 +26,19 @@ public class ShopCardView : CardUI, IShopCardView
         m_purchase_button.onClick.AddListener(m_presenter.OnClickedPurchase);
     }
 
-    public void InitUI(ShopCardData card_data, bool can_purchase)
+    public void InitUI(BattleCardData card_data, bool can_purchase)
     {
-        UpdateUI(card_data.Card.data);   
+        UpdateUI(card_data.data);   
         SetPurchaseButtonAlpha(1f);   
         m_already_purchased_image.SetActive(false);  
 
-        m_cost_label.text = can_purchase ? $"{card_data.Cost}G"
-                                         : $"<color=red>{card_data.Cost}G</color>";
+        m_cost_label.text = can_purchase ? $"{card_data.data.price}G"
+                                         : $"<color=red>{card_data.data.price}G</color>";
 
         m_purchase_button.interactable = can_purchase;
     }
 
-    public void UpdateUI(ShopCardData card_data, bool can_purchase)
+    public void UpdateUI(BattleCardData card_data, bool can_purchase)
     {
         if(m_presenter.Purchased)
         {

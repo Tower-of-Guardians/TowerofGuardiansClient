@@ -18,9 +18,9 @@ public class ShopCardPresenter : CardPresenter, IDisposable
         m_view.Inject(this);
     }
 
-    public void Inject(ShopCardData card_data)
+    public void Inject(BattleCardData card_data)
     {
-        BattleCardData = card_data.Card;
+        BattleCardData = card_data;
         Purchased = false;
 
         m_dispenser.OnPurchasedAnyItem += UpdateUI;
@@ -29,8 +29,7 @@ public class ShopCardPresenter : CardPresenter, IDisposable
 
     public void OnClickedPurchase()
     {
-        var shop_card_data = new ShopCardData(BattleCardData);
-        var card_cost = shop_card_data.Cost;
+        var card_cost = BattleCardData.data.price;
         var can_purchase = m_player_state.money >= card_cost;
 
         if(can_purchase)
@@ -51,10 +50,9 @@ public class ShopCardPresenter : CardPresenter, IDisposable
 
     private void UpdateUI()
     {
-        var shop_card_data = new ShopCardData(BattleCardData);
-        var card_cost = shop_card_data.Cost;
+        var card_cost = BattleCardData.data.price;
         
         var can_purchase = m_player_state.money >= card_cost;
-        m_view.UpdateUI(shop_card_data, can_purchase);
+        m_view.UpdateUI(BattleCardData, can_purchase);
     }
 }

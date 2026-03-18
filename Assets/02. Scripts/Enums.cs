@@ -10,12 +10,6 @@ public enum MonsterBehaviorPattern
     Loop = 2
 }
 
-public enum BattleResultType
-{
-    Victory = 1,
-    Defeat = 2,
-}
-
 public enum DeckType
 {
     Draw = 1,
