@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MerchantInventoryView : CardInventoryView
+public class MerchantInventoryView : MonoBehaviour, IDeckInvenUI
 {
     [Header("UI 관련 컴포넌트")]
     [Header("판매 버튼")]
@@ -10,13 +10,23 @@ public class MerchantInventoryView : CardInventoryView
     [Header("상점 버튼")]
     [SerializeField] private Button m_back_button;
 
-    private MerchantInventoryPresenter m_presenter;
+    private MerchantDeckInvenPresenter _merchantDeckInvenPresenter;
 
-    public override void Inject(CardInventoryPresenter presenter)
+    public void Construct(DeckInvenPresenter deckInvenPresenter)
     {
-        m_presenter = presenter as MerchantInventoryPresenter;
+        _merchantDeckInvenPresenter = deckInvenPresenter as MerchantDeckInvenPresenter;
 
-        m_sale_button.onClick.AddListener(m_presenter.OnClickedSale);
-        m_back_button.onClick.AddListener(m_presenter.OnClickedBack);
+        m_sale_button.onClick.AddListener(_merchantDeckInvenPresenter.OnClickedSale);
+        m_back_button.onClick.AddListener(_merchantDeckInvenPresenter.OnClickedBack);
+    }
+
+    public void OpenUI()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void CloseUI()
+    {
+        throw new System.NotImplementedException();
     }
 }

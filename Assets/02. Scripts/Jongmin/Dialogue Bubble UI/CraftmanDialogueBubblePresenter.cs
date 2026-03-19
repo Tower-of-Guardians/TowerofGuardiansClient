@@ -6,11 +6,11 @@ public class CraftmanDialogueBubblePresenter : DialogueBubblePresenter
         : base(view)
     {}
 
-    public void OpenUI(CardInventoryPresenter inventory_presenter)
+    public void OpenUI(DeckInvenPresenter inventory_presenter)
 
         => OpenUI();
 
-    public void CloseUI(CardInventoryPresenter inventory_presenter)
+    public void CloseUI(DeckInvenPresenter inventory_presenter)
         => CloseUI();
 
     public void UpdateDefaultBubble()

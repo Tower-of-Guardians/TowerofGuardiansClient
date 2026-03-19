@@ -237,6 +237,21 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(new CardContainer<IResultCardUI, ResultCardPresenter>());
         builder.RegisterComponentInHierarchy<ResultCardFactory>();
         builder.RegisterComponentInHierarchy<ResultShopUI>().As<IResultShopUI>();
+
+        builder.RegisterEntryPoint<ResultDeckInvenPresenter>(Lifetime.Scoped).AsSelf();
+        builder.RegisterInstance<ICardBehavior>(new ReadonlyCardBehavior());
+
+        builder.RegisterComponentInHierarchy<ResultDeckInvenUI>().AsSelf().As<IDeckInvenUI>();
+        builder.Register<IDeckInvenUI>(resolver => resolver.Resolve<ResultDeckInvenUI>(), Lifetime.Scoped)
+               .Keyed(DeckInvenType.Result);
+
+        var resultDeckInvenCardContainer = new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>();
+        builder.RegisterInstance(resultDeckInvenCardContainer);
+        builder.RegisterInstance(resultDeckInvenCardContainer).Keyed(DeckInvenType.Result);
+
+        builder.RegisterComponentInHierarchy<ResultDeckInvenCardFactory>().AsSelf().As<ICardFactory<IDeckInvenCardUI>>();
+        builder.Register<ICardFactory<IDeckInvenCardUI>>(resolver => resolver.Resolve<ResultDeckInvenCardFactory>(), Lifetime.Scoped)
+               .Keyed(DeckInvenType.Result);
         
         builder.RegisterComponentInHierarchy<ResultUISequencer>();
 

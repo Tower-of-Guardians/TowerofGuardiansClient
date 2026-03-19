@@ -5,14 +5,17 @@ public class ResultPresenter : IInitializable
     private readonly IResultUI _resultUI;
     private readonly ResultRewardPresenter _resultRewardPresenter;
     private readonly ResultShopPresenter _resultShopPresenter;
+    private readonly ResultDeckInvenPresenter _resultDeckInvenPresenter;
 
     public ResultPresenter(IResultUI resultUI,
-        ResultRewardPresenter resultRewardPresenter,
-        ResultShopPresenter resultShopPresenter)
+                           ResultRewardPresenter resultRewardPresenter,
+                           ResultShopPresenter resultShopPresenter,
+                           ResultDeckInvenPresenter resultDeckInvenPresenter)
     {
         _resultUI = resultUI;
         _resultRewardPresenter = resultRewardPresenter;
         _resultShopPresenter = resultShopPresenter;
+        _resultDeckInvenPresenter = resultDeckInvenPresenter;
     }
 
     public void Initialize()
@@ -32,6 +35,7 @@ public class ResultPresenter : IInitializable
         _resultUI.CloseUI();
         _resultRewardPresenter.CloseUI();
         _resultShopPresenter.CloseUI();
+        _resultDeckInvenPresenter.CloseUI();
     }
 
     public void ShowCloseButton()

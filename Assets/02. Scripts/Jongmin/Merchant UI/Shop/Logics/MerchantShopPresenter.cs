@@ -2,15 +2,15 @@ public class MerchantShopPresenter
 {
     private readonly IMerchantShopView m_view;
     private readonly MerchantShopDispenser m_dispenser;
-    private readonly MerchantInventoryPresenter m_inventory_presenter;
+    private readonly MerchantDeckInvenPresenter _mDeckInvenPresenter;
 
     public MerchantShopPresenter(IMerchantShopView view,
                                  MerchantShopDispenser dispenser,
-                                 MerchantInventoryPresenter inventory_presenter)
+                                 MerchantDeckInvenPresenter deckInvenPresenter)
     {
         m_view = view;
         m_dispenser = dispenser;
-        m_inventory_presenter = inventory_presenter;
+        _mDeckInvenPresenter = deckInvenPresenter;
 
         m_view.Inject(this);
     }
@@ -37,6 +37,6 @@ public class MerchantShopPresenter
     public void OnClickedSale()
     {
         FadeDownUI();
-        m_inventory_presenter.OpenUI();
+        _mDeckInvenPresenter.OpenUI();
     }
 }

@@ -8,15 +8,18 @@ public class ResultUISequencer : MonoBehaviour
     private ResultPresenter _resultPresenter;
     private ResultRewardPresenter _resultRewardPresenter;
     private ResultShopPresenter _resultShopPresenter;
+    private ResultDeckInvenPresenter _resultDeckInvenPresenter;
 
     [Inject]
     private void Construct(ResultPresenter resultPresenter,
                            ResultRewardPresenter resultRewardPresenter,
-                           ResultShopPresenter resultShopPresenter)
+                           ResultShopPresenter resultShopPresenter,
+                           ResultDeckInvenPresenter resultDeckInvenPresenter)
     {
         _resultPresenter = resultPresenter;
         _resultRewardPresenter = resultRewardPresenter;
         _resultShopPresenter = resultShopPresenter;
+        _resultDeckInvenPresenter = resultDeckInvenPresenter;
     }
     
     /// <summary>
@@ -43,8 +46,9 @@ public class ResultUISequencer : MonoBehaviour
         _resultRewardPresenter.OpenUI(resultData.Gold, resultData.EXP);
         yield return new WaitForSeconds(2.5f);
 
+        _resultDeckInvenPresenter.OpenUI();
         _resultShopPresenter.OpenUI();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         
         _resultPresenter.ShowCloseButton();
     }

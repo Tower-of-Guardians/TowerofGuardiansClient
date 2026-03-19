@@ -1,20 +1,20 @@
-public class CraftmanInventoryPresenter : CardInventoryPresenter, ICardSelectionController
+public class CraftmanInventoryPresenter : DeckInvenPresenter, ICardSelectionController
 {
     private CraftmanDialogueBubblePresenter m_dialogue_bubble_presenter;
     private ReinforcementPresenter m_reinforcement_presenter;
 
-    public CraftmanInventoryPresenter(ICardInventoryView view, 
-                                      CardInventoryFactory factory,
+    public CraftmanInventoryPresenter(IDeckInvenUI view, 
+                                      ICardFactory<IDeckInvenCardUI> factory,
+                                      CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter> cardContainer,
                                       ICardBehavior behavior,
-                                      INotifierUI notice,
                                       CraftmanDialogueBubblePresenter dialogue_bubble_presenter,
                                       ReinforcementPresenter reinforcement_presenter) 
-        : base(view, factory, behavior, notice)
+        : base(view, factory, cardContainer, behavior)
     {
         m_dialogue_bubble_presenter = dialogue_bubble_presenter;
         m_reinforcement_presenter = reinforcement_presenter;
 
-        m_view.Inject(this);
+        _deckInvenUI.Construct(this);
     }
 
     public override void OpenUI()

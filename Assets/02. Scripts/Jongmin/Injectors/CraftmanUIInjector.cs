@@ -10,7 +10,7 @@ public class CraftmanUIInjector : MonoBehaviour, IInjector
     [SerializeField] private CraftmanInventoryView m_inventory_view;
 
     [Header("인벤토리 카드 팩토리")]
-    [SerializeField] private CardInventoryFactory m_card_factory;
+    [SerializeField] private DeckInvenFactory m_card_factory;
 
     [Header("강화 UI")]
     [SerializeField] private ReinforcementView m_reinforcement_view;
@@ -60,8 +60,8 @@ public class CraftmanUIInjector : MonoBehaviour, IInjector
         var selection_behavior = new SelectCardBehavior();
         var inventory_presenter = new CraftmanInventoryPresenter(m_inventory_view,
                                                                  m_card_factory,
+                                                                 new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>(),
                                                                  selection_behavior,
-                                                                 m_notice,
                                                                  DIContainer.Resolve<CraftmanDialogueBubblePresenter>(),
                                                                  reinforcement_presenter);
         DIContainer.Register<CraftmanInventoryPresenter>(inventory_presenter);
