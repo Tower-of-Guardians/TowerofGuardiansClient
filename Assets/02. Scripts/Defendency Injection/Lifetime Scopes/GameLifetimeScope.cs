@@ -13,6 +13,14 @@ public class GameLifetimeScope : LifetimeScope
     [Space(20), Header("Field Context")]
     [SerializeField] private FieldContext atkFieldContext;
     [SerializeField] private FieldContext defFieldContext;
+    
+    [Space(20), Header("Craftman")]
+    [SerializeField] private CraftmanUI craftmanUI;
+    [SerializeField] private CraftmanDeckInvenUI craftmanDeckInvenUI;
+    [SerializeField] private ForgeUI forgeUI;
+    [SerializeField] private ForgeCardUI forgeCardUI;
+    [SerializeField] private CraftmanDialogueBubbleUI craftmanDialogueBubbleUI;
+    [SerializeField] private ForgeDatabase forgeDatabase;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -23,6 +31,7 @@ public class GameLifetimeScope : LifetimeScope
         ConfigureHandUI(builder);
         ConfigureFieldUI(builder);
         ConfigureResultUI(builder);
+        ConfigureCraftmanUI(builder);
     }
 
     private void ConfigureCore(IContainerBuilder builder)
@@ -266,4 +275,80 @@ public class GameLifetimeScope : LifetimeScope
             DIContainer.Register<ResultUISequencer>(resultUISequencer);
         });
     }
+
+    private void ConfigureCraftmanUI(IContainerBuilder builder)
+    {
+        CraftmanUI resolvedCraftmanUI = craftmanUI != null ? craftmanUI : FindInScene<CraftmanUI>();
+        CraftmanDeckInvenUI resolvedCraftmanDeckInvenUI = craftmanDeckInvenUI != null ? craftmanDeckInvenUI : FindInScene<CraftmanDeckInvenUI>();
+        ForgeUI resolvedForgeUI = forgeUI != null ? forgeUI : FindInScene<ForgeUI>();
+        ForgeCardUI resolvedForgeCardUI = forgeCardUI != null ? forgeCardUI : FindInScene<ForgeCardUI>();
+        CraftmanDialogueBubbleUI resolvedCraftmanDialogueBubbleUI = craftmanDialogueBubbleUI != null ? craftmanDialogueBubbleUI : FindInScene<CraftmanDialogueBubbleUI>();
+        ForgeDatabase resolvedForgeDatabase = forgeDatabase;
+
+        bool hasCraftmanCoreReferences = resolvedCraftmanUI != null &&
+                                         resolvedCraftmanDeckInvenUI != null;
+        if (!hasCraftmanCoreReferences)
+        {
+            return;
+        }
+
+        builder.RegisterInstance(resolvedCraftmanUI).As<ICraftmanUI>();
+        builder.RegisterInstance(resolvedCraftmanDeckInvenUI);
+        builder.RegisterComponentInHierarchy<CraftmanDeckInvenCardFactory>().AsSelf();
+
+        var craftmanDeckInvenCardContainer = new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>();
+        builder.RegisterInstance(craftmanDeckInvenCardContainer).Keyed(DeckInvenType.Craftman);
+
+        builder.Register<CraftmanDeckInvenPresenter>(resolver =>
+        {
+            var deckInvenUI = resolver.Resolve<CraftmanDeckInvenUI>();
+            var deckInvenFactory = resolver.Resolve<CraftmanDeckInvenCardFactory>();
+            var cardContainer = resolver.Resolve<CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>>(DeckInvenType.Craftman);
+            return new CraftmanDeckInvenPresenter(deckInvenUI,
+                                                  deckInvenFactory,
+                                                  cardContainer,
+                                                  new SelectCardBehavior());
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.Register<CraftmanPresenter>(Lifetime.Scoped).AsSelf();
+        
+        bool hasForgeReferences = resolvedForgeUI != null &&
+                                  resolvedForgeCardUI != null &&
+                                  resolvedForgeDatabase != null;
+        if (hasForgeReferences)
+        {
+            builder.RegisterInstance(resolvedForgeCardUI).As<IForgeCardUI>();
+            builder.Register<ForgeCardPresenter>(Lifetime.Scoped).AsSelf();
+            builder.RegisterInstance<IForgeDatabase>(resolvedForgeDatabase);
+            builder.RegisterInstance(resolvedForgeUI).As<IForgeUI>();
+            builder.RegisterEntryPoint<ForgePresenter>(Lifetime.Scoped).AsSelf();
+
+            if (resolvedCraftmanDialogueBubbleUI != null)
+            {
+                builder.RegisterInstance(resolvedCraftmanDialogueBubbleUI);
+                builder.Register<CraftmanDialogueBubblePresenter>(resolver =>
+                {
+                    var dialogueBubbleUI = resolver.Resolve<CraftmanDialogueBubbleUI>();
+                    var deckInvenPresenter = resolver.Resolve<CraftmanDeckInvenPresenter>();
+                    var forgePresenter = resolver.Resolve<ForgePresenter>();
+                    return new CraftmanDialogueBubblePresenter(dialogueBubbleUI,
+                                                               deckInvenPresenter,
+                                                               forgePresenter);
+                }, Lifetime.Scoped).AsSelf();
+            }
+        }
+
+        builder.RegisterBuildCallback(resolver =>
+        {
+            resolver.Resolve<CraftmanPresenter>();
+
+            if (hasForgeReferences && resolvedCraftmanDialogueBubbleUI != null)
+            {
+                resolver.Resolve<CraftmanDialogueBubblePresenter>();
+            }
+        });
+    }
+
+    private static T FindInScene<T>() where T : Object
+        => Object.FindAnyObjectByType<T>(FindObjectsInactive.Include);
 }
