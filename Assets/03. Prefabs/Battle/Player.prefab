@@ -170,7 +170,7 @@ MonoBehaviour:
   hpSlider: {fileID: 598849350945029868}
   hpText: {fileID: 6709224123686647446}
   hpFillImage: {fileID: 4653208006535621261}
-  defenseIcon: {fileID: 321503895227956221}
+  defenseIcon: {fileID: 1389914503644763127}
   defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
   defenseHpColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   healthAnimationDuration: 0.3
@@ -480,18 +480,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4573666398134420694, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_SortingOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4721513011996409899, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529159781888594652, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5721189975780642282, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -500,20 +488,8 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-      propertyPath: m_AnchoredPosition.y
+    - target: {fileID: 6249288637204260897, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -521,11 +497,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
---- !u!1 &321503895227956221 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4721513011996409899, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
-  m_PrefabInstance: {fileID: 5039555502067497942}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &412686491802900592 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4632569226469221286, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
@@ -548,6 +519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1389914503644763127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6249288637204260897, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+  m_PrefabInstance: {fileID: 5039555502067497942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4653208006535621261 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 388326618106827099, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
