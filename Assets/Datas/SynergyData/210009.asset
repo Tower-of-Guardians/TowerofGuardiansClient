@@ -20,20 +20,8 @@ MonoBehaviour:
     \uCE74\uB4DC\uB4E4\uC758 \uD6A8\uACFC\uB97C \uBAA8\uB450 \uBC1C\uB3D9\uD569\uB2C8\uB2E4."
   Tier: 13
   Effect1ID: 
-  Effect1Synergy1: 1
-  Effect1Synergy2: 0
-  Effect1Synergy3: 0
-  Effect1Synergy4: 0
-  Effect1Synergy5: 0
+  Effect1Synergys: 0100000000000000000000000000000000000000
   Effect2ID: 
-  Effect2Synergy1: 0
-  Effect2Synergy2: 0
-  Effect2Synergy3: 0
-  Effect2Synergy4: 0
-  Effect2Synergy5: 0
+  Effect2Synergys: 0000000000000000000000000000000000000000
   Effect3ID: 
-  Effect3Synergy1: 0
-  Effect3Synergy2: 0
-  Effect3Synergy3: 0
-  Effect3Synergy4: 0
-  Effect3Synergy5: 0
+  Effect3Synergys: 0000000000000000000000000000000000000000

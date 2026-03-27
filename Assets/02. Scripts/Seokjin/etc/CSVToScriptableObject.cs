@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.U2D;
 using UnityEngine;
-using UnityEngine.U2D;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 enum CSVData
 {
@@ -406,25 +405,31 @@ public class CSVToScriptableObject
             if (int.TryParse(values[n++].Trim(), out int tier)) newItem.Tier = tier;
 
             newItem.Effect1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int es1_1)) newItem.Effect1Synergy1 = es1_1;
-            if (int.TryParse(values[n++].Trim(), out int es1_2)) newItem.Effect1Synergy2 = es1_2;
-            if (int.TryParse(values[n++].Trim(), out int es1_3)) newItem.Effect1Synergy3 = es1_3;
-            if (int.TryParse(values[n++].Trim(), out int es1_4)) newItem.Effect1Synergy4 = es1_4;
-            if (int.TryParse(values[n++].Trim(), out int es1_5)) newItem.Effect1Synergy5 = es1_5;
+            newItem.Effect1Synergys = new List<int>();
+            if (int.TryParse(values[n++].Trim(), out int es1_1)) newItem.Effect1Synergys.Add(es1_1); else newItem.Effect1Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es1_2)) newItem.Effect1Synergys.Add(es1_2); else newItem.Effect1Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es1_3)) newItem.Effect1Synergys.Add(es1_3); else newItem.Effect1Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es1_4)) newItem.Effect1Synergys.Add(es1_4); else newItem.Effect1Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es1_5)) newItem.Effect1Synergys.Add(es1_5); else newItem.Effect1Synergys.Add(0);
+            newItem.EffectSynergys[newItem.Effect1ID] = newItem.Effect1Synergys;
 
             newItem.Effect2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int es2_1)) newItem.Effect2Synergy1 = es2_1;
-            if (int.TryParse(values[n++].Trim(), out int es2_2)) newItem.Effect2Synergy2 = es2_2;
-            if (int.TryParse(values[n++].Trim(), out int es2_3)) newItem.Effect2Synergy3 = es2_3;
-            if (int.TryParse(values[n++].Trim(), out int es2_4)) newItem.Effect2Synergy4 = es2_4;
-            if (int.TryParse(values[n++].Trim(), out int es2_5)) newItem.Effect2Synergy5 = es2_5;
+            newItem.Effect2Synergys = new List<int>();
+            if (int.TryParse(values[n++].Trim(), out int es2_1)) newItem.Effect2Synergys.Add(es2_1); else newItem.Effect2Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es2_2)) newItem.Effect2Synergys.Add(es2_2); else newItem.Effect2Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es2_3)) newItem.Effect2Synergys.Add(es2_3); else newItem.Effect2Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es2_4)) newItem.Effect2Synergys.Add(es2_4); else newItem.Effect2Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es2_5)) newItem.Effect2Synergys.Add(es2_5); else newItem.Effect2Synergys.Add(0);
+            newItem.EffectSynergys[newItem.Effect2ID] = newItem.Effect2Synergys;
 
             newItem.Effect3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int es3_1)) newItem.Effect3Synergy1 = es3_1;
-            if (int.TryParse(values[n++].Trim(), out int es3_2)) newItem.Effect3Synergy2 = es3_2;
-            if (int.TryParse(values[n++].Trim(), out int es3_3)) newItem.Effect3Synergy3 = es3_3;
-            if (int.TryParse(values[n++].Trim(), out int es3_4)) newItem.Effect3Synergy4 = es3_4;
-            if (int.TryParse(values[n++].Trim(), out int es3_5)) newItem.Effect3Synergy5 = es3_5;
+            newItem.Effect3Synergys = new List<int>();
+            if (int.TryParse(values[n++].Trim(), out int es3_1)) newItem.Effect3Synergys.Add(es3_1); else newItem.Effect3Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es3_2)) newItem.Effect3Synergys.Add(es3_2); else newItem.Effect3Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es3_3)) newItem.Effect3Synergys.Add(es3_3); else newItem.Effect3Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es3_4)) newItem.Effect3Synergys.Add(es3_4); else newItem.Effect3Synergys.Add(0);
+            if (int.TryParse(values[n++].Trim(), out int es3_5)) newItem.Effect3Synergys.Add(es3_5); else newItem.Effect3Synergys.Add(0);
+            newItem.EffectSynergys[newItem.Effect3ID] = newItem.Effect3Synergys;
 
             string fileName = newItem.ID + ".asset";
 

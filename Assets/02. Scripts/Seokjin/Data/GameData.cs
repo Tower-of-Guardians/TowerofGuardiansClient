@@ -2,10 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.Playables;
-using static UnityEngine.Rendering.VolumeComponent;
 
 public class GameData : Singleton<GameData>
 {
@@ -14,9 +11,14 @@ public class GameData : Singleton<GameData>
     public List<string> garbageDeck = new List<string>(); // 사용덱
 
     public event Action<DeckType, int> DeckChange;
+    public event Action<Dictionary<string, int>> SynergyChange;
 
     public List<CardData> attackField = new List<CardData>();
     public List<CardData> defenseField = new List<CardData>();
+
+    public List<SynergyTotalData> synergyTotalDatas = new List<SynergyTotalData>();
+    public Dictionary<string, int> synergyIDList = new Dictionary<string, int>();
+    public Dictionary<string, int> effectIDList = new Dictionary<string, int>();
 
     private void Start()
     {
@@ -31,6 +33,9 @@ public class GameData : Singleton<GameData>
     public void InvokeDeckCountChange(DeckType deck_type)
         => DeckChange?.Invoke(deck_type, deck_type == DeckType.Draw ? notuseDeck.Count
                                                                     : garbageDeck.Count);
+
+    public void InvokeSynergys()
+        => SynergyChange?.Invoke(synergyIDList);
 
     /// <summary>
     /// 처음 시작시 덱 정보 불러오고 섞기
@@ -58,7 +63,7 @@ public class GameData : Singleton<GameData>
     public List<BattleCardData> NextDeckSet(int count)
     {
         List<BattleCardData> returnDatas = new List<BattleCardData>();
-        
+
         for (int i = 0; i < count; i++)
         {
             if (notuseDeck.Count <= 0)
@@ -92,6 +97,7 @@ public class GameData : Singleton<GameData>
     public void HandToFieldMove(BattleCardData bc_data)
     {
         handDeck.Remove(bc_data.data.id);
+        GetSynergyData();
     }
     /// <summary>
     /// 필드에서 핸드에 넣을때
@@ -100,6 +106,7 @@ public class GameData : Singleton<GameData>
     public void FieldToHandMove(BattleCardData bc_data)
     {
         handDeck.Add(bc_data.data.id);
+        GetSynergyData();
     }
 
     /// <summary>
@@ -226,7 +233,7 @@ public class GameData : Singleton<GameData>
                 // 추첨 값이 누적 확률 범위 내에 있으면 해당 등급을 반환
                 if (roll <= accumulatedChance)
                 {
-                    results.Add(GetRandomCardData(n+1));
+                    results.Add(GetRandomCardData(n + 1));
                     break;
                 }
             }
@@ -273,5 +280,72 @@ public class GameData : Singleton<GameData>
             resultPercent = Instantiate(data);
         });
         return resultPercent.percent;
+    }
+
+    public void GetSynergyData()
+    {
+        List<CardData> t_onfieldcard = new List<CardData>();
+        List<string> t_onfieldsynergy = new List<string>();
+        synergyIDList = new Dictionary<string, int>();
+        effectIDList = new Dictionary<string, int>();
+        foreach (CardData data in attackField)
+        {
+            t_onfieldcard.Add(data);
+        }
+        foreach (CardData data in defenseField)
+        {
+            t_onfieldcard.Add(data);
+        }
+        for (int i = 0; i < t_onfieldcard.Count; i++)
+        {
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy1ID, out int synergy1count))
+            {
+                synergyIDList[t_onfieldcard[i].synergy1ID] = synergy1count + 1;
+            }
+            else if (t_onfieldcard[i].synergy1ID.Length > 0)
+            {
+                synergyIDList[t_onfieldcard[i].synergy1ID] = 0;
+            }
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy2ID, out int synergy2count))
+            {
+                synergyIDList[t_onfieldcard[i].synergy2ID] = synergy2count + 1;
+            }
+            else if(t_onfieldcard[i].synergy2ID.Length > 0)
+            {
+                synergyIDList[t_onfieldcard[i].synergy2ID] = 0;
+            }
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy3ID, out int synergy3count))
+            {
+                synergyIDList[t_onfieldcard[i].synergy3ID] = synergy3count + 1;
+            }
+            else if (t_onfieldcard[i].synergy3ID.Length > 0)
+            {
+                synergyIDList[t_onfieldcard[i].synergy3ID] = 0;
+            }
+        }
+        synergyIDList.OrderByDescending(x => x.Value)
+                                     .Select(x => x.Key)
+                                     .ToList();
+
+        foreach (var t in synergyIDList)
+        {
+            DataCenter.Instance.GetSynergyData(t.Key, (synergy) =>
+            {
+                if (synergy.Effect1Synergys[t.Value] > 0)
+                {                    
+                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect1ID));
+                }
+                if (synergy.Effect2Synergys[t.Value] > 0)
+                {
+                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect2ID));
+                }
+                if (synergy.Effect3Synergys[t.Value] > 0)
+                {
+                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect3ID));
+                }
+            });
+        }
+
+        InvokeSynergys();
     }
 }
