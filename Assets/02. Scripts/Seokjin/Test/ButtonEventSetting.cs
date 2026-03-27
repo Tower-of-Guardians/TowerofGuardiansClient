@@ -17,7 +17,7 @@ public class ButtonEventSetting : MonoBehaviour
     {
         testbutton1.onClick.AddListener(() =>
         {
-            synergyTotalData = DataCenter.Instance.GetSynergyTotalData("210002");
+            /*synergyTotalData = DataCenter.Instance.GetSynergyTotalData("210002");
             synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, 10);
             Match m = Regex.Match(synergyTotalData.statusEffectDataa.Description, @"\(([^)]+)\)");
             if (m.Success)
@@ -38,7 +38,7 @@ public class ButtonEventSetting : MonoBehaviour
             }
 
             logtext.text = synergyTotalData.synergyData.Description + "\n" +
-                            synergyTotalData.statusEffectDataa.Description;
+                            synergyTotalData.statusEffectDataa.Description;*/
         });
         textbutton2.onClick.AddListener(() =>
         {

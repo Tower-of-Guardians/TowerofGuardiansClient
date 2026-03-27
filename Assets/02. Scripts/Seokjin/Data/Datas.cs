@@ -34,6 +34,5 @@ public class PlayerState
 public class SynergyTotalData
 {
     public SynergyData synergyData;
-    public EffectData effectData;
-    public StatusEffectData statusEffectDataa;
+    public int count;
 }

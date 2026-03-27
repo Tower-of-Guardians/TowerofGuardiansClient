@@ -110,7 +110,8 @@ public class DataCenter : Singleton<DataCenter>
     IEnumerator SetStartDeck()
     {
         yield return new WaitUntil(() => IsCardDataLoaded == true);
-        string[] startdecks = { "11000001", "11000002", "11010003", "11010004", "11010005", "11010006", "11010007", "11010008", "11010009", "11010025" };
+        //string[] startdecks = { "11000001", "11000002", "11010003", "11010004", "11010005", "11010006", "11010007", "11010008", "11010009", "11010025" };
+        string[] startdecks = { "11010003", "11010003", "11010003", "11010003", "11010003", "11010003", "11010003", "11010003", "11010003", "11010003" };
         foreach (string id in startdecks)
         {
             GetCardData(id, (data) => userDeck.Add(Instantiate(data)));
@@ -539,20 +540,10 @@ public class DataCenter : Singleton<DataCenter>
     {
         var data = new SynergyTotalData();
         data.synergyData = ScriptableObject.CreateInstance<SynergyData>();
-        data.statusEffectDataa = ScriptableObject.CreateInstance<StatusEffectData>();
-        data.effectData = ScriptableObject.CreateInstance<EffectData>();
 
         GetSynergyData(synergyId , (load_data) =>
         {
             data.synergyData = load_data;
-        });
-        GetEffectData(data.synergyData.Effect1ID, (load_data) =>
-        {
-            data.effectData = load_data;
-        });
-        GetStatusEffectData(data.effectData.StatusEffect, (load_data) =>
-        {
-            data.statusEffectDataa = load_data;
         });
 
         return data;

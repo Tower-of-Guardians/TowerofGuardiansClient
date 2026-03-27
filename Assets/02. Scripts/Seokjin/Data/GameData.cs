@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameData : Singleton<GameData>
 {
@@ -11,13 +12,12 @@ public class GameData : Singleton<GameData>
     public List<string> garbageDeck = new List<string>(); // 사용덱
 
     public event Action<DeckType, int> DeckChange;
-    public event Action<Dictionary<string, int>> SynergyChange;
+    public event Action<Dictionary<string, SynergyTotalData>> SynergyChange;
 
     public List<CardData> attackField = new List<CardData>();
     public List<CardData> defenseField = new List<CardData>();
 
-    public List<SynergyTotalData> synergyTotalDatas = new List<SynergyTotalData>();
-    public Dictionary<string, int> synergyIDList = new Dictionary<string, int>();
+    public Dictionary<string, SynergyTotalData> synergyIDList = new Dictionary<string, SynergyTotalData>();
     public Dictionary<string, int> effectIDList = new Dictionary<string, int>();
 
     private void Start()
@@ -286,8 +286,8 @@ public class GameData : Singleton<GameData>
     {
         List<CardData> t_onfieldcard = new List<CardData>();
         List<string> t_onfieldsynergy = new List<string>();
-        synergyIDList = new Dictionary<string, int>();
-        effectIDList = new Dictionary<string, int>();
+        synergyIDList = new Dictionary<string, SynergyTotalData>();
+
         foreach (CardData data in attackField)
         {
             t_onfieldcard.Add(data);
@@ -296,56 +296,68 @@ public class GameData : Singleton<GameData>
         {
             t_onfieldcard.Add(data);
         }
+
         for (int i = 0; i < t_onfieldcard.Count; i++)
         {
-            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy1ID, out int synergy1count))
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy1ID, out SynergyTotalData synergy1count))
             {
-                synergyIDList[t_onfieldcard[i].synergy1ID] = synergy1count + 1;
+                synergy1count.count += 1;
+                synergyIDList[t_onfieldcard[i].synergy1ID] = synergy1count;
+                Debug.Log("Synergy keep : " + t_onfieldcard[i].synergy1ID);
             }
             else if (t_onfieldcard[i].synergy1ID.Length > 0)
             {
-                synergyIDList[t_onfieldcard[i].synergy1ID] = 0;
+                SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy1ID);
+                t.count = 0;
+                synergyIDList[t_onfieldcard[i].synergy1ID] = t;
             }
-            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy2ID, out int synergy2count))
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy2ID, out SynergyTotalData synergy2count))
             {
-                synergyIDList[t_onfieldcard[i].synergy2ID] = synergy2count + 1;
+                synergy2count.count += 1;
+                synergyIDList[t_onfieldcard[i].synergy2ID] = synergy2count;
+                Debug.Log("Synergy keep : " + t_onfieldcard[i].synergy2ID);
             }
-            else if(t_onfieldcard[i].synergy2ID.Length > 0)
+            else if (t_onfieldcard[i].synergy2ID.Length > 0)
             {
-                synergyIDList[t_onfieldcard[i].synergy2ID] = 0;
+                SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy2ID);
+                t.count = 0;
+                synergyIDList[t_onfieldcard[i].synergy2ID] = t;
             }
-            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy3ID, out int synergy3count))
+            if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy3ID, out SynergyTotalData synergy3count))
             {
-                synergyIDList[t_onfieldcard[i].synergy3ID] = synergy3count + 1;
+                synergy3count.count += 1;
+                synergyIDList[t_onfieldcard[i].synergy3ID] = synergy3count;
+                Debug.Log("Synergy keep : " + t_onfieldcard[i].synergy3ID);
             }
             else if (t_onfieldcard[i].synergy3ID.Length > 0)
             {
-                synergyIDList[t_onfieldcard[i].synergy3ID] = 0;
+                SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy3ID);
+                t.count = 0;
+                synergyIDList[t_onfieldcard[i].synergy3ID] = t;
             }
         }
-        synergyIDList.OrderByDescending(x => x.Value)
+        synergyIDList.OrderByDescending(x => x.Value.count)
                                      .Select(x => x.Key)
                                      .ToList();
 
-        foreach (var t in synergyIDList)
+        List<string> keysToProcess = synergyIDList.Keys.ToList();
+        foreach (string key in keysToProcess)
         {
-            DataCenter.Instance.GetSynergyData(t.Key, (synergy) =>
-            {
-                if (synergy.Effect1Synergys[t.Value] > 0)
-                {                    
-                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect1ID));
-                }
-                if (synergy.Effect2Synergys[t.Value] > 0)
-                {
-                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect2ID));
-                }
-                if (synergy.Effect3Synergys[t.Value] > 0)
-                {
-                    Debug.Log(string.Format("시너지 : {0} , 갯수 : {1} , 이팩트 : {2}", t.Key, t.Value, synergy.Effect3ID));
-                }
-            });
-        }
+            SynergyTotalData totalData = synergyIDList[key];
 
+            if (totalData.synergyData.Effect1Synergys[totalData.count] > 0)
+            {
+                Debug.Log("Synergy use");
+            }
+            else
+            {
+                synergyIDList.Remove(key);
+                Debug.Log("Synergy not use : " + key);
+            }
+        }
+        synergyIDList.OrderByDescending(x => x.Value.synergyData.Tier)
+                                     .Select(x => x.Key)
+                                     .ToList();
         InvokeSynergys();
     }
 }
