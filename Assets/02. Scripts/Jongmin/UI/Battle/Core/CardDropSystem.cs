@@ -38,7 +38,16 @@ public class CardDropSystem
         {
             return;
         }
-        
+
+        if (isAtkFieldCard)
+        {
+            GameData.Instance.attackField.Remove(battleCardData.data);
+        }
+        else
+        {
+            GameData.Instance.defenseField.Remove(battleCardData.data);
+        }
+
         GameData.Instance.FieldToHandMove(battleCardData);
 
         if(isAtkFieldCard)

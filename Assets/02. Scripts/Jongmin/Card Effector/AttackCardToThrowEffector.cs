@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 
@@ -90,6 +90,7 @@ public class AttackCardToThrowEffector : CardEffector
         GameData.Instance.attackField.Remove(battleCardData.data);
         GameData.Instance.UseCard(battleCardData.data.id);
         GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
+        GameData.Instance.GetSynergyData();
     }
 
     protected override void OnFinalAnimeEnd()

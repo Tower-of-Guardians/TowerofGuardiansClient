@@ -344,15 +344,21 @@ public class GameData : Singleton<GameData>
         foreach (string key in keysToProcess)
         {
             SynergyTotalData totalData = synergyIDList[key];
+            SynergyData sd = totalData.synergyData;
+            IList<int> effectTiers = sd != null ? sd.Effect1Synergys : null;
+            bool inRange = effectTiers != null
+                           && totalData.count >= 0
+                           && totalData.count < effectTiers.Count;
+            bool effectReady = inRange && effectTiers[totalData.count] > 0;
 
-            if (totalData.synergyData.Effect1Synergys[totalData.count] > 0)
+            if (effectReady)
             {
-                Debug.Log("Synergy use");
+                Debug.Log("Synergy use : " + key);
             }
             else
             {
-                synergyIDList.Remove(key);
-                Debug.Log("Synergy not use : " + key);
+                // UI(SynergyUI 등)에서는 미충족 시너지도 0칸 게이지로 표시하기 위해 목록에서 제거하지 않음
+                Debug.Log("Synergy not use (표시만) : " + key);
             }
         }
         synergyIDList.OrderByDescending(x => x.Value.synergyData.Tier)
