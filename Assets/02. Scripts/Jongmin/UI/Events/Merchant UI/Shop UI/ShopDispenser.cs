@@ -5,15 +5,15 @@ using UnityEngine;
 public class ShopDispenser : MonoBehaviour
 {
     private List<ShopCardPresenter> _shopCardPresenterList = new();
-    private ShopPotionPresenter _shopPotionPresenter;
+    private PotionCardPresenter _potionCardPresenter;
 
     public event Action OnPurchasedAnyItem;
 
     public void Inject(List<ShopCardPresenter> shopCardPresenterList,
-                       ShopPotionPresenter potionPresenter)
+                       PotionCardPresenter potionCardPresenter)
     {
         _shopCardPresenterList = shopCardPresenterList;
-        _shopPotionPresenter = potionPresenter;
+        _potionCardPresenter = potionCardPresenter;
     }
 
     public void Initialize()
@@ -25,7 +25,7 @@ public class ShopDispenser : MonoBehaviour
             _shopCardPresenterList[i].Inject(battleCardDataList[i]);
         }
 
-        _shopPotionPresenter?.Initialize();
+        _potionCardPresenter?.Initialize();
     }
 
     public void Alert()

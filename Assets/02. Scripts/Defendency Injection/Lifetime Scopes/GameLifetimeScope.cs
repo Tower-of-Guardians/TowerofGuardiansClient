@@ -351,7 +351,7 @@ public class GameLifetimeScope : LifetimeScope
         MerchantUI resolvedMerchantUI = FindInScene<MerchantUI>();
         ShopUI resolvedShopUI = FindInScene<ShopUI>();
         ShopDispenser resolvedShopDispenser = FindInScene<ShopDispenser>();
-        ShopPotionView resolvedShopPotionView = FindInScene<ShopPotionView>();
+        PotionCardUI resolvedPotionCardUI = FindInScene<PotionCardUI>();
         MerchantInventoryUI resolvedMerchantInventoryUI = FindInScene<MerchantInventoryUI>();
         MerchantDeckInvenCardFactory resolvedMerchantDeckInvenFactory = FindInScene<MerchantDeckInvenCardFactory>();
         MerchantDialogueBubbleUI resolvedMerchantDialogueBubbleUI = FindInScene<MerchantDialogueBubbleUI>();
@@ -360,7 +360,7 @@ public class GameLifetimeScope : LifetimeScope
         bool hasMerchantCoreReferences = resolvedMerchantUI != null &&
                                          resolvedShopUI != null &&
                                          resolvedShopDispenser != null &&
-                                         resolvedShopPotionView != null &&
+                                         resolvedPotionCardUI != null &&
                                          resolvedMerchantInventoryUI != null &&
                                          resolvedMerchantDeckInvenFactory != null &&
                                          resolvedMerchantDialogueBubbleUI != null;
@@ -372,7 +372,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(resolvedMerchantUI).As<IMerchantUI>();
         builder.RegisterInstance(resolvedShopUI).As<IShopUI>();
         builder.RegisterInstance(resolvedShopDispenser);
-        builder.RegisterInstance(resolvedShopPotionView).As<IShopPotionView>();
+        builder.RegisterInstance(resolvedPotionCardUI).As<IPotionCardUI>();
         builder.RegisterInstance(resolvedMerchantInventoryUI);
         builder.RegisterInstance(resolvedMerchantDeckInvenFactory);
         builder.RegisterInstance<ICardFactory<IDeckInvenCardUI>>(resolvedMerchantDeckInvenFactory);
@@ -402,11 +402,11 @@ public class GameLifetimeScope : LifetimeScope
                                                   dialogueBubblePresenter);
         }, Lifetime.Scoped).AsSelf();
 
-        builder.Register<ShopPotionPresenter>(resolver =>
+        builder.Register<PotionCardPresenter>(resolver =>
         {
-            var potionView = resolver.Resolve<IShopPotionView>();
+            var potionView = resolver.Resolve<IPotionCardUI>();
             var dispenser = resolver.Resolve<ShopDispenser>();
-            return new ShopPotionPresenter(potionView, dispenser);
+            return new PotionCardPresenter(potionView, dispenser);
         }, Lifetime.Scoped).AsSelf();
 
         builder.Register<ShopPresenter>(resolver =>
@@ -427,7 +427,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterBuildCallback(resolver =>
         {
             var dispenser = resolver.Resolve<ShopDispenser>();
-            var potionPresenter = resolver.Resolve<ShopPotionPresenter>();
+            var potionPresenter = resolver.Resolve<PotionCardPresenter>();
             var shopPresenter = resolver.Resolve<ShopPresenter>();
             var merchantDeckInvenPresenter = resolver.Resolve<MerchantDeckInvenPresenter>();
 
