@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -13,15 +14,10 @@ public class GameLifetimeScope : LifetimeScope
     [Space(20), Header("Field Context")]
     [SerializeField] private FieldContext atkFieldContext;
     [SerializeField] private FieldContext defFieldContext;
-    
-    [Space(20), Header("Craftman")]
-    [SerializeField] private CraftmanUI craftmanUI;
-    [SerializeField] private CraftmanDeckInvenUI craftmanDeckInvenUI;
-    [SerializeField] private ForgeUI forgeUI;
-    [SerializeField] private ForgeCardUI forgeCardUI;
-    [SerializeField] private CraftmanDialogueBubbleUI craftmanDialogueBubbleUI;
-    [SerializeField] private ForgeDatabase forgeDatabase;
 
+    [Space(20), Header("Craftman")]
+    [SerializeField] private ForgeDatabase forgeDatabase;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         ConfigureCore(builder);
@@ -32,6 +28,7 @@ public class GameLifetimeScope : LifetimeScope
         ConfigureFieldUI(builder);
         ConfigureResultUI(builder);
         ConfigureCraftmanUI(builder);
+        ConfigureMerchantUI(builder);
     }
 
     private void ConfigureCore(IContainerBuilder builder)
@@ -278,11 +275,11 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureCraftmanUI(IContainerBuilder builder)
     {
-        CraftmanUI resolvedCraftmanUI = craftmanUI != null ? craftmanUI : FindInScene<CraftmanUI>();
-        CraftmanDeckInvenUI resolvedCraftmanDeckInvenUI = craftmanDeckInvenUI != null ? craftmanDeckInvenUI : FindInScene<CraftmanDeckInvenUI>();
-        ForgeUI resolvedForgeUI = forgeUI != null ? forgeUI : FindInScene<ForgeUI>();
-        ForgeCardUI resolvedForgeCardUI = forgeCardUI != null ? forgeCardUI : FindInScene<ForgeCardUI>();
-        CraftmanDialogueBubbleUI resolvedCraftmanDialogueBubbleUI = craftmanDialogueBubbleUI != null ? craftmanDialogueBubbleUI : FindInScene<CraftmanDialogueBubbleUI>();
+        CraftmanUI resolvedCraftmanUI = FindInScene<CraftmanUI>();
+        CraftmanDeckInvenUI resolvedCraftmanDeckInvenUI = FindInScene<CraftmanDeckInvenUI>();
+        ForgeUI resolvedForgeUI = FindInScene<ForgeUI>();
+        ForgeCardUI resolvedForgeCardUI = FindInScene<ForgeCardUI>();
+        CraftmanDialogueBubbleUI resolvedCraftmanDialogueBubbleUI = FindInScene<CraftmanDialogueBubbleUI>();
         ForgeDatabase resolvedForgeDatabase = forgeDatabase;
 
         bool hasCraftmanCoreReferences = resolvedCraftmanUI != null &&
@@ -346,6 +343,118 @@ public class GameLifetimeScope : LifetimeScope
             {
                 resolver.Resolve<CraftmanDialogueBubblePresenter>();
             }
+        });
+    }
+
+    private void ConfigureMerchantUI(IContainerBuilder builder)
+    {
+        MerchantUI resolvedMerchantUI = FindInScene<MerchantUI>();
+        ShopUI resolvedShopUI = FindInScene<ShopUI>();
+        ShopDispenser resolvedShopDispenser = FindInScene<ShopDispenser>();
+        ShopPotionView resolvedShopPotionView = FindInScene<ShopPotionView>();
+        MerchantInventoryUI resolvedMerchantInventoryUI = FindInScene<MerchantInventoryUI>();
+        MerchantDeckInvenCardFactory resolvedMerchantDeckInvenFactory = FindInScene<MerchantDeckInvenCardFactory>();
+        MerchantDialogueBubbleUI resolvedMerchantDialogueBubbleUI = FindInScene<MerchantDialogueBubbleUI>();
+        Transform resolvedShopCardRoot = resolvedShopDispenser != null ? resolvedShopDispenser.transform : null;
+
+        bool hasMerchantCoreReferences = resolvedMerchantUI != null &&
+                                         resolvedShopUI != null &&
+                                         resolvedShopDispenser != null &&
+                                         resolvedShopPotionView != null &&
+                                         resolvedMerchantInventoryUI != null &&
+                                         resolvedMerchantDeckInvenFactory != null &&
+                                         resolvedMerchantDialogueBubbleUI != null;
+        if (!hasMerchantCoreReferences)
+        {
+            return;
+        }
+
+        builder.RegisterInstance(resolvedMerchantUI).As<IMerchantUI>();
+        builder.RegisterInstance(resolvedShopUI).As<IShopUI>();
+        builder.RegisterInstance(resolvedShopDispenser);
+        builder.RegisterInstance(resolvedShopPotionView).As<IShopPotionView>();
+        builder.RegisterInstance(resolvedMerchantInventoryUI);
+        builder.RegisterInstance(resolvedMerchantDeckInvenFactory);
+        builder.RegisterInstance<ICardFactory<IDeckInvenCardUI>>(resolvedMerchantDeckInvenFactory);
+
+        builder.Register<IDeckInvenUI>(resolver => resolver.Resolve<MerchantInventoryUI>(), Lifetime.Scoped)
+               .Keyed(DeckInvenType.Merchant);
+
+        var merchantDeckInvenCardContainer = new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>();
+        builder.RegisterInstance(merchantDeckInvenCardContainer).Keyed(DeckInvenType.Merchant);
+
+        builder.Register<MerchantDialogueBubblePresenter>(resolver =>
+        {
+            return new MerchantDialogueBubblePresenter(resolvedMerchantDialogueBubbleUI);
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.Register<MerchantDeckInvenPresenter>(resolver =>
+        {
+            var deckInvenUI = resolver.Resolve<MerchantInventoryUI>();
+            var deckInvenFactory = resolver.Resolve<MerchantDeckInvenCardFactory>();
+            var cardContainer = resolver.Resolve<CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>>(DeckInvenType.Merchant);
+            var dialogueBubblePresenter = resolver.Resolve<MerchantDialogueBubblePresenter>();
+
+            return new MerchantDeckInvenPresenter(deckInvenUI,
+                                                  deckInvenFactory,
+                                                  cardContainer,
+                                                  new SelectCardsBehavior(),
+                                                  dialogueBubblePresenter);
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.Register<ShopPotionPresenter>(resolver =>
+        {
+            var potionView = resolver.Resolve<IShopPotionView>();
+            var dispenser = resolver.Resolve<ShopDispenser>();
+            return new ShopPotionPresenter(potionView, dispenser);
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.Register<ShopPresenter>(resolver =>
+        {
+            var ui = resolver.Resolve<IShopUI>();
+            var dispenser = resolver.Resolve<ShopDispenser>();
+            var merchantDeckInvenPresenter = resolver.Resolve<MerchantDeckInvenPresenter>();
+            return new ShopPresenter(ui, dispenser, merchantDeckInvenPresenter);
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.Register<MerchantPresenter>(resolver =>
+        {
+            var ui = resolver.Resolve<IMerchantUI>();
+            var shopPresenter = resolver.Resolve<ShopPresenter>();
+            return new MerchantPresenter(ui, shopPresenter);
+        }, Lifetime.Scoped).AsSelf();
+
+        builder.RegisterBuildCallback(resolver =>
+        {
+            var dispenser = resolver.Resolve<ShopDispenser>();
+            var potionPresenter = resolver.Resolve<ShopPotionPresenter>();
+            var shopPresenter = resolver.Resolve<ShopPresenter>();
+            var merchantDeckInvenPresenter = resolver.Resolve<MerchantDeckInvenPresenter>();
+
+            var cardViewList = new List<IShopCardUI>();
+            if (resolvedShopCardRoot != null)
+            {
+                cardViewList.AddRange(resolvedShopCardRoot.GetComponentsInChildren<IShopCardUI>(true));
+            }
+
+            if (cardViewList.Count == 0)
+            {
+                foreach (var cardView in FindObjectsByType<ShopCardUI>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    cardViewList.Add(cardView);
+                }
+            }
+
+            var cardPresenterList = new List<ShopCardPresenter>(cardViewList.Count);
+            foreach (var cardView in cardViewList)
+            {
+                cardPresenterList.Add(new ShopCardPresenter(cardView, dispenser));
+            }
+
+            dispenser.Inject(cardPresenterList, potionPresenter);
+            merchantDeckInvenPresenter.Inject(shopPresenter);
+
+            resolver.Resolve<MerchantPresenter>();
         });
     }
 

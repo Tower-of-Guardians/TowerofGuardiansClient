@@ -4,7 +4,7 @@ public class ShopPotionPresenter : IDisposable
 {
     private readonly IShopPotionView m_view;
     private readonly PlayerState m_player_state;
-    private readonly MerchantShopDispenser m_dispenser;
+    private readonly ShopDispenser m_dispenser;
 
     private readonly int COST = 40;
     private readonly float RECOVERY_RATE = 0.2f;
@@ -12,7 +12,7 @@ public class ShopPotionPresenter : IDisposable
     public bool Purchased { get; private set; }
 
     public ShopPotionPresenter(IShopPotionView view,
-                               MerchantShopDispenser dispenser)
+                               ShopDispenser dispenser)
     {
         m_view = view;
         m_player_state = DataCenter.Instance.playerstate;
