@@ -11,6 +11,8 @@ public class Player : BaseUnit
     private int baseAttack;
     private float cardAttackBonus;
     private float cardDefenseBonus;
+    private int battleSynergyAttackBonus;
+    private int turnSynergyAttackBonus;
 
     [Header("Animation")]
     private PlayerAnimation playerAnimation;
@@ -37,7 +39,7 @@ public class Player : BaseUnit
     private const int NormalSortingOrder = 5;
     private const int AttackSortingOrder = 7;
 
-    public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus);
+    public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus) + battleSynergyAttackBonus + turnSynergyAttackBonus;
     public float DefenseValue => cardDefenseBonus;
     public float GetStatAnimationWaitTime() => statAnimationDuration;
 
@@ -306,7 +308,7 @@ public class Player : BaseUnit
             // 기본 공격력에 카드 필드의 공격력을 더함
             float fieldAttackPower = GameData.Instance.AttackField();
             int currentAttack = AttackValue;
-            int targetAttack = Mathf.RoundToInt(baseAttack + fieldAttackPower);
+            int targetAttack = Mathf.RoundToInt(baseAttack + fieldAttackPower) + battleSynergyAttackBonus + turnSynergyAttackBonus;
             
             cardAttackBonus = fieldAttackPower;
             lastAttackBonus = cardAttackBonus;
@@ -314,6 +316,22 @@ public class Player : BaseUnit
             // 공격력 애니메이션
             AnimateAttackText(currentAttack, targetAttack);
         }
+    }
+
+    public void SetBattleSynergyAttackBonus(int bonus)
+    {
+        int fromValue = AttackValue;
+        battleSynergyAttackBonus = Mathf.Max(0, bonus);
+        int toValue = AttackValue;
+        AnimateAttackText(fromValue, toValue);
+    }
+
+    public void SetTurnSynergyAttackBonus(int bonus)
+    {
+        int fromValue = AttackValue;
+        turnSynergyAttackBonus = Mathf.Max(0, bonus);
+        int toValue = AttackValue;
+        AnimateAttackText(fromValue, toValue);
     }
 
     public void ApplyDefenseStats()
@@ -413,6 +431,7 @@ public class Player : BaseUnit
     public void ResetAttackToBase()
     {
         cardAttackBonus = 0;
+        turnSynergyAttackBonus = 0;
         lastAttackBonus = 0;
         
         // TODO: 추후 보호력이 남는 효과 추가 시 수정
@@ -432,7 +451,7 @@ public class Player : BaseUnit
             attackText.text = AttackValue.ToString();
         }
     }
-    
+
     private void SetSortingOrder(int sortingOrder)
     {
         if (spriteRenderer != null)

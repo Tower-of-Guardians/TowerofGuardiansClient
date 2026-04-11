@@ -6,11 +6,22 @@ using Random = UnityEngine.Random;
 
 public class BattleCombatController : MonoBehaviour, IBattleController
 {
+    private const string SynergyHonestyId = "210001";
+    private const string SynergyShieldAttackId = "210002";
+    private const string SynergyOverwhelmingId = "210003";
+    private const string SynergyBloodSuckingId = "210004";
+    private const string SynergyPlunderId = "210005";
+    private const string SynergyMysteryId = "210006";
+    private const string SynergyBasicId = "210007";
+
     [SerializeField] private bool playerAttackHitsAll;
     [SerializeField] private float statAnimationWaitTime = 1.0f;
 
     private BattleManager battleManager;
     private bool isInitialized;
+    private int battlePermanentAttackBonus;
+    private int pendingOverwhelmingDamage;
+    private int pendingBloodSuckingPercent;
 
     public float GetStatAnimationWaitTime() => statAnimationWaitTime;
     public bool GetPlayerAttackHitsAll() => playerAttackHitsAll;
@@ -30,8 +41,33 @@ public class BattleCombatController : MonoBehaviour, IBattleController
 
     public void Cleanup()
     {
+        if (battleManager != null)
+        {
+            BattleSetupController setupController = battleManager.GetSetupController();
+            if (setupController != null)
+            {
+                Player player = setupController.GetPlayer();
+                if (player != null)
+                {
+                    player.SetBattleSynergyAttackBonus(0);
+                    player.SetTurnSynergyAttackBonus(0);
+                }
+            }
+        }
+
         battleManager = null;
         isInitialized = false;
+        battlePermanentAttackBonus = 0;
+        ResetTurnScopedSynergyState();
+    }
+
+    /// <summary>
+    /// 턴 단위 일시 시너지 상태를 초기화합니다.
+    /// </summary>
+    public void ResetTurnScopedSynergyState()
+    {
+        pendingOverwhelmingDamage = 0;
+        pendingBloodSuckingPercent = 0;
     }
 
     /// <summary>
@@ -111,8 +147,14 @@ public class BattleCombatController : MonoBehaviour, IBattleController
     {
         if (player == null) return 0;
 
+        player.SetTurnSynergyAttackBonus(0);
+        ApplyBattleWideSynergies(player);
         player.ApplyAttackStats();
-        return player.AttackValue;
+        int attackValue = player.AttackValue;
+        attackValue = ApplyAttackCalculationSynergies(player, attackValue);
+        int extraTurnBonus = Mathf.Max(0, attackValue - player.AttackValue);
+        player.SetTurnSynergyAttackBonus(extraTurnBonus);
+        return attackValue;
     }
 
     /// <summary>
@@ -162,14 +204,19 @@ public class BattleCombatController : MonoBehaviour, IBattleController
         float waitTime = currentAttack < 10 ? 1.0f : 0.8f;
         yield return new WaitForSeconds(waitTime);
 
+        ApplyPreHitSynergies();
+
         // 데미지 적용
+        int totalDealtDamage = 0;
         foreach (IDamageable target in targets)
         {
             if (target != null && target.IsAlive)
             {
                 target.TakeDamage(currentAttack);
+                totalDealtDamage += currentAttack;
             }
         }
+        ApplyOnHitSynergies(player, totalDealtDamage);
 
         // 공격 애니메이션 완료 대기
         if (playerAnimation != null)
@@ -186,6 +233,205 @@ public class BattleCombatController : MonoBehaviour, IBattleController
         {
             playerAnimation.ResetAnimationState();
         }
+    }
+
+    private void ApplyBattleWideSynergies(Player player)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        if (TryGetSynergyData(SynergyHonestyId, out SynergyTotalData honestySynergy))
+        {
+            int honestyBonus = GetActiveEffectValue(GetEffect1Values(honestySynergy), honestySynergy.count);
+            if (honestyBonus > battlePermanentAttackBonus)
+            {
+                battlePermanentAttackBonus = honestyBonus;
+                player.SetBattleSynergyAttackBonus(battlePermanentAttackBonus);
+            }
+        }
+    }
+
+    private int ApplyAttackCalculationSynergies(Player player, int baseAttack)
+    {
+        int attackValue = baseAttack + battlePermanentAttackBonus;
+        pendingOverwhelmingDamage = 0;
+        pendingBloodSuckingPercent = 0;
+
+        if (player != null && TryGetSynergyData(SynergyShieldAttackId, out SynergyTotalData shieldAttackSynergy))
+        {
+            int shieldPercent = GetActiveEffectValue(GetEffect1Values(shieldAttackSynergy), shieldAttackSynergy.count);
+            int shieldBonus = Mathf.RoundToInt(player.ProtectionValue * (shieldPercent / 100f));
+            attackValue += shieldBonus;
+        }
+
+        if (TryGetSynergyData(SynergyBasicId, out SynergyTotalData basicSynergy))
+        {
+            int activeBasicValue = GetActiveEffectValue(GetEffect1Values(basicSynergy), basicSynergy.count);
+            if (activeBasicValue > 0)
+            {
+                int totalStars = GetTotalBattleCardStars();
+                attackValue += 5 + totalStars * 5;
+            }
+        }
+
+        if (TryGetSynergyData(SynergyOverwhelmingId, out SynergyTotalData overwhelmingSynergy))
+        {
+            pendingOverwhelmingDamage = GetActiveEffectValue(GetEffect1Values(overwhelmingSynergy), overwhelmingSynergy.count);
+        }
+
+        if (TryGetSynergyData(SynergyBloodSuckingId, out SynergyTotalData bloodSuckingSynergy))
+        {
+            pendingBloodSuckingPercent = GetActiveEffectValue(GetEffect1Values(bloodSuckingSynergy), bloodSuckingSynergy.count);
+        }
+
+        if (TryGetSynergyData(SynergyPlunderId, out SynergyTotalData plunderSynergy))
+        {
+            int plunderPerCard = GetActiveEffectValue(GetEffect1Values(plunderSynergy), plunderSynergy.count);
+            if (plunderPerCard > 0)
+            {
+                int plunderCardCount = CountAttackFieldSynergyCards(SynergyPlunderId);
+                int plunderGold = plunderCardCount * plunderPerCard;
+                if (plunderGold > 0 && DataCenter.Instance != null)
+                {
+                    DataCenter.Instance.SetMoney(plunderGold);
+                }
+            }
+        }
+
+        if (TryGetSynergyData(SynergyMysteryId, out SynergyTotalData mysterySynergy))
+        {
+            int mysteryGrade = GetActiveEffectValue(GetEffect1Values(mysterySynergy), mysterySynergy.count);
+            // TODO: 마법 시스템 구현 후 Mystery(무작위 마법 생성) 연동
+            _ = mysteryGrade;
+        }
+
+        return attackValue;
+    }
+
+    private void ApplyPreHitSynergies()
+    {
+        if (pendingOverwhelmingDamage <= 0 || battleManager == null)
+        {
+            return;
+        }
+
+        BattleSetupController setupController = battleManager.GetSetupController();
+        if (setupController == null)
+        {
+            return;
+        }
+
+        IEnumerable<Monster> monsters = setupController.GetPrimaryMonsters();
+        foreach (Monster monster in monsters)
+        {
+            if (monster != null && monster.IsAlive)
+            {
+                monster.TakeDamage(pendingOverwhelmingDamage);
+            }
+        }
+    }
+
+    private void ApplyOnHitSynergies(Player player, int totalDealtDamage)
+    {
+        if (player == null || totalDealtDamage <= 0 || pendingBloodSuckingPercent <= 0)
+        {
+            return;
+        }
+
+        int healAmount = Mathf.RoundToInt(totalDealtDamage * (pendingBloodSuckingPercent / 100f));
+        if (healAmount > 0)
+        {
+            player.Heal(healAmount);
+        }
+    }
+
+    private bool TryGetSynergyData(string synergyId, out SynergyTotalData synergyData)
+    {
+        synergyData = null;
+        if (GameData.Instance == null || GameData.Instance.synergyIDList == null || string.IsNullOrEmpty(synergyId))
+        {
+            return false;
+        }
+
+        if (!GameData.Instance.synergyIDList.TryGetValue(synergyId, out synergyData) || synergyData == null)
+        {
+            return false;
+        }
+
+        return synergyData.synergyData != null;
+    }
+
+    private int GetActiveEffectValue(List<int> effectValues, int synergyCount)
+    {
+        if (effectValues == null || effectValues.Count == 0 || synergyCount <= 0)
+        {
+            return 0;
+        }
+
+        int index = Mathf.Clamp(synergyCount - 1, 0, effectValues.Count - 1);
+        int effectValue = effectValues[index];
+        return effectValue > 0 ? effectValue : 0;
+    }
+
+    private List<int> GetEffect1Values(SynergyTotalData synergyData)
+    {
+        return synergyData?.synergyData != null ? synergyData.synergyData.Effect1Synergys : null;
+    }
+
+    private int GetTotalBattleCardStars()
+    {
+        if (GameData.Instance == null)
+        {
+            return 0;
+        }
+
+        int totalStars = 0;
+        foreach (CardData cardData in GameData.Instance.attackField)
+        {
+            if (cardData != null)
+            {
+                totalStars += cardData.star;
+            }
+        }
+
+        foreach (CardData cardData in GameData.Instance.defenseField)
+        {
+            if (cardData != null)
+            {
+                totalStars += cardData.star;
+            }
+        }
+
+        return totalStars;
+    }
+
+    private int CountAttackFieldSynergyCards(string synergyId)
+    {
+        if (GameData.Instance == null || string.IsNullOrEmpty(synergyId))
+        {
+            return 0;
+        }
+
+        int count = 0;
+        foreach (CardData cardData in GameData.Instance.attackField)
+        {
+            if (cardData == null)
+            {
+                continue;
+            }
+
+            bool hasSynergy = cardData.synergy1ID == synergyId
+                              || cardData.synergy2ID == synergyId
+                              || cardData.synergy3ID == synergyId;
+            if (hasSynergy)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     /// <summary>

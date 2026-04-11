@@ -234,6 +234,11 @@ public class BattleManager : MonoBehaviour
 
         turnEndController.ProcessTurnEnd();
 
+        if (combatController != null)
+        {
+            combatController.ResetTurnScopedSynergyState();
+        }
+
         // 공격 종료 시 턴 증가
         if (DIContainer.IsRegistered<TurnManager>())
         {

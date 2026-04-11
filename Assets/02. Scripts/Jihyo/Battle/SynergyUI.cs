@@ -19,7 +19,7 @@ public class SynergyUI : MonoBehaviour
     }
 
     /// <summary>
-    /// SynergyData.ID(예: 210001)와 동일한 문자열로 매칭
+    /// SynergyData.ID와 동일한 문자열로 매칭
     /// </summary>
     [System.Serializable]
     public class SynergyVisualBinding
@@ -123,6 +123,7 @@ public class SynergyUI : MonoBehaviour
             TryGetBinding(sd, out SynergyVisualBinding visual);
             ApplyIcon(slot.icon, visual);
             ApplyGauge(slot.gauge, visual, entry);
+            ApplyTooltip(slot, entry);
         }
 
         int overflow = total - _slots.Length;
@@ -130,6 +131,10 @@ public class SynergyUI : MonoBehaviour
         {
             bool hasOverflow = overflow > 0;
             _overflowRoot.SetActive(hasOverflow);
+            if (hasOverflow)
+            {
+                ApplyOverflowTooltip(ordered.Skip(_slots.Length).ToList());
+            }
         }
     }
 
@@ -168,7 +173,7 @@ public class SynergyUI : MonoBehaviour
         return false;
     }
 
-    private static void ApplyIcon(Image iconImage, SynergyVisualBinding visual)
+    private void ApplyIcon(Image iconImage, SynergyVisualBinding visual)
     {
         if (iconImage == null)
         {
@@ -187,7 +192,7 @@ public class SynergyUI : MonoBehaviour
         }
     }
 
-    private static void ApplyGauge(Image gaugeImage, SynergyVisualBinding visual, SynergyTotalData entry)
+    private void ApplyGauge(Image gaugeImage, SynergyVisualBinding visual, SynergyTotalData entry)
     {
         if (gaugeImage == null)
         {
@@ -218,7 +223,7 @@ public class SynergyUI : MonoBehaviour
     /// <summary>
     /// 최소 발동 개수 이전에는 0단계, 이후에는 카드 1장당 1단계씩 증가하며 Gauge Sprites 개수로 클램프합니다.
     /// </summary>
-    private static int GetGaugeSpriteIndex(SynergyTotalData entry, SynergyVisualBinding visual)
+    private int GetGaugeSpriteIndex(SynergyTotalData entry, SynergyVisualBinding visual)
     {
         int spriteCount = visual.gaugeSprites.Length;
         if (spriteCount <= 0)
@@ -229,5 +234,37 @@ public class SynergyUI : MonoBehaviour
         int miniRequiredCount = visual.miniRequiredCount < 1 ? 1 : visual.miniRequiredCount;
         int stage = entry.count - miniRequiredCount + 1;
         return Mathf.Clamp(stage, 0, spriteCount - 1);
+    }
+
+    private void ApplyTooltip(SynergySlot slot, SynergyTotalData entry)
+    {
+        if (slot?.root == null)
+        {
+            return;
+        }
+
+        SynergyDescriptor tooltip = slot.root.GetComponent<SynergyDescriptor>();
+        if (tooltip == null)
+        {
+            tooltip = slot.root.AddComponent<SynergyDescriptor>();
+        }
+
+        tooltip.SetTooltipData(entry);
+    }
+
+    private void ApplyOverflowTooltip(List<SynergyTotalData> overflowEntries)
+    {
+        if (_overflowRoot == null)
+        {
+            return;
+        }
+
+        SynergyDescriptor tooltip = _overflowRoot.GetComponent<SynergyDescriptor>();
+        if (tooltip == null)
+        {
+            tooltip = _overflowRoot.AddComponent<SynergyDescriptor>();
+        }
+
+        tooltip.SetOverflowTooltipData(overflowEntries);
     }
 }
