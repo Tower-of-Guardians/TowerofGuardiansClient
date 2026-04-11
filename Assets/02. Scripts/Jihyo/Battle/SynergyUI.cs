@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
@@ -25,6 +26,10 @@ public class SynergyUI : MonoBehaviour
     {
         public string synergyId;
         public Sprite icon;
+        [Tooltip("이 시너지의 최소 발동 개수. 이 개수부터 1단계가 되고, 이후 1장 추가될 때마다 단계가 1씩 증가합니다.")]
+        [Min(1)]
+        [FormerlySerializedAs("countPerGaugeBlock")]
+        public int miniRequiredCount = 1;
         public Sprite[] gaugeSprites;
     }
 
@@ -196,7 +201,7 @@ public class SynergyUI : MonoBehaviour
             return;
         }
 
-        int idx = GetGaugeSpriteIndex(entry, visual.gaugeSprites.Length);
+        int idx = GetGaugeSpriteIndex(entry, visual);
         Sprite frame = visual.gaugeSprites[idx];
         if (frame != null)
         {
@@ -211,10 +216,18 @@ public class SynergyUI : MonoBehaviour
     }
 
     /// <summary>
-    /// GameData의 count를 게이지 프레임 인덱스로 매핑, 임계값 기반 단계는 이후 데이터 설계에 맞게 교체 가능
+    /// 최소 발동 개수 이전에는 0단계, 이후에는 카드 1장당 1단계씩 증가하며 Gauge Sprites 개수로 클램프합니다.
     /// </summary>
-    private static int GetGaugeSpriteIndex(SynergyTotalData entry, int spriteCount)
+    private static int GetGaugeSpriteIndex(SynergyTotalData entry, SynergyVisualBinding visual)
     {
-        return Mathf.Clamp(entry.count, 0, spriteCount - 1);
+        int spriteCount = visual.gaugeSprites.Length;
+        if (spriteCount <= 0)
+        {
+            return 0;
+        }
+
+        int miniRequiredCount = visual.miniRequiredCount < 1 ? 1 : visual.miniRequiredCount;
+        int stage = entry.count - miniRequiredCount + 1;
+        return Mathf.Clamp(stage, 0, spriteCount - 1);
     }
 }

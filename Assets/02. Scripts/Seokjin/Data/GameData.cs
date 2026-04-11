@@ -308,7 +308,7 @@ public class GameData : Singleton<GameData>
             else if (t_onfieldcard[i].synergy1ID.Length > 0)
             {
                 SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy1ID);
-                t.count = 0;
+                t.count = 1;
                 synergyIDList[t_onfieldcard[i].synergy1ID] = t;
             }
             if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy2ID, out SynergyTotalData synergy2count))
@@ -320,7 +320,7 @@ public class GameData : Singleton<GameData>
             else if (t_onfieldcard[i].synergy2ID.Length > 0)
             {
                 SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy2ID);
-                t.count = 0;
+                t.count = 1;
                 synergyIDList[t_onfieldcard[i].synergy2ID] = t;
             }
             if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy3ID, out SynergyTotalData synergy3count))
@@ -332,7 +332,7 @@ public class GameData : Singleton<GameData>
             else if (t_onfieldcard[i].synergy3ID.Length > 0)
             {
                 SynergyTotalData t = DataCenter.Instance.GetSynergyTotalData(t_onfieldcard[i].synergy3ID);
-                t.count = 0;
+                t.count = 1;
                 synergyIDList[t_onfieldcard[i].synergy3ID] = t;
             }
         }

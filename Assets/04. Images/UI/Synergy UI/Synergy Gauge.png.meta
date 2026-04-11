@@ -391,7 +391,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_0
+      name: Synergy Gauge Basic_0
       rect:
         serializedVersion: 2
         x: 0
@@ -413,7 +413,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_1
+      name: Synergy Gauge Basic_1
       rect:
         serializedVersion: 2
         x: 0
@@ -435,7 +435,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Honesty_1
+      name: Synergy Gauge Plunder_1
       rect:
         serializedVersion: 2
         x: 250
@@ -479,7 +479,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Honesty_0
+      name: Synergy Gauge Plunder_0
       rect:
         serializedVersion: 2
         x: 250
@@ -523,7 +523,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Basic_0
+      name: Synergy Gauge Shield Attack_0
       rect:
         serializedVersion: 2
         x: 250
@@ -567,7 +567,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Basic_2
+      name: Synergy Gauge Shield Attack_2
       rect:
         serializedVersion: 2
         x: 250
@@ -633,7 +633,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Plunder_0
+      name: Synergy Gauge Honesty_0
       rect:
         serializedVersion: 2
         x: 250
@@ -677,7 +677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Honesty_2
+      name: Synergy Gauge Plunder_2
       rect:
         serializedVersion: 2
         x: 250
@@ -721,7 +721,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Honesty_3
+      name: Synergy Gauge Plunder_3
       rect:
         serializedVersion: 2
         x: 250
@@ -765,7 +765,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Plunder_4
+      name: Synergy Gauge Honesty_4
       rect:
         serializedVersion: 2
         x: 250
@@ -853,7 +853,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Basic_1
+      name: Synergy Gauge Shield Attack_1
       rect:
         serializedVersion: 2
         x: 250
@@ -875,7 +875,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Basic_3
+      name: Synergy Gauge Shield Attack_3
       rect:
         serializedVersion: 2
         x: 250
@@ -897,7 +897,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Plunder_1
+      name: Synergy Gauge Honesty_1
       rect:
         serializedVersion: 2
         x: 250
@@ -919,7 +919,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Plunder_3
+      name: Synergy Gauge Honesty_3
       rect:
         serializedVersion: 2
         x: 250
@@ -985,7 +985,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Plunder_2
+      name: Synergy Gauge Honesty_2
       rect:
         serializedVersion: 2
         x: 250
@@ -1042,18 +1042,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Synergy Gauge Basic_0: -4788367860144985926
-      Synergy Gauge Basic_1: 323532149542028510
-      Synergy Gauge Basic_2: -4987109374241895332
-      Synergy Gauge Basic_3: 871568882161981281
+      Synergy Gauge  Attack_0: 5068607888594416882
+      Synergy Gauge Basic_0: 5068607888594416882
+      Synergy Gauge Basic_1: 7836916082567593525
       Synergy Gauge BloodSucking_0: 5418663772817810118
       Synergy Gauge BloodSucking_1: -7224302079080548202
       Synergy Gauge BloodSucking_2: 8965922701622580604
       Synergy Gauge BloodSucking_3: 6546846617637216857
-      Synergy Gauge Honesty_0: 3365514272679907847
-      Synergy Gauge Honesty_1: 6322377518802402776
-      Synergy Gauge Honesty_2: 8135014310420586847
-      Synergy Gauge Honesty_3: -2221718243433848479
+      Synergy Gauge Honesty_0: 6930558637426193472
+      Synergy Gauge Honesty_1: 5924514006253917193
+      Synergy Gauge Honesty_2: -1788372468
+      Synergy Gauge Honesty_3: 3758360030774000391
+      Synergy Gauge Honesty_4: 1080790192112370304
       Synergy Gauge Mystery_0: -5344407946230429945
       Synergy Gauge Mystery_1: -4612882921248179979
       Synergy Gauge Mystery_2: 2113921890360973793
@@ -1064,13 +1064,14 @@ TextureImporter:
       Synergy Gauge Overwhelming_2: 8472445690235079722
       Synergy Gauge Overwhelming_3: 6138698779049239947
       Synergy Gauge Overwhelming_4: 8626118355193768436
-      Synergy Gauge Plunder_0: 6930558637426193472
-      Synergy Gauge Plunder_1: 5924514006253917193
-      Synergy Gauge Plunder_2: -1788372468
-      Synergy Gauge Plunder_3: 3758360030774000391
-      Synergy Gauge Plunder_4: 1080790192112370304
-      Synergy Gauge Shield Attack_0: 5068607888594416882
-      Synergy Gauge Shield Attack_1: 7836916082567593525
+      Synergy Gauge Plunder_0: 3365514272679907847
+      Synergy Gauge Plunder_1: 6322377518802402776
+      Synergy Gauge Plunder_2: 8135014310420586847
+      Synergy Gauge Plunder_3: -2221718243433848479
+      Synergy Gauge Shield Attack_0: -4788367860144985926
+      Synergy Gauge Shield Attack_1: 323532149542028510
+      Synergy Gauge Shield Attack_2: -4987109374241895332
+      Synergy Gauge Shield Attack_3: 871568882161981281
       Synergy Gauge_27: 5735938364578417103
       Synergy Gauge_29: 8725821599176768460
       Synergy Gauge_31: -8507705402295911069
