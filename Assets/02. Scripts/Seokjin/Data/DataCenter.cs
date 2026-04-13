@@ -98,7 +98,7 @@ public class DataCenter : Singleton<DataCenter>
     public void LoadPlayerData()
     {
         playerstate.level = 1;
-        playerstate.experience = 0;
+        playerstate.experience = 40;
         playerstate.hp = 70;
         playerstate.lhp = 5;
         playerstate.atk = 4;
