@@ -52,4 +52,10 @@ public class ToggleButton : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         buttonImage.sprite = _isSelected ? onNormalSprite 
                                          : offNormalSprite;
     }
+
+    public void Reset()
+    {
+        _isSelected = true;
+        buttonImage.sprite = onHoverSprite;
+    }
 }

@@ -4,7 +4,7 @@ public class InventorySortPresenter
     private readonly CardInventoryUI _cardInventoryUI;
 
     private SortType _currentSortType = SortType.Time;
-    private bool _isAscending = true;
+    private bool _isAscending;
 
     public InventorySortPresenter(IInventorySortUI inventorySortUI,
                                   CardInventoryUI cardInventoryUI)
@@ -13,11 +13,15 @@ public class InventorySortPresenter
         _cardInventoryUI = cardInventoryUI;
 
         _inventorySortUI.Construct(this);
-        Initialize();
+        UpdateSortText();
     }
 
-    private void Initialize()
-        => UpdateSortText();
+    public void Initialize()
+    {
+        ResetSorting();
+        ResetCriterion();
+        CommitChange();
+    }
 
     private void SetPrevSortType()
     {
@@ -81,5 +85,17 @@ public class InventorySortPresenter
     {   
         DataCenter.Instance.SortUserCards(_currentSortType);
         _cardInventoryUI.RefreshCardInventory();
+    }
+
+    private void ResetSorting()
+    {
+        _currentSortType = SortType.Time;
+        UpdateSortText();
+    }
+
+    private void ResetCriterion()
+    {
+        _isAscending = false;
+        _inventorySortUI.ResetCriterion();
     }
 }

@@ -18,4 +18,9 @@ public class InventorySortUI : MonoBehaviour, IInventorySortUI
 
     public void UpdateSortLabel(string sortText)
         => sortLabel.text = sortText;
+
+    public void ResetCriterion()
+    {
+        criterionButton.Reset();
+    }
 }
