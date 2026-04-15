@@ -22,6 +22,7 @@ public class GameLifetimeScope : LifetimeScope
     {
         ConfigureCore(builder);
         ConfigureManualUI(builder);
+        ConfigureInventoryUI(builder);
         ConfigureDeckUI(builder);
         ConfigureDiscardUI(builder);
         ConfigureHandUI(builder);
@@ -57,6 +58,39 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ActionManualPresenter>(Lifetime.Scoped);
         builder.RegisterComponentInHierarchy<DiscardManualUI>().As<IDiscardManualUI>();
         builder.RegisterEntryPoint<DiscardManualPresenter>(Lifetime.Scoped);
+    }
+
+    private void ConfigureInventoryUI(IContainerBuilder builder)
+    {
+        InventoryUI resolvedInventoryUI = FindInScene<InventoryUI>();
+        CardInventoryUI resolvedCardInventoryUI = FindInScene<CardInventoryUI>();
+        InventorySortUI resolvedInventorySortUI = FindInScene<InventorySortUI>();
+        InventoryTabUI resolvedInventoryTabUI = FindInScene<InventoryTabUI>();
+
+        bool hasInventoryReferences = resolvedInventoryUI != null &&
+                                      resolvedCardInventoryUI != null &&
+                                      resolvedInventorySortUI != null &&
+                                      resolvedInventoryTabUI != null;
+        if (!hasInventoryReferences)
+        {
+            return;
+        }
+
+        builder.RegisterInstance(resolvedInventoryUI).As<IInventoryUI>();
+        builder.RegisterInstance(resolvedCardInventoryUI);
+        builder.RegisterInstance(resolvedInventorySortUI).As<IInventorySortUI>();
+        builder.RegisterInstance(resolvedInventoryTabUI).As<IInventoryTabUI>();
+
+        builder.Register<InventoryTabPresenter>(Lifetime.Scoped).AsSelf();
+        builder.Register<InventoryPresenter>(Lifetime.Scoped).AsSelf();
+        builder.Register<InventorySortPresenter>(Lifetime.Scoped).AsSelf();
+
+        builder.RegisterBuildCallback(resolver =>
+        {
+            resolver.Resolve<InventoryTabPresenter>();
+            resolver.Resolve<InventoryPresenter>();
+            resolver.Resolve<InventorySortPresenter>();
+        });
     }
 
     private void ConfigureDeckUI(IContainerBuilder builder)
