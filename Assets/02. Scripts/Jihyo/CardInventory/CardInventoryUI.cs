@@ -13,7 +13,7 @@ public class CardInventoryUI : MonoBehaviour
     [SerializeField] private List<GameObject> instantiatedCards = new List<GameObject>();
 
     [Header("캔버스 그룹")]
-    [SerializeField] private CanvasGroup m_canvas_group;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     void Start()
         => InitializeCardInventoryUI();
@@ -205,8 +205,8 @@ public class CardInventoryUI : MonoBehaviour
 
     private void ToggleCanvasGroup(bool active)
     {
-        m_canvas_group.alpha = active ? 1f : 0f;
-        m_canvas_group.blocksRaycasts = active;
-        m_canvas_group.interactable = active;
+        canvasGroup.alpha = active ? 1f : 0f;
+        canvasGroup.blocksRaycasts = active;
+        canvasGroup.interactable = active;
     }
 }
