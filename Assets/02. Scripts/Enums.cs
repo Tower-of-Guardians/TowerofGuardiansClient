@@ -32,11 +32,8 @@ public enum SortType
     Defense
 }
 
-public enum CharacterCode
+public enum TabType
 {
-    Eccliss,
-    Xylvia,
-    Heka,
-    Kravian,
-    Lucien,
+    Card,
+    Magic
 }
