@@ -355,6 +355,23 @@ public class CSVToScriptableObject
             newItem.Name = values[n++].Trim();
 
             if (int.TryParse(values[n++].Trim(), out int section)) newItem.Section = section;
+            if (int.TryParse(values[n++].Trim(), out int gold)) newItem.Gold = gold;
+            if (int.TryParse(values[n++].Trim(), out int exp)) newItem.Exp = exp;
+
+            newItem.Mon1ID = values[n++].Trim();
+            newItem.Mon2ID = values[n++].Trim();
+            newItem.Mon3ID = values[n++].Trim();
+            newItem.Mon4ID = values[n++].Trim();
+
+            if (float.TryParse(values[n++].Trim(), out float pos1)) newItem.Mon1Position = pos1;
+            if (float.TryParse(values[n++].Trim(), out float pos2)) newItem.Mon2Position = pos2;
+            if (float.TryParse(values[n++].Trim(), out float pos3)) newItem.Mon3Position = pos3;
+            if (float.TryParse(values[n++].Trim(), out float pos4)) newItem.Mon4Position = pos4;
+
+            if (float.TryParse(values[n++].Trim(), out float bar1)) newItem.Mon1BarLength = bar1;
+            if (float.TryParse(values[n++].Trim(), out float bar2)) newItem.Mon2BarLength = bar2;
+            if (float.TryParse(values[n++].Trim(), out float bar3)) newItem.Mon3BarLength = bar3;
+            if (float.TryParse(values[n++].Trim(), out float bar4)) newItem.Mon4BarLength = bar4;
 
             string fileName = newItem.Id + ".asset";
 

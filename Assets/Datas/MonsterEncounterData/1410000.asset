@@ -13,5 +13,19 @@ MonoBehaviour:
   m_Name: 1410000
   m_EditorClassIdentifier: 
   Id: 1410000
-  Name: 
+  Name: "\uD770\uB465\uC774 \uB458"
   Section: 11
+  Gold: 50
+  Exp: 43
+  Mon1ID: 41001000
+  Mon2ID: 41001000
+  Mon3ID: 
+  Mon4ID: 
+  Mon1Position: 0
+  Mon2Position: 0
+  Mon3Position: 0
+  Mon4Position: 0
+  Mon1BarLength: 0
+  Mon2BarLength: 0
+  Mon3BarLength: 0
+  Mon4BarLength: 0
