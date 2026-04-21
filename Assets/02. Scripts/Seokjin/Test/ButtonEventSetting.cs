@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ButtonEventSetting : MonoBehaviour
 {
-    [SerializeField] Button testbutton1, textbutton2, textbutton3;
+    [SerializeField] Button testbutton, testbutton1, testbutton2, testbutton3;
     [SerializeField] Slider testslider1, testslider2, testslider3, testslider4;
     [SerializeField] TextMeshProUGUI logtext;
     public SynergyTotalData synergyTotalData;
@@ -18,8 +18,8 @@ public class ButtonEventSetting : MonoBehaviour
     {
         testbutton1.onClick.AddListener(() =>
         {
-            /*synergyTotalData = DataCenter.Instance.GetSynergyTotalData("210002");
-            synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, 10);
+            synergyTotalData = DataCenter.Instance.GetSynergyTotalData("210002");
+            /*synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, 10);
             Match m = Regex.Match(synergyTotalData.statusEffectDataa.Description, @"\(([^)]+)\)");
             if (m.Success)
             {
@@ -42,15 +42,21 @@ public class ButtonEventSetting : MonoBehaviour
                             synergyTotalData.statusEffectDataa.Description;*/
             AudioManager.Instance.PlayBGM("TOG_Battle_1");
         });
-        textbutton2.onClick.AddListener(() =>
+        testbutton2.onClick.AddListener(() =>
         {
             AudioManager.Instance.PlaySFX("TOG_Hero_Shield");
         });
 
-        textbutton3.onClick.AddListener(() =>
+        testbutton3.onClick.AddListener(() =>
         {
             AudioManager.Instance.PlaySFX("TOG_UI_Battle_Deck_AttackButton_Click");
             AudioManager.Instance.PlaySFX("TOG_UI_Battle_Deck_AttackButton_Hover");
+        });
+
+        testbutton.onClick.AddListener(() =>
+        {
+            List<CardData> tcardlist = DataCenter.Instance.GetFront4_End3_CardList("1100", "001");
+            Debug.Log(tcardlist);
         });
 
         StartCoroutine("skil_1234","1234");

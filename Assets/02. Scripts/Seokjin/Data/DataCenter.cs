@@ -422,6 +422,17 @@ public class DataCenter : Singleton<DataCenter>
         }
     }
 
+    public List<CardData> GetFront4_End3_CardList(string front, string back)
+    {
+        // LINQ의 Where를 사용하면 한 줄로 필터링이 가능합니다.
+        return userDeck.Where(user =>
+            user.id != null &&              // ID가 비어있지 않은지 확인
+            user.id.Length == 8 &&          // 8자리인지 확인
+            user.id.StartsWith(front) &&    // 앞 4자리 체크
+            user.id.EndsWith(back)          // 뒤 3자리 체크
+        ).ToList();
+    }
+
     /// <summary>
     /// 몬스터 데이터 받기
     /// </summary>
