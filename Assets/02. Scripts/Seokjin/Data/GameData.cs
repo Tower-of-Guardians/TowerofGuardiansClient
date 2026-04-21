@@ -297,6 +297,14 @@ public class GameData : Singleton<GameData>
             t_onfieldcard.Add(data);
         }
 
+        var uniqueList = t_onfieldcard.GroupBy(card => card.id)
+                             .Select(group => group.First())
+                             .ToList();
+
+        // 기존 리스트를 비우고 중복 제거된 리스트로 채웁니다.
+        t_onfieldcard.Clear();
+        t_onfieldcard.AddRange(uniqueList);
+
         for (int i = 0; i < t_onfieldcard.Count; i++)
         {
             if (synergyIDList.TryGetValue(t_onfieldcard[i].synergy1ID, out SynergyTotalData synergy1count))
