@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class ButtonEventSetting : MonoBehaviour
 {
     [SerializeField] Button testbutton1, textbutton2, textbutton3;
+    [SerializeField] Slider testslider1, testslider2, testslider3, testslider4;
     [SerializeField] TextMeshProUGUI logtext;
     public SynergyTotalData synergyTotalData;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,20 +40,26 @@ public class ButtonEventSetting : MonoBehaviour
 
             logtext.text = synergyTotalData.synergyData.Description + "\n" +
                             synergyTotalData.statusEffectDataa.Description;*/
+            AudioManager.Instance.PlayBGM("TOG_Battle_1");
         });
         textbutton2.onClick.AddListener(() =>
         {
-            DataCenter.Instance.SortUserCards(SortType.Defense);
+            AudioManager.Instance.PlaySFX("TOG_Hero_Shield");
         });
 
         textbutton3.onClick.AddListener(() =>
         {
-            DataCenter.Instance.SortUserCards(SortType.Grade);
+            AudioManager.Instance.PlaySFX("TOG_UI_Battle_Deck_AttackButton_Click");
+            AudioManager.Instance.PlaySFX("TOG_UI_Battle_Deck_AttackButton_Hover");
         });
 
         StartCoroutine("skil_1234","1234");
         SendMessage("skil_4321", 4321);
 
+        testslider1.onValueChanged.AddListener(value => AudioManager.Instance.SetMasterVolume(value));
+        testslider2.onValueChanged.AddListener(value => AudioManager.Instance.SetBGMVolume(value));
+        testslider3.onValueChanged.AddListener(value => AudioManager.Instance.SetSFXVolume(value));
+        testslider4.onValueChanged.AddListener(value => AudioManager.Instance.SetUIVolume(value));
     }
     public void skil_1234(object value)
     {
