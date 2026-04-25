@@ -36,6 +36,7 @@ public class Player : BaseUnit
     
     private Tweener attackTextTweener;
     private Tweener protectionTweener;
+    private readonly Queue<int> pendingAttackTweenTargets = new Queue<int>();
     private const int NormalSortingOrder = 5;
     private const int AttackSortingOrder = 7;
 
@@ -186,7 +187,9 @@ public class Player : BaseUnit
             {
                 if (target != null && target.IsAlive)
                 {
-                    target.TakeDamage(currentAttack);
+                    BaseUnit targetUnit = target as BaseUnit;
+                    int finalDamage = ApplyOutgoingStatusEffects(currentAttack, targetUnit);
+                    target.TakeDamage(finalDamage);
                 }
 
             }
@@ -323,6 +326,10 @@ public class Player : BaseUnit
         int fromValue = AttackValue;
         battleSynergyAttackBonus = Mathf.Max(0, bonus);
         int toValue = AttackValue;
+        if (fromValue == toValue)
+        {
+            return;
+        }
         AnimateAttackText(fromValue, toValue);
     }
 
@@ -331,6 +338,10 @@ public class Player : BaseUnit
         int fromValue = AttackValue;
         turnSynergyAttackBonus = Mathf.Max(0, bonus);
         int toValue = AttackValue;
+        if (fromValue == toValue)
+        {
+            return;
+        }
         AnimateAttackText(fromValue, toValue);
     }
 
@@ -383,22 +394,43 @@ public class Player : BaseUnit
         {
             return;
         }
-        
+
         if (attackTextTweener != null && attackTextTweener.IsActive())
         {
-            attackTextTweener.Kill();
+            pendingAttackTweenTargets.Enqueue(toValue);
+            return;
         }
-        
+
+        StartAttackTextTween(fromValue, toValue);
+    }
+
+    private void StartAttackTextTween(int fromValue, int toValue)
+    {
         int currentValue = fromValue;
         attackTextTweener = DOTween.To(
             () => currentValue,
-            x => {
+            x =>
+            {
                 currentValue = x;
                 attackText.text = currentValue.ToString();
             },
             toValue,
             statAnimationDuration
-        ).SetEase(statAnimationEase);
+        )
+        .SetEase(statAnimationEase)
+        .OnComplete(ProcessPendingAttackTextTween);
+    }
+
+    private void ProcessPendingAttackTextTween()
+    {
+        if (pendingAttackTweenTargets.Count == 0)
+        {
+            return;
+        }
+
+        int nextTarget = pendingAttackTweenTargets.Dequeue();
+        int fromValue = int.TryParse(attackText.text, out int parsedValue) ? parsedValue : AttackValue;
+        StartAttackTextTween(fromValue, nextTarget);
     }
     
     private void AnimateProtection(float fromValue, float toValue)
@@ -470,6 +502,7 @@ public class Player : BaseUnit
         {
             attackTextTweener.Kill();
         }
+        pendingAttackTweenTargets.Clear();
         
         if (protectionTweener != null && protectionTweener.IsActive())
         {

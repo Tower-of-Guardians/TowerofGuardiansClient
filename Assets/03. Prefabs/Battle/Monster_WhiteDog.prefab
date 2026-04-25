@@ -99,11 +99,11 @@ GameObject:
   - component: {fileID: 1158091095933760972}
   - component: {fileID: 811175669760757188}
   - component: {fileID: 4137754374880751806}
-  - component: {fileID: 5886319840209422735}
+  - component: {fileID: 3739762124255010228}
   - component: {fileID: 4344606365010817277}
   - component: {fileID: 8334733415889442526}
   m_Layer: 7
-  m_Name: Monster
+  m_Name: Monster_WhiteDog
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,7 +195,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5886319840209422735
+--- !u!114 &3739762124255010228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,10 +204,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4839011377745383518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33804f9535ddb59448bbfd58610c2d46, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e63514cb18061540a7048b0e8b41d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 19
   currentHealth: 0
   hasDefense: 0
   protectionValue: 0
@@ -217,15 +217,24 @@ MonoBehaviour:
   hpFillImage: {fileID: 4208882924128363983}
   defenseIcon: {fileID: 7616298766215617717}
   defaultHpColor: {r: 1, g: 0, b: 0, a: 1}
-  defenseHpColor: {r: 1, g: 1, b: 1, a: 1}
+  defenseHpColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   healthAnimationDuration: 0.3
   healthAnimationEase: 6
+  monsterDataId: 
+  useMonsterDataActions: 1
+  actionPatternType: 2
+  actionDefinitions: []
   attackAnchor: {fileID: 1158091095933760972}
   targetIndicator: {fileID: 8759010155118555184}
   spriteRenderer: {fileID: 4842365065420270011}
   attackMoveOffset: 5
   attackMoveDuration: 0.3
   damageApplyDelay: 0.5
+  attackMin: 7
+  attackMax: 8
+  guardMin: 10
+  guardMax: 11
+  weaknessStack: 1
 --- !u!114 &4344606365010817277
 MonoBehaviour:
   m_ObjectHideFlags: 0

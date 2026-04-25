@@ -6,10 +6,53 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum MonsterActionType
+{
+    Attack,
+    Guard,
+    ApplyStatus,
+    Heal,
+    Summon,
+    Ready,
+    Stun
+}
+
+public enum MonsterActionTargetType
+{
+    None,
+    Self,
+    Player,
+    AllyRandom,
+    AllyRandomExceptSelf,
+    AlliesAll
+}
+
+public enum MonsterActionPatternType
+{
+    Random = 1,
+    Cycle = 2
+}
+
+[Serializable]
+public class MonsterActionDefinition
+{
+    public string ActionId;
+    public MonsterActionType ActionType = MonsterActionType.Attack;
+    public MonsterActionTargetType TargetType = MonsterActionTargetType.Player;
+    public int MinValue = 0;
+    public int MaxValue = 0;
+    public string StatusEffectId;
+    public int StatusStack = 1;
+}
+
 public class Monster : BaseUnit, IPointerClickHandler
 {
     [Header("Data")]
-    [SerializeField] private const int Attack = 5;
+    [SerializeField] private int defaultAttack = 5;
+    [SerializeField] private string monsterDataId;
+    [SerializeField] private bool useMonsterDataActions = true;
+    [SerializeField] private MonsterActionPatternType actionPatternType = MonsterActionPatternType.Random;
+    [SerializeField] private List<MonsterActionDefinition> actionDefinitions = new List<MonsterActionDefinition>();
 
     [Header("Status UI")]
     [SerializeField] private Transform attackAnchor;
@@ -34,11 +77,19 @@ public class Monster : BaseUnit, IPointerClickHandler
     public event Action<Monster> Clicked;
     private BattleManager battleManager;
     private Coroutine registrationRoutine;
+    private int actionCursor;
+    private MonsterData loadedMonsterData;
+    private MonsterActionDefinition preparedAction;
+    private int preparedActionValue;
+    private bool hasPreparedAction;
 
     protected override void Awake()
     {
+        ApplyMonsterDataIfConfigured();
         base.Awake();
         currentHealth = maxHealth;
+        BuildActionsFromMonsterDataIfNeeded();
+        ConfigureMonsterTraits();
         InitializeAnimation();
         SaveInitialPosition();
         SetTargeted(false);
@@ -85,7 +136,20 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     public int GetAttackValue()
     {
-        return Attack;
+        return defaultAttack;
+    }
+
+    protected virtual void ConfigureMonsterTraits() { }
+
+    protected void OverrideBehavior(MonsterActionPatternType patternType, params MonsterActionDefinition[] actions)
+    {
+        actionPatternType = patternType;
+        actionCursor = 0;
+        actionDefinitions.Clear();
+        if (actions != null && actions.Length > 0)
+        {
+            actionDefinitions.AddRange(actions);
+        }
     }
 
     public IEnumerator PerformAttack(IDamageable target)
@@ -113,11 +177,16 @@ public class Monster : BaseUnit, IPointerClickHandler
         // 공격 중 체력이 감소하는 타이밍
         yield return new WaitForSeconds(damageApplyDelay);
 
-        int damage = GetAttackValue();
-        if (damage > 0)
+        MonsterActionDefinition selectedAction = null;
+        int actionValue = 0;
+
+        if (!TryConsumePreparedAction(out selectedAction, out actionValue))
         {
-            target.TakeDamage(damage);
+            selectedAction = SelectNextAction();
+            actionValue = selectedAction != null ? ResolveActionValue(selectedAction.MinValue, selectedAction.MaxValue) : defaultAttack;
         }
+
+        ExecuteSelectedAction(selectedAction, target, actionValue);
 
         if (monsterAnimation != null)
         {
@@ -130,6 +199,324 @@ public class Monster : BaseUnit, IPointerClickHandler
         }
 
         SetSortingOrder(NormalSortingOrder);
+    }
+
+    public void PrepareActionForTurn()
+    {
+        preparedAction = SelectNextAction();
+        preparedActionValue = preparedAction != null ? ResolveActionValue(preparedAction.MinValue, preparedAction.MaxValue) : defaultAttack;
+        hasPreparedAction = true;
+        RefreshUI();
+    }
+
+    private void ApplyMonsterDataIfConfigured()
+    {
+        if (string.IsNullOrEmpty(monsterDataId) || DataCenter.Instance == null)
+        {
+            return;
+        }
+
+        DataCenter.Instance.GetMonsterData(monsterDataId, data => loadedMonsterData = data);
+        if (loadedMonsterData == null)
+        {
+            return;
+        }
+
+        if (loadedMonsterData.HP > 0)
+        {
+            maxHealth = loadedMonsterData.HP;
+            currentHealth = maxHealth;
+        }
+
+        if (loadedMonsterData.PatternType == (int)MonsterActionPatternType.Random
+            || loadedMonsterData.PatternType == (int)MonsterActionPatternType.Cycle)
+        {
+            actionPatternType = (MonsterActionPatternType)loadedMonsterData.PatternType;
+        }
+    }
+
+    private void BuildActionsFromMonsterDataIfNeeded()
+    {
+        if (!useMonsterDataActions || loadedMonsterData == null || actionDefinitions.Count > 0)
+        {
+            return;
+        }
+
+        AppendAction(loadedMonsterData.Action1ID, loadedMonsterData.Action1Min, loadedMonsterData.Action1Max);
+        AppendAction(loadedMonsterData.Action2ID, loadedMonsterData.Action2Min, loadedMonsterData.Action2Max);
+        AppendAction(loadedMonsterData.Action3ID, loadedMonsterData.Action3Min, loadedMonsterData.Action3Max);
+        AppendAction(loadedMonsterData.Action4ID, loadedMonsterData.Action4Min, loadedMonsterData.Action4Max);
+        AppendAction(loadedMonsterData.Action5ID, loadedMonsterData.Action5Min, loadedMonsterData.Action5Max);
+        AppendAction(loadedMonsterData.Action6ID, loadedMonsterData.Action6Min, loadedMonsterData.Action6Max);
+        AppendAction(loadedMonsterData.Action7ID, loadedMonsterData.Action7Min, loadedMonsterData.Action7Max);
+    }
+
+    private void AppendAction(string actionId, int min, int max)
+    {
+        if (string.IsNullOrEmpty(actionId))
+        {
+            return;
+        }
+
+        actionDefinitions.Add(CreateActionFromData(actionId, min, max));
+    }
+
+    private MonsterActionDefinition CreateActionFromData(string actionId, int min, int max)
+    {
+        var definition = new MonsterActionDefinition
+        {
+            ActionId = actionId,
+            MinValue = min,
+            MaxValue = max
+        };
+
+        switch (actionId)
+        {
+            case "2410001":
+                definition.ActionType = MonsterActionType.Attack;
+                definition.TargetType = MonsterActionTargetType.Player;
+                break;
+            case "2410002":
+                definition.ActionType = MonsterActionType.Guard;
+                definition.TargetType = MonsterActionTargetType.Self;
+                break;
+            default:
+                // 기본값은 유저 대상 공격으로 해석
+                definition.ActionType = MonsterActionType.Attack;
+                definition.TargetType = MonsterActionTargetType.Player;
+                break;
+        }
+
+        return definition;
+    }
+
+    private MonsterActionDefinition SelectNextAction()
+    {
+        if (actionDefinitions == null || actionDefinitions.Count == 0)
+        {
+            return null;
+        }
+
+        if (actionPatternType == MonsterActionPatternType.Cycle)
+        {
+            MonsterActionDefinition cycleAction = actionDefinitions[actionCursor];
+            actionCursor = (actionCursor + 1) % actionDefinitions.Count;
+            return cycleAction;
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, actionDefinitions.Count);
+        return actionDefinitions[randomIndex];
+    }
+
+    private void ExecuteSelectedAction(MonsterActionDefinition action, IDamageable defaultTarget, int actionValue)
+    {
+        if (action == null)
+        {
+            ExecuteFallbackAttack(defaultTarget);
+            return;
+        }
+
+        List<IDamageable> targets = ResolveTargets(action.TargetType, defaultTarget);
+
+        switch (action.ActionType)
+        {
+            case MonsterActionType.Attack:
+                ExecuteAttackAction(targets, actionValue);
+                break;
+            case MonsterActionType.Guard:
+                AddProtection(actionValue);
+                break;
+            case MonsterActionType.ApplyStatus:
+                ExecuteApplyStatusAction(targets, action.StatusEffectId, action.StatusStack);
+                break;
+            case MonsterActionType.Heal:
+                SetCurrentHealth(CurrentHealth + actionValue);
+                break;
+            case MonsterActionType.Summon:
+                Debug.Log($"{name}: 소환 행동은 아직 구현 전입니다.");
+                break;
+            case MonsterActionType.Ready:
+                // 준비 행동은 의도적으로 아무것도 하지 않습니다.
+                break;
+            case MonsterActionType.Stun:
+                // 기절 행동은 행동 불가를 표현하므로 아무것도 하지 않습니다.
+                break;
+            default:
+                ExecuteFallbackAttack(defaultTarget);
+                break;
+        }
+    }
+
+    private bool TryConsumePreparedAction(out MonsterActionDefinition action, out int actionValue)
+    {
+        if (!hasPreparedAction)
+        {
+            action = null;
+            actionValue = 0;
+            return false;
+        }
+
+        action = preparedAction;
+        actionValue = preparedActionValue;
+        hasPreparedAction = false;
+        preparedAction = null;
+        preparedActionValue = 0;
+        return true;
+    }
+
+    private void ExecuteFallbackAttack(IDamageable target)
+    {
+        if (target == null || !target.IsAlive)
+        {
+            return;
+        }
+
+        int damage = GetAttackValue();
+        BaseUnit targetUnit = target as BaseUnit;
+        int finalDamage = ApplyOutgoingStatusEffects(damage, targetUnit);
+        target.TakeDamage(finalDamage);
+    }
+
+    private void ExecuteAttackAction(List<IDamageable> targets, int damage)
+    {
+        if (targets == null || targets.Count == 0 || damage <= 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            IDamageable target = targets[i];
+            if (target == null || !target.IsAlive)
+            {
+                continue;
+            }
+
+            BaseUnit targetUnit = target as BaseUnit;
+            int finalDamage = ApplyOutgoingStatusEffects(damage, targetUnit);
+            target.TakeDamage(finalDamage);
+        }
+    }
+
+    private void ExecuteApplyStatusAction(List<IDamageable> targets, string statusEffectId, int stack)
+    {
+        if (targets == null || targets.Count == 0 || string.IsNullOrEmpty(statusEffectId))
+        {
+            return;
+        }
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            BaseUnit targetUnit = targets[i] as BaseUnit;
+            if (targetUnit == null || !targetUnit.IsAlive)
+            {
+                continue;
+            }
+
+            StatusEffectController statusEffectController = targetUnit.GetComponent<StatusEffectController>();
+            if (statusEffectController == null)
+            {
+                statusEffectController = targetUnit.gameObject.AddComponent<StatusEffectController>();
+            }
+
+            statusEffectController.TryApplyStatus(statusEffectId, stack);
+        }
+    }
+
+    private List<IDamageable> ResolveTargets(MonsterActionTargetType targetType, IDamageable defaultPlayerTarget)
+    {
+        List<IDamageable> resolvedTargets = new List<IDamageable>();
+        List<Monster> aliveAllies = GetAliveAllies();
+
+        switch (targetType)
+        {
+            case MonsterActionTargetType.None:
+                break;
+            case MonsterActionTargetType.Self:
+                resolvedTargets.Add(this);
+                break;
+            case MonsterActionTargetType.Player:
+                if (defaultPlayerTarget != null && defaultPlayerTarget.IsAlive)
+                {
+                    resolvedTargets.Add(defaultPlayerTarget);
+                }
+                break;
+            case MonsterActionTargetType.AllyRandom:
+                AddRandomAlly(resolvedTargets, aliveAllies);
+                break;
+            case MonsterActionTargetType.AllyRandomExceptSelf:
+                aliveAllies.Remove(this);
+                AddRandomAlly(resolvedTargets, aliveAllies);
+                break;
+            case MonsterActionTargetType.AlliesAll:
+                for (int i = 0; i < aliveAllies.Count; i++)
+                {
+                    resolvedTargets.Add(aliveAllies[i]);
+                }
+                break;
+        }
+
+        return resolvedTargets;
+    }
+
+    private List<Monster> GetAliveAllies()
+    {
+        var allies = new List<Monster>();
+        if (battleManager == null)
+        {
+            if (IsAlive)
+            {
+                allies.Add(this);
+            }
+
+            return allies;
+        }
+
+        BattleSetupController setup = battleManager.GetSetupController();
+        if (setup == null)
+        {
+            if (IsAlive)
+            {
+                allies.Add(this);
+            }
+
+            return allies;
+        }
+
+        List<Monster> monsters = setup.GetPrimaryMonsters();
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            Monster monster = monsters[i];
+            if (monster != null && monster.IsAlive)
+            {
+                allies.Add(monster);
+            }
+        }
+
+        return allies;
+    }
+
+    private static void AddRandomAlly(List<IDamageable> output, List<Monster> candidates)
+    {
+        if (output == null || candidates == null || candidates.Count == 0)
+        {
+            return;
+        }
+
+        int index = UnityEngine.Random.Range(0, candidates.Count);
+        output.Add(candidates[index]);
+    }
+
+    private static int ResolveActionValue(int min, int max)
+    {
+        int normalizedMin = Mathf.Min(min, max);
+        int normalizedMax = Mathf.Max(min, max);
+        if (normalizedMin == normalizedMax)
+        {
+            return normalizedMin;
+        }
+
+        return UnityEngine.Random.Range(normalizedMin, normalizedMax + 1);
     }
 
     private Vector3 GetTargetAttackPosition(IDamageable target)
@@ -356,7 +743,13 @@ public class Monster : BaseUnit, IPointerClickHandler
 
         if (attackText != null)
         {
-            attackText.text = Attack.ToString();
+            int displayValue = defaultAttack;
+            if (hasPreparedAction && preparedAction != null)
+            {
+                displayValue = preparedAction.ActionType == MonsterActionType.Attack ? preparedActionValue : 0;
+            }
+
+            attackText.text = displayValue.ToString();
         }
     }
 }

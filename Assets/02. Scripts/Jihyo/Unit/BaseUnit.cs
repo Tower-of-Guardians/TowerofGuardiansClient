@@ -49,6 +49,16 @@ public abstract class BaseUnit : MonoBehaviour, IDamageable
 
     public virtual void TakeDamage(int amount)
     {
+        int beforeHealth = currentHealth;
+        StatusEffectController statusEffectController = GetComponent<StatusEffectController>();
+        DamageContext incomingDamageContext = null;
+        if (statusEffectController != null)
+        {
+            incomingDamageContext = new DamageContext(amount, null, this);
+            statusEffectController.OnBeforeTakeDamage(incomingDamageContext);
+            amount = incomingDamageContext.FinalDamage;
+        }
+
         // 보호력이 있으면 보호력부터 감소
         if (protectionValue > 0)
         {
@@ -66,6 +76,41 @@ public abstract class BaseUnit : MonoBehaviour, IDamageable
         // 남은 데미지를 체력에 적용
         currentHealth = Mathf.Clamp(currentHealth - Mathf.Max(0, amount), 0, maxHealth);
         RefreshUI();
+
+        if (statusEffectController != null && incomingDamageContext != null)
+        {
+            int appliedHealthDamage = Mathf.Max(0, beforeHealth - currentHealth);
+            incomingDamageContext.SetFinalDamage(appliedHealthDamage);
+            statusEffectController.OnAfterTakeDamage(incomingDamageContext);
+        }
+    }
+
+    /// <summary>
+    /// 공격 직전, 보유 상태효과가 피해값을 수정할 수 있도록 호출합니다.
+    /// </summary>
+    public int ApplyOutgoingStatusEffects(int baseDamage, BaseUnit target, bool isCritical = false)
+    {
+        StatusEffectController statusEffectController = GetComponent<StatusEffectController>();
+        if (statusEffectController == null)
+        {
+            return Mathf.Max(0, baseDamage);
+        }
+
+        DamageContext outgoingDamageContext = new DamageContext(baseDamage, this, target, isCritical);
+        statusEffectController.OnBeforeDealDamage(outgoingDamageContext);
+        return outgoingDamageContext.FinalDamage;
+    }
+
+    public void NotifyTurnStartStatusEffects()
+    {
+        StatusEffectController statusEffectController = GetComponent<StatusEffectController>();
+        statusEffectController?.OnTurnStart();
+    }
+
+    public void NotifyTurnEndStatusEffects()
+    {
+        StatusEffectController statusEffectController = GetComponent<StatusEffectController>();
+        statusEffectController?.OnTurnEnd();
     }
 
     public virtual void SetDefense(bool active)

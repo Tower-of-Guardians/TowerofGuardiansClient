@@ -212,8 +212,10 @@ public class BattleCombatController : MonoBehaviour, IBattleController
         {
             if (target != null && target.IsAlive)
             {
-                target.TakeDamage(currentAttack);
-                totalDealtDamage += currentAttack;
+                BaseUnit targetUnit = target as BaseUnit;
+                int finalDamage = player.ApplyOutgoingStatusEffects(currentAttack, targetUnit);
+                target.TakeDamage(finalDamage);
+                totalDealtDamage += finalDamage;
             }
         }
         ApplyOnHitSynergies(player, totalDealtDamage);

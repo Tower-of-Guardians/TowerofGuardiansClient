@@ -98,6 +98,7 @@ public class BattleManager : MonoBehaviour
             turnManager.Initialize();
             turnManager.ResetTurnNumber();
             turnManager.StartTurn();
+            InvokeStatusEffectTurnStart();
         }
     }
 
@@ -245,9 +246,52 @@ public class BattleManager : MonoBehaviour
             var turnManager = DIContainer.Resolve<TurnManager>();
             if (turnManager != null)
             {
+                InvokeStatusEffectTurnEnd();
                 turnManager.EndTurn();
                 turnManager.StartTurn();
+                InvokeStatusEffectTurnStart();
             }
+        }
+    }
+
+    private void InvokeStatusEffectTurnStart()
+    {
+        if (setupController == null)
+        {
+            return;
+        }
+
+        Player player = setupController.GetPlayer();
+        player?.NotifyTurnStartStatusEffects();
+
+        List<Monster> monsters = setupController.GetPrimaryMonsters();
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            Monster monster = monsters[i];
+            if (monster == null)
+            {
+                continue;
+            }
+
+            monster.NotifyTurnStartStatusEffects();
+            monster.PrepareActionForTurn();
+        }
+    }
+
+    private void InvokeStatusEffectTurnEnd()
+    {
+        if (setupController == null)
+        {
+            return;
+        }
+
+        Player player = setupController.GetPlayer();
+        player?.NotifyTurnEndStatusEffects();
+
+        List<Monster> monsters = setupController.GetPrimaryMonsters();
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            monsters[i]?.NotifyTurnEndStatusEffects();
         }
     }
 
