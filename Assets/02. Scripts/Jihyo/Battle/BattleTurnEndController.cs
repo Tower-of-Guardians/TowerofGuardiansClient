@@ -59,6 +59,16 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
     public void ProcessTurnEnd()
     {
+        int currentTurnNumber = -1;
+        if (DIContainer.IsRegistered<TurnManager>())
+        {
+            TurnManager turnManager = DIContainer.Resolve<TurnManager>();
+            if (turnManager != null)
+            {
+                currentTurnNumber = turnManager.CurrentTurnNumber;
+            }
+        }
+
         // 턴 종료 시 플레이어의 공격력을 기본 공격력으로 되돌림
         if (battleManager != null)
         {
@@ -69,6 +79,17 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
                 if (player != null)
                 {
                     player.ResetAttackToBase();
+                }
+
+                List<Monster> monsters = setupController.GetPrimaryMonsters();
+                for (int i = 0; i < monsters.Count; i++)
+                {
+                    if (monsters[i] == null)
+                    {
+                        continue;
+                    }
+
+                    monsters[i].ExpireGuardShieldIfNeeded(currentTurnNumber);
                 }
             }
         }

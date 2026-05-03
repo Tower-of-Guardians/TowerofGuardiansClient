@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 5711068066887165276}
   - component: {fileID: 4625413738402288248}
   - component: {fileID: 8227538613326071428}
+  - component: {fileID: 7773025701886003426}
   - component: {fileID: 6321516154979108677}
   - component: {fileID: 2409638708001309342}
   - component: {fileID: 5585972110413678562}
@@ -203,6 +204,19 @@ MonoBehaviour:
   attackMotionDuration: 0.3
   lightAttack: 10
   normalAttack: 20
+--- !u!114 &7773025701886003426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675832450616904799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5f69811a4df9d4282e05a811ae20c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 0
 --- !u!114 &6321516154979108677
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -82,6 +82,8 @@ public class Monster : BaseUnit, IPointerClickHandler
     private MonsterActionDefinition preparedAction;
     private int preparedActionValue;
     private bool hasPreparedAction;
+    private bool hasGuardShieldPendingExpire;
+    private int guardShieldAppliedTurnNumber = -1;
 
     protected override void Awake()
     {
@@ -325,6 +327,7 @@ public class Monster : BaseUnit, IPointerClickHandler
                 break;
             case MonsterActionType.Guard:
                 AddProtection(actionValue);
+                MarkGuardShieldAppliedThisTurn();
                 break;
             case MonsterActionType.ApplyStatus:
                 ExecuteApplyStatusAction(targets, action.StatusEffectId, action.StatusStack);
@@ -703,9 +706,50 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     private bool isMarkedForDeath = false;
 
+    private void MarkGuardShieldAppliedThisTurn()
+    {
+        hasGuardShieldPendingExpire = true;
+        guardShieldAppliedTurnNumber = ResolveCurrentTurnNumber();
+    }
+
+    private static int ResolveCurrentTurnNumber()
+    {
+        if (!DIContainer.IsRegistered<TurnManager>())
+        {
+            return -1;
+        }
+
+        TurnManager turnManager = DIContainer.Resolve<TurnManager>();
+        return turnManager != null ? turnManager.CurrentTurnNumber : -1;
+    }
+
+    public void ExpireGuardShieldIfNeeded(int currentTurnNumber)
+    {
+        if (!hasGuardShieldPendingExpire)
+        {
+            return;
+        }
+
+        // 가드가 적용된 같은 턴에는 유지하고, 그 다음 턴 종료 시 만료합니다.
+        if (currentTurnNumber <= guardShieldAppliedTurnNumber)
+        {
+            return;
+        }
+
+        SetProtection(0f);
+        hasGuardShieldPendingExpire = false;
+        guardShieldAppliedTurnNumber = -1;
+    }
+
     public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
+
+        if (ProtectionValue <= 0f)
+        {
+            hasGuardShieldPendingExpire = false;
+            guardShieldAppliedTurnNumber = -1;
+        }
         
         if (monsterAnimation != null && IsAlive)
         {

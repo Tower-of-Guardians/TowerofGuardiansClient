@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 4137754374880751806}
   - component: {fileID: 3739762124255010228}
   - component: {fileID: 4344606365010817277}
+  - component: {fileID: 5641636053510105752}
   - component: {fileID: 8334733415889442526}
   m_Layer: 7
   m_Name: Monster_WhiteDog
@@ -220,6 +221,7 @@ MonoBehaviour:
   defenseHpColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   healthAnimationDuration: 0.3
   healthAnimationEase: 6
+  defaultAttack: 5
   monsterDataId: 
   useMonsterDataActions: 1
   actionPatternType: 2
@@ -247,6 +249,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa808425e1b2b043ae7788b394f3444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5641636053510105752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839011377745383518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5f69811a4df9d4282e05a811ae20c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableDebugLog: 0
 --- !u!114 &8334733415889442526
 MonoBehaviour:
   m_ObjectHideFlags: 0

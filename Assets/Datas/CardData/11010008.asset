@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11010008
   itemName: "\uAD8C\uBC95\uC7A5\uAC11"
-  iconimage: {fileID: 0}
+  iconimage: {fileID: -8089820339312310891, guid: 25be9da19fafea1469ef4a3106295507, type: 3}
   synergyFrameImage: {fileID: 21300000, guid: 2fdd58a991429e841972473141ccc819, type: 3}
   grade: 1
   star: 0
