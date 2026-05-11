@@ -13,33 +13,16 @@ public class ButtonEventSetting : MonoBehaviour
     [SerializeField] Slider testslider1, testslider2, testslider3, testslider4;
     [SerializeField] TextMeshProUGUI logtext;
     public SynergyTotalData synergyTotalData;
+    public string testID;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        AkBankManager.LoadBank("Test", false, false);
+    }
     void Start()
     {
         testbutton1.onClick.AddListener(() =>
         {
-            synergyTotalData = DataCenter.Instance.GetSynergyTotalData("210002");
-            /*synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, 10);
-            Match m = Regex.Match(synergyTotalData.statusEffectDataa.Description, @"\(([^)]+)\)");
-            if (m.Success)
-            {
-                string replace = m.Groups[1].Value;
-                string processedFormula = string.Format(replace, 30);
-                string playerDef = "30";
-
-                // 거듭제곱(^) 처리 (DataTable은 ^를 지원 안 하므로 단순 곱셈으로 치환 예시)
-                // ※ 복잡한 수식이라면 처음에 추천드린 NCalc 라이브러리가 훨씬 편합니다.
-                processedFormula = processedFormula.Replace($"{playerDef}^{2}", $"({playerDef}*{playerDef})");
-
-                // 4. 계산 진행
-                DataTable dt = new DataTable();
-                var result = dt.Compute(processedFormula, "");
-                float damage = Convert.ToSingle(result);
-                synergyTotalData.statusEffectDataa.Description = string.Format(synergyTotalData.statusEffectDataa.Description, damage);
-            }
-
-            logtext.text = synergyTotalData.synergyData.Description + "\n" +
-                            synergyTotalData.statusEffectDataa.Description;*/
             AudioManager.Instance.PlayBGM("TOG_Battle_1");
         });
         testbutton2.onClick.AddListener(() =>
@@ -55,8 +38,32 @@ public class ButtonEventSetting : MonoBehaviour
 
         testbutton.onClick.AddListener(() =>
         {
-            List<CardData> tcardlist = DataCenter.Instance.GetFront4_End3_CardList("1100", "001");
+            AkSoundEngine.PostEvent("TOG_Battle_1", gameObject);
+            /*List<CardData> tcardlist = DataCenter.Instance.GetFront4_End3_CardList("1100", "001");
             Debug.Log(tcardlist);
+
+            synergyTotalData = DataCenter.Instance.GetSynergyTotalData(testID);
+            synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, 10);
+            Match m = Regex.Match(synergyTotalData.synergyData.Description, @"\(([^)]+)\)");
+            if (m.Success)
+            {
+                string replace = m.Groups[1].Value;
+                string processedFormula = string.Format(replace, 30);
+                string playerDef = "30";
+
+                // 거듭제곱(^) 처리 (DataTable은 ^를 지원 안 하므로 단순 곱셈으로 치환 예시)
+                // ※ 복잡한 수식이라면 처음에 추천드린 NCalc 라이브러리가 훨씬 편합니다.
+                processedFormula = processedFormula.Replace($"{playerDef}^{2}", $"({playerDef}*{playerDef})");
+
+                // 4. 계산 진행
+                DataTable dt = new DataTable();
+                var result = dt.Compute(processedFormula, "");
+                float damage = Convert.ToSingle(result);
+                synergyTotalData.synergyData.Description = string.Format(synergyTotalData.synergyData.Description, damage);
+            }
+
+            logtext.text = synergyTotalData.synergyData.Name + "\n" +
+                            synergyTotalData.synergyData.Description;*/
         });
 
         StartCoroutine("skil_1234","1234");

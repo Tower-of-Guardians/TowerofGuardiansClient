@@ -257,83 +257,32 @@ public class CSVToScriptableObject
             MonsterData newItem = ScriptableObject.CreateInstance<MonsterData>();
             int n = 0;
 
+            //ID,Name,HP,ATKMin,ATKMax,DEFMin,DEFMax,Kind,PatternType,PassiveID,PassiveValue,StatusEffect1ID,Target1,Value1,StatusEffect2ID,Target2,Value2,StatusEffect3ID,Target3,Value3
             newItem.Id = values[n++].Trim();
             newItem.Name = values[n++].Trim();
 
-            // ✨ 스프라이트 시트 파일 이름과 개별 스프라이트 이름 읽기
-            string spriteNameInSheet = values[n++].Trim();   // 예: Sword
-
-            if (!string.IsNullOrEmpty(spriteNameInSheet))
-            {
-                string fullSpriteSheetPath = Path.Combine(imageResourcesPath + "Icons/", "ItemIcon.png").Replace('\\', '/');
-
-                // AssetDatabase.LoadAllAssetsAtPath를 사용하여 스프라이트 시트 내의 모든 스프라이트를 불러옵니다.
-                // 이 함수는 주 에셋(Texture2D)과 그 하위 에셋(Sprite)들을 모두 불러옵니다.
-                Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(fullSpriteSheetPath);
-                Sprite foundSprite = null;
-
-                foreach (Object asset in allAssets)
-                {
-                    // 불러온 에셋 중 Sprite 타입이고 이름이 일치하는 것을 찾습니다.
-                    if (asset is Sprite sprite && sprite.name == spriteNameInSheet)
-                    {
-                        foundSprite = sprite;
-                        break;
-                    }
-                }
-
-                if (foundSprite != null)
-                {
-                    newItem.Image = foundSprite;
-                }
-                else
-                {
-                    Debug.LogWarning($"스프라이트 시트 '{fullSpriteSheetPath}'에서 스프라이트 '{spriteNameInSheet}'를 찾을 수 없습니다. (이름 또는 슬라이싱 확인 필요)");
-                }
-            }
-
-
             if (int.TryParse(values[n++].Trim(), out int hp)) newItem.HP = hp;
+            if (int.TryParse(values[n++].Trim(), out int atkmin)) newItem.ATKMin = atkmin;
+            if (int.TryParse(values[n++].Trim(), out int atkmax)) newItem.ATKMax = atkmax;
+            if (int.TryParse(values[n++].Trim(), out int defmin)) newItem.DEFMin = defmin;
+            if (int.TryParse(values[n++].Trim(), out int defmax)) newItem.DEFMax = defmax;
             if (int.TryParse(values[n++].Trim(), out int kind)) newItem.Kind = kind;
-            if (int.TryParse(values[n++].Trim(), out int pattern)) newItem.PatternType = pattern;
 
-            newItem.Passive1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int Passive1)) newItem.Passive1Value = Passive1;
-            newItem.Passive2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int Passive2)) newItem.Passive2Value = Passive2;
-            newItem.Passive3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int Passive3)) newItem.Passive3Value = Passive3;
+            if (int.TryParse(values[n++].Trim(), out int type)) newItem.PatternType = defmax;
+            newItem.PassiveID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int pava)) newItem.PassiveValue = pava;
 
-            newItem.Action1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min1)) newItem.Action1Min = min1;
-            if (int.TryParse(values[n++].Trim(), out int max1)) newItem.Action1Max = max1;
+            newItem.StatusEffect1ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar1)) newItem.Target1 = tar1;
+            if (int.TryParse(values[n++].Trim(), out int val1)) newItem.Value1 = val1;
 
-            newItem.Action2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min2)) newItem.Action2Min = min2;
-            if (int.TryParse(values[n++].Trim(), out int max2)) newItem.Action2Max = max2;
+            newItem.StatusEffect2ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar2)) newItem.Target2 = tar2;
+            if (int.TryParse(values[n++].Trim(), out int val2)) newItem.Value2 = val2;
 
-            newItem.Action3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min3)) newItem.Action3Min = min3;
-            if (int.TryParse(values[n++].Trim(), out int max3)) newItem.Action3Max = max3;
-
-            newItem.Action4ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min4)) newItem.Action4Min = min4;
-            if (int.TryParse(values[n++].Trim(), out int max4)) newItem.Action4Max = max4;
-
-            newItem.Action5ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min5)) newItem.Action5Min = min5;
-            if (int.TryParse(values[n++].Trim(), out int max5)) newItem.Action5Max = max5;
-
-            newItem.Action6ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min6)) newItem.Action6Min = min6;
-            if (int.TryParse(values[n++].Trim(), out int max6)) newItem.Action6Max = max6;
-
-            newItem.Action7ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int min7)) newItem.Action7Min = min7;
-            if (int.TryParse(values[n++].Trim(), out int max7)) newItem.Action7Max = max7;
-
-            //ID,Name,Image,HP,Kind,PatternType,Passive1ID,Passive1Value,Passive2ID,Passive2Value,Passive3ID,Passive3Value,
-            //Action1ID,Action1Min,Action1Max,Action2ID,Action2Min,Action2Max,Action3ID,Action3Min,Action3Max,Action4ID,Action4Min,Action4Max,Action5ID,Action5Min,Action5Max,Action6ID,Action6Min,Action6Max,Action7ID,Action7Min,Action7Max
+            newItem.StatusEffect3ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar3)) newItem.Target3 = tar3;
+            if (int.TryParse(values[n++].Trim(), out int val3)) newItem.Value3 = val3;
 
             string fileName = newItem.Id + ".asset";
 

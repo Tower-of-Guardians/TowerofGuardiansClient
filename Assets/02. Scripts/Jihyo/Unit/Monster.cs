@@ -244,13 +244,13 @@ public class Monster : BaseUnit, IPointerClickHandler
             return;
         }
 
-        AppendAction(loadedMonsterData.Action1ID, loadedMonsterData.Action1Min, loadedMonsterData.Action1Max);
+        /*AppendAction(loadedMonsterData.Action1ID, loadedMonsterData.Action1Min, loadedMonsterData.Action1Max);
         AppendAction(loadedMonsterData.Action2ID, loadedMonsterData.Action2Min, loadedMonsterData.Action2Max);
         AppendAction(loadedMonsterData.Action3ID, loadedMonsterData.Action3Min, loadedMonsterData.Action3Max);
         AppendAction(loadedMonsterData.Action4ID, loadedMonsterData.Action4Min, loadedMonsterData.Action4Max);
         AppendAction(loadedMonsterData.Action5ID, loadedMonsterData.Action5Min, loadedMonsterData.Action5Max);
         AppendAction(loadedMonsterData.Action6ID, loadedMonsterData.Action6Min, loadedMonsterData.Action6Max);
-        AppendAction(loadedMonsterData.Action7ID, loadedMonsterData.Action7Min, loadedMonsterData.Action7Max);
+        AppendAction(loadedMonsterData.Action7ID, loadedMonsterData.Action7Min, loadedMonsterData.Action7Max);*/
     }
 
     private void AppendAction(string actionId, int min, int max)
