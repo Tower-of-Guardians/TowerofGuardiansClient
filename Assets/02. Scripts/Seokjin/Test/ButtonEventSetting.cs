@@ -35,7 +35,7 @@ public class ButtonEventSetting : MonoBehaviour
             AudioManager.Instance.PlaySFX("TOG_UI_Battle_Deck_AttackButton_Hover");
         });
 
-        testbutton.onClick.AddListener(() =>
+        testbutton.onClick.AddListener(() => {
         
             /*List<CardData> tcardlist = DataCenter.Instance.GetFront4_End3_CardList("1100", "001");
             Debug.Log(tcardlist);
