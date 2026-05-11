@@ -17,7 +17,6 @@ public class ButtonEventSetting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        AkBankManager.LoadBank("Test", false, false);
     }
     void Start()
     {
@@ -37,8 +36,7 @@ public class ButtonEventSetting : MonoBehaviour
         });
 
         testbutton.onClick.AddListener(() =>
-        {
-            AkSoundEngine.PostEvent("TOG_Battle_1", gameObject);
+        
             /*List<CardData> tcardlist = DataCenter.Instance.GetFront4_End3_CardList("1100", "001");
             Debug.Log(tcardlist);
 
