@@ -1,45 +1,46 @@
+using JxModule;
 using UnityEngine;
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     [RequireComponent(typeof(DialogueView))]
     public sealed class DialogueInputDriver : MonoBehaviour
     {
-        [Header("Dialogue Settings")]
-        [SerializeField] private DialogueSettings m_settings;
-
-        [Header("Dialogue View")]
-        [SerializeField] private DialogueView m_view;
+        [BigHeader("References")]
+        [SerializeField, Required, AssetOnly] private DialogueSettings dialogueSettings;
+        [SerializeField, SceneOnly] private DialogueView dialogueView;
 
 #if ENABLE_INPUT_SYSTEM
-        private InputAction m_advance_action;
-        private InputAction m_select_action;
+        private InputAction _advanceAction;
+        private InputAction _selectAction;
 #endif
 
         private void OnEnable()
         {
-            if(!m_view)
+            if (!dialogueView)
+            {
                 return;
+            }
 
 #if ENABLE_INPUT_SYSTEM
-            if(m_settings && m_settings.KeyboardInputAllowed)
+            if (dialogueSettings != null && dialogueSettings.keyboardInputAllowed)
             {
-                if(m_settings.AdvanceAction)
+                if (dialogueSettings.advanceAction)
                 {
-                    m_advance_action = m_settings.AdvanceAction.action;
-                    m_advance_action.performed += OnAdvanced;
-                    m_advance_action.Enable();
+                    _advanceAction = dialogueSettings.advanceAction.action;
+                    _advanceAction.performed += OnAdvanced;
+                    _advanceAction.Enable();
                 }
 
-                if(m_settings.SelectionAction)
+                if (dialogueSettings.selectionAction)
                 {
-                    m_select_action = m_settings.SelectionAction.action;
-                    m_select_action.performed += OnSelected;
-                    m_select_action.Enable();
+                    _selectAction = dialogueSettings.selectionAction.action;
+                    _selectAction.performed += OnSelected;
+                    _selectAction.Enable();
                 }
             }
 #endif
@@ -48,18 +49,18 @@ namespace DialogueBox
         private void OnDisable()
         {
 #if ENABLE_INPUT_SYSTEM
-            if (m_advance_action != null)
+            if (_advanceAction != null)
             {
-                m_advance_action.performed -= OnAdvanced;
-                m_advance_action.Disable();
-                m_advance_action = null;
+                _advanceAction.performed -= OnAdvanced;
+                _advanceAction.Disable();
+                _advanceAction = null;
             }
 
-            if(m_select_action != null)
+            if (_selectAction != null)
             {
-                m_select_action.performed -= OnSelected;
-                m_select_action.Disable();
-                m_select_action = null;
+                _selectAction.performed -= OnSelected;
+                _selectAction.Disable();
+                _selectAction = null;
             }
 #endif            
         }
@@ -67,29 +68,44 @@ namespace DialogueBox
 #if ENABLE_INPUT_SYSTEM
         private void OnAdvanced(InputAction.CallbackContext ctx)
         {
-            if (m_settings == null || !m_settings.KeyboardInputAllowed) 
+            if (dialogueSettings == null || !dialogueSettings.keyboardInputAllowed)
+            {
                 return;
+            }
 
             var device = ctx.control?.device;
             if (device is Pointer)
+            {
                 return;
+            }
 
-            m_view.RequestAdvance();
+            dialogueView.RequestAdvance();
         }
 
         private void OnSelected(InputAction.CallbackContext ctx)
         {
-            if(m_settings == null || !m_settings.KeyboardInputAllowed)
+            if (dialogueSettings == null || !dialogueSettings.keyboardInputAllowed)
+            {
                 return;
+            }
 
-            if(!m_view.ChoiceMode)
+            if (!dialogueView.ChoiceMode)
+            {
                 return;
+            }
 
-            Vector2 v = ctx.ReadValue<Vector2>();
-            if(v.y > 0.5f)
-                m_view.MoveChoice(-1);
-            else if(v.y < -0.5f)
-                m_view.MoveChoice(1);
+            var v = ctx.ReadValue<Vector2>();
+
+            switch (v.y)
+            {
+                case > 0.5f:
+                    dialogueView.MoveChoice(-1);
+                    break;
+                
+                case < -0.5f:
+                    dialogueView.MoveChoice(1);
+                    break;
+            }
         }
 #endif
     }

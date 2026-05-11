@@ -1,111 +1,85 @@
-using System.Collections;
+using JxModule;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public class PortraitSlotView : MonoBehaviour
     {
+        [BigHeader("UI")]
+        [SerializeField] private Image portraitImage;
         
-        [Header("Portrait Database")]
-        [SerializeField] private PortraitDatabase m_db;
+        [Space(20f), BigHeader("Default Settings")]
+        [SerializeField] private string defaultKey = "default";
 
-        [Header("Portrait Image")]
-        [SerializeField] private Image m_portrait_image;
+        private static DialoguePortraitTable _portraitTable;
+        private string _characterID;
 
-        private string m_character_id;
-        private string m_default_key = "default";
-
-        private Coroutine m_alpha_coroutine;
-
-        public string CharacterID => m_character_id;
+        public string CharacterID => _characterID;
 
         private void Awake()
         {
-            if(m_db)
-                m_db.BuildCache();
+            _portraitTable ??= new DialoguePortraitTable();
         }
 
-        public void SetCharacter(string character_id, bool force_refresh = false)
+        public void SetCharacter(string characterID, bool forceRefresh = false)
         {
-            if (string.IsNullOrWhiteSpace(character_id))
+            if (string.IsNullOrWhiteSpace(characterID))
+            {
                 return;
+            }
 
-            if (!force_refresh && m_character_id == character_id)
+            if (!forceRefresh && _characterID == characterID)
+            {
                 return;
+            }
 
-            m_character_id = character_id;
-            m_default_key = m_db != null ? m_db.GetDefaultKey(character_id) : "default";
-
-            SetPortraitByKey(m_default_key);
+            _characterID = characterID;
+            SetPortraitByKey(defaultKey);
         }
 
         public void SetPortraitByKey(string key)
         {
-            if(m_portrait_image == null)
-                return;
-
-            if(m_db == null)
-                return;
-
-            if(string.IsNullOrWhiteSpace(m_character_id))
-                return;
-
-            if(string.IsNullOrEmpty(key))
-                return;
-
-            if(m_db.TryGetPortrait(m_character_id, key, out var spr))
+            if (portraitImage == null)
             {
-                m_portrait_image.sprite = spr;
                 return;
             }
 
-            if(!string.IsNullOrWhiteSpace(m_default_key) &&
-                m_db.TryGetPortrait(m_character_id, m_default_key, out var def))
+            if (string.IsNullOrWhiteSpace(_characterID))
             {
-                m_portrait_image.sprite = def;
+                return;
             }
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                key = defaultKey;
+            }
+
+            var sprite = _portraitTable.GetPortraitSprite(_characterID, key);
+
+            if (sprite == null && key != defaultKey)
+            {
+                sprite = _portraitTable.GetPortraitSprite(_characterID, defaultKey);
+            }
+
+            portraitImage.sprite = sprite;
         }
 
         public bool IsPortraitEmpty()
-            => m_portrait_image == null || m_portrait_image.sprite == null;
+        {
+            return portraitImage == null || portraitImage.sprite == null;
+        }
 
         public void SetAlpha(float alpha)
         {
-            if(m_portrait_image == null)
-                return;
-
-            if(m_alpha_coroutine != null)
-                StopCoroutine(m_alpha_coroutine);
-
-            m_alpha_coroutine = StartCoroutine(FadeAlphaRoutine(alpha, 0.3f));
-        }
-
-        private IEnumerator FadeAlphaRoutine(float target_alpha, float duration)
-        {
-            Color start_color = m_portrait_image.color;
-            float start_alpha = start_color.a;
-
-            float elapsed = 0f;
-
-            while(elapsed < duration)
+            if (portraitImage == null)
             {
-                elapsed += Time.deltaTime;
-
-                float t = elapsed / duration;
-                float new_alpha = Mathf.Lerp(start_alpha, target_alpha, t);
-
-                start_color.a = new_alpha;
-                m_portrait_image.color = start_color;
-
-                yield return null;
+                return;
             }
 
-            // 마지막 보정
-            start_color.a = target_alpha;
-            m_portrait_image.color = start_color;
-
-            m_alpha_coroutine = null;
+            var color = portraitImage.color;
+            color.a = alpha;
+            portraitImage.color = color;
         }
     }
 }

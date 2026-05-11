@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1252639681796140677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d5603acf884bba9fb8991cfa256b35, type: 3}
+  m_Name: heka_default
+  m_EditorClassIdentifier: 
+  rowID: heka_default
+  isEnable: 1
+  characterID: heka
+  portraitKey: default
+  portraitTexture: {fileID: 2800000, guid: 9159ba8ee8f84414e931b8c07d8d9deb, type: 3}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a46e7f3d83ee4d15ab06220faf1fed1b, type: 3}
+  m_Name: DT_DialoguePortrait
+  m_EditorClassIdentifier: 
+  dataTableCsv: {fileID: 4900000, guid: c46aec1260ea83440b621e0b56791401, type: 3}
+  dataTableRowName: JxDialogueBox.DialoguePortraitDataTableRow, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  dataTableRows:
+  - {fileID: 1820876837409055823}
+  - {fileID: 3337232984528177632}
+  - {fileID: -1252639681796140677}
+  dataTableRowScript: {fileID: 11500000, guid: 85d5603acf884bba9fb8991cfa256b35, type: 3}
+--- !u!114 &1820876837409055823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d5603acf884bba9fb8991cfa256b35, type: 3}
+  m_Name: player_default
+  m_EditorClassIdentifier: 
+  rowID: player_default
+  isEnable: 1
+  characterID: eccliss
+  portraitKey: default
+  portraitTexture: {fileID: 2800000, guid: 13370b9ff9f58254d8de8d0fea7a8c5e, type: 3}
+--- !u!114 &3337232984528177632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d5603acf884bba9fb8991cfa256b35, type: 3}
+  m_Name: xylbia_default
+  m_EditorClassIdentifier: 
+  rowID: xylbia_default
+  isEnable: 1
+  characterID: xylbia
+  portraitKey: default
+  portraitTexture: {fileID: 2800000, guid: d7b8d2c2eb1f1ba43a907bfd27e275cd, type: 3}

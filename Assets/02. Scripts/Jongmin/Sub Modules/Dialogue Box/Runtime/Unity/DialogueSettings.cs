@@ -1,41 +1,40 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using JxModule;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     [CreateAssetMenu(fileName = "Dialogue Settings", menuName = "Dialogue Box/Dialogue Settings")]
     public sealed class DialogueSettings : ScriptableObject
     {
-        [Header("Typewriter")]
-        [Header("Enable typing effect")]
-        public bool TypingEnabled = true;
+        [BigHeader("Typewriter")]
+        public bool typingEnabled = true;
 
-        [Min(0f)][Header("Typing seconds per character")]
-        public float TypingSecondsPerCharacter = 0.03f;
+        [Min(0f)]
+        [ShowIf("typingEnabled")]
+        public float typingSecondsPerCharacter = 0.03f;
+        
+        [ShowIf("typingEnabled")]
+        public bool typingSkipAllowed = true;
 
-        [Header("Allow typing skip")]
-        public bool TypingSkipAllowed = true;
-
-        [Space(30f), Header("Input")]
-        [Header("Allow keyboard input")]
-        public bool KeyboardInputAllowed = true;
+        [Space(30f), BigHeader("Input")]
+        public bool keyboardInputAllowed = true;
 
         #if ENABLE_INPUT_SYSTEM
-        [Header("Advance Action Reference")]
-        public InputActionReference AdvanceAction;
+        [ShowIf("keyboardInputAllowed")]
+        public InputActionReference advanceAction;
         #endif
 
         #if ENABLE_INPUT_SYSTEM
-        [Header("Selection Action Reference")]
-        public InputActionReference SelectionAction;
+        [ShowIf("keyboardInputAllowed")]
+        public InputActionReference selectionAction;
         #endif
 
-        [Space(30f), Header("Auto Advance")]
-        [Header("Enable Auto Advance")]
-        public bool AutoAdvanceAllowed = false;
+        [Space(30f), BigHeader("Auto Advance")]
+        public bool autoAdvanceAllowed;
 
-        [Min(0f)][Header("Auto Advance Delay")]
-        public float AutoAdvanceDelay = 3f;
+        [Min(0f), ShowIf("autoAdvanceAllowed")]
+        public float autoAdvanceDelay = 3f;
     }
 }
 

@@ -1,26 +1,26 @@
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public enum Speaker
     {
-        PLAYER,
-        NPC,
+        Player,
+        Npc,
     }
 
     public readonly struct SpeakerRef
     {
-        public readonly Speaker m_speaker;
-        public readonly string m_character_id;
+        public readonly Speaker Speaker;
+        public readonly string CharacterID;
 
-        public SpeakerRef(Speaker speaker, string character_id)
+        public SpeakerRef(Speaker speaker, string characterID)
         {
-            m_speaker = speaker;
-            m_character_id = character_id;
+            Speaker = speaker;
+            CharacterID = characterID;
         }
 
-        public static SpeakerRef Player(string player_id = "Player")
-            => new(Speaker.PLAYER, player_id);
+        public static SpeakerRef Player(string playerID = "Player")
+            => new(Speaker.Player, playerID);
 
-        public static SpeakerRef NPC(string npc_id)
-            => new(Speaker.NPC, npc_id);
+        public static SpeakerRef Npc(string npcID)
+            => new(Speaker.Npc, npcID);
     }
 }

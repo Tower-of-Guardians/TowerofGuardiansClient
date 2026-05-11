@@ -1,4 +1,4 @@
-using DialogueBox;
+using JxDialogueBox;
 using UnityEngine;
 
 public sealed class DialogueTest : MonoBehaviour

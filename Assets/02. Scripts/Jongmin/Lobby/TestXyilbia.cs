@@ -1,4 +1,4 @@
-using DialogueBox;
+using JxDialogueBox;
 using UnityEngine;
 
 public class TestXyilbia : ClickableObject
@@ -25,7 +25,7 @@ public class TestXyilbia : ClickableObject
         string dialogue_id = string.Empty;
         if(!m_dialogue_completed)
         {
-            dialogue_id = "test";
+            dialogue_id = "demo_simple";
             m_dialogue_completed = true;
         }
         else

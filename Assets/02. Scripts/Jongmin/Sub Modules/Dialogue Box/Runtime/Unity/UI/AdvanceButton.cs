@@ -1,42 +1,116 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class AdvanceButton : MonoBehaviour
+namespace JxDialogueBox
 {
-    [Header("Button Animator")]
-    [SerializeField] private Animator m_animator;
-
-    [SerializeField] private Button m_advance_button;
-    private bool m_is_hide;
-
-    public bool Hiding => m_is_hide;
-
-    public void Bind(UnityAction advance_action)
+    [RequireComponent(typeof(Button))]
+    public class AdvanceButton : MonoBehaviour
     {
-        if(m_advance_button)
+        private Button _advanceButton;
+        private RectTransform _buttonRect;
+
+        private Tween _highlightTween;
+        private Tween _visibleTween;
+
+        private Vector2 _originAnchoredPosition;
+
+        public bool Hiding { get; private set; }
+
+        private void Awake()
         {
-            m_advance_button.onClick.RemoveAllListeners();
-            m_advance_button.onClick.AddListener(advance_action);
+            _advanceButton = GetComponent<Button>();
+            _buttonRect = _advanceButton.transform as RectTransform;
+
+            if (_buttonRect != null)
+            {
+                _originAnchoredPosition = _buttonRect.anchoredPosition;
+            }
         }
-    }
 
-    public void Hightlight()
-        => m_animator.SetBool("Highlight", true);
+        private void OnDestroy()
+        {
+            _highlightTween?.Kill();
+            _visibleTween?.Kill();
+        }
 
-    public void Normal()
-        => m_animator.SetBool("Highlight", false);
+        public void AddListener(UnityAction advanceAction)
+        {
+            if (_advanceButton == null)
+            {
+                return;
+            }
 
-    public void Show()
-    {
-        m_is_hide = false;
-        m_animator.SetBool("Hide", false);
-    }
+            _advanceButton.onClick.RemoveAllListeners();
 
-    public void Hide()
-    {
-        m_is_hide = true;
-        m_animator.SetBool("Hide", true);
+            if (advanceAction != null)
+            {
+                _advanceButton.onClick.AddListener(advanceAction);
+            }
+        }
+
+        public void SetHighlight()
+        {
+            ToggleHighlight(true);
+        }
+
+        public void SetNormal()
+        {
+            ToggleHighlight(false);
+        }
+
+        public void Show()
+        {
+            ToggleVisible(true);
+        }
+
+        public void Hide()
+        {
+            ToggleVisible(false);
+        }
+
+        private void ToggleHighlight(bool isActive)
+        {
+            _highlightTween?.Kill();
+            _highlightTween = null;
+
+            if (_buttonRect == null)
+            {
+                return;
+            }
+
+            if (!isActive)
+            {
+                _buttonRect.DOAnchorPos(_originAnchoredPosition, 0.15f);
+                return;
+            }
+
+            _highlightTween = _buttonRect
+                .DOAnchorPosY(_originAnchoredPosition.y + 10f, 0.3f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
+        }
+
+        private void ToggleVisible(bool isActive)
+        {
+            Hiding = !isActive;
+
+            if (_advanceButton != null)
+            {
+                _advanceButton.interactable = isActive;
+            }
+
+            if (_advanceButton == null || _advanceButton.image == null)
+            {
+                return;
+            }
+
+            _visibleTween?.Kill();
+
+            _visibleTween = _advanceButton.image
+                .DOFade(isActive ? 1f : 0f, 0.3f)
+                .SetEase(Ease.OutQuad);
+        }
     }
 }

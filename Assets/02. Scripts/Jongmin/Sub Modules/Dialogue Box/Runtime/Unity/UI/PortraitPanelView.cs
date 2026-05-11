@@ -1,53 +1,61 @@
 using UnityEngine;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public class PortraitPanelView : MonoBehaviour
     {
         [Header("Player")]
-        [SerializeField] private PortraitSlotView m_player_slot;
+        [SerializeField] private PortraitSlotView playerSlot;
 
         [Header("NPC")]
-        [SerializeField] private PortraitSlotView m_npc_slot;
+        [SerializeField] private PortraitSlotView npcSlot;
 
         [Header("Alpha")]
-        [Range(0f, 1f)][SerializeField] private float m_active_alpha = 1f;
-        [Range(0f, 1f)][SerializeField] private float m_deactive_alpha = 0.35f;
+        [Range(0f, 1f)][SerializeField] private float activeAlpha = 1f;
+        [Range(0f, 1f)][SerializeField] private float deactiveAlpha = 0.35f;
 
         private void Awake()
         {
-            m_player_slot.SetCharacter("player");
-            m_player_slot.SetPortraitByKey("default");
+            playerSlot.SetCharacter("player");
+            playerSlot.SetPortraitByKey("default");
         }
 
-        public void ApplySpeaker(SpeakerRef speaker, string portrait_key)
+        public void ApplySpeaker(SpeakerRef speaker, string portraitKey)
         {
-            if(speaker.m_speaker == Speaker.PLAYER)
+            if (speaker.Speaker == Speaker.Player)
             {
-                if(m_player_slot)
+                if (playerSlot)
                 {
-                    m_player_slot.SetAlpha(m_active_alpha);
+                    playerSlot.SetAlpha(activeAlpha);
 
-                    if (!string.IsNullOrEmpty(portrait_key))
-                        m_player_slot.SetPortraitByKey(portrait_key);
+                    if (!string.IsNullOrEmpty(portraitKey))
+                    {
+                        playerSlot.SetPortraitByKey(portraitKey);
+                    }
                 }
 
-                if(m_npc_slot)
-                    m_npc_slot.SetAlpha(m_deactive_alpha);
+                if (npcSlot)
+                {
+                    npcSlot.SetAlpha(deactiveAlpha);
+                }
 
                 return;
             }
 
-            if(m_player_slot)
-                m_player_slot.SetAlpha(m_deactive_alpha);
-
-            if (m_npc_slot)
+            if (playerSlot)
             {
-                m_npc_slot.SetAlpha(m_active_alpha);
-                m_npc_slot.SetCharacter(speaker.m_character_id);
+                playerSlot.SetAlpha(deactiveAlpha);
+            }
 
-                if (!string.IsNullOrEmpty(portrait_key))
-                    m_npc_slot.SetPortraitByKey(portrait_key);
+            if (npcSlot)
+            {
+                npcSlot.SetAlpha(activeAlpha);
+                npcSlot.SetCharacter(speaker.CharacterID);
+
+                if (!string.IsNullOrEmpty(portraitKey))
+                {
+                    npcSlot.SetPortraitByKey(portraitKey);
+                }
             }
         }
     }

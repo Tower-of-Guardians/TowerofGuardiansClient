@@ -1,64 +1,67 @@
 using System.Collections;
+using JxModule;
 using UnityEngine;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     [RequireComponent(typeof(DialogueView))]
     public class DialogueAutoAdvanceDriver : MonoBehaviour
     {
-        [Header("Dialogue Settings")]
-        [SerializeField] private DialogueSettings m_settings;
+        [BigHeader("References")]
+        [SerializeField,Required, AssetOnly] private DialogueSettings dialogueSettings;
+        [SerializeField, SceneOnly] private DialogueView dialogueView;
+        [SerializeField, SceneOnly] private TypeWriter typeWriter;
 
-        [Header("Dialogue View")]
-        [SerializeField] private DialogueView m_view;
-
-        [Header("Typewriter")]
-        [SerializeField] private TypeWriter m_typewriter;
-
-        private Coroutine m_auto_coroutine;
+        private Coroutine _autoCoroutine;
 
         private void OnEnable()
         {
-            if(m_typewriter)
-                m_typewriter.OnCompleted += HandleTypingCompleted;
+            if (typeWriter)
+            {
+                typeWriter.OnCompleted += HandleTypingCompleted;
+            }
         }
 
         private void OnDisable()
         {
-            if(m_typewriter)
-                m_typewriter.OnCompleted -= HandleTypingCompleted;
+            if (typeWriter)
+            {
+                typeWriter.OnCompleted -= HandleTypingCompleted;
+            }
 
             StopAutoAdvance();
         }
 
         private void HandleTypingCompleted()
         {
-            if(m_settings == null || !m_settings.AutoAdvanceAllowed)
+            if (dialogueSettings == null || !dialogueSettings.autoAdvanceAllowed)
+            {
                 return;
-
-
+            }
+            
             StopAutoAdvance();
-            m_auto_coroutine = StartCoroutine(AutoRoutine());
+            _autoCoroutine = StartCoroutine(AutoRoutine());
         }
 
         private IEnumerator AutoRoutine()
         {
-            float delay = Mathf.Max(0f, m_settings.AutoAdvanceDelay);
-            if(delay > 0f)
+            var delay = Mathf.Max(0f, dialogueSettings.autoAdvanceDelay);
+            if (delay > 0f)
+            {
                 yield return new WaitForSeconds(delay);
+            }
 
-            m_auto_coroutine = null;
-            m_view.RequestAdvance();
+            _autoCoroutine = null;
+            dialogueView.RequestAdvance();
         }
 
         public void StopAutoAdvance()
         {
-            if(m_auto_coroutine != null)
+            if (_autoCoroutine != null)
             {
-                StopCoroutine(m_auto_coroutine);
-                m_auto_coroutine = null;
+                StopCoroutine(_autoCoroutine);
+                _autoCoroutine = null;
             }
         }
     }
 }
-

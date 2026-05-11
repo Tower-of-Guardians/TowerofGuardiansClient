@@ -1,154 +1,171 @@
 using System;
+using JxModule;
+using JxModule.DataTable;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public class DialogueView : MonoBehaviour
     {
-        [Header("Canvas Group")]
-        [SerializeField] private CanvasGroup m_canvas_group;
+        [BigHeader("UI")]
+        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private TMP_Text nameLabel;
+        [SerializeField] private TypeWriter typeWriter;
+        [SerializeField] private TMP_Text promptLabel;
+        [SerializeField] private AdvanceButton advanceButton;
 
-        [Header("Name Text")]
-        [SerializeField] private TMP_Text m_name_text;
-
-        [Header("Typewriter")]
-        [SerializeField] private TypeWriter m_type_writer;
-
-        [Header("Choice Prompt Text")]
-        [SerializeField] private TMP_Text m_prompt_text;
-
-        [Header("Advance Button")]
-        [SerializeField] private AdvanceButton m_advance_button;
-
-        [Space(30f), Header("Dependancy")]
-        [Header("Dialogue Settings")]
-        [SerializeField] private DialogueSettings m_settings;
-
-        [Header("Character Database")]
-        [SerializeField] private CharacterDatabase m_character_db;
-
-        [Header("Choice List View")]
-        [SerializeField] private ChoiceListView m_choice_list;
-
-        [Header("Portrait View")]
-        [SerializeField] private PortraitPanelView m_portraits;
+        [FormerlySerializedAs("m_settings")]
+        [Space(30f), BigHeader("References")]
+        [SerializeField] private DialogueSettings dialogueSettings;
+        [SerializeField] private ChoiceListView choiceView;
+        [SerializeField] private PortraitPanelView portraits;
 
         public event Action OnAdvanceRequested;
 
-        private Action OnNext;
-        private Action<int> OnChoose;
+        private DataTable _characterTable;
+        private Action _onNext;
+        private Action<int> _onChoose;
 
         public bool ChoiceMode { get; private set; }
 
         private void Awake()
         {
-            m_type_writer.SetInterval(m_settings.TypingEnabled ? m_settings.TypingSecondsPerCharacter : 0f);
-            m_type_writer.OnCompleted += m_advance_button.Hightlight;
+            _characterTable = DataTableManager.FindTable<CharacterDataTableRow>("DT_Character");
+            
+            typeWriter.SetInterval(dialogueSettings.typingEnabled ? dialogueSettings.typingSecondsPerCharacter : 0f);
+            typeWriter.OnCompleted += advanceButton.SetHighlight;
         }
 
         private void OnDestroy()
-            => m_type_writer.OnCompleted -= m_advance_button.Hightlight;
+            => typeWriter.OnCompleted -= advanceButton.SetHighlight;
 
-        public void Bind(Action OnNextAction, Action<int> OnChooseAction)
+        public void Bind(Action onNextAction, Action<int> onChooseAction)
         {
-            OnNext = OnNextAction;
-            OnChoose = OnChooseAction;
+            _onNext = onNextAction;
+            _onChoose = onChooseAction;
 
-            if(m_advance_button)
-                m_advance_button.Bind(RequestAdvance);
+            if (advanceButton)
+            {
+                advanceButton.AddListener(RequestAdvance);
+            }
 
-            if(m_choice_list)
-                m_choice_list.Bind(index => OnChoose?.Invoke(index));
+            if (choiceView)
+            {
+                choiceView.Bind(index => _onChoose?.Invoke(index));
+            }
         }
 
         public void OpenView()
-            => ToggleView(true);
+            => canvasGroup.Show();
 
         public void CloseView()
-            => ToggleView(false);
+            => canvasGroup.Hide();
 
-        private void ToggleView(bool active)
-        {
-            m_canvas_group.alpha = active ? 1f : 0f;
-            m_canvas_group.interactable = active;
-            m_canvas_group.blocksRaycasts = active;
-        }
-
-        public void ShowLine(SpeakerRef speaker, string text, string portrait_key)
+        public void ShowLine(SpeakerRef speaker, string text, string portraitKey)
         {
             ClearChoice();
 
-            if(m_name_text)
-                m_name_text.text = m_character_db ? m_character_db.ResolveName(speaker.m_character_id)
-                                                  : speaker.m_character_id ?? string.Empty; 
+            if (nameLabel)
+            {
+                nameLabel.text = ResolveName(speaker.CharacterID);
+            }
 
-            if(m_prompt_text)
-                m_prompt_text.text = string.Empty;
-            
-            if(m_type_writer)
-                m_type_writer.Play(text ?? string.Empty);
+            if (promptLabel)
+            {
+                promptLabel.text = string.Empty;
+            }
 
-            if(m_portraits)
-                m_portraits.ApplySpeaker(speaker, portrait_key);
+            if (typeWriter)
+            {
+                typeWriter.Play(text ?? string.Empty);
+            }
 
-            if(m_advance_button)
-                m_advance_button.Show();
+            if (portraits)
+            {
+                portraits.ApplySpeaker(speaker, portraitKey);
+            }
+
+            if (advanceButton)
+            {
+                advanceButton.Show();
+            }
         }
 
         public void ShowChoice(string prompt, ChoiceOption[] options)
         {
             ChoiceMode = true;
 
-            if(m_name_text)
-                m_name_text.text = string.Empty;
+            if (nameLabel)
+            {
+                nameLabel.text = string.Empty;
+            }
 
-            if(m_prompt_text)
-                m_prompt_text.text = prompt ?? string.Empty;
+            if (promptLabel)
+            {
+                promptLabel.text = prompt ?? string.Empty;
+            }
 
-            if(m_type_writer)
-                m_type_writer.Play(string.Empty);
+            if (typeWriter)
+            {
+                typeWriter.Play(string.Empty);
+            }
 
-            if(m_advance_button)
-                m_advance_button.Hide();
+            if (advanceButton)
+            {
+                advanceButton.Hide();
+            }
 
-            if(m_choice_list)
-                m_choice_list.Show(options);
+            if (choiceView)
+            {
+                choiceView.Show(options);
+            }
         }
 
         private void ClearChoice()
         {
-            if(m_choice_list) 
-                m_choice_list.Hide();
+            if (choiceView)
+            {
+                choiceView.Hide();
+            }
 
             ChoiceMode = false;
         }
 
         public void MoveChoice(int delta)
         {
-            if(!ChoiceMode)
+            if (!ChoiceMode)
+            {
                 return;
+            }
 
-            if(m_choice_list == null || m_choice_list.Count == 0)
+            if (choiceView == null || choiceView.Count == 0)
+            {
                 return;
+            }
 
-            m_choice_list.MoveSelection(delta, true);
+            choiceView.MoveSelection(delta, true);
         }
 
         public void ConfirmChoice()
         {
-            if(!ChoiceMode)
+            if (!ChoiceMode)
+            {
                 return;
+            }
 
-            if(m_choice_list == null || m_choice_list.Count == 0)
+            if (choiceView == null || choiceView.Count == 0)
+            {
                 return;
+            }
 
-            m_choice_list.ConfirmSelection();
+            choiceView.ConfirmSelection();
         }
 
         public void RequestAdvance()
         {
-            if(ChoiceMode)
+            if (ChoiceMode)
             {
                 ConfirmChoice();
                 return;
@@ -156,21 +173,69 @@ namespace DialogueBox
 
             OnAdvanceRequested?.Invoke();
 
-            if(m_advance_button && m_advance_button.Hiding)
-                return;
-
-            if(m_type_writer && m_type_writer.IsTyping)
+            if (advanceButton && advanceButton.Hiding)
             {
-                if(m_settings.TypingSkipAllowed)
+                return;
+            }
+
+            if (typeWriter && typeWriter.IsTyping)
+            {
+                if (dialogueSettings.typingSkipAllowed)
                 {
-                    m_advance_button.Hightlight();
-                    m_type_writer.Skip();
+                    advanceButton.SetHighlight();
+                    typeWriter.Skip();
                 }
                 return;
             }
 
-            m_advance_button.Normal();
-            OnNext?.Invoke();
+            advanceButton.SetNormal();
+            _onNext?.Invoke();
+        }
+        
+        private string ResolveName(string characterID)
+        {
+            if (string.IsNullOrEmpty(characterID))
+            {
+                return string.Empty;
+            }
+
+            var row = FindCharacterRow(characterID);
+
+            if (row == null)
+            {
+                return characterID;
+            }
+
+            return string.IsNullOrEmpty(row.displayName)
+                ? characterID
+                : row.displayName;
+        }
+
+        private string ResolvePortraitKey(string characterID, string portraitKey)
+        {
+            if (!string.IsNullOrEmpty(portraitKey))
+            {
+                return portraitKey;
+            }
+
+            var row = FindCharacterRow(characterID);
+
+            if (row == null)
+            {
+                return string.Empty;
+            }
+
+            return row.defaultPortraitKey ?? string.Empty;
+        }
+
+        private CharacterDataTableRow FindCharacterRow(string characterID)
+        {
+            if (_characterTable == null)
+            {
+                return null;
+            }
+
+            return _characterTable.Find<CharacterDataTableRow>(characterID);
         }
     }
 }

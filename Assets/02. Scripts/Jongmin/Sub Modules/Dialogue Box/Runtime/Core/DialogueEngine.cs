@@ -1,15 +1,15 @@
 using System;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public sealed class DialogueEngine
     {
         public enum EngineState
         {
-            IDLE,
-            SHOWING_LINE,
-            AWAITING_CHOICE,
-            ENDED,
+            Idle,
+            ShowingLine,
+            AwaitingChoice,
+            Ended,
         }
 
         public readonly struct LineEvent
@@ -21,13 +21,13 @@ namespace DialogueBox
 
             public LineEvent(SpeakerRef speaker, 
                              string text, 
-                             string portrait_key, 
-                             string node_id)
+                             string portraitKey, 
+                             string nodeID)
             {
                 Speaker = speaker;
                 Text = text ?? string.Empty;
-                PortraitKey = portrait_key ?? string.Empty;
-                NodeID = node_id;
+                PortraitKey = portraitKey ?? string.Empty;
+                NodeID = nodeID;
             }
         }
 
@@ -39,11 +39,11 @@ namespace DialogueBox
 
             public ChoiceEvent(string prompt, 
                                ChoiceOption[] options, 
-                               string node_id)
+                               string nodeID)
             {
                 Prompt = prompt ?? string.Empty;
                 Options = options ?? Array.Empty<ChoiceOption>();
-                NodeID = node_id;
+                NodeID = nodeID;
             }
         }
 
@@ -51,32 +51,34 @@ namespace DialogueBox
         public event Action<ChoiceEvent> OnChoice;
         public event Action OnEnded;
 
-        public EngineState State { get; private set; } = EngineState.IDLE;
+        public EngineState State { get; private set; } = EngineState.Idle;
         public string CurrentNodeID { get; private set; } = string.Empty;
 
-        private readonly IDialogueDataSource m_source;
+        private readonly IDialogueDataSource _source;
 
         public DialogueEngine(IDialogueDataSource source)
-            => m_source = source;
-
-        public void Start(string dialogue_id)
         {
-            var entry_id = m_source.GetEntryNodeID(dialogue_id);
-            if(string.IsNullOrEmpty(entry_id))
+            _source = source;
+        }
+
+        public void Start(string dialogueID)
+        {
+            var entryID = _source.GetEntryNodeID(dialogueID);
+            if(string.IsNullOrEmpty(entryID))
             {
                 EndInternal();
                 return;
             } 
 
-            State = EngineState.IDLE;
-            Goto(entry_id);
+            State = EngineState.Idle;
+            Goto(entryID);
         }
 
         public void Advance()
         {
-            if(State == EngineState.SHOWING_LINE)
+            if(State == EngineState.ShowingLine)
             {
-                if(m_source.TryGetNode(CurrentNodeID, out var node) && node is LineNode line)
+                if(_source.TryGetNode(CurrentNodeID, out var node) && node is LineNode line)
                 {
                     if(string.IsNullOrEmpty(line.NextID))
                     {
@@ -90,38 +92,44 @@ namespace DialogueBox
                 return;
             }
 
-            if(State == EngineState.AWAITING_CHOICE)
+            if(State == EngineState.AwaitingChoice)
                 return;
         }
 
-        public void Choose(int option_index)
+        public void Choose(int optionIndex)
         {
-            if(State != EngineState.AWAITING_CHOICE)
+            if (State != EngineState.AwaitingChoice)
+            {
                 return;
+            }
 
-            if(!m_source.TryGetNode(CurrentNodeID, out var node) || node is not ChoiceNode choice)
+            if (!_source.TryGetNode(CurrentNodeID, out var node) || node is not ChoiceNode choice)
+            {
                 return;
+            }
 
-            if(choice.Options == null || option_index < 0 || option_index >= choice.Options.Count)
+            if (choice.Options == null || optionIndex < 0 || optionIndex >= choice.Options.Count)
+            {
                 return;
+            }
 
-            var next_id = choice.Options[option_index].NextID;
-            if(string.IsNullOrEmpty(next_id))
+            var nextID = choice.Options[optionIndex].NextID;
+            if(string.IsNullOrEmpty(nextID))
             {
                 EndInternal();
                 return;
             }
 
-            Goto(next_id);
+            Goto(nextID);
         }
 
-        private void Goto(string node_id)
+        private void Goto(string nodeID)
         {
             while(true)
             {
-                CurrentNodeID = node_id;
+                CurrentNodeID = nodeID;
 
-                if(!m_source.TryGetNode(CurrentNodeID, out var node))
+                if(!_source.TryGetNode(CurrentNodeID, out var node))
                 {
                     EndInternal();
                     return;
@@ -129,41 +137,43 @@ namespace DialogueBox
 
                 switch(node.Type)
                 {
-                    case NodeType.LINE:
+                    case NodeType.Line:
                     {
-                        var line_node = node as LineNode;
-                        State = EngineState.SHOWING_LINE;
-                        OnLine?.Invoke(new LineEvent(line_node.Speaker, line_node.Text, line_node.PortraitKey, line_node.ID));
+                        var lineNode = node as LineNode;
+                        State = EngineState.ShowingLine;
+                        OnLine?.Invoke(new LineEvent(lineNode.Speaker, lineNode.Text, lineNode.PortraitKey, lineNode.ID));
                         return;
                     }
 
-                    case NodeType.CHOICE:
+                    case NodeType.Choice:
                     {
-                        var choice_node = node as ChoiceNode;
-                        State = EngineState.AWAITING_CHOICE;
+                        var choiceNode = node as ChoiceNode;
+                        State = EngineState.AwaitingChoice;
 
-                        var options = new ChoiceOption[choice_node.Options.Count];
-                        for(int i = 0; i < options.Length; i++)
-                            options[i] = choice_node.Options[i];
+                        var options = new ChoiceOption[choiceNode.Options.Count];
+                        for (var i = 0; i < options.Length; i++)
+                        {
+                            options[i] = choiceNode.Options[i];
+                        }
 
-                        OnChoice?.Invoke(new ChoiceEvent(choice_node.Prompt, options, choice_node.ID));
+                        OnChoice?.Invoke(new ChoiceEvent(choiceNode.Prompt, options, choiceNode.ID));
                         return;
                     }
 
-                    case NodeType.JUMP:
+                    case NodeType.Jump:
                     {
-                        var jump_node = node as JumpNode;
-                        if(string.IsNullOrEmpty(jump_node.TargetID))
+                        var jumpNode = node as JumpNode;
+                        if(string.IsNullOrEmpty(jumpNode.TargetID))
                         {
                             EndInternal();
                             return;
                         }
 
-                        node_id = jump_node.TargetID;
+                        nodeID = jumpNode.TargetID;
                         break;
                     }
 
-                    case NodeType.END:
+                    case NodeType.End:
                     default:
                         EndInternal();
                         return;
@@ -173,7 +183,7 @@ namespace DialogueBox
 
         private void EndInternal()
         {
-            State = EngineState.ENDED;
+            State = EngineState.Ended;
             CurrentNodeID = string.Empty;
             OnEnded?.Invoke();
         }

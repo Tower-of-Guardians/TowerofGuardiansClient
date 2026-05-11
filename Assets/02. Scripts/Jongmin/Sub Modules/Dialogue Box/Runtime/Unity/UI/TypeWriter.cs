@@ -3,7 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public sealed class TypeWriter : MonoBehaviour
     {

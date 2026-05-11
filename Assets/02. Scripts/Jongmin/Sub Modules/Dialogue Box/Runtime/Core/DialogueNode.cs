@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace DialogueBox
+namespace JxDialogueBox
 {
     public enum NodeType
     {
-        LINE,
-        CHOICE,
-        JUMP,
-        END
+        Line,
+        Choice,
+        Jump,
+        End
     }
 
     public abstract class DialogueNode
@@ -33,14 +33,14 @@ namespace DialogueBox
         public LineNode(string id,
                         SpeakerRef speaker,
                         string text,
-                        string portrait_key,
-                        string next_id)
-            : base(id, NodeType.LINE)
+                        string portraitKey,
+                        string nextID)
+            : base(id, NodeType.Line)
         {
             Speaker = speaker;
             Text = text;
-            PortraitKey = portrait_key;
-            NextID = next_id;
+            PortraitKey = portraitKey;
+            NextID = nextID;
         }
     }
 
@@ -49,10 +49,10 @@ namespace DialogueBox
         public readonly string Text;
         public readonly string NextID;
 
-        public ChoiceOption(string text, string next_id)
+        public ChoiceOption(string text, string nextID)
         {
             Text = text ?? string.Empty;
-            NextID = next_id ?? string.Empty;
+            NextID = nextID ?? string.Empty;
         }
     }
 
@@ -64,7 +64,7 @@ namespace DialogueBox
         public ChoiceNode(string id,
                           string prompt,
                           IReadOnlyList<ChoiceOption> options)
-            : base(id, NodeType.CHOICE)
+            : base(id, NodeType.Choice)
         {
             Prompt = prompt ?? string.Empty;
             Options = options ?? Array.Empty<ChoiceOption>();
@@ -75,17 +75,17 @@ namespace DialogueBox
     {
         public string TargetID { get; }
 
-        public JumpNode(string id, string target_id)
-            : base(id, NodeType.JUMP)
+        public JumpNode(string id, string targetID)
+            : base(id, NodeType.Jump)
         {
-            TargetID = target_id ?? string.Empty;
+            TargetID = targetID ?? string.Empty;
         }
     }
 
     public sealed class EndNode : DialogueNode
     {
         public EndNode(string id)
-            : base(id, NodeType.END)
+            : base(id, NodeType.End)
         {}
     }
 }
