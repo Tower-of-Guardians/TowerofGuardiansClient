@@ -348,7 +348,12 @@ public class GameData : Singleton<GameData>
                                      .Select(x => x.Key)
                                      .ToList();
 
-        List<string> keysToProcess = synergyIDList.Keys.ToList();
+        List<string> keysToProcess = synergyIDList
+            .OrderByDescending(x => IsSynergyActivated(x.Value))
+            .ThenByDescending(x => x.Value.count)
+            .ThenByDescending(x => x.Value.synergyData != null ? x.Value.synergyData.Tier : 0)
+            .Select(x => x.Key)
+            .ToList();
         foreach (string key in keysToProcess)
         {
             SynergyTotalData totalData = synergyIDList[key];
@@ -373,5 +378,30 @@ public class GameData : Singleton<GameData>
                                      .Select(x => x.Key)
                                      .ToList();
         InvokeSynergys();
+    }
+
+    private bool IsSynergyActivated(SynergyTotalData totalData)
+    {
+        if (totalData?.synergyData == null || totalData.count <= 0)
+        {
+            return false;
+        }
+
+        int count = totalData.count;
+        bool effect1Active = GetEffectValueAtCount(totalData.synergyData.Effect1Synergys, count) > 0;
+        bool effect2Active = GetEffectValueAtCount(totalData.synergyData.Effect2Synergys, count) > 0;
+        bool effect3Active = GetEffectValueAtCount(totalData.synergyData.Effect3Synergys, count) > 0;
+        return effect1Active || effect2Active || effect3Active;
+    }
+
+    private int GetEffectValueAtCount(List<int> effectValues, int count)
+    {
+        if (effectValues == null || effectValues.Count == 0 || count <= 0)
+        {
+            return 0;
+        }
+
+        int index = Mathf.Clamp(count - 1, 0, effectValues.Count - 1);
+        return effectValues[index];
     }
 }

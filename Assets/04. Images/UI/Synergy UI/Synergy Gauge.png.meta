@@ -523,7 +523,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_0
+      name: Synergy Gauge ShieldAttack_0
       rect:
         serializedVersion: 2
         x: 250
@@ -567,7 +567,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_2
+      name: Synergy Gauge ShieldAttack_2
       rect:
         serializedVersion: 2
         x: 250
@@ -853,7 +853,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_1
+      name: Synergy Gauge ShieldAttack_1
       rect:
         serializedVersion: 2
         x: 250
@@ -875,7 +875,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Synergy Gauge Shield Attack_3
+      name: Synergy Gauge ShieldAttack_3
       rect:
         serializedVersion: 2
         x: 250
@@ -1068,10 +1068,10 @@ TextureImporter:
       Synergy Gauge Plunder_1: 6322377518802402776
       Synergy Gauge Plunder_2: 8135014310420586847
       Synergy Gauge Plunder_3: -2221718243433848479
-      Synergy Gauge Shield Attack_0: -4788367860144985926
-      Synergy Gauge Shield Attack_1: 323532149542028510
-      Synergy Gauge Shield Attack_2: -4987109374241895332
-      Synergy Gauge Shield Attack_3: 871568882161981281
+      Synergy Gauge ShieldAttack_0: -4788367860144985926
+      Synergy Gauge ShieldAttack_1: 323532149542028510
+      Synergy Gauge ShieldAttack_2: -4987109374241895332
+      Synergy Gauge ShieldAttack_3: 871568882161981281
       Synergy Gauge_27: 5735938364578417103
       Synergy Gauge_29: 8725821599176768460
       Synergy Gauge_31: -8507705402295911069

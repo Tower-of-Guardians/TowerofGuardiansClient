@@ -143,6 +143,17 @@ public class Monster : BaseUnit, IPointerClickHandler
 
     protected virtual void ConfigureMonsterTraits() { }
 
+    protected void SetMonsterDataId(string id)
+    {
+        monsterDataId = id;
+    }
+
+    protected bool TryGetLoadedMonsterData(out MonsterData data)
+    {
+        data = loadedMonsterData;
+        return data != null;
+    }
+
     protected void OverrideBehavior(MonsterActionPatternType patternType, params MonsterActionDefinition[] actions)
     {
         actionPatternType = patternType;

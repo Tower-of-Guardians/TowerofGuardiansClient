@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e63514cb18061540a7048b0e8b41d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 19
+  maxHealth: 0
   currentHealth: 0
   hasDefense: 0
   protectionValue: 0
@@ -546,6 +546,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5721189975780642282, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6249288637204260897, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8782220635215014918, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
