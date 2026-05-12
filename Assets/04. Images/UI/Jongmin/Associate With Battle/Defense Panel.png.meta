@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3530ea219a090b14dae6739adbe2ff4f
+guid: 3df16d1a03faa3e419b705cc080ad46f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5577764276390286313
-    second: Defend Field Panel_0
+      213: 905331982066941084
+    second: Defense Panel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Defend Field Panel_0
+      name: Defense Panel_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e35b1f9e03386d40800000000000000
-      internalID: 5577764276390286313
+      spriteID: c9c76ea14a2609c00800000000000000
+      internalID: 905331982066941084
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Defend Field Panel_0: 5577764276390286313
+      Defense Panel_0: 905331982066941084
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

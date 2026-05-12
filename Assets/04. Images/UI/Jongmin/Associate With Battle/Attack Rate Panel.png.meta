@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e0b83a1bcc6ba4f49a14ff539873365e
+guid: 58dbaa3bb1b0a144fbea3dc8fd12c2c9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1401834691133051996
-    second: Battle Panel_0
+      213: -738617612736066516
+    second: Attack Rate Panel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Battle Panel_0
+      name: Attack Rate Panel_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 456
+        x: 20
+        y: 10
+        width: 88
+        height: 104
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4abe13196ceab8ce0800000000000000
-      internalID: -1401834691133051996
+      spriteID: c2c0500d137efb5f0800000000000000
+      internalID: -738617612736066516
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Battle Panel_0: -1401834691133051996
+      Attack Rate Panel_0: -738617612736066516
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

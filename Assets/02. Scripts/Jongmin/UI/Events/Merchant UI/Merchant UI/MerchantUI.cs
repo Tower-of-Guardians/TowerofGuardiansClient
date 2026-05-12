@@ -10,13 +10,9 @@ public class MerchantUI : MonoBehaviour, IMerchantUI
     
     [Header("Animation References")]
     [SerializeField] private float animationDuration = 0.5f;
-    
-    [Header("Test References")]
-    [SerializeField] private Button openButton;
 
     public void Construct(MerchantPresenter merchantPresenter)
     {
-        openButton.onClick.AddListener(merchantPresenter.OpenUI);
         closeButton.onClick.AddListener(merchantPresenter.CloseUI);
     }
 

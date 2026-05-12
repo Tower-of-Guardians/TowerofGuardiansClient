@@ -10,12 +10,6 @@ public class CraftmanUI : MonoBehaviour, ICraftmanUI
     [Header("Animation References")]
     [SerializeField] private float animationDuration = 0.5f;
 
-    [Space(30f), Header("Test References")]
-    [SerializeField] private Button testOpenButton;
-
-    public void Construct(CraftmanPresenter craftmanPresenter)
-        => testOpenButton.onClick.AddListener(craftmanPresenter.OpenUI);
-
     public void OpenUI()
         => ToggleUI(true);
 
