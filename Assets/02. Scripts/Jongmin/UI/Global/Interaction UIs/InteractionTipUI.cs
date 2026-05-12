@@ -3,7 +3,7 @@ using JxModule;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class InteractionTipView : MonoBehaviour
+public class InteractionTipUI : MonoBehaviour
 {
     [BigHeader("UI")]
     [SerializeField] private Transform tagRoot;

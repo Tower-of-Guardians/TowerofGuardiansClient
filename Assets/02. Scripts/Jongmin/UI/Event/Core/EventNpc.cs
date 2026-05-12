@@ -4,6 +4,7 @@ using DG.Tweening;
 using JxModule;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class EventNpc : MonoBehaviour, 
@@ -16,8 +17,8 @@ public abstract class EventNpc : MonoBehaviour,
     [BigHeader("Configure")]
     [SerializeField] private CanvasGroup npcGroup;
     [SerializeField] private Image npcImage;
-    [SerializeField] private NameplateView nameplateView;
-    [SerializeField] private InteractionTipView interactionTipView;
+    [FormerlySerializedAs("nameplateView")] [SerializeField] private NameplateUI nameplateUI;
+    [FormerlySerializedAs("interactionTipView")] [SerializeField] private InteractionTipUI interactionTipUI;
     [SerializeField] private UIOutliner uiOutliner;
 
     private Tween _fadeTween;
@@ -35,15 +36,15 @@ public abstract class EventNpc : MonoBehaviour,
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        nameplateView?.Show();
-        interactionTipView?.Show();
+        nameplateUI?.Show();
+        interactionTipUI?.Show();
         uiOutliner?.Show();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        nameplateView?.Hide();
-        interactionTipView?.Hide();
+        nameplateUI?.Hide();
+        interactionTipUI?.Hide();
         uiOutliner?.Hide();
     }
 

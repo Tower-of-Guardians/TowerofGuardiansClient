@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class NameplateView : MonoBehaviour
+public class NameplateUI : MonoBehaviour
 {
     [SerializeField] private string targetName;
 

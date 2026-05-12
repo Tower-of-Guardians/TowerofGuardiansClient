@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class EventView : MonoBehaviour
+public class EventUI : MonoBehaviour
 {
     [BigHeader("UI")]
     [SerializeField, Required] private CanvasGroup eventGroup;

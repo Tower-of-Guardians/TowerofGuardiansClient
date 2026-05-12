@@ -4,6 +4,7 @@ using JxDialogueBox;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
@@ -11,7 +12,7 @@ public class EventPresenter : MonoBehaviour
 {
     [BigHeader("References")]
     [SerializeField, Required] private EventLoadManager eventLoadManager;
-    [SerializeField, Required] private EventView eventView;
+    [FormerlySerializedAs("eventView")] [SerializeField, Required] private EventUI eventUI;
     
     private AsyncOperationHandle<Sprite>? _backgroundHandle;
     private bool _eventFinished;
@@ -35,14 +36,14 @@ public class EventPresenter : MonoBehaviour
             return;
         }
         
-        eventView ??=  FindFirstObjectByType<EventView>();
-        if (eventView == null)
+        eventUI ??=  FindFirstObjectByType<EventUI>();
+        if (eventUI == null)
         {
             DebugExtension.LogColor($"EventPresenter: EventView not found.", Color.red);
             enabled = false;
         }
         
-        eventView.BindCloseButton(HandleCloseButton);
+        eventUI.BindCloseButton(HandleCloseButton);
     }
     
     private void OnEnable()
@@ -70,7 +71,7 @@ public class EventPresenter : MonoBehaviour
 
         
         ConfigureEventNpc(eventRow.rowID);
-        eventView.Show();
+        eventUI.Show();
     }
 
     private IEnumerator OnEventBegin(EventDataTableRow eventRow)
@@ -81,7 +82,7 @@ public class EventPresenter : MonoBehaviour
         }
 
         yield return EventNpc.HandleOnEventBegin();
-        eventView.ToggleCloseButton(true);
+        eventUI.ToggleCloseButton(true);
     }
 
     private IEnumerator OnEventPlay(EventDataTableRow eventRow)
@@ -93,7 +94,7 @@ public class EventPresenter : MonoBehaviour
 
         EventNpc.SetInteractable(true);
         yield return new WaitUntil(() => _eventFinished);
-        eventView.ToggleCloseButton(false);
+        eventUI.ToggleCloseButton(false);
         EventNpc.SetInteractable(false);
     }
 
@@ -106,7 +107,7 @@ public class EventPresenter : MonoBehaviour
 
         yield return EventNpc.HandleOnEventEnd();
         ReleaseEventNpc();
-        eventView.Hide();
+        eventUI.Hide();
     }
 
     private IEnumerator LoadBackground(string backgroundKey)
@@ -122,7 +123,7 @@ public class EventPresenter : MonoBehaviour
         
         _backgroundHandle = handle;
 
-        eventView?.SetBackground(handle.Result);
+        eventUI?.SetBackground(handle.Result);
     }
 
     private void ReleaseBackground()
@@ -133,13 +134,13 @@ public class EventPresenter : MonoBehaviour
             _backgroundHandle = null;
         }
         
-        eventView?.ClearBackground();
+        eventUI?.ClearBackground();
     }
     
     public void ConfigureEventNpc(string eventID)
     {
         var npc = EventNPCFactory.Create(eventID);
-        EventNpc = _resolver.Instantiate(npc, eventView.PrefabRoot).GetComponent<EventNpc>();
+        EventNpc = _resolver.Instantiate(npc, eventUI.PrefabRoot).GetComponent<EventNpc>();
     }
 
     public void ReleaseEventNpc()
