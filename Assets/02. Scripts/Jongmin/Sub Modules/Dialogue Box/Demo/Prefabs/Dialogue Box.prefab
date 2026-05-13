@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7496471424202200005}
   - component: {fileID: 6673472769569933536}
   - component: {fileID: 8528483323614578960}
-  - component: {fileID: 1965030537785854236}
   - component: {fileID: 5035435753152482502}
   m_Layer: 5
   m_Name: Advance Button
@@ -122,28 +121,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!95 &1965030537785854236
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108255745373139733}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5a26d8260d3c20744b8d8337269ac32d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5035435753152482502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,8 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e582f4f2b1081408ae4c041a88eab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 1965030537785854236}
-  m_advance_button: {fileID: 8528483323614578960}
 --- !u!1 &179096140169000634
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,8 +286,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cef21479298d8d043b01f30687801c26, type: 2}
-  m_sharedMaterial: {fileID: 656801700195938633, guid: cef21479298d8d043b01f30687801c26, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
+  m_sharedMaterial: {fileID: -3253763356394748447, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -447,8 +422,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cef21479298d8d043b01f30687801c26, type: 2}
-  m_sharedMaterial: {fileID: 656801700195938633, guid: cef21479298d8d043b01f30687801c26, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
+  m_sharedMaterial: {fileID: -3253763356394748447, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -578,14 +553,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 349e7eb564a8a404f92932d57e281b45, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -685,10 +660,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa6415dc191f3a4dad2e7d5120e2cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player_slot: {fileID: 4857621447001166175}
-  m_npc_slot: {fileID: 5455569530791574315}
-  m_active_alpha: 1
-  m_deactive_alpha: 0.35
+  playerSlot: {fileID: 4857621447001166175}
+  npcSlot: {fileID: 5455569530791574315}
+  activeAlpha: 1
+  deactiveAlpha: 0.35
 --- !u!1 &5261770844736847137
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,9 +766,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41eec6d850dcc74883e2ffc65a25d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas_group: {fileID: 672812055503092715}
-  m_container: {fileID: 4800386986273880650}
-  m_option_prefab: {fileID: 8570482270053712810, guid: 95d780e24ed6c0e4fa4e6a3ade5db71a, type: 3}
+  canvasGroup: {fileID: 672812055503092715}
+  optionContainer: {fileID: 4800386986273880650}
+  optionPrefab: {fileID: 8570482270053712810, guid: 95d780e24ed6c0e4fa4e6a3ade5db71a, type: 3}
 --- !u!1 &5876072068811406703
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,7 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -882,8 +857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6b09e04eed6934db18e8c20cb33267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_db: {fileID: 11400000, guid: 5dad773d5e9cd2f42bcc23b98c9c4a84, type: 2}
-  m_portrait_image: {fileID: 920962541177276535}
+  portraitImage: {fileID: 920962541177276535}
+  defaultKey: default
 --- !u!1 &6584477495304200746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,15 +992,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b4a2c79c10e5c4888b4861a525dc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_canvas_group: {fileID: 7404436587401172944}
-  m_name_text: {fileID: 4662943437675680931}
-  m_type_writer: {fileID: 460714549764926553}
-  m_prompt_text: {fileID: 8623668246667928035}
-  m_advance_button: {fileID: 5035435753152482502}
-  m_settings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
-  m_character_db: {fileID: 11400000, guid: fc287a26de00a574c81d4beeaf066696, type: 2}
-  m_choice_list: {fileID: 1655208325142726296}
-  m_portraits: {fileID: 7226648038293977279}
+  canvasGroup: {fileID: 7404436587401172944}
+  nameLabel: {fileID: 4662943437675680931}
+  typeWriter: {fileID: 460714549764926553}
+  promptLabel: {fileID: 8623668246667928035}
+  advanceButton: {fileID: 5035435753152482502}
+  dialogueSettings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
+  choiceView: {fileID: 1655208325142726296}
+  portraits: {fileID: 7226648038293977279}
 --- !u!114 &1596660058021847455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1038,8 +1012,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a84c84d1bfdd645afe82869d0a861f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_settings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
-  m_view: {fileID: 8034521099276324549}
+  dialogueSettings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
+  dialogueView: {fileID: 8034521099276324549}
 --- !u!114 &7840091051879721791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,9 +1026,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839fe16aacb6aad4a8a85b2cd2bd869e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_settings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
-  m_view: {fileID: 8034521099276324549}
-  m_typewriter: {fileID: 460714549764926553}
+  dialogueSettings: {fileID: 11400000, guid: d94eb26a628387d4b8c471b95bc1d1e0, type: 2}
+  dialogueView: {fileID: 8034521099276324549}
+  typeWriter: {fileID: 460714549764926553}
 --- !u!114 &4589450814583337411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,8 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43325d9fa47f7840b4a562582647bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_db: {fileID: 11400000, guid: b35f9e6a10086ed4882f50ca350a000f, type: 2}
-  m_view: {fileID: 8034521099276324549}
+  dialogueView: {fileID: 8034521099276324549}
 --- !u!1 &6809937792744879374
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1202,8 +1175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6b09e04eed6934db18e8c20cb33267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_db: {fileID: 11400000, guid: 5dad773d5e9cd2f42bcc23b98c9c4a84, type: 2}
-  m_portrait_image: {fileID: 136765755796864545}
+  portraitImage: {fileID: 136765755796864545}
+  defaultKey: default
 --- !u!1 &7594935308308389767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,8 +1290,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cef21479298d8d043b01f30687801c26, type: 2}
-  m_sharedMaterial: {fileID: 656801700195938633, guid: cef21479298d8d043b01f30687801c26, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
+  m_sharedMaterial: {fileID: -3253763356394748447, guid: b94b75833d79c60428d27385b8aa6960, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

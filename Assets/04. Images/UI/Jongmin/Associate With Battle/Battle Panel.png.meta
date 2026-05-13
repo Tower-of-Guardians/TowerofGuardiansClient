@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -106,7 +106,7 @@ TextureImporter:
         x: 0
         y: 0
         width: 1920
-        height: 472
+        height: 456
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

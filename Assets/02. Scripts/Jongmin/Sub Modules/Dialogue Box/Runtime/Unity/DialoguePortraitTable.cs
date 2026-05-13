@@ -7,13 +7,8 @@ namespace JxDialogueBox
 {
     public sealed class DialoguePortraitTable
     {
-        private readonly DataTable _table;
+        private readonly DataTable _table = DataTableManager.FindTable<DialoguePortraitDataTableRow>("DT_DialoguePortrait");
         private readonly Dictionary<string, Sprite> _spriteDict = new();
-
-        public DialoguePortraitTable()
-        {
-            _table = DataTableManager.FindTable<DialoguePortraitDataTableRow>("DT_DialoguePortrait");
-        }
 
         public Sprite GetPortraitSprite(string characterID, string portraitKey)
         {

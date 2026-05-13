@@ -8,8 +8,6 @@ public class CraftmanPresenter
     {
         _craftmanUI = craftmanUI;
         _craftmanDeckInvenPresenter = craftmanDeckInvenPresenter;
-    
-        _craftmanUI.Construct(this);
     }
 
     public void OpenUI()

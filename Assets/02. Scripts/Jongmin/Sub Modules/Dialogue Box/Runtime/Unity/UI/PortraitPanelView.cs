@@ -14,9 +14,9 @@ namespace JxDialogueBox
         [Range(0f, 1f)][SerializeField] private float activeAlpha = 1f;
         [Range(0f, 1f)][SerializeField] private float deactiveAlpha = 0.35f;
 
-        private void Awake()
+        private void Start()
         {
-            playerSlot.SetCharacter("player");
+            playerSlot.SetCharacter("eccliss");
             playerSlot.SetPortraitByKey("default");
         }
 
