@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rowID: event_shop
   isEnable: 1
-  backgroundKey: 'Assets/04. Images/UI/Event/Temp Background.png[Temp Background]'
+  backgroundKey: 'Backgrounds/Temp Background.png[Temp Background]'
   dialogueIDs: []
 --- !u!114 &11400000
 MonoBehaviour:
@@ -49,5 +49,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rowID: event_reinforcement
   isEnable: 1
-  backgroundKey: 'Assets/04. Images/UI/Event/Temp Background.png[Temp Background]'
+  backgroundKey: 'Backgrounds/Temp Background.png[Temp Background]'
   dialogueIDs: []
