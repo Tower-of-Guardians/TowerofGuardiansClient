@@ -1,7 +1,0 @@
-DialogueID,NodeID,Type,Speaker,CharacterID,PortraitKey,Text,NextID
-demo_simple,n1,LINE,NPC,alice,default,"Hey there. This is a simple demo dialogue.",n2
-demo_simple,n2,LINE,NPC,heka,default,"We’ll just show a choice and then finish.",n3
-demo_simple,n3,CHOICE,,,"What do you want to say?",
-demo_simple,n4,LINE,PLAYER,player,default,"Alright. Let’s begin.",n6
-demo_simple,n5,LINE,PLAYER,player,default,"Maybe another time.",n6
-demo_simple,n6,END,,,,,,

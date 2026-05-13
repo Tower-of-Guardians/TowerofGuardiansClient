@@ -1,3 +1,0 @@
-DialogueID,NodeID,OptionIndex,OptionText,NextID
-demo_simple,n3,1,"Sure, let's go.",n4
-demo_simple,n3,2,"Not now.",n5

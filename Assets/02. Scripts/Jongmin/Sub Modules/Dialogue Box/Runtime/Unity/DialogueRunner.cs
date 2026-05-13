@@ -24,7 +24,10 @@ namespace JxDialogueBox
             _dialogueEngine.OnLine += HandleLine;
             _dialogueEngine.OnChoice += HandleChoice;
             _dialogueEngine.OnEnded += HandleEnded;
+        }
 
+        private void Start()
+        {
             dialogueView.Bind(onNextAction:   () => _dialogueEngine.Advance(),
                               onChooseAction: (idx) => _dialogueEngine.Choose(idx));
         }

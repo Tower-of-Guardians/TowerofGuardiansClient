@@ -61,7 +61,7 @@ namespace JxDialogueBox
             {
                 sprite = _portraitTable.GetPortraitSprite(_characterID, defaultKey);
             }
-
+            
             portraitImage.sprite = sprite;
         }
 
