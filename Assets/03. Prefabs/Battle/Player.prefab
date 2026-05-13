@@ -182,6 +182,8 @@ MonoBehaviour:
   attackMoveDuration: 0.2
   statAnimationDuration: 0.5
   statAnimationEase: 6
+  weaknessStatusSprite: {fileID: 4035860371971368088, guid: 34bb51b54453114419ec29327fc29b9f, type: 3}
+  statusBottomRoot: {fileID: 7062197768075648575}
 --- !u!114 &8227538613326071428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,6 +562,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &7062197768075648575 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2878343821889742313, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}
+  m_PrefabInstance: {fileID: 5039555502067497942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8747312025888297819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4365299715425314957, guid: 02f2ce7dbb2385d43a22f32947968aa9, type: 3}

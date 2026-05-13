@@ -10,6 +10,8 @@ public class MonsterAnimation : MonoBehaviour
     private static readonly int AttackHash = Animator.StringToHash("Attack");
     private static readonly int HitHash = Animator.StringToHash("Hit");
     private static readonly int DeadHash = Animator.StringToHash("Dead");
+    private static readonly int CurseHash = Animator.StringToHash("Curse");
+    private static readonly int DefenseHash = Animator.StringToHash("Defense");
 
     private void Awake()
     {
@@ -48,6 +50,22 @@ public class MonsterAnimation : MonoBehaviour
         }
     }
 
+    public void PlayCurseAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(CurseHash);
+        }
+    }
+
+    public void PlayDefenseAnimation()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(DefenseHash);
+        }
+    }
+
     public void ResetAnimationState()
     {
         if (animator != null)
@@ -55,6 +73,8 @@ public class MonsterAnimation : MonoBehaviour
             animator.ResetTrigger(AttackHash);
             animator.ResetTrigger(HitHash);
             animator.ResetTrigger(DeadHash);
+            animator.ResetTrigger(CurseHash);
+            animator.ResetTrigger(DefenseHash);
         }
     }
 
@@ -62,6 +82,37 @@ public class MonsterAnimation : MonoBehaviour
     /// 공격 애니메이션이 완료될 때까지 대기합니다.
     /// </summary>
     public IEnumerator WaitForAttackAnimationComplete()
+    {
+        yield return WaitForAnimationComplete(new[] { "Attack", "WhiteDog_Attack" });
+    }
+
+    public IEnumerator WaitForActionAnimationComplete(MonsterActionType actionType)
+    {
+        string[] stateNames = GetStateNamesByActionType(actionType);
+        if (stateNames == null || stateNames.Length == 0)
+        {
+            yield break;
+        }
+
+        yield return WaitForAnimationComplete(stateNames);
+    }
+
+    private static string[] GetStateNamesByActionType(MonsterActionType actionType)
+    {
+        switch (actionType)
+        {
+            case MonsterActionType.Attack:
+                return new[] { "Attack", "WhiteDog_Attack" };
+            case MonsterActionType.Guard:
+                return new[] { "Defense", "WhiteDog_Defense" };
+            case MonsterActionType.ApplyStatus:
+                return new[] { "Curse", "WhiteDog_Curse" };
+            default:
+                return null;
+        }
+    }
+
+    private IEnumerator WaitForAnimationComplete(string[] stateNames)
     {
         if (animator == null)
         {
@@ -76,7 +127,7 @@ public class MonsterAnimation : MonoBehaviour
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             
-            if (stateInfo.IsName("Attack"))
+            if (IsAnyStateName(stateInfo, stateNames))
             {
                 attackStateFound = true;
                 break;
@@ -99,12 +150,13 @@ public class MonsterAnimation : MonoBehaviour
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             int currentStateHash = stateInfo.fullPathHash;
 
-            if (currentStateHash != previousStateHash && !stateInfo.IsName("Attack"))
+            bool isActionState = IsAnyStateName(stateInfo, stateNames);
+            if (currentStateHash != previousStateHash && !isActionState)
             {
                 break;
             }
 
-            if (stateInfo.IsName("Attack") && stateInfo.normalizedTime >= 1.0f)
+            if (isActionState && stateInfo.normalizedTime >= 1.0f)
             {
                 yield return null;
                 break;
@@ -113,6 +165,24 @@ public class MonsterAnimation : MonoBehaviour
             previousStateHash = currentStateHash;
             yield return null;
         }
+    }
+
+    private static bool IsAnyStateName(AnimatorStateInfo stateInfo, string[] stateNames)
+    {
+        if (stateNames == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < stateNames.Length; i++)
+        {
+            if (stateInfo.IsName(stateNames[i]))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

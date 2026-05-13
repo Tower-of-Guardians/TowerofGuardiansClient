@@ -88,7 +88,7 @@ public class SynergyUI : MonoBehaviour
 
     private void OnSynergyChange(Dictionary<string, SynergyTotalData> synergyMap)
     {
-        if (_slots == null || _slots.Length == 0)
+        if (_slots == null || _slots.Length == 0 || synergyMap == null)
         {
             return;
         }
@@ -136,6 +136,40 @@ public class SynergyUI : MonoBehaviour
             {
                 ApplyOverflowTooltip(ordered.Skip(_slots.Length).ToList());
             }
+        }
+    }
+
+    public void SetVisible(bool isVisible)
+    {
+        if (!isVisible)
+        {
+            HideAllSlots();
+            return;
+        }
+
+        if (GameData.Instance != null)
+        {
+            GameData.Instance.GetSynergyData();
+        }
+    }
+
+    private void HideAllSlots()
+    {
+        if (_slots != null)
+        {
+            for (int i = 0; i < _slots.Length; i++)
+            {
+                SynergySlot slot = _slots[i];
+                if (slot?.root != null)
+                {
+                    slot.root.SetActive(false);
+                }
+            }
+        }
+
+        if (_overflowRoot != null)
+        {
+            _overflowRoot.SetActive(false);
         }
     }
 

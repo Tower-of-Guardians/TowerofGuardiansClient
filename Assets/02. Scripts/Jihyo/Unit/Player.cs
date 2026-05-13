@@ -34,11 +34,22 @@ public class Player : BaseUnit
     [SerializeField] private float statAnimationDuration = 0.5f;
     [SerializeField] private Ease statAnimationEase = Ease.OutQuad;
     
+    [Header("Status Effect UI")]
+    [SerializeField] private Sprite weaknessStatusSprite;
+    [SerializeField] private Transform statusBottomRoot;
+    
     private Tweener attackTextTweener;
     private Tweener protectionTweener;
     private readonly Queue<int> pendingAttackTweenTargets = new Queue<int>();
     private const int NormalSortingOrder = 5;
     private const int AttackSortingOrder = 7;
+    private const string WeaknessStatusNodeName = "Weakness";
+    private const string WeaknessTurnTextNodeName = "Text_Turn";
+    
+    private StatusEffectController statusEffectController;
+    private GameObject weaknessStatusRoot;
+    private Image weaknessStatusImage;
+    private TMP_Text weaknessTurnText;
 
     public int AttackValue => Mathf.RoundToInt(baseAttack + cardAttackBonus) + battleSynergyAttackBonus + turnSynergyAttackBonus;
     public float DefenseValue => cardDefenseBonus;
@@ -50,6 +61,8 @@ public class Player : BaseUnit
         InitializeFromDataCenter();
         InitializeAnimation();
         CacheSpriteOrigin();
+        InitializeStatusEffectUI();
+        SubscribeStatusEffectEvents();
         SubscribeDataCenterHpEvent();
     }
 
@@ -494,7 +507,8 @@ public class Player : BaseUnit
 
     protected override void OnDestroy()
     {
-        SubscribeDataCenterHpEvent();
+        UnsubscribeDataCenterHpEvent();
+        UnsubscribeStatusEffectEvents();
         
         base.OnDestroy();
         
@@ -517,5 +531,140 @@ public class Player : BaseUnit
             DataCenter.Instance.playerHpEvent -= OnPlayerHPChanged;
         }
     }
+
+    private void InitializeStatusEffectUI()
+    {
+        if (statusBottomRoot == null)
+        {
+            Transform statusRoot = transform.Find("Status");
+            statusBottomRoot = statusRoot != null ? statusRoot.Find("Status_Bottom") : null;
+        }
+
+        if (statusBottomRoot == null)
+        {
+            return;
+        }
+
+        Transform weaknessRootTransform = statusBottomRoot.Find(WeaknessStatusNodeName);
+        if (weaknessRootTransform == null)
+        {
+            weaknessStatusRoot = CreateWeaknessStatusNode(statusBottomRoot);
+        }
+        else
+        {
+            weaknessStatusRoot = weaknessRootTransform.gameObject;
+            weaknessStatusImage = weaknessStatusRoot.GetComponent<Image>();
+            Transform textTransform = weaknessStatusRoot.transform.Find(WeaknessTurnTextNodeName);
+            weaknessTurnText = textTransform != null ? textTransform.GetComponent<TMP_Text>() : null;
+        }
+
+        if (weaknessStatusImage != null && weaknessStatusSprite != null)
+        {
+            weaknessStatusImage.sprite = weaknessStatusSprite;
+        }
+
+        if (weaknessStatusRoot != null)
+        {
+            weaknessStatusRoot.SetActive(false);
+        }
+    }
+
+    private GameObject CreateWeaknessStatusNode(Transform parent)
+    {
+        GameObject root = new GameObject(WeaknessStatusNodeName, typeof(RectTransform), typeof(Image));
+        RectTransform rootRect = root.GetComponent<RectTransform>();
+        rootRect.SetParent(parent, false);
+        rootRect.sizeDelta = new Vector2(0.5f, 0.5f);
+        rootRect.localScale = Vector3.one;
+
+        weaknessStatusImage = root.GetComponent<Image>();
+        weaknessStatusImage.sprite = weaknessStatusSprite;
+        weaknessStatusImage.preserveAspect = true;
+
+        GameObject textObject = new GameObject(WeaknessTurnTextNodeName, typeof(RectTransform), typeof(TextMeshProUGUI));
+        RectTransform textRect = textObject.GetComponent<RectTransform>();
+        textRect.SetParent(rootRect, false);
+        textRect.anchorMin = new Vector2(0.5f, 0f);
+        textRect.anchorMax = new Vector2(1f, 0.5f);
+        textRect.offsetMin = Vector2.zero;
+        textRect.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
+        text.font = attackText != null ? attackText.font : null;
+        text.fontSize = attackText != null ? attackText.fontSize * 0.8f : 0.2f;
+        text.alignment = TextAlignmentOptions.BottomRight;
+        text.color = Color.white;
+        text.text = string.Empty;
+        weaknessTurnText = text;
+
+        return root;
+    }
+
+    private void SubscribeStatusEffectEvents()
+    {
+        statusEffectController = GetComponent<StatusEffectController>();
+        if (statusEffectController == null)
+        {
+            return;
+        }
+
+        statusEffectController.OnStatusAdded += OnPlayerStatusUpdated;
+        statusEffectController.OnStatusRemoved += OnPlayerStatusUpdated;
+        statusEffectController.OnStatusChanged += OnPlayerStatusUpdated;
+        RefreshWeaknessStatusUI();
+    }
+
+    private void UnsubscribeStatusEffectEvents()
+    {
+        if (statusEffectController == null)
+        {
+            return;
+        }
+
+        statusEffectController.OnStatusAdded -= OnPlayerStatusUpdated;
+        statusEffectController.OnStatusRemoved -= OnPlayerStatusUpdated;
+        statusEffectController.OnStatusChanged -= OnPlayerStatusUpdated;
+        statusEffectController = null;
+    }
+
+    private void OnPlayerStatusUpdated(StatusEffectRuntime runtime)
+    {
+        RefreshWeaknessStatusUI();
+    }
+
+    private void RefreshWeaknessStatusUI()
+    {
+        if (weaknessStatusRoot == null || weaknessTurnText == null || statusEffectController == null)
+        {
+            return;
+        }
+
+        StatusEffectRuntime weaknessRuntime = null;
+        foreach (StatusEffectRuntime runtime in statusEffectController.ActiveStatuses)
+        {
+            if (runtime == null)
+            {
+                continue;
+            }
+
+            if (runtime.StatusEffectId == StatusEffectController.WeaknessExposureStatusId)
+            {
+                weaknessRuntime = runtime;
+                break;
+            }
+        }
+
+        bool shouldShow = weaknessRuntime != null && !weaknessRuntime.IsExpired;
+        weaknessStatusRoot.SetActive(shouldShow);
+        if (!shouldShow)
+        {
+            weaknessTurnText.text = string.Empty;
+            return;
+        }
+
+        int turnValue = weaknessRuntime.RemainingTurns == int.MaxValue ? 0 : Mathf.Max(0, weaknessRuntime.RemainingTurns);
+        weaknessTurnText.text = turnValue.ToString();
+    }
+
 }
 

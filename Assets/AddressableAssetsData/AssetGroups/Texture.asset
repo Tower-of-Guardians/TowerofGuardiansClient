@@ -15,11 +15,6 @@ MonoBehaviour:
   m_GroupName: Packed Assets
   m_GUID: 0c844cc57e6905e4184b814c66e3129f
   m_SerializeEntries:
-  - m_GUID: 9d8b808125c570647a1aa42871823402
-    m_Address: Backgrounds
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f12e72e0843e49e4fa28086ee9c1704b
     m_Address: Portraits
     m_ReadOnly: 0

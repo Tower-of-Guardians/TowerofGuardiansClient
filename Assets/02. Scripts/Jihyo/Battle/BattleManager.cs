@@ -14,6 +14,7 @@ public class BattleManager : MonoBehaviour
     [Space(30f), Header("Effectors")]
     [SerializeField] private HandCardToThrowEffector m_hand_to_throw_effector;
     [SerializeField] private AttackCardToThrowEffector m_attack_to_throw_effector;
+    [SerializeField] private SynergyUI synergyUI;
 
     private bool isInitialized;
     private bool isProcessingAttack;
@@ -21,6 +22,7 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         InitializeControllers();
+        ResolveSynergyUIIfNeeded();
     }
 
     private void OnDestroy()
@@ -99,12 +101,15 @@ public class BattleManager : MonoBehaviour
             turnManager.ResetTurnNumber();
             turnManager.StartTurn();
             InvokeStatusEffectTurnStart();
+            ShowSynergyUIForTurnStart();
         }
     }
 
     public void OnAttackButtonClicked()
     {
         if (isProcessingAttack) return;
+
+        CloseSynergyOverlayUI();
 
         // 턴 시작 처리
         if (actionController != null)
@@ -114,6 +119,38 @@ public class BattleManager : MonoBehaviour
 
         isProcessingAttack = true;
         StartCoroutine(ProcessAttackSequence());
+    }
+
+    private void CloseSynergyOverlayUI()
+    {
+        ResolveSynergyUIIfNeeded();
+        synergyUI?.SetVisible(false);
+
+        if (DIContainer.IsRegistered<TooltipPresenter>())
+        {
+            TooltipPresenter tooltipPresenter = DIContainer.Resolve<TooltipPresenter>();
+            tooltipPresenter?.CloseUI();
+        }
+
+        if (DIContainer.IsRegistered<IAttributeView>())
+        {
+            IAttributeView attributeView = DIContainer.Resolve<IAttributeView>();
+            attributeView?.CloseUI();
+        }
+    }
+
+    private void ShowSynergyUIForTurnStart()
+    {
+        ResolveSynergyUIIfNeeded();
+        synergyUI?.SetVisible(true);
+    }
+
+    private void ResolveSynergyUIIfNeeded()
+    {
+        if (synergyUI == null)
+        {
+            synergyUI = FindFirstObjectByType<SynergyUI>();
+        }
     }
 
     private IEnumerator ProcessAttackSequence()
@@ -250,6 +287,7 @@ public class BattleManager : MonoBehaviour
                 turnManager.EndTurn();
                 turnManager.StartTurn();
                 InvokeStatusEffectTurnStart();
+                ShowSynergyUIForTurnStart();
             }
         }
     }

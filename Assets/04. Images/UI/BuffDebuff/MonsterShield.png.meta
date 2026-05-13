@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: c0676dffd0ff3604595b7f160ab36bdf
+guid: cfe50b82cd96c8b458f6f5fe0e57d27e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2442329479955777763
-    second: Monster1_Hit_0
-  - first:
-      213: 2991487975931962557
-    second: Monster1_Hit_1
+      213: -7572360096558737171
+    second: MonsterShield_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster1_Hit_0
+      name: MonsterShield_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 4
         y: 0
-        width: 384
-        height: 288
+        width: 40
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3e88a35d8b5e4e120800000000000000
-      internalID: 2442329479955777763
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Monster1_Hit_1
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 384
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: db4e64be676e38920800000000000000
-      internalID: 2991487975931962557
+      spriteID: de8164dbc9299e690800000000000000
+      internalID: -7572360096558737171
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 85edd952b720b584886549b1f44479e4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monster1_Hit_0: 2442329479955777763
-      Monster1_Hit_1: 2991487975931962557
+      MonsterShield_0: -7572360096558737171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

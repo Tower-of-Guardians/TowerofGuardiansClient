@@ -57,6 +57,11 @@ public class Monster : BaseUnit, IPointerClickHandler
     [Header("Status UI")]
     [SerializeField] private Transform attackAnchor;
     [SerializeField] private GameObject targetIndicator;
+    [SerializeField] private SpriteRenderer actionIndicatorRenderer;
+    [SerializeField] private Sprite actionAttackSprite;
+    [SerializeField] private Sprite actionShieldSprite;
+    [SerializeField] private Sprite actionBuffSprite;
+    [SerializeField] private Sprite actionDebuffSprite;
 
     [Header("Animation")]
     private MonsterAnimation monsterAnimation;
@@ -84,11 +89,13 @@ public class Monster : BaseUnit, IPointerClickHandler
     private bool hasPreparedAction;
     private bool hasGuardShieldPendingExpire;
     private int guardShieldAppliedTurnNumber = -1;
+    private GameObject attackStatusRoot;
 
     protected override void Awake()
     {
         ApplyMonsterDataIfConfigured();
         base.Awake();
+        ResolveStatusUIReferences();
         currentHealth = maxHealth;
         BuildActionsFromMonsterDataIfNeeded();
         ConfigureMonsterTraits();
@@ -172,46 +179,77 @@ public class Monster : BaseUnit, IPointerClickHandler
             yield break;
         }
 
+        MonsterActionDefinition selectedAction;
+        int actionValue;
+        ResolveActionForExecution(out selectedAction, out actionValue);
+
+        bool isAttackAction = selectedAction == null || selectedAction.ActionType == MonsterActionType.Attack;
         SaveInitialPosition();
 
-        SetSortingOrder(AttackSortingOrder);
+        if (isAttackAction)
+        {
+            SetSortingOrder(AttackSortingOrder);
+        }
 
-        if (attackMoveOffset > 0f)
+        if (isAttackAction && attackMoveOffset > 0f)
         {
             Vector3 targetPosition = GetTargetAttackPosition(target);
             yield return StartCoroutine(MoveSpriteToPosition(targetPosition, attackMoveDuration));
         }
 
-        if (monsterAnimation != null)
-        {
-            monsterAnimation.PlayAttackAnimation();
-        }
+        PlayActionAnimation(selectedAction);
 
         // 공격 중 체력이 감소하는 타이밍
         yield return new WaitForSeconds(damageApplyDelay);
-
-        MonsterActionDefinition selectedAction = null;
-        int actionValue = 0;
-
-        if (!TryConsumePreparedAction(out selectedAction, out actionValue))
-        {
-            selectedAction = SelectNextAction();
-            actionValue = selectedAction != null ? ResolveActionValue(selectedAction.MinValue, selectedAction.MaxValue) : defaultAttack;
-        }
 
         ExecuteSelectedAction(selectedAction, target, actionValue);
 
         if (monsterAnimation != null)
         {
-            yield return StartCoroutine(monsterAnimation.WaitForAttackAnimationComplete());
+            MonsterActionType actionType = selectedAction != null ? selectedAction.ActionType : MonsterActionType.Attack;
+            yield return StartCoroutine(monsterAnimation.WaitForActionAnimationComplete(actionType));
         }
 
-        if (attackMoveOffset > 0f)
+        if (isAttackAction && attackMoveOffset > 0f)
         {
             yield return StartCoroutine(MoveSpriteToPosition(initialSpriteLocalPosition, attackMoveDuration));
         }
 
-        SetSortingOrder(NormalSortingOrder);
+        if (isAttackAction)
+        {
+            SetSortingOrder(NormalSortingOrder);
+        }
+    }
+
+    private void ResolveActionForExecution(out MonsterActionDefinition selectedAction, out int actionValue)
+    {
+        if (!TryConsumePreparedAction(out selectedAction, out actionValue))
+        {
+            selectedAction = SelectNextAction();
+            actionValue = selectedAction != null ? ResolveActionValue(selectedAction.MinValue, selectedAction.MaxValue) : defaultAttack;
+        }
+    }
+
+    private void PlayActionAnimation(MonsterActionDefinition selectedAction)
+    {
+        if (monsterAnimation == null)
+        {
+            return;
+        }
+
+        MonsterActionType actionType = selectedAction != null ? selectedAction.ActionType : MonsterActionType.Attack;
+        switch (actionType)
+        {
+            case MonsterActionType.Guard:
+                monsterAnimation.PlayDefenseAnimation();
+                break;
+            case MonsterActionType.ApplyStatus:
+                monsterAnimation.PlayCurseAnimation();
+                break;
+            default:
+                monsterAnimation.PlayAttackAnimation();
+                break;
+        }
     }
 
     public void PrepareActionForTurn()
@@ -796,15 +834,95 @@ public class Monster : BaseUnit, IPointerClickHandler
     {
         base.RefreshUI();
 
+        bool showAttackStatus = true;
         if (attackText != null)
         {
             int displayValue = defaultAttack;
             if (hasPreparedAction && preparedAction != null)
             {
-                displayValue = preparedAction.ActionType == MonsterActionType.Attack ? preparedActionValue : 0;
+                bool isAttackAction = preparedAction.ActionType == MonsterActionType.Attack;
+                displayValue = isAttackAction ? preparedActionValue : 0;
+                showAttackStatus = isAttackAction;
             }
 
             attackText.text = displayValue.ToString();
         }
+
+        if (attackStatusRoot != null)
+        {
+            attackStatusRoot.SetActive(showAttackStatus);
+        }
+
+        RefreshActionIndicator();
     }
+
+    private void ResolveStatusUIReferences()
+    {
+        if (attackText != null && attackText.transform.parent != null)
+        {
+            attackStatusRoot = attackText.transform.parent.gameObject;
+        }
+
+        if (actionIndicatorRenderer == null)
+        {
+            Transform actionTransform = transform.Find("Action");
+            if (actionTransform != null)
+            {
+                actionIndicatorRenderer = actionTransform.GetComponent<SpriteRenderer>();
+            }
+        }
+    }
+
+    private void RefreshActionIndicator()
+    {
+        if (actionIndicatorRenderer == null)
+        {
+            return;
+        }
+
+        if (!hasPreparedAction || preparedAction == null)
+        {
+            actionIndicatorRenderer.gameObject.SetActive(false);
+            return;
+        }
+
+        Sprite actionSprite = ResolveActionIndicatorSprite(preparedAction);
+        if (actionSprite == null)
+        {
+            actionIndicatorRenderer.gameObject.SetActive(false);
+            return;
+        }
+
+        actionIndicatorRenderer.sprite = actionSprite;
+        actionIndicatorRenderer.gameObject.SetActive(true);
+    }
+
+    private Sprite ResolveActionIndicatorSprite(MonsterActionDefinition action)
+    {
+        if (action == null)
+        {
+            return actionAttackSprite;
+        }
+
+        switch (action.ActionType)
+        {
+            case MonsterActionType.Attack:
+                return actionAttackSprite;
+            case MonsterActionType.Guard:
+                return actionShieldSprite;
+            case MonsterActionType.ApplyStatus:
+                return IsDebuffTarget(action.TargetType) ? actionDebuffSprite : actionBuffSprite;
+            case MonsterActionType.Heal:
+            case MonsterActionType.Summon:
+                return actionBuffSprite;
+            default:
+                return actionAttackSprite;
+        }
+    }
+
+    private static bool IsDebuffTarget(MonsterActionTargetType targetType)
+    {
+        return targetType == MonsterActionTargetType.Player;
+    }
+
 }
