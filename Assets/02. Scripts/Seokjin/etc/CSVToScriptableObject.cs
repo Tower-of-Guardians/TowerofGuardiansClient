@@ -257,32 +257,49 @@ public class CSVToScriptableObject
             MonsterData newItem = ScriptableObject.CreateInstance<MonsterData>();
             int n = 0;
 
-            //ID,Name,HP,ATKMin,ATKMax,DEFMin,DEFMax,Kind,PatternType,PassiveID,PassiveValue,StatusEffect1ID,Target1,Value1,StatusEffect2ID,Target2,Value2,StatusEffect3ID,Target3,Value3
+            // ID,Name,Image,HP,Kind,PatternType,Passive1ID,Passive1Value,Passive2ID,Passive2Value,Passive3ID,Passive3Value,Action1ID,Action1Min,Action1Max...Action7Max
             newItem.Id = values[n++].Trim();
             newItem.Name = values[n++].Trim();
+            n++; // Image 컬럼(현재 미사용)
 
             if (int.TryParse(values[n++].Trim(), out int hp)) newItem.HP = hp;
-            if (int.TryParse(values[n++].Trim(), out int atkmin)) newItem.ATKMin = atkmin;
-            if (int.TryParse(values[n++].Trim(), out int atkmax)) newItem.ATKMax = atkmax;
-            if (int.TryParse(values[n++].Trim(), out int defmin)) newItem.DEFMin = defmin;
-            if (int.TryParse(values[n++].Trim(), out int defmax)) newItem.DEFMax = defmax;
             if (int.TryParse(values[n++].Trim(), out int kind)) newItem.Kind = kind;
+            if (int.TryParse(values[n++].Trim(), out int patternType)) newItem.PatternType = patternType;
 
-            if (int.TryParse(values[n++].Trim(), out int type)) newItem.PatternType = defmax;
-            newItem.PassiveID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int pava)) newItem.PassiveValue = pava;
+            newItem.Passive1ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int passive1Value)) newItem.Passive1Value = passive1Value;
+            newItem.Passive2ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int passive2Value)) newItem.Passive2Value = passive2Value;
+            newItem.Passive3ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int passive3Value)) newItem.Passive3Value = passive3Value;
 
-            newItem.StatusEffect1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int tar1)) newItem.Target1 = tar1;
-            if (int.TryParse(values[n++].Trim(), out int val1)) newItem.Value1 = val1;
+            newItem.Action1ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action1Min)) newItem.Action1Min = action1Min;
+            if (int.TryParse(values[n++].Trim(), out int action1Max)) newItem.Action1Max = action1Max;
 
-            newItem.StatusEffect2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int tar2)) newItem.Target2 = tar2;
-            if (int.TryParse(values[n++].Trim(), out int val2)) newItem.Value2 = val2;
+            newItem.Action2ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action2Min)) newItem.Action2Min = action2Min;
+            if (int.TryParse(values[n++].Trim(), out int action2Max)) newItem.Action2Max = action2Max;
 
-            newItem.StatusEffect3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int tar3)) newItem.Target3 = tar3;
-            if (int.TryParse(values[n++].Trim(), out int val3)) newItem.Value3 = val3;
+            newItem.Action3ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action3Min)) newItem.Action3Min = action3Min;
+            if (int.TryParse(values[n++].Trim(), out int action3Max)) newItem.Action3Max = action3Max;
+
+            newItem.Action4ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action4Min)) newItem.Action4Min = action4Min;
+            if (int.TryParse(values[n++].Trim(), out int action4Max)) newItem.Action4Max = action4Max;
+
+            newItem.Action5ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action5Min)) newItem.Action5Min = action5Min;
+            if (int.TryParse(values[n++].Trim(), out int action5Max)) newItem.Action5Max = action5Max;
+
+            newItem.Action6ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action6Min)) newItem.Action6Min = action6Min;
+            if (int.TryParse(values[n++].Trim(), out int action6Max)) newItem.Action6Max = action6Max;
+
+            newItem.Action7ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int action7Min)) newItem.Action7Min = action7Min;
+            if (int.TryParse(values[n++].Trim(), out int action7Max)) newItem.Action7Max = action7Max;
 
             string fileName = newItem.Id + ".asset";
 

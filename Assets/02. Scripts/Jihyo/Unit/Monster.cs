@@ -293,13 +293,26 @@ public class Monster : BaseUnit, IPointerClickHandler
             return;
         }
 
-        /*AppendAction(loadedMonsterData.Action1ID, loadedMonsterData.Action1Min, loadedMonsterData.Action1Max);
+        AppendAction(loadedMonsterData.Action1ID, loadedMonsterData.Action1Min, loadedMonsterData.Action1Max);
         AppendAction(loadedMonsterData.Action2ID, loadedMonsterData.Action2Min, loadedMonsterData.Action2Max);
         AppendAction(loadedMonsterData.Action3ID, loadedMonsterData.Action3Min, loadedMonsterData.Action3Max);
         AppendAction(loadedMonsterData.Action4ID, loadedMonsterData.Action4Min, loadedMonsterData.Action4Max);
         AppendAction(loadedMonsterData.Action5ID, loadedMonsterData.Action5Min, loadedMonsterData.Action5Max);
         AppendAction(loadedMonsterData.Action6ID, loadedMonsterData.Action6Min, loadedMonsterData.Action6Max);
-        AppendAction(loadedMonsterData.Action7ID, loadedMonsterData.Action7Min, loadedMonsterData.Action7Max);*/
+        AppendAction(loadedMonsterData.Action7ID, loadedMonsterData.Action7Min, loadedMonsterData.Action7Max);
+
+        // 데이터가 비어있는 몬스터는 기존 기본 공격으로 동작하도록 1개 액션을 보장합니다.
+        if (actionDefinitions.Count == 0)
+        {
+            actionDefinitions.Add(new MonsterActionDefinition
+            {
+                ActionId = "DEFAULT_ATTACK",
+                ActionType = MonsterActionType.Attack,
+                TargetType = MonsterActionTargetType.Player,
+                MinValue = defaultAttack,
+                MaxValue = defaultAttack
+            });
+        }
     }
 
     private void AppendAction(string actionId, int min, int max)
@@ -330,6 +343,12 @@ public class Monster : BaseUnit, IPointerClickHandler
             case "2410002":
                 definition.ActionType = MonsterActionType.Guard;
                 definition.TargetType = MonsterActionTargetType.Self;
+                break;
+            case "2410003":
+                definition.ActionType = MonsterActionType.ApplyStatus;
+                definition.TargetType = MonsterActionTargetType.Player;
+                definition.StatusEffectId = StatusEffectController.WeaknessExposureStatusId;
+                definition.StatusStack = Mathf.Max(1, min);
                 break;
             default:
                 // 기본값은 유저 대상 공격으로 해석
