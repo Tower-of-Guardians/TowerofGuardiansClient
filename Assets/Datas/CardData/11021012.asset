@@ -27,13 +27,13 @@ MonoBehaviour:
   synergy2ID: 210010
   synergy3ID: 
   effectDescription: "\uC774\uBC88 \uD134\uC5D0 \uD53C\uD574\uB97C \uC785\uC9C0 \uC54A\uC73C\uBA74
-    \uB2E4\uC74C \uD134 \uC2DC\uC791 \uC2DC \uBAA8\uB4E0 \uC801\uC5D0\uAC8C 30\uC758
+    \uB2E4\uC74C \uD134 \uC2DC\uC791 \uC2DC \uBAA8\uB4E0 \uC801\uC5D0\uAC8C {0}\uC758
     \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
   ATK: 0
   DEF: 20
   when: 1
   trigger: 0
-  effect1ID: 
+  effect1ID: 1110008
   effect2ID: 
-  effect1Value: 
+  effect1Value: 30
   effect2Value: 

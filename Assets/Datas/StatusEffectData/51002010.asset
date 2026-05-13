@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: 51002010
   m_EditorClassIdentifier: 
   Id: 51002010
-  Name: "\uC2DC\uD574\uC790"
+  Name: "\uC751\uC9D52"
   Apply: 2
   BuffType: 1
   NumType: 0
   DurationType: 1
   ReleaseCondition: 0
-  Description: "\uBCF4\uC2A4\uC5D0\uAC8C \uC785\uD788\uB294 \uD53C\uD574\uB7C9\uC774
-    (25*{0}+25)% \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  Description: "\uAE30\uBCF8\uACF5\uACA9\uB825\uC774 150% \uC99D\uAC00\uD569\uB2C8\uB2E4."

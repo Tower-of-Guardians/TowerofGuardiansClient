@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: StatusEffectData
   m_GUID: 20d47070c03d57f4ba249feb2033193f
   m_SerializeEntries:
+  - m_GUID: 00a57ed8d6252114885f80428c40fb4e
+    m_Address: 51001034
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - StatusEffectData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 05641323fdaed964d86e9da058c042f5
     m_Address: 51002022
     m_ReadOnly: 0
@@ -59,6 +65,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31931c648df89b4419653b724303bda3
     m_Address: 51002018
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - StatusEffectData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35bb76e92e0b9964390a2662ccbdb418
+    m_Address: 51001033
     m_ReadOnly: 0
     m_SerializedLabels:
     - StatusEffectData

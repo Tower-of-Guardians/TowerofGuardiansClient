@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11022019
   itemName: "\uC580\uC870\uB124\uC2A4"
-  iconimage: {fileID: -9200841919920086390, guid: ea07531790dcb6e42ae9f92e739af357, type: 3}
+  iconimage: {fileID: 8818355819295388068, guid: 9fe8859a05bc9d44db79491c3c4b1900, type: 3}
   synergyFrameImage: {fileID: 21300000, guid: 97301378ea0bcac4a9a60a1c23def89d, type: 3}
   grade: 2
   star: 2
@@ -27,11 +27,11 @@ MonoBehaviour:
   synergy2ID: 210004
   synergy3ID: 
   effectDescription: "\uC774\uBC88 \uACF5\uACA9\uC5D0 \uC801 \uCC98\uCE58 \uC2DC\\n\uACE8\uB4DC
-    20 \uD68D\uB4DD\\n(\uC911\uCCA9\uBD88\uAC00)"
+    20 \uD68D\uB4DD/n(\uC911\uCCA9\uBD88\uAC00)"
   ATK: 26
   DEF: 0
   when: 2
-  trigger: 0
+  trigger: 4
   effect1ID: 
   effect2ID: 
   effect1Value: 

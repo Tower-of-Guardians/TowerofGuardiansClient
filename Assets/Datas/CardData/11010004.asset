@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11010004
   itemName: "\uB2E8\uAC80"
-  iconimage: {fileID: -368944174928613732, guid: 624aae08ab249e640a79ff1262088ce2, type: 3}
+  iconimage: {fileID: 6818544249897657950, guid: 9fe8859a05bc9d44db79491c3c4b1900, type: 3}
   synergyFrameImage: {fileID: 21300000, guid: 2fdd58a991429e841972473141ccc819, type: 3}
   grade: 1
   star: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   DEF: 1
   when: 2
   trigger: 0
-  effect1ID: 
+  effect1ID: 1110001
   effect2ID: 
-  effect1Value: 
+  effect1Value: 1
   effect2Value: 

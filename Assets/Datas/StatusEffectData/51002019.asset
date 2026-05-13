@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 51002019
   m_EditorClassIdentifier: 
   Id: 51002019
-  Name: "\uCD94\uAC00\uB4DC\uB85C\uC6B0"
+  Name: "\uD798:\uC720\uC800"
   Apply: 2
   BuffType: 1
   NumType: 0
-  DurationType: 1
+  DurationType: 3
   ReleaseCondition: 0
-  Description: "\uB2E4\uC74C \uD134\uC5D0 \uCE74\uB4DC\uB97C N\uC7A5 \uB354 \uBF51\uC2B5\uB2C8\uB2E4."
+  Description: "\uAE30\uBCF8 \uACF5\uACA9\uB825\uC774 {0}\uB9CC\uD07C \uC99D\uAC00\uD569\uB2C8\uB2E4."

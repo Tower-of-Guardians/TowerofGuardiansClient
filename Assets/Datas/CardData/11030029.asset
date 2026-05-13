@@ -31,8 +31,8 @@ MonoBehaviour:
   ATK: 8
   DEF: 1
   when: 1
-  trigger: 0
-  effect1ID: 
+  trigger: 2
+  effect1ID: 1110015
   effect2ID: 
-  effect1Value: 
+  effect1Value: 1
   effect2Value: 

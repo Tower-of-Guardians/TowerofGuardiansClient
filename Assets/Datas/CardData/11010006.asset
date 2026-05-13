@@ -27,12 +27,12 @@ MonoBehaviour:
   synergy2ID: 
   synergy3ID: 
   effectDescription: "\uCCAB\uBC88\uC9F8 \uD134\uC77C \uACBD\uC6B0\\n\uC774\uBC88
-    \uD134\uB3D9\uC548 \uC774 \uCE74\uB4DC\uC758 \uACF5\uACA9\uB825 +10"
+    \uD134\uB3D9\uC548 \uC774 \uCE74\uB4DC\uC758 \uACF5\uACA9\uB825 +{0}"
   ATK: 4
   DEF: 1
   when: 1
-  trigger: 0
-  effect1ID: 
+  trigger: 1
+  effect1ID: 1110002
   effect2ID: 
-  effect1Value: 
+  effect1Value: 10
   effect2Value: 

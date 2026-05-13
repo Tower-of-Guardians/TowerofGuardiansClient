@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11010008
   itemName: "\uAD8C\uBC95\uC7A5\uAC11"
-  iconimage: {fileID: -8089820339312310891, guid: 25be9da19fafea1469ef4a3106295507, type: 3}
+  iconimage: {fileID: 7042404619664934232, guid: 9fe8859a05bc9d44db79491c3c4b1900, type: 3}
   synergyFrameImage: {fileID: 21300000, guid: 2fdd58a991429e841972473141ccc819, type: 3}
   grade: 1
   star: 0
@@ -24,15 +24,15 @@ MonoBehaviour:
   synergy2Icon: {fileID: 0}
   synergy3Icon: {fileID: 0}
   synergy1ID: 210007
-  synergy2ID: 210004
+  synergy2ID: 210005
   synergy3ID: 
   effectDescription: "\uACF5\uACA9 \uBC30\uCE58 \uC2DC\\n\uC774\uBC88 \uC804\uD22C\uB3D9\uC548
-    \"\uAD8C\uBC95\uC7A5\uAC11\"\uC758 \uACF5\uACA9\uB825\uC774 2 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+    \"\uAD8C\uBC95\uC7A5\uAC11\"\uC758 \uACF5\uACA9\uB825\uC774 {0} \uC99D\uAC00\uD569\uB2C8\uB2E4."
   ATK: 3
   DEF: 4
   when: 1
-  trigger: 0
-  effect1ID: 
+  trigger: 2
+  effect1ID: 1110005
   effect2ID: 
-  effect1Value: 
+  effect1Value: 2
   effect2Value: 

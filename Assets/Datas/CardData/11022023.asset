@@ -32,7 +32,7 @@ MonoBehaviour:
   DEF: 17
   when: 1
   trigger: 0
-  effect1ID: 
+  effect1ID: 1110011
   effect2ID: 
-  effect1Value: 
+  effect1Value: 3
   effect2Value: 
