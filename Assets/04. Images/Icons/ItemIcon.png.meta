@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Card_Wood Shield
+      name: Card_WoodShield
       rect:
         serializedVersion: 2
         x: 46
@@ -180,7 +180,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_Metal Shield
+      name: Card_MetalShield
       rect:
         serializedVersion: 2
         x: 562
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_Apprentice Sword
+      name: Card_ApprenticeSword
       rect:
         serializedVersion: 2
         x: 782
@@ -268,7 +268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Card_Hunter\u2019s bow"
+      name: "Card_Hunter\u2019sbow"
       rect:
         serializedVersion: 2
         x: 1562
@@ -312,7 +312,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_Soul Reaper
+      name: Card_SoulReaper
       rect:
         serializedVersion: 2
         x: 22
@@ -378,7 +378,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Card_Elemental Arrow
+      name: Card_ElementalArrow
       rect:
         serializedVersion: 2
         x: 794
@@ -435,19 +435,20 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Card_Apprentice Sword: 7159248052640824520
+      Card_ApprenticeSword: 7159248052640824520
       Card_BoxingGlove: 7042404619664934232
       Card_Dagger: 6818544249897657950
-      Card_Elemental Arrow: -396270957925619124
+      Card_ElementalArrow: -396270957925619124
       Card_Gaizeron: 2522438833399336075
       Card_Gladius: -1640713887234623365
       "Card_Hukan\u2019sAxe": -8204791299500236629
-      "Card_Hunter\u2019s bow": -7741811486949130332
+      "Card_Hunter\u2019sbow": -7741811486949130332
       Card_Janzones: 8818355819295388068
-      Card_Metal Shield: 670780376081818634
-      Card_Soul Reaper: 7259794790700297071
+      Card_MetalShield: 670780376081818634
+      Card_Soul: 7259794790700297071
+      Card_SoulReaper: 7259794790700297071
       Card_Thorn: 4858867644956348116
-      Card_Wood Shield: -4238762649066405001
+      Card_WoodShield: -4238762649066405001
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

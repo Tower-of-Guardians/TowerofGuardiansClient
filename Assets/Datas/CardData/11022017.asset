@@ -27,12 +27,12 @@ MonoBehaviour:
   synergy2ID: 210006
   synergy3ID: 
   effectDescription: "\uACF5\uACA9 \uBC30\uCE58 \uC2DC\\n\uCCB4\uB825 \uD68C\uBCF5
-    10"
+    {0}"
   ATK: 15
   DEF: 24
   when: 1
-  trigger: 0
-  effect1ID: 
+  trigger: 2
+  effect1ID: 1110017
   effect2ID: 
-  effect1Value: 
+  effect1Value: 10
   effect2Value: 
