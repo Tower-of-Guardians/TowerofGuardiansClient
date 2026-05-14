@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using JxModule.DataTable;
-using UnityEditor;
-using UnityEditor.Build.Pipeline.Utilities;
 
 namespace JxDialogueBox
 {

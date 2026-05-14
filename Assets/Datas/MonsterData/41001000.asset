@@ -15,7 +15,7 @@ MonoBehaviour:
   Id: 41001000
   Name: "\uC131\uC9C1\uC790"
   Image: {fileID: 0}
-  HP: 999
+  HP: 1
   Kind: 1
   PatternType: 2
   Passive1ID: 

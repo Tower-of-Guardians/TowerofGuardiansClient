@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿
+#if UNITY_EDITOR
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
+#endif
 
 enum CSVData
 {
@@ -16,9 +18,11 @@ enum CSVData
     EffectData
 }
 
+#if UNITY_EDITOR
 // 에디터 폴더에 위치해야 함
 public class CSVToScriptableObject
 {
+#if UNITY_EDITOR
     static string csv_name;
     static CSVData csv_data;
     // Unity 에디터 메뉴에 항목 추가 (예: Tools/Create Item SOs)
@@ -84,7 +88,9 @@ public class CSVToScriptableObject
         soFolderPath = "Assets/Datas/" + csv_name;
         GenerateItemSOs();
     }
+#endif
 
+#if UNITY_EDITOR
     static string soFolderPath; // ScriptableObject를 저장할 폴더
     static string imageResourcesPath;// Resources 폴더 내의 이미지 폴더 경로 (Resources를 제외한 상대 경로)
 
@@ -195,10 +201,7 @@ public class CSVToScriptableObject
 
                 if (file_carframe != null)
                 {
-                    // 유니티 시스템에 맞게 경로 수정 후 로드 (에디터 전용)
-#if UNITY_EDITOR
                     newItem.cardimage = AssetDatabase.LoadAssetAtPath<Sprite>(file_carframe);
-#endif
                 }
                 else
                 {
@@ -207,10 +210,7 @@ public class CSVToScriptableObject
 
                 if (file_synergyframe != null)
                 {
-                    // 유니티 시스템에 맞게 경로 수정 후 로드 (에디터 전용)
-#if UNITY_EDITOR
                     newItem.synergyFrameImage = AssetDatabase.LoadAssetAtPath<Sprite>(file_synergyframe);
-#endif
                 }
                 else
                 {
@@ -304,6 +304,39 @@ public class CSVToScriptableObject
             string fileName = newItem.Id + ".asset";
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
+
+            /*if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] values = line.Split(',');
+
+            MonsterData newItem = ScriptableObject.CreateInstance<MonsterData>();
+            int n = 0;
+
+            newItem.Id = values[n++].Trim();
+            newItem.Name = values[n++].Trim();
+
+            if (int.TryParse(values[n++].Trim(), out int hp)) newItem.Hp = hp;
+            if (int.TryParse(values[n++].Trim(), out int atkmin)) newItem.ATKMin = atkmin;
+            if (int.TryParse(values[n++].Trim(), out int atkmax)) newItem.ATKMax = atkmax;
+            if (int.TryParse(values[n++].Trim(), out int defmin)) newItem.DEFMin = defmin;
+            if (int.TryParse(values[n++].Trim(), out int defmax)) newItem.DEFMax = defmax;
+            if (int.TryParse(values[n++].Trim(), out int kind)) newItem.Kind = kind;
+            if (int.TryParse(values[n++].Trim(), out int patterntype)) newItem.PatternType = patterntype;
+            newItem.PassiveID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int passval)) newItem.PassiveValue = passval;
+            newItem.StatusEffect1ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar1)) newItem.Target1 = tar1;
+            if (int.TryParse(values[n++].Trim(), out int val1)) newItem.Value1 = val1;
+            newItem.StatusEffect2ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar2)) newItem.Target2 = tar2;
+            if (int.TryParse(values[n++].Trim(), out int val2)) newItem.Value3 = val2;
+            newItem.StatusEffect3ID = values[n++].Trim();
+            if (int.TryParse(values[n++].Trim(), out int tar3)) newItem.Target2 = tar3;
+            if (int.TryParse(values[n++].Trim(), out int val3)) newItem.Value3 = val3;
+
+            string fileName = newItem.Id + ".asset";
+
+            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);*/
         }
     }
     private static void SetMonsterEncounterData(string[] allLines)
@@ -480,4 +513,6 @@ public class CSVToScriptableObject
         }
         else return null;
     }
+#endif 
 }
+#endif

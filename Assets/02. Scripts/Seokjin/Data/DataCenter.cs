@@ -1,16 +1,12 @@
-using Mono.Cecil;
 using System; // async/await 사용을 위해 필요
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Playables;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 public class DataCenter : Singleton<DataCenter>
 {
@@ -118,41 +114,56 @@ public class DataCenter : Singleton<DataCenter>
     }
     public async Task AllCardData()
     {
-        // Addressables.LoadAssetsAsync<TObject>(key, callback)
-        // key는 주소 또는 레이블을 사용할 수 있습니다. 여기서는 레이블을 사용합니다.
+        // 1. 키를 명확하게 리스트로 선언 (InvalidKeyException 방지 핵심)
+        var keys = new List<string> { "CardData" };
+
+        // 2. LoadAssetsAsync 호출
+        // 인자: 키 리스트, 개별 완료 콜백, 머지 모드
         carddata_loadHandle = Addressables.LoadAssetsAsync<CardData>(
-            "CardData",
-            // 로드된 각 Asset에 대한 콜백 (선택 사항)
+            keys,
             (item) =>
             {
                 if (item != null)
                 {
-                    card_datas[item.id] = item;
-                    random_card_datas.Add(item.id);
+                    // 중복 방지 로직 추가
+                    if (!card_datas.ContainsKey(item.id))
+                    {
+                        card_datas[item.id] = item;
+                        random_card_datas.Add(item.id);
+                    }
                 }
-            }
+            },
+            Addressables.MergeMode.Union
         );
 
-        // 비동기 작업이 완료될 때까지 대기
+        // 3. 비동기 대기
         await carddata_loadHandle.Task;
 
+        // 4. 상태 확인
         if (carddata_loadHandle.Status == AsyncOperationStatus.Succeeded)
         {
             IsCardDataLoaded = true;
             cardDataLoadEvent?.Invoke(true);
-            UnityEngine.Debug.Log($"ItemData 로드 완료: {card_datas.Count}");
+            UnityEngine.Debug.Log($"CardData 로드 완료: {card_datas.Count}개");
         }
         else
         {
-            UnityEngine.Debug.LogError($"ItemData 로드 실패: {carddata_loadHandle.OperationException}");
+            IsCardDataLoaded = false;
+            cardDataLoadEvent?.Invoke(false);
+            UnityEngine.Debug.LogError($"CardData 로드 실패: {carddata_loadHandle.OperationException}");
+
+            // 로드 실패 시 핸들 해제 (메모리 관리)
+            if (carddata_loadHandle.IsValid())
+                Addressables.Release(carddata_loadHandle);
         }
     }
     public async Task AllResultPercentData()
     {
         // Addressables.LoadAssetsAsync<TObject>(key, callback)
         // key는 주소 또는 레이블을 사용할 수 있습니다. 여기서는 레이블을 사용합니다.
+        string myLabel = "ResultPercentData";
         resultdata_loadHandle = Addressables.LoadAssetsAsync<ResultPercentData>(
-            "ResultPercentData",
+            myLabel,
             // 로드된 각 Asset에 대한 콜백 (선택 사항)
             (item) =>
             {

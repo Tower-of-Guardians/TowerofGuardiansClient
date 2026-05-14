@@ -1,17 +1,21 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
+#endif
 using System.IO;
 using System;
 
+
+#if UNITY_EDITOR
 public class AddressableAutoConfigurator : Editor
 {
 
     // ScriptableObject 에셋이 저장된 폴더 경로 (Addressable로 만들 대상)
     private static string GROUP_NAME = "CardData";
     private static Type class_name;
-
     [MenuItem("Tools/Addressables/CardData for Addressables")]
     public static void SetCardData()
     {
@@ -118,3 +122,4 @@ public class AddressableAutoConfigurator : Editor
         Debug.Log($"성공적으로 {configuredCount}개의 Item ScriptableObject를 Addressable 그룹 '{GROUP_NAME}'에 등록하고 주소를 설정했습니다.");
     }
 }
+#endif
