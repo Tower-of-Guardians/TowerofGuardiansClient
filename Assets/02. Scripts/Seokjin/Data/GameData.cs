@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameData : Singleton<GameData>
 {
@@ -19,7 +19,6 @@ public class GameData : Singleton<GameData>
 
     public Dictionary<string, SynergyTotalData> synergyIDList = new Dictionary<string, SynergyTotalData>();
     public Dictionary<string, int> effectIDList = new Dictionary<string, int>();
-
     private void Start()
     {
         StartCoroutine(FirstDeckSet());
@@ -403,5 +402,21 @@ public class GameData : Singleton<GameData>
 
         int index = Mathf.Clamp(count - 1, 0, effectValues.Count - 1);
         return effectValues[index];
+    }
+
+    public bool IsCheckInventory(string cardid)
+    {
+        bool check = false;
+        foreach (CardData data in DataCenter.Instance.userDeck)
+        {
+            Debug.Log("userDeck : " + data.id);
+            if (data.id == cardid)
+            {
+                check = true;
+                break;
+            }
+        }
+        Debug.Log("card id : "+cardid+" / inventory check = "+check);
+        return check;
     }
 }
