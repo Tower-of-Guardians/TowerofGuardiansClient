@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 41001001
   m_EditorClassIdentifier: 
   Id: 41001001
-  Name: "\uD50C\uB77C\uC787\uBA54\uC5B4"
+  Name: "\uADF8\uB77C\uC6B4\uB354"
   Image: {fileID: 0}
-  HP: 15
+  HP: 38
   Kind: 1
   PatternType: 1
   Passive1ID: 
@@ -24,15 +24,15 @@ MonoBehaviour:
   Passive2Value: 0
   Passive3ID: 
   Passive3Value: 0
-  Action1ID: 
-  Action1Min: 0
-  Action1Max: 0
+  Action1ID: 2410001
+  Action1Min: 7
+  Action1Max: 8
   Action2ID: 
   Action2Min: 0
   Action2Max: 0
-  Action3ID: 
-  Action3Min: 0
-  Action3Max: 0
+  Action3ID: 2410003
+  Action3Min: 1
+  Action3Max: 1
   Action4ID: 
   Action4Min: 0
   Action4Max: 0

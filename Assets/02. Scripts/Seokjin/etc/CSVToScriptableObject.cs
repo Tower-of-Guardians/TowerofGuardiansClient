@@ -248,62 +248,115 @@ public class CSVToScriptableObject
     }
     private static void SetMonsterData(string[] allLines)
     {
+        if (allLines == null || allLines.Length <= 1)
+        {
+            return;
+        }
+
+        string[] headers = allLines[0].Split(',');
+        Dictionary<string, int> columnMap = new Dictionary<string, int>();
+        for (int i = 0; i < headers.Length; i++)
+        {
+            string header = headers[i].Trim();
+            if (!string.IsNullOrEmpty(header) && !columnMap.ContainsKey(header))
+            {
+                columnMap.Add(header, i);
+            }
+        }
+
         foreach (string line in allLines.Skip(1))
         {
             if (string.IsNullOrWhiteSpace(line)) continue;
 
             string[] values = line.Split(',');
+            string id = GetCsvString(columnMap, values, "ID");
+            if (string.IsNullOrEmpty(id))
+            {
+                continue;
+            }
 
-            MonsterData newItem = ScriptableObject.CreateInstance<MonsterData>();
-            int n = 0;
+            string assetPath = soFolderPath + "/" + id + ".asset";
+            MonsterData item = AssetDatabase.LoadAssetAtPath<MonsterData>(assetPath);
+            if (item == null)
+            {
+                item = ScriptableObject.CreateInstance<MonsterData>();
+                AssetDatabase.CreateAsset(item, assetPath);
+            }
 
-            // ID,Name,Image,HP,Kind,PatternType,Passive1ID,Passive1Value,Passive2ID,Passive2Value,Passive3ID,Passive3Value,Action1ID,Action1Min,Action1Max...Action7Max
-            newItem.Id = values[n++].Trim();
-            newItem.Name = values[n++].Trim();
-            n++; // Image 컬럼(현재 미사용)
+            item.Id = id;
+            item.Name = GetCsvString(columnMap, values, "Name");
 
-            if (int.TryParse(values[n++].Trim(), out int hp)) newItem.HP = hp;
-            if (int.TryParse(values[n++].Trim(), out int kind)) newItem.Kind = kind;
-            if (int.TryParse(values[n++].Trim(), out int patternType)) newItem.PatternType = patternType;
+            item.HP = GetCsvInt(columnMap, values, "HP");
+            item.Kind = GetCsvInt(columnMap, values, "Kind");
+            item.PatternType = GetCsvInt(columnMap, values, "PatternType");
 
-            newItem.Passive1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int passive1Value)) newItem.Passive1Value = passive1Value;
-            newItem.Passive2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int passive2Value)) newItem.Passive2Value = passive2Value;
-            newItem.Passive3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int passive3Value)) newItem.Passive3Value = passive3Value;
+            item.Passive1ID = GetCsvString(columnMap, values, "Passive1ID", "PassiveID");
+            item.Passive1Value = GetCsvInt(columnMap, values, "Passive1Value", "PassiveValue");
+            item.Passive2ID = GetCsvString(columnMap, values, "Passive2ID");
+            item.Passive2Value = GetCsvInt(columnMap, values, "Passive2Value");
+            item.Passive3ID = GetCsvString(columnMap, values, "Passive3ID");
+            item.Passive3Value = GetCsvInt(columnMap, values, "Passive3Value");
 
-            newItem.Action1ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action1Min)) newItem.Action1Min = action1Min;
-            if (int.TryParse(values[n++].Trim(), out int action1Max)) newItem.Action1Max = action1Max;
+            item.Action1ID = GetCsvString(columnMap, values, "Action1ID");
+            item.Action1Min = GetCsvInt(columnMap, values, "Action1Min");
+            item.Action1Max = GetCsvInt(columnMap, values, "Action1Max");
+            item.Action2ID = GetCsvString(columnMap, values, "Action2ID");
+            item.Action2Min = GetCsvInt(columnMap, values, "Action2Min");
+            item.Action2Max = GetCsvInt(columnMap, values, "Action2Max");
+            item.Action3ID = GetCsvString(columnMap, values, "Action3ID");
+            item.Action3Min = GetCsvInt(columnMap, values, "Action3Min");
+            item.Action3Max = GetCsvInt(columnMap, values, "Action3Max");
+            item.Action4ID = GetCsvString(columnMap, values, "Action4ID");
+            item.Action4Min = GetCsvInt(columnMap, values, "Action4Min");
+            item.Action4Max = GetCsvInt(columnMap, values, "Action4Max");
+            item.Action5ID = GetCsvString(columnMap, values, "Action5ID");
+            item.Action5Min = GetCsvInt(columnMap, values, "Action5Min");
+            item.Action5Max = GetCsvInt(columnMap, values, "Action5Max");
+            item.Action6ID = GetCsvString(columnMap, values, "Action6ID");
+            item.Action6Min = GetCsvInt(columnMap, values, "Action6Min");
+            item.Action6Max = GetCsvInt(columnMap, values, "Action6Max");
+            item.Action7ID = GetCsvString(columnMap, values, "Action7ID");
+            item.Action7Min = GetCsvInt(columnMap, values, "Action7Min");
+            item.Action7Max = GetCsvInt(columnMap, values, "Action7Max");
 
-            newItem.Action2ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action2Min)) newItem.Action2Min = action2Min;
-            if (int.TryParse(values[n++].Trim(), out int action2Max)) newItem.Action2Max = action2Max;
+            // 구버전 CSV(ID,Name,HP,ATKMin,ATKMax,DEFMin,DEFMax...) 호환
+            if (string.IsNullOrEmpty(item.Action1ID))
+            {
+                int atkMin = GetCsvInt(columnMap, values, "ATKMin");
+                int atkMax = GetCsvInt(columnMap, values, "ATKMax");
+                if (atkMin != 0 || atkMax != 0)
+                {
+                    item.Action1ID = "2410001";
+                    item.Action1Min = atkMin;
+                    item.Action1Max = atkMax;
+                }
+            }
 
-            newItem.Action3ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action3Min)) newItem.Action3Min = action3Min;
-            if (int.TryParse(values[n++].Trim(), out int action3Max)) newItem.Action3Max = action3Max;
+            if (string.IsNullOrEmpty(item.Action2ID))
+            {
+                int defMin = GetCsvInt(columnMap, values, "DEFMin");
+                int defMax = GetCsvInt(columnMap, values, "DEFMax");
+                if (defMin != 0 || defMax != 0)
+                {
+                    item.Action2ID = "2410002";
+                    item.Action2Min = defMin;
+                    item.Action2Max = defMax;
+                }
+            }
 
-            newItem.Action4ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action4Min)) newItem.Action4Min = action4Min;
-            if (int.TryParse(values[n++].Trim(), out int action4Max)) newItem.Action4Max = action4Max;
+            if (string.IsNullOrEmpty(item.Action3ID))
+            {
+                string statusEffect1Id = GetCsvString(columnMap, values, "StatusEffect1ID");
+                int statusValue1 = GetCsvInt(columnMap, values, "Value1");
+                if (!string.IsNullOrEmpty(statusEffect1Id) && statusValue1 > 0)
+                {
+                    item.Action3ID = "2410003";
+                    item.Action3Min = statusValue1;
+                    item.Action3Max = statusValue1;
+                }
+            }
 
-            newItem.Action5ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action5Min)) newItem.Action5Min = action5Min;
-            if (int.TryParse(values[n++].Trim(), out int action5Max)) newItem.Action5Max = action5Max;
-
-            newItem.Action6ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action6Min)) newItem.Action6Min = action6Min;
-            if (int.TryParse(values[n++].Trim(), out int action6Max)) newItem.Action6Max = action6Max;
-
-            newItem.Action7ID = values[n++].Trim();
-            if (int.TryParse(values[n++].Trim(), out int action7Min)) newItem.Action7Min = action7Min;
-            if (int.TryParse(values[n++].Trim(), out int action7Max)) newItem.Action7Max = action7Max;
-
-            string fileName = newItem.Id + ".asset";
-
-            AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);
+            EditorUtility.SetDirty(item);
 
             /*if (string.IsNullOrWhiteSpace(line)) continue;
 
@@ -338,6 +391,29 @@ public class CSVToScriptableObject
 
             AssetDatabase.CreateAsset(newItem, soFolderPath + "/" + fileName);*/
         }
+    }
+    private static string GetCsvString(Dictionary<string, int> columnMap, string[] values, params string[] keys)
+    {
+        for (int i = 0; i < keys.Length; i++)
+        {
+            if (columnMap.TryGetValue(keys[i], out int index) && index >= 0 && index < values.Length)
+            {
+                return values[index].Trim();
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static int GetCsvInt(Dictionary<string, int> columnMap, string[] values, params string[] keys)
+    {
+        string raw = GetCsvString(columnMap, values, keys);
+        if (int.TryParse(raw, out int parsed))
+        {
+            return parsed;
+        }
+
+        return 0;
     }
     private static void SetMonsterEncounterData(string[] allLines)
     {
