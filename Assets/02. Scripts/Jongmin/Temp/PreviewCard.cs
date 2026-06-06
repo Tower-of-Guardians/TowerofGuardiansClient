@@ -1,13 +1,23 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class PreviewCard : MonoBehaviour
+namespace Jongmin
 {
-    private Animator m_animator;
+    [RequireComponent(typeof(Animator))]
+    public class PreviewCard : MonoBehaviour
+    {
+        private Animator _animator;
+        
+        public RectTransform RectTransform { get; private set; } 
 
-    private void Awake()
-        => m_animator = GetComponent<Animator>();
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+            RectTransform = transform as RectTransform;
+        }
 
-    private void OnEnable()
-        => m_animator.SetTrigger("Enable");
+        private void OnEnable()
+        {
+            _animator.SetTrigger("Enable");
+        }
+    }
 }

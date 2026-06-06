@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Jongmin;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -394,8 +395,8 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
             return false;
         }
 
-        HandUI handUI = handHit.Value.gameObject.GetComponent<HandUI>();
-        if(handUI == null)
+        var handView = handHit.Value.gameObject.GetComponent<HandView>();
+        if(handView == null)
         {
             return false;
         }

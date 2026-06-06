@@ -1,22 +1,22 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine;
 
 namespace Jongmin
 {
     public class Card : MonoBehaviour
     {
-        [FormerlySerializedAs("model")] [SerializeField] private CardView view;
+        [SerializeField] private CardView view;
         [SerializeField] private CardPointer pointer;
 
         public BattleCardData BattleCardData { get; private set; }
         public CardData CardData { get; private set; }
-        
+
         public CardPointer Pointer => pointer;
-        
+
         private void Awake()
         {
             view ??= GetComponent<CardView>();
             pointer ??= GetComponent<CardPointer>();
+            pointer?.SetOwner(this);
         }
 
         public void SetBattleCardData(BattleCardData battleCardData)

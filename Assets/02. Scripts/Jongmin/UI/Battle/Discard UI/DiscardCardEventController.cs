@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using Jongmin;
 
 public class DiscardCardEventController : MonoBehaviour, IDropHandler
 {
@@ -263,8 +264,8 @@ public class DiscardCardEventController : MonoBehaviour, IDropHandler
             return false;
         }
 
-        HandUI handUI = handHit.Value.gameObject.GetComponent<HandUI>();
-        if(handUI == null)
+        var handView = handHit.Value.gameObject.GetComponent<HandView>();
+        if(handView == null)
         {
             return false;
         }

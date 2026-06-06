@@ -1,6 +1,7 @@
-using UnityEngine;
-using DG.Tweening;
 using System.Collections.Generic;
+using DG.Tweening;
+using JxModule;
+using UnityEngine;
 using VContainer;
 
 public class HandCardToThrowEffector : CardEffector
@@ -9,11 +10,11 @@ public class HandCardToThrowEffector : CardEffector
     [SerializeField] private UILocker _battleLocker;
 
     private IHandCardRemovePort _handCardRemovePort;
-    private CardContainer<IHandCardUI, HandCardPresenter> _handCardContainer;
+    private Jongmin.CardContainer _handCardContainer;
 
     [Inject]
     private void Construct(IHandCardRemovePort handCardRemovePort,
-                           CardContainer<IHandCardUI, HandCardPresenter> handCardContainer)
+                           Jongmin.CardContainer handCardContainer)
     {
         _handCardRemovePort = handCardRemovePort;
         _handCardContainer = handCardContainer;
@@ -55,45 +56,35 @@ public class HandCardToThrowEffector : CardEffector
             Interval = 0.1f,
 
             Settings = _tempCardSettings,
-        };        
+        };
     }
 
     public override void Execute()
     {
         _battleLocker.Lock(true);
 
-        _tempCardAnimeRequest.CardDatas = _handCardContainer.GetAllDatas();
+        var cardDataList = new List<BattleCardData>();
+        var handCardPositionList = new List<Vector3>();
+        var handCardRotationList = new List<Vector3>();
 
-        List<Vector3> handCardPositionList = new();
-        if(!_handCardContainer.TryGetAllUIs(out IHandCardUI[] handCardArray))
+        foreach (var card in _handCardContainer.Cards)
         {
-            return;
+            if (card == null || card.BattleCardData == null)
+            {
+                continue;
+            }
+
+            cardDataList.Add(card.BattleCardData);
+            handCardPositionList.Add(card.transform.position);
+            handCardRotationList.Add(card.transform.eulerAngles);
         }
 
-        foreach(IHandCardUI cardUI in handCardArray)
-        {
-            HandCardUI concreteCardUI = cardUI as HandCardUI;
-            handCardPositionList.Add(concreteCardUI.transform.position);
-        }
-
-        List<Vector3> handCardRotationList = new();
-        if(!_handCardContainer.TryGetAllUIs(out handCardArray))
-        {
-            return;
-        }
-
-        foreach(IHandCardUI card_view in handCardArray)
-        {
-            HandCardUI concreteCardUI = card_view as HandCardUI;
-            handCardRotationList.Add(concreteCardUI.transform.eulerAngles);
-        }
-
-        _tempCardAnimeRequest.StartPositions = handCardPositionList.ToArray(); 
+        _tempCardAnimeRequest.CardDatas = cardDataList.ToArray();
+        _tempCardAnimeRequest.StartPositions = handCardPositionList.ToArray();
         _tempCardAnimeRequest.StartRotations = handCardRotationList.ToArray();
 
         base.Execute();
     }
-
 
     protected override void OnTempCardAnimeStart(BattleCardData battleCardData)
         => _handCardRemovePort.TryRemoveCard(battleCardData);
@@ -102,6 +93,6 @@ public class HandCardToThrowEffector : CardEffector
     {
         GameData.Instance.handDeck.Remove(battleCardData.data.id);
         GameData.Instance.UseCard(battleCardData.data.id);
-        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);        
+        GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
     }
 }

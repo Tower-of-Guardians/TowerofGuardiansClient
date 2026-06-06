@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Jongmin;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -129,7 +130,7 @@ public class GameLifetimeScope : LifetimeScope
             var cardDropSystem = resolver.Resolve<CardDropSystem>();
             var discardToHandEffector = resolver.Resolve<ThrowCardToHandEffector>();
             var discardToDiscardEffector = resolver.Resolve<ThrowCardToThrowEffector>();
-            var handPresenter = resolver.Resolve<HandPresenter>();
+            //var handPresenter = resolver.Resolve<HandPresenter>();
 
             discardEvent.Construct(discardUIDesigner,
                                    discardPresenter,
@@ -142,41 +143,42 @@ public class GameLifetimeScope : LifetimeScope
 
             DIContainer.Register<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(discardContainer);
 
-            handPresenter.OnTogglePreviews += discardPresenter.TogglePreview;
+            //handPresenter.OnTogglePreviews += discardPresenter.TogglePreview;
         });
     }
 
     private void ConfigureHandUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(handUIDesigner);
-        builder.RegisterInstance(new CardContainer<IHandCardUI, HandCardPresenter>());
-        builder.RegisterComponentInHierarchy<HandUI>().As<IHandUI>();
-        builder.RegisterComponentInHierarchy<HandCardEventController>();
-        builder.RegisterComponentInHierarchy<HandCardLayoutController>();
-        builder.RegisterComponentInHierarchy<HandCardFactory>().AsSelf().As<ICardFactory<IHandCardUI>>();
-        builder.RegisterComponentInHierarchy<HandCardToThrowEffector>();
-        builder.RegisterEntryPoint<HandPresenter>()
-               .AsSelf()
-               .As<IHandCardCreatePort>()
-               .As<IHandCardRemovePort>()
-               .As<ICardDropTarget<IHandCardUI>>();
-
-        builder.RegisterBuildCallback(resolver =>
-        {
-            var handEvent = resolver.Resolve<HandCardEventController>();
-            var handFactory = resolver.Resolve<HandCardFactory>();
-            handFactory.Construct(handEvent);
-
-            var handPresenter = resolver.Resolve<HandPresenter>();
-            var discardPresenter = resolver.Resolve<DiscardPresenter>();
-            var turnManager = resolver.Resolve<TurnManager>();
-            var drawCardEffector = resolver.Resolve<DrawCardEffector>();
-            drawCardEffector.Inject(handPresenter, turnManager);
-
-            DIContainer.Register<HandPresenter>(handPresenter);
-            DIContainer.Register<DiscardPresenter>(discardPresenter);
-            DIContainer.Register<TurnManager>(turnManager);
-        });
+        // var handDomain = FindInScene<HandDomain>();
+        // if (handDomain == null)
+        // {
+        //     return;
+        // }
+        //
+        // var handCardContainer = new Jongmin.CardContainer();
+        //
+        // builder.RegisterInstance(handDomain)
+        //        .As<IHandCardCreatePort>()
+        //        .As<IHandCardRemovePort>()
+        //        .As<ICardDropTarget<IHandCardUI>>();
+        // builder.RegisterInstance(handCardContainer);
+        // builder.RegisterComponentInHierarchy<HandCardToThrowEffector>();
+        //
+        // builder.RegisterBuildCallback(resolver =>
+        // {
+        //     var cardDropSystem = resolver.Resolve<CardDropSystem>();
+        //     var turnManager = resolver.Resolve<TurnManager>();
+        //     var drawCardEffector = resolver.Resolve<DrawCardEffector>();
+        //
+        //     handDomain.Construct(cardDropSystem, handCardContainer);
+        //     handDomain.BindEvents();
+        //
+        //     drawCardEffector.Inject(handDomain, turnManager);
+        //
+        //     DIContainer.Register<HandDomain>(handDomain);
+        //     DIContainer.Register<Jongmin.CardContainer>(handCardContainer);
+        //     DIContainer.Register<TurnManager>(turnManager);
+        // });
     }
 
     private void ConfigureFieldUI(IContainerBuilder builder)
@@ -215,7 +217,7 @@ public class GameLifetimeScope : LifetimeScope
         {
             var atkPresenter = resolver.Resolve<AttackFieldPresenter>();
             var defPresenter = resolver.Resolve<DefendFieldPresenter>();
-            var handPresenter = resolver.Resolve<HandPresenter>();
+            //var handPresenter = resolver.Resolve<HandPresenter>();
             var discardPresenter = resolver.Resolve<DiscardPresenter>();
             var cardDropSystem = resolver.Resolve<CardDropSystem>();
             var fieldUIDesigner = resolver.Resolve<FieldUIDesigner>();
@@ -258,8 +260,8 @@ public class GameLifetimeScope : LifetimeScope
             atkCardToThrowEffector.Construct(atkPresenter, atkContainer);
             defCardToThrowEffector.Construct(defPresenter, defContainer);
 
-            handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
-            handPresenter.OnTogglePreviews += defPresenter.TogglePreview;
+            //handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
+            //handPresenter.OnTogglePreviews += defPresenter.TogglePreview;
 
             discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
             discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;

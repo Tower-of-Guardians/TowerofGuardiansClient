@@ -101,7 +101,7 @@ public class BattleTurnEndController : MonoBehaviour, IBattleController
 
     public void DrawCards(int count = -1)
     {
-        if (!DIContainer.IsRegistered<HandPresenter>() || !DIContainer.IsRegistered<TurnManager>())
+        if (!DIContainer.IsRegistered<TurnManager>())
         {
             return;
         }
