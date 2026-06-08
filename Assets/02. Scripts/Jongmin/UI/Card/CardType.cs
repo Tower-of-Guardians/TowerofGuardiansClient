@@ -7,5 +7,6 @@
         Discard = 2,
         AtkField = 3,
         DefField = 4,
+        Deck = 5,
     }
 }

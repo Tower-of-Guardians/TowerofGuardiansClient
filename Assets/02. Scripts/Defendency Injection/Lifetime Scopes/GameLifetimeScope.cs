@@ -97,10 +97,10 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureDeckUI(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<DeckUI>().As<IDeckUI>();
-        builder.RegisterComponentInHierarchy<DeckCardFactory>().As<ICardFactory<IDeckCardUI>>();
-        builder.RegisterInstance(new CardContainer<IDeckCardUI, DeckCardPresenter>());
-        builder.RegisterEntryPoint<DeckPresenter>(Lifetime.Scoped);
+        // builder.RegisterComponentInHierarchy<DeckUI>().As<IDeckUI>();
+        // builder.RegisterComponentInHierarchy<DeckCardFactory>().As<ICardFactory<IDeckCardUI>>();
+        // builder.RegisterInstance(new CardContainer<IDeckCardUI, DeckCardPresenter>());
+        // builder.RegisterEntryPoint<DeckPresenter>(Lifetime.Scoped);
     }
 
     private void ConfigureDiscardUI(IContainerBuilder builder)
