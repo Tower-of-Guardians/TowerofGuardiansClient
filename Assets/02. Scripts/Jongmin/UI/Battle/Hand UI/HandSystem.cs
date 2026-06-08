@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Jongmin
 {
-    public class HandSystem : MonoBehaviour
+    public class HandSystem : MonoBehaviour, ICardDropTarget<HandDomain>
     {
         private CardContainer _container;
         private HandCardLayout _layout;
@@ -23,7 +23,7 @@ namespace Jongmin
         public void CreateCard(BattleCardData battleCardData)
         {
             var card = _factory.Create();
-            card.SetBattleCardData(battleCardData);
+            card.SetBattleCardData(battleCardData, CardType.Hand);
             _container.Add(card);
             _layout.UpdateLayout();
         }

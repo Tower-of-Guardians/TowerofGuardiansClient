@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Jongmin
 {
-    public class HandDomain : MonoBehaviour, IDropHandler
+    public class HandDomain : MonoBehaviour
     {
         [BigHeader("Inner References")]
         [SerializeField] private HandUIDesigner handDesigner;
@@ -21,14 +21,16 @@ namespace Jongmin
         private HandCardLayout _cardLayout;
         private HandCardFactory _cardFactory;
 
-        public void Construct(CardDropSystem dropSystem, CardContainer cardContainer)
+        public void Construct(CardDropSystem dropSystem)
         {
-            _cardContainer = cardContainer ?? new CardContainer();
+            _cardContainer = new CardContainer();
             _cardLayout = new HandCardLayout(handSystem, handDesigner, _cardContainer);
             _cardFactory = new HandCardFactory(handView, handEventSystem);
 
             handSystem.Construct(_cardContainer, _cardLayout, _cardFactory);
             handEventSystem.Construct(handSystem, dropSystem, _cardContainer);
+
+            BindEvents();
         }
 
         public void BindEvents()

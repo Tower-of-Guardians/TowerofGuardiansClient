@@ -105,46 +105,46 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureDiscardUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(discardUIDesigner);
-        builder.RegisterInstance(new CardContainer<IDiscardCardUI, DiscardCardPresenter>());
-        builder.RegisterComponentInHierarchy<DiscardUI>().AsSelf().As<IDiscardUI>();
-        builder.RegisterComponentInHierarchy<DiscardCardEventController>();
-        builder.RegisterComponentInHierarchy<DiscardCardLayoutController>();
-        builder.RegisterComponentInHierarchy<DiscardCardFactory>().AsSelf().As<ICardFactory<IDiscardCardUI>>();
-        builder.RegisterComponentInHierarchy<ThrowCardToHandEffector>();
-        builder.RegisterComponentInHierarchy<ThrowCardToThrowEffector>();
-        builder.RegisterEntryPoint<DiscardPresenter>()
-               .AsSelf()
-               .As<IDiscardCardRemovePort>()
-               .As<ICardDropTarget<IDiscardCardUI>>();
-
-        builder.RegisterBuildCallback(resolver =>
-        {
-            var discardPresenter = resolver.Resolve<DiscardPresenter>();
-            var discardUIDesigner = resolver.Resolve<DiscardUIDesigner>();
-            var discardUI = resolver.Resolve<DiscardUI>();
-            var discardContainer = resolver.Resolve<CardContainer<IDiscardCardUI, DiscardCardPresenter>>();
-            var discardLayout = resolver.Resolve<DiscardCardLayoutController>();
-            var discardEvent = resolver.Resolve<DiscardCardEventController>();
-            var discardFactory = resolver.Resolve<DiscardCardFactory>();
-            var cardDropSystem = resolver.Resolve<CardDropSystem>();
-            var discardToHandEffector = resolver.Resolve<ThrowCardToHandEffector>();
-            var discardToDiscardEffector = resolver.Resolve<ThrowCardToThrowEffector>();
-            //var handPresenter = resolver.Resolve<HandPresenter>();
-
-            discardEvent.Construct(discardUIDesigner,
-                                   discardPresenter,
-                                   discardContainer,
-                                   discardLayout,
-                                   cardDropSystem);
-            discardFactory.Construct(discardEvent);
-            discardUI.BindPresenter(discardPresenter);
-            discardPresenter.BindEffectors(discardToHandEffector, discardToDiscardEffector);
-
-            DIContainer.Register<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(discardContainer);
-
-            //handPresenter.OnTogglePreviews += discardPresenter.TogglePreview;
-        });
+        // builder.RegisterInstance(discardUIDesigner);
+        // builder.RegisterInstance(new CardContainer<IDiscardCardUI, DiscardCardPresenter>());
+        // builder.RegisterComponentInHierarchy<DiscardUI>().AsSelf().As<IDiscardUI>();
+        // builder.RegisterComponentInHierarchy<DiscardCardEventController>();
+        // builder.RegisterComponentInHierarchy<DiscardCardLayoutController>();
+        // builder.RegisterComponentInHierarchy<DiscardCardFactory>().AsSelf().As<ICardFactory<IDiscardCardUI>>();
+        // builder.RegisterComponentInHierarchy<ThrowCardToHandEffector>();
+        // builder.RegisterComponentInHierarchy<ThrowCardToThrowEffector>();
+        // builder.RegisterEntryPoint<DiscardPresenter>()
+        //        .AsSelf()
+        //        .As<IDiscardCardRemovePort>()
+        //        .As<ICardDropTarget<IDiscardCardUI>>();
+        //
+        // builder.RegisterBuildCallback(resolver =>
+        // {
+        //     var discardPresenter = resolver.Resolve<DiscardPresenter>();
+        //     var discardUIDesigner = resolver.Resolve<DiscardUIDesigner>();
+        //     var discardUI = resolver.Resolve<DiscardUI>();
+        //     var discardContainer = resolver.Resolve<CardContainer<IDiscardCardUI, DiscardCardPresenter>>();
+        //     var discardLayout = resolver.Resolve<DiscardCardLayoutController>();
+        //     var discardEvent = resolver.Resolve<DiscardCardEventController>();
+        //     var discardFactory = resolver.Resolve<DiscardCardFactory>();
+        //     var cardDropSystem = resolver.Resolve<CardDropSystem>();
+        //     var discardToHandEffector = resolver.Resolve<ThrowCardToHandEffector>();
+        //     var discardToDiscardEffector = resolver.Resolve<ThrowCardToThrowEffector>();
+        //     //var handPresenter = resolver.Resolve<HandPresenter>();
+        //
+        //     discardEvent.Construct(discardUIDesigner,
+        //                            discardPresenter,
+        //                            discardContainer,
+        //                            discardLayout,
+        //                            cardDropSystem);
+        //     discardFactory.Construct(discardEvent);
+        //     discardUI.BindPresenter(discardPresenter);
+        //     discardPresenter.BindEffectors(discardToHandEffector, discardToDiscardEffector);
+        //
+        //     DIContainer.Register<CardContainer<IDiscardCardUI, DiscardCardPresenter>>(discardContainer);
+        //
+        //     //handPresenter.OnTogglePreviews += discardPresenter.TogglePreview;
+        // });
     }
 
     private void ConfigureHandUI(IContainerBuilder builder)
@@ -218,7 +218,7 @@ public class GameLifetimeScope : LifetimeScope
             var atkPresenter = resolver.Resolve<AttackFieldPresenter>();
             var defPresenter = resolver.Resolve<DefendFieldPresenter>();
             //var handPresenter = resolver.Resolve<HandPresenter>();
-            var discardPresenter = resolver.Resolve<DiscardPresenter>();
+            //var discardPresenter = resolver.Resolve<DiscardPresenter>();
             var cardDropSystem = resolver.Resolve<CardDropSystem>();
             var fieldUIDesigner = resolver.Resolve<FieldUIDesigner>();
 
@@ -263,8 +263,8 @@ public class GameLifetimeScope : LifetimeScope
             //handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
             //handPresenter.OnTogglePreviews += defPresenter.TogglePreview;
 
-            discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
-            discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;
+            //discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
+            //discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;
         });
     }
 

@@ -9,8 +9,10 @@ namespace Jongmin
 
         public BattleCardData BattleCardData { get; private set; }
         public CardData CardData { get; private set; }
+        public CardType CardType { get; private set; }
 
         public CardPointer Pointer => pointer;
+        public RectTransform RectTransform => view.RectTransform;
 
         private void Awake()
         {
@@ -19,24 +21,29 @@ namespace Jongmin
             pointer?.SetOwner(this);
         }
 
-        public void SetBattleCardData(BattleCardData battleCardData)
+        public void SetBattleCardData(BattleCardData battleCardData, CardType cardType = CardType.None)
         {
             BattleCardData = battleCardData;
             CardData = battleCardData?.data;
             view.UpdateModel(CardData);
+            
+            CardType = cardType;
         }
 
-        public void SetCardData(CardData cardData)
+        public void SetCardData(CardData cardData, CardType cardType = CardType.None)
         {
             BattleCardData = null;
             CardData = cardData;
             view.UpdateModel(CardData);
+            
+            CardType = cardType;
         }
 
         private void OnDisable()
         {
             BattleCardData = null;
             CardData = null;
+            CardType = CardType.None;
         }
     }
 }

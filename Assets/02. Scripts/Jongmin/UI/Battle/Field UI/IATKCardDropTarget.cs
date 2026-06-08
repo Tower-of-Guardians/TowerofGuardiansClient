@@ -1,5 +1,8 @@
-public interface IATKCardDropTarget : ICardDropTarget<IFieldCardUI>
+namespace Jongmin
 {
-    bool CanInteraction { get; }
-    bool IsExist(IFieldCardUI cardUI);
+    public interface IATKCardDropTarget : ICardDropTarget<IFieldCardUI>
+    {
+        bool CanInteraction { get; }
+        bool IsExist(IFieldCardUI cardUI);
+    } 
 }

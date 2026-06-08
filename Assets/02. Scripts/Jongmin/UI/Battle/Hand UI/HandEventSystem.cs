@@ -129,20 +129,28 @@ namespace Jongmin
         
         public void OnDrop(PointerEventData eventData)
         {
-            GameObject droppedObject = eventData.pointerDrag;
-            if(droppedObject != null)
+            var droppedObject = eventData.pointerDrag;
+            if (droppedObject == null)
             {
-                IDiscardCardUI discardCardUI = droppedObject.GetComponent<IDiscardCardUI>();
-                if(discardCardUI != null)
-                {
-                    _dropSystem.OnDropedDiscardToHand(discardCardUI);
-                }
+                return;
+            }
+            
+            var card = droppedObject.GetComponent<Card>();
+            if (card == null)
+            {
+                return;
+            }
 
-                IFieldCardUI fieldCardUI = droppedObject.GetComponent<IFieldCardUI>();
-                if(fieldCardUI != null)
-                {
-                    _dropSystem.OnDropedFieldToHand(fieldCardUI);
-                }
+            switch (card.CardType)
+            {
+                case CardType.Discard:
+                    _dropSystem.OnDroppedDiscardToHand(card);
+                    break;
+                
+                case CardType.AtkField:
+                case CardType.DefField:
+                    _dropSystem.OnDroppedFieldToHand(card);
+                    break;
             }
         }
 
@@ -183,11 +191,11 @@ namespace Jongmin
                     return hit;
                 }
 
-                var discardHandler = hit.gameObject.GetComponent<DiscardCardEventController>();
-                if(discardHandler != null)
+                var discardEventSystem = hit.gameObject.GetComponent<DiscardEventSystem>();
+                if (discardEventSystem != null)
                 {
                     return hit;
-                } 
+                }
             }
 
             return null;

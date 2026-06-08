@@ -20,6 +20,13 @@ namespace Jongmin
 
         private const int MaxStarCount = 2;
 
+        public RectTransform RectTransform { get; private set; }
+
+        private void Awake()
+        {
+            RectTransform = transform as RectTransform;
+        }
+
         /// <summary>
         /// CardData를 이용하여 카드의 비주얼을 업데이트합니다.
         /// </summary>

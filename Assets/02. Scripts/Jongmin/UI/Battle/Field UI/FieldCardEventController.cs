@@ -145,7 +145,7 @@ public class FieldCardEventController : MonoBehaviour, IDropHandler
             return;
         }
 
-        _cardDropSystem.OnDropedHandToField(handCardUI, _ownerFieldPresenter.IsAtk);
+        //_cardDropSystem.OnDropedHandToField(handCardUI, _ownerFieldPresenter.IsAtk);
     }
 
     /// <summary>

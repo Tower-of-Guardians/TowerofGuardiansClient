@@ -1,4 +1,5 @@
 using System;
+using Jongmin;
 using VContainer.Unity;
 
 public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializable
@@ -53,13 +54,13 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
     /// <summary>
     /// 해당 카드를 삭제하면서 레이아웃 재조정 여부를 통해 레이아웃을 재조정합니다.
     /// </summary>
-    public void RemoveCard(IFieldCardUI cardUI, bool dontUseThis = true)
+    public void RemoveCard(Card card, bool unused = true)
     {
-        if(_fieldCardContainer.Remove(cardUI))
-        {
-            _fieldCardFactory.Release(cardUI);
-            _turnManager.UpdateActionCount(-1);
-        }
+        // if(_fieldCardContainer.Remove(cardUI))
+        // {
+        //     _fieldCardFactory.Release(cardUI);
+        //     _turnManager.UpdateActionCount(-1);
+        // }
     }
 
     public bool TryRemoveCard(BattleCardData battleCardData)
@@ -69,7 +70,7 @@ public abstract class FieldPresenter : ICardDropTarget<IFieldCardUI>, IInitializ
             return false;
         }
 
-        RemoveCard(cardUI);
+        //RemoveCard(cardUI);
         return true;
     }
 

@@ -1,24 +1,25 @@
 using System;
+using Jongmin;
 
 public class CardDropSystem
 {
-    private readonly ICardDropTarget<IHandCardUI> _handDropTarget;
+    private readonly ICardDropTarget<HandDomain> _handDropTarget;
     private readonly IATKCardDropTarget _atkFieldDropTarget;
     private readonly IDEFCardDropTarget _defFieldDropTarget;
-    private readonly ICardDropTarget<IDiscardCardUI> _discardDropTarget;
+    private readonly ICardDropTarget<DiscardDomain> _discardDropTarget;
 
     private readonly TurnManager _turnManager;
     private readonly INotifierUI _notifier;
 
-    public CardDropSystem(ICardDropTarget<IHandCardUI> handDropTarget,
-                          IATKCardDropTarget atkfieldDropTarget,
+    public CardDropSystem(ICardDropTarget<HandDomain> handDropTarget,
+                          IATKCardDropTarget atkFieldDropTarget,
                           IDEFCardDropTarget defFieldDropTarget,
-                          ICardDropTarget<IDiscardCardUI> discardDropTarget,
+                          ICardDropTarget<DiscardDomain> discardDropTarget,
                           TurnManager turnManager,
                           INotifierUI notifier)
     {
         _handDropTarget = handDropTarget;
-        _atkFieldDropTarget = atkfieldDropTarget;
+        _atkFieldDropTarget = atkFieldDropTarget;
         _defFieldDropTarget = defFieldDropTarget;
         _discardDropTarget = discardDropTarget;
         _turnManager = turnManager;
@@ -28,113 +29,102 @@ public class CardDropSystem
     /// <summary>
     /// 해당 필드 카드를 [공격/방어 필드]에서 [핸드 필드]로 내립니다.
     /// </summary>
-    public void OnDropedFieldToHand(IFieldCardUI cardUI)
+    public void OnDroppedFieldToHand(Card card)
     {
-        bool isAtkFieldCard = _atkFieldDropTarget.IsExist(cardUI);
-        var sourceFieldDropTarget = isAtkFieldCard ? (ICardDropTarget<IFieldCardUI>)_atkFieldDropTarget
-                                                   : _defFieldDropTarget;
-
-        if(!sourceFieldDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        {
-            return;
-        }
-
-        if (isAtkFieldCard)
-        {
-            GameData.Instance.attackField.Remove(battleCardData.data);
-        }
-        else
-        {
-            GameData.Instance.defenseField.Remove(battleCardData.data);
-        }
-
-        GameData.Instance.FieldToHandMove(battleCardData);
-
-        if(isAtkFieldCard)
-        {
-            _atkFieldDropTarget.RemoveCard(cardUI);
-        }
-        else
-        {
-            _defFieldDropTarget.RemoveCard(cardUI);
-        }
-
-        _handDropTarget.CreateCard(battleCardData);        
+        // bool isAtkFieldCard = _atkFieldDropTarget.IsExist(cardUI);
+        // var sourceFieldDropTarget = isAtkFieldCard ? (ICardDropTarget<IFieldCardUI>)_atkFieldDropTarget
+        //                                            : _defFieldDropTarget;
+        //
+        // if(!sourceFieldDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
+        // {
+        //     return;
+        // }
+        //
+        // if (isAtkFieldCard)
+        // {
+        //     GameData.Instance.attackField.Remove(battleCardData.data);
+        // }
+        // else
+        // {
+        //     GameData.Instance.defenseField.Remove(battleCardData.data);
+        // }
+        //
+        // GameData.Instance.FieldToHandMove(battleCardData);
+        //
+        // if(isAtkFieldCard)
+        // {
+        //     _atkFieldDropTarget.RemoveCard(cardUI);
+        // }
+        // else
+        // {
+        //     _defFieldDropTarget.RemoveCard(cardUI);
+        // }
+        //
+        // _handDropTarget.CreateCard(battleCardData);        
     }
 
     /// <summary>
     /// 해당 교체 카드를 [교체 필드]에서 [핸드 필드]로 내립니다. 
     /// </summary>
-    public void OnDropedDiscardToHand(IDiscardCardUI cardUI)
+    public void OnDroppedDiscardToHand(Card card)
     {
-        if(!_discardDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        {
-            return;
-        }
-
-        GameData.Instance.FieldToHandMove(battleCardData);
-
-        _discardDropTarget.RemoveCard(cardUI);
-        _handDropTarget.CreateCard(battleCardData);
+        GameData.Instance.FieldToHandMove(card.BattleCardData);
+        _discardDropTarget.RemoveCard(card);
+        _handDropTarget.CreateCard(card.BattleCardData);
     }
 
     /// <summary>
     /// 해당 핸드 카드를 [핸드 필드]에서 [공격/방어 필드]로 올립니다.
     /// </summary>
-    public void OnDropedHandToField(IHandCardUI cardUI, bool isAtk)
+    public void OnDroppedHandToField(IHandCardUI cardUI, bool isAtk)
     {
-        if(isAtk && !_atkFieldDropTarget.CanInteraction)
-        {
-            return;
-        }
-        
-        if(!isAtk && !_defFieldDropTarget.CanInteraction)
-        {
-            return;
-        }
-
-        if(!_turnManager.CanAction)
-        {
-            _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
-            return;
-        }
-
-        if(!_handDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        {
-            return;
-        }
-
-        if(isAtk)
-        {
-            _atkFieldDropTarget.CreateCard(battleCardData);
-        }
-        else
-        {
-            _defFieldDropTarget.CreateCard(battleCardData);
-        }
-
-        _handDropTarget.RemoveCard(cardUI);
-        GameData.Instance.HandToFieldMove(battleCardData);
+        // if(isAtk && !_atkFieldDropTarget.CanInteraction)
+        // {
+        //     return;
+        // }
+        //
+        // if(!isAtk && !_defFieldDropTarget.CanInteraction)
+        // {
+        //     return;
+        // }
+        //
+        // if(!_turnManager.CanAction)
+        // {
+        //     _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
+        //     return;
+        // }
+        //
+        // if(!_handDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
+        // {
+        //     return;
+        // }
+        //
+        // if(isAtk)
+        // {
+        //     _atkFieldDropTarget.CreateCard(battleCardData);
+        // }
+        // else
+        // {
+        //     _defFieldDropTarget.CreateCard(battleCardData);
+        // }
+        //
+        // _handDropTarget.RemoveCard(cardUI);
+        // GameData.Instance.HandToFieldMove(battleCardData);
     }
 
     /// <summary>
     /// 해당 핸드 카드를 [핸드 필드]에서 [교체 필드]로 올립니다.
     /// </summary>
-    public void OnDropedHandToDiscard(IHandCardUI cardUI)
+    public void OnDroppedHandToDiscard(Card card)
     {
         if(!_turnManager.CanThrow)
         {
             _notifier.Notify("<color=red>더 이상 버릴 수 없습니다.</color>");
             return;
         }
-
-        if(!_handDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        {
-            return;
-        }
-
-        _discardDropTarget.CreateCard(battleCardData);
-        _handDropTarget.RemoveCard(cardUI);
-        GameData.Instance.HandToFieldMove(battleCardData);
+        
+        _discardDropTarget.CreateCard(card.BattleCardData);
+        _handDropTarget.RemoveCard(card);
+        GameData.Instance.HandToFieldMove(card.BattleCardData);
     }
 }
