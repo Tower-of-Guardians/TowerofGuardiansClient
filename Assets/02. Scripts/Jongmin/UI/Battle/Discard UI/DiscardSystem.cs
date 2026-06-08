@@ -75,7 +75,7 @@ namespace Jongmin
             _view.UpdateOpenButtonState(isActive);
         }
 
-        public void UpdateDiscardCount(ActionData data)
+        public void UpdateDiscardCount(ActionData data, bool canThrow)
         {
             _view.UpdateDiscardButtonState(data.Current > 0);
         }

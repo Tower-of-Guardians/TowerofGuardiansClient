@@ -56,10 +56,10 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureManualUI(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<ActionManualUI>().As<IActionManualUI>();
-        builder.RegisterEntryPoint<ActionManualPresenter>(Lifetime.Scoped);
-        builder.RegisterComponentInHierarchy<DiscardManualUI>().As<IDiscardManualUI>();
-        builder.RegisterEntryPoint<DiscardManualPresenter>(Lifetime.Scoped);
+        // builder.RegisterComponentInHierarchy<ActionManualView>().As<IActionManualUI>();
+        // builder.RegisterEntryPoint<ActionManualSystem>(Lifetime.Scoped);
+        // builder.RegisterComponentInHierarchy<DiscardManualView>().As<IDiscardManualUI>();
+        // builder.RegisterEntryPoint<DiscardManualSystem>(Lifetime.Scoped);
     }
 
     private void ConfigureInventoryUI(IContainerBuilder builder)
