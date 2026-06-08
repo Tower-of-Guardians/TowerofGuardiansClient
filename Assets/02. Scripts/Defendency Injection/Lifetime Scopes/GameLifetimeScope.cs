@@ -41,8 +41,8 @@ public class GameLifetimeScope : LifetimeScope
                .AsSelf()
                .As<ITurnHandLimitPort>();
 
-        builder.RegisterComponentInHierarchy<StatusUI>().As<IStatusUI>();
-        builder.RegisterEntryPoint<StatusPresenter>(Lifetime.Scoped).AsSelf();
+        //builder.RegisterComponentInHierarchy<StatusView>().As<IStatusUI>();
+        //builder.RegisterEntryPoint<StatusSystem>(Lifetime.Scoped).AsSelf();
         builder.Register<CardDropSystem>(Lifetime.Singleton);
         
         builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();

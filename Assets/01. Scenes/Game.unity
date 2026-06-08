@@ -10055,6 +10055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 733662152}
   - component: {fileID: 733662153}
+  - component: {fileID: 733662154}
   m_Layer: 0
   m_Name: Domain Manager
   m_TagString: Untagged
@@ -10094,6 +10095,20 @@ MonoBehaviour:
   actionSystem: {fileID: 1173115326}
   discardSystem: {fileID: 39356079}
   turnManager: {fileID: 77753977}
+--- !u!114 &733662154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733662151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfcadc2a775c4d8e9b22b7ff9f7dc6d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusView: {fileID: 1649415775}
+  statusSystem: {fileID: 1649415776}
 --- !u!1 &736535322
 GameObject:
   m_ObjectHideFlags: 0
@@ -16630,7 +16645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000012350495}
+  m_AnchoredPosition: {x: 0, y: 0.000009295616}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1245885183
@@ -23945,6 +23960,7 @@ GameObject:
   - component: {fileID: 1649415774}
   - component: {fileID: 1649415773}
   - component: {fileID: 1649415775}
+  - component: {fileID: 1649415776}
   m_Layer: 5
   m_Name: Status UI
   m_TagString: Untagged
@@ -24030,6 +24046,18 @@ MonoBehaviour:
   levelLabel: {fileID: 145314814}
   expSlider: {fileID: 1167638092}
   goldLabel: {fileID: 1513978793}
+--- !u!114 &1649415776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649415771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f1678ea537df24c89774b41550176d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1659811743
 GameObject:
   m_ObjectHideFlags: 0
