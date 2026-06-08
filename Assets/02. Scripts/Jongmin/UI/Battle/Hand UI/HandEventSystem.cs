@@ -185,7 +185,7 @@ namespace Jongmin
                     return hit;
                 }
                 
-                var fieldHandler = hit.gameObject.GetComponent<FieldCardEventController>();
+                var fieldHandler = hit.gameObject.GetComponent<FieldEventSystem>();
                 if(fieldHandler != null)
                 {
                     return hit;

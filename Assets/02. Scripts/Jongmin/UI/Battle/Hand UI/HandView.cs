@@ -18,9 +18,9 @@ namespace Jongmin
 
         public void UpdatePreviewPosition(CardLayoutData layoutData)
         {
-            previewCard.RectTransform.anchoredPosition = layoutData.Position;
-            previewCard.RectTransform.rotation = Quaternion.Euler(layoutData.Rotation);
-            previewCard.RectTransform.localScale = layoutData.Scale;
+            previewCard.RectTransform.anchoredPosition = layoutData.position;
+            previewCard.RectTransform.rotation = Quaternion.Euler(layoutData.rotation);
+            previewCard.RectTransform.localScale = layoutData.scale;
         }
     }
 }

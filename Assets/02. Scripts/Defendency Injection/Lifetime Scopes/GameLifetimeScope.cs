@@ -12,9 +12,9 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField] private DiscardUIDesigner discardUIDesigner;
     [SerializeField] private TurnRuleDesigner turnRuleDesigner;
 
-    [Space(20), Header("Field Context")]
-    [SerializeField] private FieldContext atkFieldContext;
-    [SerializeField] private FieldContext defFieldContext;
+    // [Space(20), Header("Field Context")]
+    // [SerializeField] private FieldContext atkFieldContext;
+    // [SerializeField] private FieldContext defFieldContext;
 
     [Space(20), Header("Craftman")]
     [SerializeField] private ForgeDatabase forgeDatabase;
@@ -183,89 +183,89 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureFieldUI(IContainerBuilder builder)
     {
-        builder.RegisterInstance(fieldUIDesigner);
-        builder.RegisterInstance(atkFieldContext).Keyed(FieldType.Attack);
-        builder.RegisterInstance(defFieldContext).Keyed(FieldType.Defense);
-
-        builder.RegisterInstance<IFieldUI>(atkFieldContext.FieldUI).Keyed(FieldType.Attack);
-        builder.RegisterInstance<IFieldUI>(defFieldContext.FieldUI).Keyed(FieldType.Defense);
-
-        builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Attack);
-        builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Defense);
-
-        builder.RegisterInstance(atkFieldContext.FieldCardLayout).Keyed(FieldType.Attack);
-        builder.RegisterInstance(defFieldContext.FieldCardLayout).Keyed(FieldType.Defense);
-
-        builder.RegisterInstance(atkFieldContext.FieldCardEvent).Keyed(FieldType.Attack);
-        builder.RegisterInstance(defFieldContext.FieldCardEvent).Keyed(FieldType.Defense);
-
-        builder.RegisterInstance(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
-        builder.RegisterInstance(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
-        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
-        builder.RegisterInstance<ICardFactory<IFieldCardUI>>(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
-
-        builder.RegisterEntryPoint<AttackFieldPresenter>()
-               .AsSelf()
-               .As<IAttackFieldCardRemovePort>()
-               .As<IATKCardDropTarget>();
-        builder.RegisterEntryPoint<DefendFieldPresenter>()
-               .AsSelf()
-               .As<IDefendFieldCardRemovePort>()
-               .As<IDEFCardDropTarget>();
-
-        builder.RegisterBuildCallback(resolver =>
-        {
-            var atkPresenter = resolver.Resolve<AttackFieldPresenter>();
-            var defPresenter = resolver.Resolve<DefendFieldPresenter>();
-            //var handPresenter = resolver.Resolve<HandPresenter>();
-            //var discardPresenter = resolver.Resolve<DiscardPresenter>();
-            var cardDropSystem = resolver.Resolve<CardDropSystem>();
-            var fieldUIDesigner = resolver.Resolve<FieldUIDesigner>();
-
-            var atkContainer = resolver.Resolve<CardContainer<IFieldCardUI, FieldCardPresenter>>(FieldType.Attack);
-            var defContainer = resolver.Resolve<CardContainer<IFieldCardUI, FieldCardPresenter>>(FieldType.Defense);
-
-            var atkLayout = resolver.Resolve<FieldCardLayoutController>(FieldType.Attack);
-            var defLayout = resolver.Resolve<FieldCardLayoutController>(FieldType.Defense);
-
-            var atkEvent = resolver.Resolve<FieldCardEventController>(FieldType.Attack);
-            var defEvent = resolver.Resolve<FieldCardEventController>(FieldType.Defense);
-            var atkCardToThrowEffector = resolver.Resolve<AttackCardToThrowEffector>();
-            var defCardToThrowEffector = resolver.Resolve<DefendCardToThrowEffector>();
-
-            atkEvent.Construct(atkPresenter,
-                               defPresenter,
-                               atkContainer,
-                               defContainer,
-                               atkLayout,
-                               defLayout,
-                               defEvent,
-                               cardDropSystem,
-                               fieldUIDesigner,
-                               GameData.Instance.attackField);
-
-            defEvent.Construct(defPresenter,
-                               atkPresenter,
-                               defContainer,
-                               atkContainer,
-                               defLayout,
-                               atkLayout,
-                               atkEvent,
-                               cardDropSystem,
-                               fieldUIDesigner,
-                               GameData.Instance.defenseField);
-
-            atkFieldContext.FieldCardFactory.Construct(atkEvent);
-            defFieldContext.FieldCardFactory.Construct(defEvent);
-            atkCardToThrowEffector.Construct(atkPresenter, atkContainer);
-            defCardToThrowEffector.Construct(defPresenter, defContainer);
+        // builder.RegisterInstance(fieldUIDesigner);
+        // builder.RegisterInstance(atkFieldContext).Keyed(FieldType.Attack);
+        // builder.RegisterInstance(defFieldContext).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterInstance<IFieldUI>(atkFieldContext.FieldUI).Keyed(FieldType.Attack);
+        // builder.RegisterInstance<IFieldUI>(defFieldContext.FieldUI).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Attack);
+        // builder.RegisterInstance(new CardContainer<IFieldCardUI, FieldCardPresenter>()).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterInstance(atkFieldContext.FieldCardLayout).Keyed(FieldType.Attack);
+        // builder.RegisterInstance(defFieldContext.FieldCardLayout).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterInstance(atkFieldContext.FieldCardEvent).Keyed(FieldType.Attack);
+        // builder.RegisterInstance(defFieldContext.FieldCardEvent).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterInstance(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
+        // builder.RegisterInstance(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
+        // builder.RegisterInstance<ICardFactory<IFieldCardUI>>(atkFieldContext.FieldCardFactory).Keyed(FieldType.Attack);
+        // builder.RegisterInstance<ICardFactory<IFieldCardUI>>(defFieldContext.FieldCardFactory).Keyed(FieldType.Defense);
+        //
+        // builder.RegisterEntryPoint<AttackFieldPresenter>()
+        //        .AsSelf()
+        //        .As<IAttackFieldCardRemovePort>()
+        //        .As<IATKCardDropTarget>();
+        // builder.RegisterEntryPoint<DefendFieldPresenter>()
+        //        .AsSelf()
+        //        .As<IDefendFieldCardRemovePort>()
+        //        .As<IDEFCardDropTarget>();
+        //
+        // builder.RegisterBuildCallback(resolver =>
+        // {
+        //     var atkPresenter = resolver.Resolve<AttackFieldPresenter>();
+        //     var defPresenter = resolver.Resolve<DefendFieldPresenter>();
+        //     //var handPresenter = resolver.Resolve<HandPresenter>();
+        //     //var discardPresenter = resolver.Resolve<DiscardPresenter>();
+        //     var cardDropSystem = resolver.Resolve<CardDropSystem>();
+        //     var fieldUIDesigner = resolver.Resolve<FieldUIDesigner>();
+        //
+        //     var atkContainer = resolver.Resolve<CardContainer<IFieldCardUI, FieldCardPresenter>>(FieldType.Attack);
+        //     var defContainer = resolver.Resolve<CardContainer<IFieldCardUI, FieldCardPresenter>>(FieldType.Defense);
+        //
+        //     var atkLayout = resolver.Resolve<FieldCardLayoutController>(FieldType.Attack);
+        //     var defLayout = resolver.Resolve<FieldCardLayoutController>(FieldType.Defense);
+        //
+        //     var atkEvent = resolver.Resolve<FieldCardEventController>(FieldType.Attack);
+        //     var defEvent = resolver.Resolve<FieldCardEventController>(FieldType.Defense);
+        //     var atkCardToThrowEffector = resolver.Resolve<AttackCardToThrowEffector>();
+        //     var defCardToThrowEffector = resolver.Resolve<DefendCardToThrowEffector>();
+        //
+        //     atkEvent.Construct(atkPresenter,
+        //                        defPresenter,
+        //                        atkContainer,
+        //                        defContainer,
+        //                        atkLayout,
+        //                        defLayout,
+        //                        defEvent,
+        //                        cardDropSystem,
+        //                        fieldUIDesigner,
+        //                        GameData.Instance.attackField);
+        //
+        //     defEvent.Construct(defPresenter,
+        //                        atkPresenter,
+        //                        defContainer,
+        //                        atkContainer,
+        //                        defLayout,
+        //                        atkLayout,
+        //                        atkEvent,
+        //                        cardDropSystem,
+        //                        fieldUIDesigner,
+        //                        GameData.Instance.defenseField);
+        //
+        //     atkFieldContext.FieldCardFactory.Construct(atkEvent);
+        //     defFieldContext.FieldCardFactory.Construct(defEvent);
+        //     atkCardToThrowEffector.Construct(atkPresenter, atkContainer);
+        //     defCardToThrowEffector.Construct(defPresenter, defContainer);
 
             //handPresenter.OnTogglePreviews += atkPresenter.TogglePreview;
             //handPresenter.OnTogglePreviews += defPresenter.TogglePreview;
 
             //discardPresenter.OnDiscardUIVisibilityChanged += atkPresenter.UpdateInteraction;
             //discardPresenter.OnDiscardUIVisibilityChanged += defPresenter.UpdateInteraction;
-        });
+        // });
     }
 
     private void ConfigureResultUI(IContainerBuilder builder)

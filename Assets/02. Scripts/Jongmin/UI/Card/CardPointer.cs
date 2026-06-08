@@ -16,6 +16,8 @@ namespace Jongmin
                                IDragHandler, 
                                IEndDragHandler
     {
+        [SerializeField] private CanvasGroup cardGroup;
+        
         private Card _owner;
         
         public event Action<Card, PointerEventData> OnPointerEntered;
@@ -69,7 +71,9 @@ namespace Jongmin
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            cardGroup.blocksRaycasts = false;
             OnEndDragged?.Invoke(_owner, eventData);
+            cardGroup.blocksRaycasts = true;
         }
     }
 }

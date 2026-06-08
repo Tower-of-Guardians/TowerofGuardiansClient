@@ -17,6 +17,9 @@ namespace Jongmin
         
         public void Construct()
         {
+            actionSystem.Construct(actionView);
+            discardSystem.Construct(discardView);
+            
             BindEvents();
             turnManager.Initialize();
         }

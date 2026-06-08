@@ -4,9 +4,9 @@ namespace Jongmin
 {
     public class ActionManualSystem : MonoBehaviour
     {
-        private readonly ActionManualView _view;
+        private ActionManualView _view;
 
-        public ActionManualSystem(ActionManualView view)
+        public void Construct(ActionManualView view)
         {
             _view = view;
         }

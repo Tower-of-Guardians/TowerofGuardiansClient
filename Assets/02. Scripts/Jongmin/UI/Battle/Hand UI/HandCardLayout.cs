@@ -56,8 +56,8 @@ namespace Jongmin
 
             if (_system.HoverCard == card)
             {
-                targetTransform.Scale = Vector3.one * _designer.Scale;
-                targetTransform.Rotation = Vector3.zero;
+                targetTransform.scale = Vector3.one * _designer.Scale;
+                targetTransform.rotation = Vector3.zero;
                 
                 card.transform.SetAsLastSibling();
             }
@@ -66,7 +66,7 @@ namespace Jongmin
                 if (_container.TryGetIndex(_system.HoverCard, out var hoverIndex))
                 {
                     var offset = cardIndex < hoverIndex ? -_designer.Strength : _designer.Strength;
-                    targetTransform.Position.x += offset;
+                    targetTransform.position.x += offset;
                 }
             }
         }
@@ -80,13 +80,13 @@ namespace Jongmin
             
             card?.DOKill();
 
-            card.transform.DOLocalMove(new Vector3(targetTransform.Position.x, 
-                                                   card == _system.HoverCard ? _designer.HoverY : targetTransform.Position.y, 
-                                                   targetTransform.Position.z),
+            card.transform.DOLocalMove(new Vector3(targetTransform.position.x, 
+                                                   card == _system.HoverCard ? _designer.HoverY : targetTransform.position.y, 
+                                                   targetTransform.position.z),
                                        _designer.AnimeSPD);
 
-            card.transform.DOLocalRotate(targetTransform.Rotation, _designer.AnimeSPD).SetEase(Ease.OutBack);
-            card.transform.DOScale(targetTransform.Scale, _designer.AnimeSPD).SetEase(Ease.OutBack);
+            card.transform.DOLocalRotate(targetTransform.rotation, _designer.AnimeSPD).SetEase(Ease.OutBack);
+            card.transform.DOScale(targetTransform.scale, _designer.AnimeSPD).SetEase(Ease.OutBack);
         }
 
         private void RebuildSiblingOrder()

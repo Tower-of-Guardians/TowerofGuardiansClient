@@ -12,6 +12,7 @@ namespace Jongmin
         public CardType CardType { get; private set; }
 
         public CardPointer Pointer => pointer;
+        public CardView View => view;
         public RectTransform RectTransform => view.RectTransform;
 
         private void Awake()

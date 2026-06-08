@@ -17,6 +17,8 @@ namespace Jongmin
         [SerializeField] private Image[] starObjectArray;
         [SerializeField] private Image[] synergyImageArray;
         [SerializeField] private GameObject selectImage;
+        [SerializeField] private Image atkLockImage;
+        [SerializeField] private Image defLockImage;
 
         private const int MaxStarCount = 2;
 
@@ -37,11 +39,32 @@ namespace Jongmin
                 Debug.LogWarning("CardUI: 전달된 cardData가 null입니다.");
                 return;
             }
+            
+            atkLockImage.gameObject.SetActive(false);
+            defLockImage.gameObject.SetActive(false);
 
             InitCardInfo(cardData);
             InitCardStars(cardData);
             InitCardSynergies(cardData);
             UpdateSelect(false);
+        }
+
+        public void ToggleLock()
+        {
+            atkLockImage.gameObject.SetActive(!atkLockImage.gameObject.activeInHierarchy);
+            defLockImage.gameObject.SetActive(!defLockImage.gameObject.activeInHierarchy);
+        }
+
+        public void LockAtk()
+        {
+            atkLockImage.gameObject.SetActive(true);
+            defLockImage.gameObject.SetActive(false);
+        }
+
+        public void LockDef()
+        {
+            atkLockImage.gameObject.SetActive(false);
+            defLockImage.gameObject.SetActive(true);
         }
 
         public void UpdateSelect(bool isSelect)

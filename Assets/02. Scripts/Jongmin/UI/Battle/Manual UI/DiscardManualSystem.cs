@@ -4,10 +4,9 @@ namespace Jongmin
 {
     public class DiscardManualSystem : MonoBehaviour
     {
-        private readonly DiscardManualView _view;
-        private readonly TurnManager _turnManager;
+        private DiscardManualView _view;
 
-        public DiscardManualSystem(DiscardManualView view)
+        public void Construct(DiscardManualView view)
         {
             _view = view;
         }
