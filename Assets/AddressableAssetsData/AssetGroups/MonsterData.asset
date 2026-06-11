@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - MonsterData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1a2b3c4d5e6478990abcdef01001005
+    m_Address: Assets/Datas/MonsterData/41001005.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 11547d97efbd680438c8d420c6672236, type: 2}
   m_SchemaSet:
