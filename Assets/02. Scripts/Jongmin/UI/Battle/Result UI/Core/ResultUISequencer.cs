@@ -43,7 +43,7 @@ public class ResultUISequencer : MonoBehaviour
         _resultPresenter.OpenUI(resultData);
         yield return new WaitForSeconds(1.5f);
 
-        _resultRewardPresenter.OpenUI(resultData.Gold, resultData.EXP);
+        _resultRewardPresenter.OpenUI(resultData.Gold, resultData.EXP, resultData.IsLevelUp);
         yield return new WaitForSeconds(2.5f);
 
         _resultDeckInvenPresenter.OpenUI();

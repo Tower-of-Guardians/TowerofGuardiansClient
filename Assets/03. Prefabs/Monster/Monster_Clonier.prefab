@@ -414,6 +414,9 @@ MonoBehaviour:
   attackMoveDuration: 0.3
   damageApplyDelay: 0.5
   monsterId: 41002004
+  clonePrefab: {fileID: 3739762124255010228, guid: f03ad78cefdb31d43995fad758b433a3, type: 3}
+  healMin: 15
+  healMax: 20
 --- !u!114 &4344606365010817277
 MonoBehaviour:
   m_ObjectHideFlags: 0

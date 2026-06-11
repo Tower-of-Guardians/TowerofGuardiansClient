@@ -18,6 +18,7 @@ public class BattleManager : MonoBehaviour
 
     private bool isInitialized;
     private bool isProcessingAttack;
+    private MonsterEncounterData currentEncounterData;
 
     private void Awake()
     {
@@ -72,6 +73,15 @@ public class BattleManager : MonoBehaviour
 
     public void Initialize(Player playerUnit, IEnumerable<Monster> monsters, Button attackBtn)
     {
+        Initialize(playerUnit, monsters, attackBtn, null);
+    }
+
+    public void Initialize(
+        Player playerUnit,
+        IEnumerable<Monster> monsters,
+        Button attackBtn,
+        MonsterEncounterData encounterData)
+    {
         if (isInitialized)
         {
             Debug.LogWarning("BattleManager has already been initialized.");
@@ -84,6 +94,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
+        currentEncounterData = encounterData;
         setupController.SetupBattle(playerUnit, monsters, attackBtn);
         isInitialized = true;
 
@@ -335,17 +346,17 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator HandleVictory()
     {
-        // 보상 계산
         int totalGold = CalculateTotalGold();
         int totalExp = CalculateTotalExp();
+        bool isLevelUp = WillLevelUp(totalExp);
 
-        // ResultPresenter가 등록될 때까지 대기
-        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultPresenter>());
+        ApplyEncounterRewards(totalGold, totalExp);
 
-        // Result 창 열기
-        var resultPresenter = DIContainer.Resolve<ResultPresenter>();
-        var resultData = new ResultData(totalGold, totalExp);
-        resultPresenter.OpenUI(resultData);
+        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultUISequencer>());
+
+        var resultUISequencer = DIContainer.Resolve<ResultUISequencer>();
+        var resultData = new ResultData(totalGold, totalExp, isLevelUp);
+        resultUISequencer.PlaySequence(resultData);
     }
 
     public IEnumerator HandleDefeat()
@@ -361,44 +372,41 @@ public class BattleManager : MonoBehaviour
 
     private int CalculateTotalGold()
     {
-        // TODO: 몬스터 데이터에서 골드 정보 가져오기
-        if (setupController == null)
-        {
-            return 0;
-        }
-
-        var monsters = setupController.GetPrimaryMonsters();
-        int totalGold = 0;
-        foreach (Monster monster in monsters)
-        {
-            if (monster != null)
-            {
-                // 몬스터당 기본 골드 (나중에 몬스터 데이터에서 가져오도록 수정)
-                totalGold += 100;
-            }
-        }
-        return totalGold;
+        return currentEncounterData != null ? currentEncounterData.Gold : 0;
     }
 
     private int CalculateTotalExp()
     {
-        // TODO: 몬스터 데이터에서 경험치 정보 가져오기
-        if (setupController == null)
+        return currentEncounterData != null ? currentEncounterData.Exp : 0;
+    }
+
+    private void ApplyEncounterRewards(int gold, int exp)
+    {
+        if (DataCenter.Instance == null)
         {
-            return 0;
+            return;
         }
 
-        var monsters = setupController.GetPrimaryMonsters();
-        int totalExp = 0;
-        foreach (Monster monster in monsters)
+        if (gold > 0)
         {
-            if (monster != null)
-            {
-                // 몬스터당 기본 경험치 (나중에 몬스터 데이터에서 가져오도록 수정)
-                totalExp += 50;
-            }
+            DataCenter.Instance.SetMoney(gold);
         }
-        return totalExp;
+
+        if (exp > 0)
+        {
+            DataCenter.Instance.SetPlayerLevel(exp);
+        }
+    }
+
+    private static bool WillLevelUp(int exp)
+    {
+        if (DataCenter.Instance == null || exp <= 0)
+        {
+            return false;
+        }
+
+        PlayerState playerState = DataCenter.Instance.playerstate;
+        return playerState.level < 9 && playerState.experience + exp >= playerState.maxexperience;
     }
 
     public void RegisterMonster(Monster monster)
