@@ -17,12 +17,14 @@ namespace Jongmin
         [SerializeField] private HandDomain handDomain;
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private Canvas rootCanvas;
+        [SerializeField] private EffectDomain effectDomain;
         
         private CardContainer _cardContainer;
         private DiscardCardLayout _cardLayout;
         private DiscardCardFactory _cardFactory;
         
         public DiscardSystem System => discardSystem;
+        public CardContainer Container => _cardContainer;
 
         public void Construct(CardDropSystem cardDropSystem)
         {
@@ -42,6 +44,9 @@ namespace Jongmin
             
             discardSystem.RequestUpdateThrowAction += turnManager.UpdateThrowAction;
             discardSystem.RequestUpdateThrowCount += turnManager.UpdateThrowCount;
+            discardSystem.DiscardCancelEffect += effectDomain.RevertDiscardCards;
+            discardSystem.DiscardEffect += effectDomain.DiscardDiscardCards;
+            
             turnManager.OnUpdatedThrowActionState += discardSystem.UpdateOpenButtonState;
             turnManager.OnUpdatedThrowCount += discardSystem.UpdateDiscardCount;
 
@@ -56,6 +61,9 @@ namespace Jongmin
         {
             discardSystem.RequestUpdateThrowAction -= turnManager.UpdateThrowAction;
             discardSystem.RequestUpdateThrowCount -= turnManager.UpdateThrowCount;
+            discardSystem.DiscardCancelEffect -= effectDomain.RevertDiscardCards;
+            discardSystem.DiscardEffect -= effectDomain.DiscardDiscardCards;
+            
             turnManager.OnUpdatedThrowActionState -= discardSystem.UpdateOpenButtonState;
             turnManager.OnUpdatedThrowCount -= discardSystem.UpdateDiscardCount;
             
@@ -165,18 +173,6 @@ namespace Jongmin
         {
             discardView.TogglePreview(isActive);
             _cardLayout.UpdateLayout(isActive ? PreviewLayoutMode.Insert : PreviewLayoutMode.None, isAnime: true);
-        }
-
-        private void UpdatePreviewPosition()
-        {
-            if (!_cardContainer.TryGetIndex(discardSystem.HoverCard, out var index))
-            {
-                return;
-            }
-            
-            var layoutData = CardLayoutCalculator.CalculatedThrowCardPosition(index, _cardContainer.Count, discardDesigner.Space);
-            discardView.TogglePreview(true);
-            discardView.UpdatePreviewPosition(layoutData);
         }
 
         private void OnDestroy()

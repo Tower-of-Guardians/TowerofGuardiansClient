@@ -39,5 +39,20 @@ namespace Jongmin
                                                        handDomain.System, 
                                                        discardButton.transform.position);
         }
+
+        public void RevertDiscardCards(DiscardSystem discardSystem, CardContainer cardContainer)
+        {
+            effectSystem.RevertDiscardCards(cardContainer.Cards, 
+                                            handDomain.System,
+                                            discardSystem, 
+                                            handDomain.View.transform.position);
+        }
+
+        public void DiscardDiscardCards(DiscardSystem discardSystem, CardContainer cardContainer)
+        {
+            effectSystem.DiscardDiscardCards(cardContainer.Cards,
+                                             discardSystem,
+                                             discardButton.transform.position);
+        }
     }
 }

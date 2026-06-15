@@ -41,6 +41,8 @@ namespace Jongmin
                 Debug.LogWarning("CardUI: 전달된 cardData가 null입니다.");
                 return;
             }
+
+            CanvasGroup.alpha = 1f;
             
             atkLockImage.gameObject.SetActive(false);
             defLockImage.gameObject.SetActive(false);

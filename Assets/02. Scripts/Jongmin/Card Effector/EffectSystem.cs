@@ -77,9 +77,71 @@ namespace Jongmin
             yield return new WaitUntil(() => currentCount >= completeCount);
         }
 
+        public void RevertDiscardCards(IReadOnlyList<Card> discardCards, HandSystem handSystem, DiscardSystem discardSystem, Vector3 destination)
+        {
+            var cards = new List<Card>(discardCards);
+
+            foreach (var discardCard in cards)
+            {
+                if (discardCard == null)
+                {
+                    continue;
+                }
+
+                var battleCardData = discardCard.BattleCardData;
+
+                var startAnchoredPosition = discardCard.RectTransform.anchoredPosition;
+                var startRotation = discardCard.RectTransform.rotation;
+                var startScale = 0.66f * Vector3.one;
+
+                discardSystem.RemoveCard(discardCard);
+
+                var effectCard = CreateCard(battleCardData);
+
+                effectCard.RectTransform.anchoredPosition = startAnchoredPosition;
+                effectCard.RectTransform.rotation = startRotation;
+                effectCard.RectTransform.localScale = startScale;
+
+                StartCoroutine(RevertHandSubRoutine(effectCard, destination, 0.35f, () => handSystem.CreateCard(battleCardData)));
+            }
+        }
+
+        public void DiscardDiscardCards(IReadOnlyList<Card> discardCards, DiscardSystem discardSystem, Vector3 destination)
+        {
+            var cards = new List<Card>(discardCards);
+
+            foreach (var discardCard in cards)
+            {
+                if (discardCard == null)
+                {
+                    continue;
+                }
+                
+                var battleCardData = discardCard.BattleCardData;
+
+                var startAnchoredPosition = discardCard.RectTransform.anchoredPosition;
+                var startRotation = discardCard.RectTransform.rotation;
+                var startScale = 0.44f * Vector3.one;
+
+                discardSystem.RemoveCard(discardCard);
+
+                var effectCard = CreateCard(battleCardData);
+
+                effectCard.RectTransform.anchoredPosition = startAnchoredPosition;
+                effectCard.RectTransform.rotation = startRotation;
+                effectCard.RectTransform.localScale = startScale;
+
+                StartCoroutine(DiscardDiscardSubRoutine(effectCard, destination, 0.5f, () =>
+                {
+                    GameData.Instance.UseCard(effectCard.CardData.id);
+                    GameData.Instance.InvokeDeckCountChange(DeckType.Throw);
+                }));
+            }
+        }
+
         private IEnumerator DrawHandSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
         {
-            card.DOKill();
+            card.transform.DOKill();
 
             var sequence = DOTween.Sequence();
             sequence.Join(card.RectTransform.DOJump(destination, 0f, 1, duration));
@@ -92,12 +154,39 @@ namespace Jongmin
 
         private IEnumerator DiscardHandSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
         {
-            card.DOKill();
+            card.transform.DOKill();
             
             var sequence = DOTween.Sequence();
             sequence.Join(card.RectTransform.DOJump(destination, 50f, 1, duration));
             sequence.Join(card.RectTransform.DOScale(0.11f * Vector3.one, duration));
             sequence.Join(card.RectTransform.DORotate(-180f * Vector3.forward, duration, RotateMode.LocalAxisAdd));
+            sequence.Join(card.View.CanvasGroup.DOFade(0.5f, duration));
+            sequence.OnComplete(() => completeAction());
+            
+            yield return sequence.WaitForCompletion();
+            RemoveCard(card);
+        }
+
+        private IEnumerator RevertHandSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
+        {
+            card.transform.DOKill();
+            
+            var sequence = DOTween.Sequence();
+            sequence.Join(card.RectTransform.DOJump(destination, 0f, 1, duration).SetEase(Ease.InQuad));
+            sequence.Join(card.RectTransform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuad));
+            sequence.OnComplete(() => completeAction());
+            
+            yield return sequence.WaitForCompletion();
+            RemoveCard(card);
+        }
+        
+        private IEnumerator DiscardDiscardSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
+        {
+            card.transform.DOKill();
+            
+            var sequence = DOTween.Sequence();
+            sequence.Join(card.RectTransform.DOJump(destination, -50f, 1, duration).SetEase(Ease.InQuad));
+            sequence.Join(card.RectTransform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuad));
             sequence.Join(card.View.CanvasGroup.DOFade(0.5f, duration));
             sequence.OnComplete(() => completeAction());
             
