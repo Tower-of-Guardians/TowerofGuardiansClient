@@ -233,8 +233,9 @@ public class BattleManager : MonoBehaviour
 
         // 필드 카드 버리기
         yield return new WaitForSeconds(0.5f);
-        //m_attack_to_throw_effector.Execute();
-        yield return new WaitForSeconds(1.5f);
+        yield return effectDomain.DiscardFieldCards(FieldType.Attack);
+        yield return effectDomain.DiscardFieldCards(FieldType.Defense);
+        yield return new WaitForSeconds(1f);
 
         // 최종 승리 체크
         if (combatController.CheckVictory(setupController))

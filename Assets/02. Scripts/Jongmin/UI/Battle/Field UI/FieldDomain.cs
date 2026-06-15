@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using JxModule;
 using UnityEngine;
 
 namespace Jongmin
@@ -17,6 +18,7 @@ namespace Jongmin
         [SerializeField] private Canvas rootCanvas;
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private DiscardSystem discardSystem;
+        [SerializeField] private HandDomain handDomain;
 
         private CardContainer _atkCardContainer;
         private CardContainer _defCardContainer;
@@ -27,6 +29,10 @@ namespace Jongmin
         
         public AtkFieldSystem AtkSystem => atkFieldSystem as AtkFieldSystem;
         public DefFieldSystem DefSystem => defFieldSystem as DefFieldSystem;
+        public CardContainer AtkContainer => _atkCardContainer;
+        public CardContainer DefContainer => _defCardContainer;
+        public FieldView AtkView => atkView;
+        public FieldView DefView => defView;
         
         public void Construct(CardDropSystem cardDropSystem)
         {
@@ -48,6 +54,9 @@ namespace Jongmin
 
         public void BindEvents()
         {
+            handDomain.System.OnTogglePreviews += atkFieldSystem.TogglePreview;
+            handDomain.System.OnTogglePreviews += defFieldSystem.TogglePreview;
+            
             atkFieldSystem.RequestUpdateActionCount += turnManager.UpdateActionCount;
             defFieldSystem.RequestUpdateActionCount += turnManager.UpdateActionCount;
 
@@ -67,6 +76,9 @@ namespace Jongmin
 
         public void ReleaseEvents()
         {
+            handDomain.System.OnTogglePreviews -= atkFieldSystem.TogglePreview;
+            handDomain.System.OnTogglePreviews -= defFieldSystem.TogglePreview;
+            
             atkFieldSystem.RequestUpdateActionCount -= turnManager.UpdateActionCount;
             defFieldSystem.RequestUpdateActionCount -= turnManager.UpdateActionCount;
             
@@ -86,121 +98,176 @@ namespace Jongmin
 
         private void HandleRequestOnBeginDrag(Card card, FieldType fieldType)
         {
-            if (fieldType == FieldType.Attack)
-            {
-                atkFieldSystem.HoverCard = card;
-                UpdatePreviewPosition(FieldType.Attack);
-            }
-            else
-            {
-                defFieldSystem.HoverCard = card;
-                UpdatePreviewPosition(FieldType.Defense);
-            }
+            var system = GetSystem(fieldType);
+            var view = GetView(fieldType);
+            var container = GetContainer(fieldType);
+            var layout = GetLayout(fieldType);
+
+            var oppositeSystem = GetOppositeSystem(fieldType);
+
+            system.HoverCard = card;
 
             MoveHoverCardToCanvas(card);
+
+            if (!container.TryGetIndex(card, out var index))
+                return;
+
+            view.TogglePreview(true);
+
+            layout.UpdateLayout(
+                FieldPreviewMode.Swap,
+                previewIndex: index,
+                isAnime: true
+            );
+            
+            oppositeSystem.TogglePreview(true);
         }
 
         private void HandleRequestSwapInSameField(Card card, FieldType fieldType, Vector2 position)
         {
-            var system = fieldType == FieldType.Attack ? atkFieldSystem : defFieldSystem;
-            var container = fieldType == FieldType.Attack ? _atkCardContainer : _defCardContainer;
-            var layout = fieldType == FieldType.Attack ? _atkCardLayout : _defCardLayout;
-            
-            InsertInSameField(card, system, container, layout, position);
-            UpdatePreviewPosition(fieldType);
+            var system = GetSystem(fieldType);
+            var container = GetContainer(fieldType);
+            var layout = GetLayout(fieldType);
+            var view = GetView(fieldType);
+
+            var changed = InsertInSameField(card, system, container, position);
+
+            if (!changed)
+                return;
+
+            if (!container.TryGetIndex(system.HoverCard, out var index))
+                return;
+
+            view.TogglePreview(true);
+
+            layout.UpdateLayout(
+                FieldPreviewMode.Swap,
+                previewIndex: index,
+                isAnime: true
+            );
         }
 
-        private void HandleRequestOnEndDrag(FieldType fieldType)
+        private void HandleRequestOnEndDrag(bool success, FieldType fieldType)
         {
-            var currentView = fieldType == FieldType.Attack ? atkView : defView;
-            var oppositeView = fieldType == FieldType.Attack ? defView : atkView;
-            
-            var system = fieldType == FieldType.Attack ? atkFieldSystem : defFieldSystem;
-            var eventSystem = fieldType == FieldType.Attack ? atkFieldEventSystem : defFieldEventSystem;
+            var currentView = GetView(fieldType);
+            var oppositeView = GetOppositeView(fieldType);
 
-            var fieldFlag = eventSystem.TryInsertInOppositeFieldWithField();
-            var cardFlag = eventSystem.TryInsertInOppositeFieldWithCard();
+            var system = GetSystem(fieldType);
+            var eventSystem = GetEventSystem(fieldType);
 
-            var hoverCardWorldPosition = system.HoverCard.transform.position;
-            var finalHoverCardRoot = fieldFlag || cardFlag ? oppositeView.CardRoot : currentView.CardRoot;
-            
-            system.HoverCard.transform.SetParent(finalHoverCardRoot, false);
-            
-            var hoverCardLocalPosition = system.HoverCard.transform.parent.InverseTransformPoint(hoverCardWorldPosition);
-            system.HoverCard.transform.localPosition = hoverCardLocalPosition;
-        }
-        
-        private void HandleMoveHoverCardToOpposite(FieldType fieldType)
-        {
-            var currentField = fieldType == FieldType.Attack ? atkFieldSystem : defFieldSystem;
-            var hoverCard = currentField.HoverCard;
+            var hoverCard = system.HoverCard;
+            if (hoverCard == null)
+            {
+                return;
+            }
 
-            var currentContainer = fieldType == FieldType.Attack ? _atkCardContainer : _defCardContainer;
-            var oppositeContainer = fieldType == FieldType.Attack ? _defCardContainer : _atkCardContainer;
-            
-            var currentEventSystem = fieldType == FieldType.Attack ? atkFieldEventSystem : defFieldEventSystem;
-            var oppositeEventSystem = fieldType == FieldType.Attack ? defFieldEventSystem : atkFieldEventSystem;
-            
-            currentEventSystem.Unsubscribe(hoverCard);
-            oppositeEventSystem.Subscribe(hoverCard);
-            
-            hoverCard.View.ToggleLock();
-            
-            oppositeContainer.Add(hoverCard);
-            currentContainer.Remove(hoverCard);
+            var movedToOpposite = false;
+            if (!success)
+            {
+                movedToOpposite = eventSystem.TryMoveHoverCardToOppositeField();
+
+                var hoverCardWorldPosition = hoverCard.transform.position;
+                var finalRoot = movedToOpposite ? oppositeView.CardRoot : currentView.CardRoot;
+
+                hoverCard.transform.SetParent(finalRoot, false);
+
+                var localPosition = hoverCard.transform.parent.InverseTransformPoint(hoverCardWorldPosition);
+                hoverCard.transform.localPosition = localPosition;
+            }
+
+            atkView.TogglePreview(false);
+            defView.TogglePreview(false);
+
+            atkFieldSystem.HoverCard = null;
+            defFieldSystem.HoverCard = null;
+
+            _atkCardLayout.UpdateLayout(FieldPreviewMode.None);
+            _defCardLayout.UpdateLayout(FieldPreviewMode.None);
 
             SyncAtkDataWithContainer();
             SyncDefDataWithContainer();
         }
-
-        private void InsertInSameField(Card card, FieldSystem system, CardContainer container, FieldCardLayout layout, Vector2 position)
+        
+        private void HandleMoveHoverCardToOpposite(FieldType sourceFieldType)
         {
-            if (container.IsPriority(system.HoverCard, card))
+            var sourceSystem = GetSystem(sourceFieldType);
+            var targetSystem = GetOppositeSystem(sourceFieldType);
+
+            var sourceContainer = GetContainer(sourceFieldType);
+            var targetContainer = GetOppositeContainer(sourceFieldType);
+
+            var sourceEventSystem = GetEventSystem(sourceFieldType);
+            var targetEventSystem = GetOppositeEventSystem(sourceFieldType);
+
+            var hoverCard = sourceSystem.HoverCard;
+
+            if (hoverCard == null)
             {
-                if (position.x > card.transform.position.x)
+                return;
+            }
+
+            sourceEventSystem.Unsubscribe(hoverCard);
+            targetEventSystem.Subscribe(hoverCard);
+
+            sourceContainer.Remove(hoverCard);
+            targetContainer.Add(hoverCard);
+
+            if (sourceFieldType == FieldType.Attack)
+            {
+                hoverCard.SetBattleCardData(hoverCard.BattleCardData, CardType.DefField);
+                hoverCard.View.LockAtk();
+            }
+            else
+            {
+                hoverCard.SetBattleCardData(hoverCard.BattleCardData, CardType.AtkField);
+                hoverCard.View.LockDef();
+            }
+        }
+
+        private bool InsertInSameField(Card targetCard, FieldSystem system, CardContainer container, Vector2 position)
+        {
+            var hoverCard = system.HoverCard;
+
+            if (hoverCard == null || targetCard == null || hoverCard == targetCard)
+            {
+                return false;
+            }
+
+            if (!container.TryGetIndex(hoverCard, out var hoverIndex))
+            {
+                return false;
+            }
+
+            if (!container.TryGetIndex(targetCard, out var targetIndex))
+            {
+                return false;
+            }
+
+            var isHoverBeforeTarget = hoverIndex < targetIndex;
+
+            if (isHoverBeforeTarget)
+            {
+                if (position.x <= targetCard.transform.position.x)
                 {
-                    container.Insert(system.HoverCard, card);
-                    layout.UpdateLayout(false);
+                    return false;
                 }
             }
             else
             {
-                if (position.x < card.transform.position.x)
+                if (position.x >= targetCard.transform.position.x)
                 {
-                    container.Insert(system.HoverCard, card);
-                    layout.UpdateLayout(false);
+                    return false;
                 }
             }
+
+            container.Insert(hoverCard, targetCard);
+            return true;
         }
 
         private void MoveHoverCardToCanvas(Card card)
         {
             card.DOKill();
             card.transform.SetParent(rootCanvas.transform, false);
-        }
-
-        private void UpdatePreviewPosition(FieldType fieldType)
-        {
-            if (fieldType == FieldType.Attack)
-            {
-                if (!_atkCardContainer.TryGetIndex(atkFieldSystem.HoverCard, out var atkIndex))
-                {
-                    return;
-                }
-                
-                var previewPosition = CardLayoutCalculator.CalculatedFieldCardPosition(atkIndex, designer.ATKLimit, designer.Space);
-                atkView.UpdatePreviewPosition(previewPosition);
-            }
-            else
-            {
-                if (!_defCardContainer.TryGetIndex(defFieldSystem.HoverCard, out var defIndex))
-                {
-                    return;
-                }
-                
-                var previewPosition = CardLayoutCalculator.CalculatedFieldCardPosition(defIndex, designer.ATKLimit, designer.Space);
-                defView.UpdatePreviewPosition(previewPosition);
-            }
         }
 
         private void SyncAtkDataWithContainer()
@@ -221,7 +288,7 @@ namespace Jongmin
 
             while (GameData.Instance.attackField.Count > cards.Count)
             {
-                GameData.Instance.attackField.RemoveAt(cards.Count - 1);
+                GameData.Instance.attackField.RemoveAt(GameData.Instance.attackField.Count - 1);
             }
         }
 
@@ -243,8 +310,53 @@ namespace Jongmin
 
             while (GameData.Instance.defenseField.Count > cards.Count)
             {
-                GameData.Instance.defenseField.RemoveAt(cards.Count - 1);
+                GameData.Instance.defenseField.RemoveAt(GameData.Instance.defenseField.Count - 1);
             }
+        }
+        
+        private FieldSystem GetSystem(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? atkFieldSystem : defFieldSystem;
+        }
+
+        private FieldSystem GetOppositeSystem(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? defFieldSystem : atkFieldSystem;
+        }
+
+        private FieldView GetView(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? atkView : defView;
+        }
+
+        private FieldView GetOppositeView(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? defView : atkView;
+        }
+
+        private CardContainer GetContainer(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? _atkCardContainer : _defCardContainer;
+        }
+
+        private CardContainer GetOppositeContainer(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? _defCardContainer : _atkCardContainer;
+        }
+
+        private FieldCardLayout GetLayout(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? _atkCardLayout : _defCardLayout;
+        }
+
+        private FieldEventSystem GetEventSystem(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? atkFieldEventSystem : defFieldEventSystem;
+        }
+
+        private FieldEventSystem GetOppositeEventSystem(FieldType fieldType)
+        {
+            return fieldType == FieldType.Attack ? defFieldEventSystem : atkFieldEventSystem;
         }
 
         private void OnDestroy()

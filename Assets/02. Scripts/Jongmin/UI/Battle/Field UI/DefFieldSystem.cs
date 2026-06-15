@@ -2,6 +2,8 @@
 {
     public class DefFieldSystem : FieldSystem, IDEFCardDropTarget
     {
+        public override FieldType FieldType => FieldType.Defense;
+        
         public override void CreateCard(BattleCardData battleCardData)
         {
             if (!CanAdd)
@@ -13,8 +15,8 @@
             card.SetBattleCardData(battleCardData, CardType.DefField);
             card.View.LockAtk();
             Container.Add(card);
-            Layout.UpdateLayout(false, false, false);
-            GameData.Instance.attackField.Add(card.CardData);
+            Layout.UpdateLayout(FieldPreviewMode.None, isAnime:false);
+            GameData.Instance.defenseField.Add(card.CardData);
             RequestUpdateActionCountEvent(1);
         }
     }

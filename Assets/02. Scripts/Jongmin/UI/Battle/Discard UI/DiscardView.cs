@@ -88,11 +88,6 @@ namespace Jongmin
         {
             _discardButton.interactable = isActive;
         }
-        
-        public void UpdatePreviewPosition(Vector2 position)
-        {
-            previewCard.RectTransform.anchoredPosition = position;
-        }
 
         private void OnDestroy()
         {

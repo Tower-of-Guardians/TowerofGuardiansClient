@@ -32,36 +32,28 @@ public class CardDropSystem
     /// </summary>
     public void OnDroppedFieldToHand(Card card)
     {
-        // bool isAtkFieldCard = _atkFieldDropTarget.IsExist(cardUI);
-        // var sourceFieldDropTarget = isAtkFieldCard ? (ICardDropTarget<IFieldCardUI>)_atkFieldDropTarget
-        //                                            : _defFieldDropTarget;
-        //
-        // if(!sourceFieldDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        // {
-        //     return;
-        // }
-        //
-        // if (isAtkFieldCard)
-        // {
-        //     GameData.Instance.attackField.Remove(battleCardData.data);
-        // }
-        // else
-        // {
-        //     GameData.Instance.defenseField.Remove(battleCardData.data);
-        // }
-        //
-        // GameData.Instance.FieldToHandMove(battleCardData);
-        //
-        // if(isAtkFieldCard)
-        // {
-        //     _atkFieldDropTarget.RemoveCard(cardUI);
-        // }
-        // else
-        // {
-        //     _defFieldDropTarget.RemoveCard(cardUI);
-        // }
-        //
-        // _handDropTarget.CreateCard(battleCardData);        
+        switch (card.CardType)
+        {
+            case CardType.AtkField:
+                GameData.Instance.attackField.Remove(card.CardData);
+                GameData.Instance.FieldToHandMove(card.BattleCardData);
+                _handDropTarget.CreateCard(card.BattleCardData);
+                _atkFieldDropTarget.RemoveCard(card);
+                break;
+            
+            case CardType.DefField:
+                GameData.Instance.defenseField.Remove(card.CardData);
+                GameData.Instance.FieldToHandMove(card.BattleCardData);
+                _handDropTarget.CreateCard(card.BattleCardData);
+                _defFieldDropTarget.RemoveCard(card);
+                break;
+            
+            case CardType.None:
+            case CardType.Deck:
+            case CardType.Hand:
+            case CardType.Effect:
+                break;
+        }
     }
 
     /// <summary>
@@ -77,40 +69,37 @@ public class CardDropSystem
     /// <summary>
     /// 해당 핸드 카드를 [핸드 필드]에서 [공격/방어 필드]로 올립니다.
     /// </summary>
-    public void OnDroppedHandToField(Card card, bool isAtk)
+    public void OnDroppedHandToField(Card card, FieldType fieldType)
     {
-        // if(isAtk && !_atkFieldDropTarget.CanInteraction)
-        // {
-        //     return;
-        // }
-        //
-        // if(!isAtk && !_defFieldDropTarget.CanInteraction)
-        // {
-        //     return;
-        // }
-        //
-        // if(!_turnManager.CanAction)
-        // {
-        //     _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
-        //     return;
-        // }
-        //
-        // if(!_handDropTarget.TryGetBattleCardData(cardUI, out BattleCardData battleCardData))
-        // {
-        //     return;
-        // }
-        //
-        // if(isAtk)
-        // {
-        //     _atkFieldDropTarget.CreateCard(battleCardData);
-        // }
-        // else
-        // {
-        //     _defFieldDropTarget.CreateCard(battleCardData);
-        // }
-        //
-        // _handDropTarget.RemoveCard(cardUI);
-        // GameData.Instance.HandToFieldMove(battleCardData);
+        if(fieldType == FieldType.Attack && !_atkFieldDropTarget.CanInteraction)
+        {
+            return;
+        }
+        
+        if(fieldType == FieldType.Defense && !_defFieldDropTarget.CanInteraction)
+        {
+            return;
+        }
+        
+        if(!_turnManager.CanAction)
+        {
+            _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
+            return;
+        }
+
+        switch (fieldType)
+        {
+            case FieldType.Attack:
+                _atkFieldDropTarget.CreateCard(card.BattleCardData);
+                break;
+            
+            case FieldType.Defense:
+                _defFieldDropTarget.CreateCard(card.BattleCardData);
+                break;
+        }
+        
+        GameData.Instance.HandToFieldMove(card.BattleCardData);
+        _handDropTarget.RemoveCard(card);
     }
 
     /// <summary>

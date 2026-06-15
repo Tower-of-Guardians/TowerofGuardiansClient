@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Jongmin
@@ -10,16 +11,20 @@ namespace Jongmin
         [SerializeField] private PreviewCard previewCard;
 
         public Transform CardRoot => cardRoot;
-
+        private Tween _disableTween;
+        
         public void TogglePreview(bool isActive)
         {
             previewCard.gameObject.SetActive(isActive);
             previewCard.transform.SetAsFirstSibling();
         }
 
-        public void UpdatePreviewPosition(Vector2 position)
+        public Tween ToggleViewActive(bool isActive)
         {
-            previewCard.RectTransform.anchoredPosition = position;
+            _disableTween?.Kill();
+            _disableTween = disableImage.DOFade(isActive ? 0f : 0.7f, 0.3f);
+
+            return _disableTween;
         }
     }
 }

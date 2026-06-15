@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Jongmin
 {
-    public class FieldEventSystem : MonoBehaviour
+    public class FieldEventSystem : MonoBehaviour, IDropHandler
     {
         private FieldSystem _fieldSystem;
         private CardDropSystem _dropSystem;
@@ -13,7 +13,7 @@ namespace Jongmin
         
         public event Action<Card, FieldType> RequestOnBeginDrag;
         public event Action<Card, FieldType, Vector2> RequestSwapInSameField;
-        public event Action<FieldType> RequestOnEndDrag;
+        public event Action<bool, FieldType> RequestOnEndDrag;
         public event Action<FieldType> RequestMoveHoverCardToOpposite;
         
         public void Construct(FieldSystem fieldSystem, CardDropSystem dropSystem, CardContainer container)
@@ -73,48 +73,57 @@ namespace Jongmin
 
             var fieldType = GetFieldType(card);
             
-            TryInvokeDropHandler();
-            RequestOnEndDrag?.Invoke(fieldType);
+            var success = TryInvokeDropHandler();
+            RequestOnEndDrag?.Invoke(success, fieldType);
+        }
+        
+        public void OnDrop(PointerEventData eventData)
+        {
+            var droppedObject = eventData.pointerDrag;
+            if (droppedObject == null)
+            {
+                return;
+            }
+            
+            var card = droppedObject.GetComponent<Card>();
+            if (card == null || card.CardType != CardType.Hand)
+            {
+                return;
+            }
+            
+            _dropSystem.OnDroppedHandToField(card, _fieldSystem.FieldType);
         }
 
-        public bool TryInsertInOppositeFieldWithField()
+        public bool TryMoveHoverCardToOppositeField()
         {
-            var fieldHit = CheckField(out _);
-            if (fieldHit == null)
+            var hit = CheckField(out _);
+            if (hit == null)
             {
                 return false;
             }
             
-            var fieldEventSystem = fieldHit?.gameObject.GetComponent<FieldEventSystem>();
-            if (fieldEventSystem == null || fieldEventSystem == this)
+            var fieldEventSystem = hit.Value.gameObject.GetComponent<FieldEventSystem>();
+            if (fieldEventSystem != null && fieldEventSystem != this)
             {
-                return false;
-            }
-            else
-            {
+                RequestMoveHoverCardToOpposite?.Invoke(_fieldSystem.FieldType);
                 return true;
-            }
-        }
-
-        public bool TryInsertInOppositeFieldWithCard()
-        {
-            var cardHit = CheckField(out _);
-            if (cardHit == null)
-            {
-                return false;
             }
             
-            var card = cardHit?.gameObject.GetComponent<Card>();
-            if (card == null || card.CardType is not (CardType.AtkField or CardType.DefField) || !_container.IsExist(card))
-            {
+            var card = hit.Value.gameObject.GetComponent<Card>();
+
+            if (card == null)
                 return false;
-            }
-            else
-            {
-                var fieldType = GetFieldType(card);
-                RequestMoveHoverCardToOpposite?.Invoke(fieldType);
-                return true;
-            }
+
+            if (card.CardType is not (CardType.AtkField or CardType.DefField))
+                return false;
+
+            var targetFieldType = GetFieldType(card);
+
+            if (targetFieldType == _fieldSystem.FieldType)
+                return false;
+
+            RequestMoveHoverCardToOpposite?.Invoke(_fieldSystem.FieldType);
+            return true;
         }
 
         private FieldType GetFieldType(Card card)

@@ -17,6 +17,7 @@ namespace Jongmin
         public Card HoverCard { get; set; }
         public bool CanInteraction { get; private set; } = true;
         protected bool CanAdd => Container.Count < MaxCardCount;
+        public virtual FieldType FieldType { get; protected set; }
 
         public void Construct(FieldView view, CardContainer container, FieldCardLayout layout, FieldCardFactory factory)
         {
@@ -40,6 +41,7 @@ namespace Jongmin
 
         public void RemoveCard(Card card, bool unused = true)
         {
+            Container.Remove(card);
             Factory.Release(card);
             RequestUpdateActionCount?.Invoke(-1);
         }
@@ -55,12 +57,12 @@ namespace Jongmin
             {
                 case true when CanAdd:
                     _view.TogglePreview(true);
-                    Layout.UpdateLayout(true);
+                    Layout.UpdateLayout(FieldPreviewMode.Insert);
                     break;
                 
                 case false:
                     _view.TogglePreview(false);
-                    Layout.UpdateLayout(false);
+                    Layout.UpdateLayout(FieldPreviewMode.None);
                     break;
             }
         }

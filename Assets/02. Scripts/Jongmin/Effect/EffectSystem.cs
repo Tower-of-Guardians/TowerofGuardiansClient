@@ -60,14 +60,23 @@ namespace Jongmin
             var currentCount = 0;
             var completeCount = handCards.Count;
             
-            foreach(var handCard in handCards)
+            var cards = new List<Card>(handCards);
+            
+            foreach (var handCard in cards)
             {
-                var effectCard = CreateCard(handCard.BattleCardData);
+                var battleCardData = handCard.BattleCardData;
+                
+                var position = handCard.transform.position;
+                var rotation = handCard.RectTransform.rotation;
+                var localScale = 0.66f * Vector3.one;
+
                 handSystem.RemoveCard(handCard);
                 
-                effectCard.RectTransform.anchoredPosition = handCard.RectTransform.anchoredPosition;
-                effectCard.RectTransform.rotation = handCard.RectTransform.rotation;
-                effectCard.RectTransform.localScale = 0.66f * Vector3.one;
+                var effectCard = CreateCard(battleCardData);
+
+                effectCard.RectTransform.position = position;
+                effectCard.RectTransform.rotation = rotation;
+                effectCard.RectTransform.localScale = localScale;
 
                 StartCoroutine(DiscardHandSubRoutine(effectCard, destination, 0.5f, () => currentCount++));
 
@@ -139,6 +148,39 @@ namespace Jongmin
             }
         }
 
+        public IEnumerator DiscardFieldCards(IReadOnlyList<Card> fieldCards, FieldSystem fieldSystem, FieldView fieldView, Vector3 destination)
+        {
+            yield return fieldView.ToggleViewActive(false).WaitForCompletion();
+            
+            var currentCount = 0;
+            var completeCount = fieldCards.Count;
+            
+            var cards = new List<Card>(fieldCards);
+            
+            foreach (var fieldCard in cards)
+            {
+                var battleCardData = fieldCard.BattleCardData;
+                
+                var position = fieldCard.transform.position;
+                var rotation = fieldCard.RectTransform.rotation;
+                var localScale = 0.66f * Vector3.one;
+
+                fieldSystem.RemoveCard(fieldCard);
+                
+                var effectCard = CreateCard(battleCardData);
+
+                effectCard.RectTransform.position = position;
+                effectCard.RectTransform.rotation = rotation;
+                effectCard.RectTransform.localScale = localScale;
+
+                StartCoroutine(DiscardFieldSubRoutine(effectCard, destination, 0.5f, () => currentCount++));
+
+                yield return new WaitForSeconds(0.1f);
+            }
+            
+            yield return new WaitUntil(() => currentCount >= completeCount);
+        }
+
         private IEnumerator DrawHandSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
         {
             card.transform.DOKill();
@@ -187,6 +229,21 @@ namespace Jongmin
             var sequence = DOTween.Sequence();
             sequence.Join(card.RectTransform.DOJump(destination, -50f, 1, duration).SetEase(Ease.InQuad));
             sequence.Join(card.RectTransform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuad));
+            sequence.Join(card.View.CanvasGroup.DOFade(0.5f, duration));
+            sequence.OnComplete(() => completeAction());
+            
+            yield return sequence.WaitForCompletion();
+            RemoveCard(card);
+        }
+
+        private IEnumerator DiscardFieldSubRoutine(Card card, Vector3 destination, float duration, Action completeAction)
+        {
+            card.transform.DOKill();
+            
+            var sequence = DOTween.Sequence();
+            sequence.Join(card.RectTransform.DOJump(destination, 150f, 1, duration).SetEase(Ease.InOutQuad));
+            sequence.Join(card.RectTransform.DOScale(0.11f * Vector3.one, duration).SetEase(Ease.InQuad));
+            sequence.Join(card.RectTransform.DORotate(-180f * Vector3.forward, duration, RotateMode.LocalAxisAdd).SetEase(Ease.InOutQuad));
             sequence.Join(card.View.CanvasGroup.DOFade(0.5f, duration));
             sequence.OnComplete(() => completeAction());
             

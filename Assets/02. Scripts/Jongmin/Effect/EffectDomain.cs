@@ -11,6 +11,7 @@ namespace Jongmin
         [Header("References")]
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private HandDomain handDomain;
+        [SerializeField] private FieldDomain fieldDomain;
         [SerializeField] private Transform drawButton;
         [SerializeField] private Transform discardButton;
 
@@ -53,6 +54,18 @@ namespace Jongmin
             effectSystem.DiscardDiscardCards(cardContainer.Cards,
                                              discardSystem,
                                              discardButton.transform.position);
+        }
+
+        public IEnumerator DiscardFieldCards(FieldType fieldType)
+        {
+            var fieldContainer = fieldType == FieldType.Attack ? fieldDomain.AtkContainer : fieldDomain.DefContainer;
+            FieldSystem fieldSystem = fieldType == FieldType.Attack ? fieldDomain.AtkSystem : fieldDomain.DefSystem;
+            var fieldView = fieldType == FieldType.Attack ? fieldDomain.AtkView : fieldDomain.DefView;
+            
+            yield return effectSystem.DiscardFieldCards(fieldContainer.Cards, 
+                                                        fieldSystem, 
+                                                        fieldView, 
+                                                        discardButton.transform.position);
         }
     }
 }

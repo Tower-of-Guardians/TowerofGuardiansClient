@@ -1,8 +1,16 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Jongmin
 {
+    public enum FieldPreviewMode
+    {
+        None,
+        Insert,
+        Swap,
+    }
+    
     public class FieldCardLayout
     {
         private readonly FieldSystem _system;
@@ -18,60 +26,83 @@ namespace Jongmin
             _previewCard = previewCard;
         }
 
-        public void UpdateLayout(bool isIncludePreview, bool isAnime = true, bool isSorting = true)
+        public void UpdateLayout(FieldPreviewMode previewMode = FieldPreviewMode.None, int previewIndex = -1, bool isAnime = true)
         {
             var cards = _container.Cards;
             var cardCount = cards.Count;
-            
-            var prevPreviewPosition 
-                = cardCount > 0 ? cards[^1].RectTransform.anchoredPosition
-                                : CardLayoutCalculator.CalculatedFieldCardPosition(0, _designer.ATKLimit, _designer.Space);
 
-            CalculateCardLayout(cardCount, isAnime, isSorting);
-            CalculatePreview(isIncludePreview, cardCount, prevPreviewPosition);
+            UpdateCards(cards, cardCount, isAnime);
+            UpdatePreview(previewMode, previewIndex, cardCount);
         }
 
-        private void CalculateCardLayout(int cardCount, bool isAnime, bool isSorting)
+        private void UpdateCards(IReadOnlyList<Card> cards, int cardCount, bool isAnime)
         {
-            var cards = _container.Cards;
-
             for (var i = 0; i < cardCount; i++)
             {
-                if (_system.HoverCard == cards[i])
+                var card = cards[i];
+                if (card == null)
+                {
+                    continue;
+                }
+
+                if (card == _system.HoverCard)
                 {
                     continue;
                 }
                 
-                var layoutPosition = CardLayoutCalculator.CalculatedFieldCardPosition(i, _designer.ATKLimit, _designer.Space);
+                var layoutPosition =
+                    CardLayoutCalculator.CalculatedFieldCardPosition(
+                        i, 
+                        _designer.ATKLimit, 
+                        _designer.Space
+                    );
 
-                cards[i]?.transform.DOKill();
+                card.transform.DOKill();
 
-                if (isAnime || isSorting || cardCount - i > 1)
+                if (isAnime)
                 {
-                    cards[i].RectTransform.DOAnchorPos(layoutPosition, _designer.AnimeDuration).SetEase(Ease.InOutSine);
+                    card.RectTransform.DOAnchorPos(layoutPosition, _designer.AnimeDuration).SetEase(Ease.InOutSine);
                 }
                 else
                 {
-                    cards[i].RectTransform.anchoredPosition = layoutPosition;
+                    card.RectTransform.anchoredPosition = layoutPosition;
                 }
             }
         }
 
-        private void CalculatePreview(bool isCalculate, int cardCount, Vector2 prevPreviewPosition)
+        private void UpdatePreview(FieldPreviewMode previewMode, int previewIndex, int cardCount)
         {
-            if (!isCalculate)
-            {
-                return;
-            }
-
-            if (cardCount == _designer.ATKLimit)
+            if (previewMode == FieldPreviewMode.None)
             {
                 return;
             }
             
-            var previewPosition = CardLayoutCalculator.CalculatedFieldCardPosition(cardCount, _designer.ATKLimit, _designer.Space);
-            _previewCard.RectTransform.anchoredPosition = prevPreviewPosition;
-            _previewCard.RectTransform.anchoredPosition = previewPosition;
+            var resolvedIndex = ResolvePreviewIndex(previewMode, previewIndex, cardCount);
+            if (resolvedIndex < 0 || resolvedIndex >= _designer.ATKLimit)
+            {
+                return;
+            }
+            
+            var previewPosition =
+                CardLayoutCalculator.CalculatedFieldCardPosition(
+                    resolvedIndex,
+                    _designer.ATKLimit,
+                    _designer.Space
+                );
+            
+            var rectTransform = _previewCard.RectTransform;
+            rectTransform.DOKill();
+            rectTransform.anchoredPosition = previewPosition;
+        }
+        
+        private int ResolvePreviewIndex(FieldPreviewMode previewMode, int previewIndex, int cardCount)
+        {
+            return previewMode switch
+            {
+                FieldPreviewMode.Insert => cardCount,
+                FieldPreviewMode.Swap => Mathf.Clamp(previewIndex, 0, Mathf.Max(0, cardCount - 1)),
+                _ => -1
+            };
         }
     }
 }
