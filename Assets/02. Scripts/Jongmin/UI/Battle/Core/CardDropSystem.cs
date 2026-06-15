@@ -77,7 +77,7 @@ public class CardDropSystem
     /// <summary>
     /// 해당 핸드 카드를 [핸드 필드]에서 [공격/방어 필드]로 올립니다.
     /// </summary>
-    public void OnDroppedHandToField(IHandCardUI cardUI, bool isAtk)
+    public void OnDroppedHandToField(Card card, bool isAtk)
     {
         // if(isAtk && !_atkFieldDropTarget.CanInteraction)
         // {

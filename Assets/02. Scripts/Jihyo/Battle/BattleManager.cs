@@ -14,7 +14,6 @@ public class BattleManager : MonoBehaviour
 
     [Space(30f), Header("Effectors")]
     [SerializeField] private EffectDomain effectDomain;
-    [SerializeField] private AttackCardToThrowEffector m_attack_to_throw_effector;
     [SerializeField] private SynergyUI synergyUI;
 
     private bool isInitialized;
@@ -234,7 +233,7 @@ public class BattleManager : MonoBehaviour
 
         // 필드 카드 버리기
         yield return new WaitForSeconds(0.5f);
-        m_attack_to_throw_effector.Execute();
+        //m_attack_to_throw_effector.Execute();
         yield return new WaitForSeconds(1.5f);
 
         // 최종 승리 체크

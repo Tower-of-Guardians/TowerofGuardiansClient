@@ -36,10 +36,10 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureCore(IContainerBuilder builder)
     {
-        builder.RegisterInstance<ITurnRuleService>(turnRuleDesigner);
-        builder.RegisterComponentInHierarchy<TurnManager>()
-               .AsSelf()
-               .As<ITurnHandLimitPort>();
+        // builder.RegisterInstance<ITurnRuleService>(turnRuleDesigner);
+        // builder.RegisterComponentInHierarchy<TurnManager>()
+        //        .AsSelf()
+        //        .As<ITurnHandLimitPort>();
 
         //builder.RegisterComponentInHierarchy<StatusView>().As<IStatusUI>();
         //builder.RegisterEntryPoint<StatusSystem>(Lifetime.Scoped).AsSelf();

@@ -3,7 +3,7 @@ using System;
 using Jongmin;
 using VContainer;
 
-public class TurnManager : MonoBehaviour, ITurnHandLimitPort
+public class TurnManager : MonoBehaviour
 {
     [Header("Test Option")]
     [SerializeField] private int _cardCount;
