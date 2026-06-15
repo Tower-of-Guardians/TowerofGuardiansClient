@@ -9,11 +9,6 @@ namespace Jongmin
 
         private CardContainer _cardContainer;
         private DeckCardFactory _cardFactory;
-
-        private void Awake()
-        {
-            Construct();
-        }
         
         public void Construct()
         {

@@ -6,13 +6,25 @@ namespace Jongmin
     public class PreviewCard : MonoBehaviour
     {
         private Animator _animator;
-        
-        public RectTransform RectTransform { get; private set; } 
+        private RectTransform _rectTransform;
+
+        public RectTransform RectTransform
+        {
+            get
+            {
+                if (_rectTransform == null)
+                {
+                    _rectTransform = GetComponent<RectTransform>();
+                }
+                
+                return _rectTransform;
+            }
+        }
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            RectTransform = transform as RectTransform;
+            _rectTransform = transform as RectTransform;
         }
 
         private void OnEnable()

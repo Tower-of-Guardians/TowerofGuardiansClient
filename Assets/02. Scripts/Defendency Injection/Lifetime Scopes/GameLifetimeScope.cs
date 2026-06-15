@@ -22,12 +22,12 @@ public class GameLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         ConfigureCore(builder);
-        ConfigureManualUI(builder);
-        ConfigureInventoryUI(builder);
-        ConfigureDeckUI(builder);
-        ConfigureDiscardUI(builder);
-        ConfigureHandUI(builder);
-        ConfigureFieldUI(builder);
+        // ConfigureManualUI(builder);
+        // ConfigureInventoryUI(builder);
+        // ConfigureDeckUI(builder);
+        // ConfigureDiscardUI(builder);
+        // ConfigureHandUI(builder);
+        // ConfigureFieldUI(builder);
         ConfigureResultUI(builder);
         ConfigureCraftmanUI(builder);
         ConfigureMerchantUI(builder);
@@ -49,9 +49,9 @@ public class GameLifetimeScope : LifetimeScope
         
         builder.RegisterComponentInHierarchy<CardInfoUI>();
         
-        builder.RegisterComponentInHierarchy<DrawCardEffector>();
-        builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();
-        builder.RegisterComponentInHierarchy<DefendCardToThrowEffector>();
+        // builder.RegisterComponentInHierarchy<DrawCardEffector>();
+        // builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();
+        // builder.RegisterComponentInHierarchy<DefendCardToThrowEffector>();
     }
 
     private void ConfigureManualUI(IContainerBuilder builder)

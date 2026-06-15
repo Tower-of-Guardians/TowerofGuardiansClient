@@ -9,11 +9,6 @@ namespace Jongmin
         [SerializeField] private ActionManualSystem actionSystem;
         [SerializeField] private DiscardManualSystem discardSystem;
         [SerializeField] private TurnManager turnManager;
-
-        private void Awake()
-        {
-            Construct();
-        }
         
         public void Construct()
         {

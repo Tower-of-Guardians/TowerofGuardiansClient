@@ -48,7 +48,7 @@ namespace Jongmin
 
         private void ApplyHoverEffect(CardLayoutData targetTransform, Card card, int cardIndex)
         {
-            if (_system.HoverCard != null && _container.IsExist(card))
+            if (_system.HoverCard != null && !_container.IsExist(card))
             {
                 _system.HoverCard = null;
                 return;
@@ -78,7 +78,7 @@ namespace Jongmin
                 return;
             }
             
-            card?.DOKill();
+            card.transform.DOKill();
 
             card.transform.DOLocalMove(new Vector3(targetTransform.position.x, 
                                                    card == _system.HoverCard ? _designer.HoverY : targetTransform.position.y, 

@@ -44,7 +44,7 @@ namespace Jongmin
                 
                 var layoutPosition = CardLayoutCalculator.CalculatedFieldCardPosition(i, _designer.ATKLimit, _designer.Space);
 
-                cards[i]?.DOKill();
+                cards[i]?.transform.DOKill();
 
                 if (isAnime || isSorting || cardCount - i > 1)
                 {

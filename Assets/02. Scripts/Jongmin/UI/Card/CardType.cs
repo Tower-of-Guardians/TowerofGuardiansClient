@@ -8,5 +8,6 @@
         AtkField = 3,
         DefField = 4,
         Deck = 5,
+        Effect = 6,
     }
 }

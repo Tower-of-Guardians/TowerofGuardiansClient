@@ -13,7 +13,7 @@ namespace Jongmin
         
         public event Action<Card> RequestOnBeginDrag;
         public event Action<Card, Vector2> RequestSwapInSameField;
-        public event Action RequestOnEndDrag;
+        public event Action<bool> RequestOnEndDrag;
 
         public void Construct(DiscardSystem discardSystem, CardDropSystem dropSystem, CardContainer container)
         {
@@ -49,7 +49,11 @@ namespace Jongmin
             }
 
             MoveHoverCardToMousePosition(eventData.position);
-            RequestSwapInSameField?.Invoke(card, eventData.position);
+
+            if (TryGetCard(out var targetCard))
+            {
+                RequestSwapInSameField?.Invoke(targetCard, eventData.position);
+            }
         }
 
         private void HandleOnEndDrag(Card card, PointerEventData eventData)
@@ -59,8 +63,8 @@ namespace Jongmin
                 return;
             }
             
-            TryInvokeDropHandler();
-            RequestOnEndDrag?.Invoke();
+            var success = TryInvokeDropHandler();
+            RequestOnEndDrag?.Invoke(success);
         }
 
         public void OnDrop(PointerEventData eventData)
@@ -103,6 +107,25 @@ namespace Jongmin
             }
             
             ExecuteEvents.Execute(handHit.Value.gameObject, eventData, ExecuteEvents.dropHandler);
+            return true;
+        }
+
+        private bool TryGetCard(out Card card)
+        {
+            card = null;
+
+            var cardHit = CheckField(out _);
+            if (cardHit == null)
+            {
+                return false;
+            }
+            
+            card = cardHit.Value.gameObject.GetComponent<Card>();
+            if (card == null)
+            {
+                return false;
+            }
+            
             return true;
         }
 

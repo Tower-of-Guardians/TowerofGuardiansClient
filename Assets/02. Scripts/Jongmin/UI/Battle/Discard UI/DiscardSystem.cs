@@ -35,7 +35,7 @@ namespace Jongmin
             var card = _factory.Create();
             card.SetBattleCardData(battleCardData, CardType.Discard);
             _container.Add(card);
-            _layout.UpdateLayout(false, false);
+            _layout.UpdateLayout(PreviewLayoutMode.None, isAnime: false);
             
             RequestUpdateThrowCount?.Invoke(1);
         }
@@ -44,7 +44,7 @@ namespace Jongmin
         {
             _container.Remove(card);
             _factory.Release(card);
-            _layout.UpdateLayout(false, false);
+            _layout.UpdateLayout(PreviewLayoutMode.None, isAnime: true);
             
             RequestUpdateThrowCount?.Invoke(-1);
         }

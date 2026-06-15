@@ -14,17 +14,15 @@ namespace Jongmin
         [SerializeField] private PreviewCard previewCard;
         
         [Space(30f), BigHeader("Outer References")]
+        [SerializeField] private HandDomain handDomain;
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private Canvas rootCanvas;
         
         private CardContainer _cardContainer;
         private DiscardCardLayout _cardLayout;
         private DiscardCardFactory _cardFactory;
-
-        private void Awake()
-        {
-            Construct(null);
-        }
+        
+        public DiscardSystem System => discardSystem;
 
         public void Construct(CardDropSystem cardDropSystem)
         {
@@ -50,6 +48,8 @@ namespace Jongmin
             discardEventSystem.RequestOnBeginDrag += HandleRequestOnBeginDrag;
             discardEventSystem.RequestSwapInSameField += HandleRequestSwapInSameField;
             discardEventSystem.RequestOnEndDrag += HandleRequestOnEndDrag;
+
+            handDomain.System.OnTogglePreviews += TogglePreviewPosition;
         }
 
         public void ReleaseEvents()
@@ -62,6 +62,8 @@ namespace Jongmin
             discardEventSystem.RequestOnBeginDrag -= HandleRequestOnBeginDrag;
             discardEventSystem.RequestSwapInSameField -= HandleRequestSwapInSameField;
             discardEventSystem.RequestOnEndDrag -= HandleRequestOnEndDrag;
+            
+            handDomain.System.OnTogglePreviews -= TogglePreviewPosition;
         }
 
         private void HandleRequestOnBeginDrag(Card card)
@@ -69,21 +71,41 @@ namespace Jongmin
             discardSystem.HoverCard = card;
 
             MoveHoverCardToRoot(card);
-            UpdatePreviewPosition();
+
+            if (_cardContainer.TryGetIndex(card, out var index))
+            {
+                discardView.TogglePreview(true);
+                _cardLayout.UpdateLayout(PreviewLayoutMode.Swap, previewIndex: index);
+            }
         }
 
         private void HandleRequestSwapInSameField(Card card, Vector2 position)
         {
-            InsertInSameField(card, position);
-            UpdatePreviewPosition();
+            var changed = InsertInSameField(card, position);
+
+            if (!changed)
+                return;
+
+            if (!_cardContainer.TryGetIndex(discardSystem.HoverCard, out var index))
+                return;
+
+            discardView.TogglePreview(true);
+
+            _cardLayout.UpdateLayout(
+                PreviewLayoutMode.Swap,
+                previewIndex: index
+            );
         }
 
-        private void HandleRequestOnEndDrag()
+        private void HandleRequestOnEndDrag(bool dropSuccess)
         {
-            MoveHoverCardToParent();
+            if (!dropSuccess)
+            {
+                MoveHoverCardToParent();    
+            }
             
             discardSystem.HoverCard = null;
-            _cardLayout.UpdateLayout(false);
+            _cardLayout.UpdateLayout(PreviewLayoutMode.None);
             discardView.TogglePreview(false);
         }
 
@@ -98,24 +120,51 @@ namespace Jongmin
             discardSystem.HoverCard.transform.SetParent(discardView.CardRoot, false);
         }
         
-        private void InsertInSameField(Card card, Vector2 position)
+        private bool InsertInSameField(Card card, Vector2 position)
         {
-            if (_cardContainer.IsPriority(discardSystem.HoverCard, card))
+            var hoverCard = discardSystem.HoverCard;
+
+            if (hoverCard == null || card == null || hoverCard == card)
             {
-                if (position.x > card.transform.position.x)
+                return false;
+            }
+
+            if (!_cardContainer.TryGetIndex(hoverCard, out var hoverIndex))
+            {
+                return false;
+            }
+
+            if (!_cardContainer.TryGetIndex(card, out var targetIndex))
+            {
+                return false;
+            }
+
+            var isHoverBeforeTarget = hoverIndex < targetIndex;
+
+            if (isHoverBeforeTarget)
+            {
+                if (position.x <= card.transform.position.x)
                 {
-                    _cardContainer.Insert(discardSystem.HoverCard, card);
-                    _cardLayout.UpdateLayout(true);
+                    return false;
                 }
             }
             else
             {
-                if (position.x < card.transform.position.x)
+                if (position.x >= card.transform.position.x)
                 {
-                    _cardContainer.Insert(discardSystem.HoverCard, card);
-                    _cardLayout.UpdateLayout(true);
+                    return false;
                 }
             }
+
+            _cardContainer.Insert(hoverCard, card);
+
+            return true;
+        }
+
+        private void TogglePreviewPosition(bool isActive)
+        {
+            discardView.TogglePreview(isActive);
+            _cardLayout.UpdateLayout(isActive ? PreviewLayoutMode.Insert : PreviewLayoutMode.None, isAnime: true);
         }
 
         private void UpdatePreviewPosition()

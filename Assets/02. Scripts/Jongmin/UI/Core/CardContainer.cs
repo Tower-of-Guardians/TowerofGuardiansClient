@@ -66,7 +66,6 @@ namespace Jongmin
         {
             if (!IsExist(card))
             {
-                DebugExtension.LogColor($"CardContainer: You tried to get null card's index.", Color.red);
                 index = -1;
                 return false;
             }

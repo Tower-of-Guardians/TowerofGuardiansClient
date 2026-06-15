@@ -1,5 +1,6 @@
 using System;
 using Jongmin;
+using UnityEngine;
 
 public class CardDropSystem
 {
@@ -69,8 +70,8 @@ public class CardDropSystem
     public void OnDroppedDiscardToHand(Card card)
     {
         GameData.Instance.FieldToHandMove(card.BattleCardData);
-        _discardDropTarget.RemoveCard(card);
         _handDropTarget.CreateCard(card.BattleCardData);
+        _discardDropTarget.RemoveCard(card);
     }
 
     /// <summary>
@@ -124,7 +125,7 @@ public class CardDropSystem
         }
         
         _discardDropTarget.CreateCard(card.BattleCardData);
-        _handDropTarget.RemoveCard(card);
         GameData.Instance.HandToFieldMove(card.BattleCardData);
+        _handDropTarget.RemoveCard(card);
     }
 }

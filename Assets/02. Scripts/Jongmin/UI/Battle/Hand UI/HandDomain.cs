@@ -21,6 +21,10 @@ namespace Jongmin
         private HandCardLayout _cardLayout;
         private HandCardFactory _cardFactory;
 
+        public HandView View => handView;
+        public HandSystem System => handSystem;
+        public CardContainer Container => _cardContainer;
+
         public void Construct(CardDropSystem dropSystem)
         {
             _cardContainer = new CardContainer();
@@ -57,11 +61,6 @@ namespace Jongmin
             handEventSystem.RequestEndDrag -= HandleRequestEndDrag;
         }
 
-        public void OnDrop(PointerEventData eventData)
-        {
-            handEventSystem?.OnDrop(eventData);
-        }
-
         private void HandleOnPointerEnter(Card card)
         {
             handSystem.HoverCard = card;
@@ -93,6 +92,7 @@ namespace Jongmin
                 return;
             }
 
+            handSystem.ToggleFieldPreview(true);
             UpdatePreviewCard();
         }
 
@@ -166,7 +166,7 @@ namespace Jongmin
         {
             for (var i = 0; i < _cardContainer.Count; i++)
             {
-                var cardId = _cardContainer.Get(i).BattleCardData.data.id;
+                var cardId = _cardContainer.Get(i).CardData.id;
 
                 if (i < GameData.Instance.handDeck.Count)
                 {

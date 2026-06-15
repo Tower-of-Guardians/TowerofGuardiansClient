@@ -24,11 +24,9 @@ namespace Jongmin
         private FieldCardLayout _defCardLayout;
         private FieldCardFactory _atkCardFactory;
         private FieldCardFactory _defCardFactory;
-
-        private void Awake()
-        {
-            Construct(null);
-        }
+        
+        public AtkFieldSystem AtkSystem => atkFieldSystem as AtkFieldSystem;
+        public DefFieldSystem DefSystem => defFieldSystem as DefFieldSystem;
         
         public void Construct(CardDropSystem cardDropSystem)
         {

@@ -8,6 +8,7 @@ namespace Jongmin
     public class CardView : MonoBehaviour
     {
         [BigHeader("Model")]
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image cardFrameImage;
         [SerializeField] private Image cardItemImage;
         [SerializeField] private TMP_Text cardNameLabel;
@@ -23,6 +24,7 @@ namespace Jongmin
         private const int MaxStarCount = 2;
 
         public RectTransform RectTransform { get; private set; }
+        public CanvasGroup CanvasGroup => canvasGroup;
 
         private void Awake()
         {
