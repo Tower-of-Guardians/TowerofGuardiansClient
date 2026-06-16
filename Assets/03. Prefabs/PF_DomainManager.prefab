@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6250920118010043162}
   - component: {fileID: 7110798342157645204}
   - component: {fileID: 5692314581588031293}
+  - component: {fileID: 6570547396185592494}
   m_Layer: 0
   m_Name: PF_DomainManager
   m_TagString: Untagged
@@ -166,3 +167,15 @@ MonoBehaviour:
   handEventSystem: {fileID: 0}
   cardInfoUI: {fileID: 0}
   turnManager: {fileID: 0}
+--- !u!114 &6570547396185592494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674045155352673939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c0b8649a9c4cfd8b15a57203d5a028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

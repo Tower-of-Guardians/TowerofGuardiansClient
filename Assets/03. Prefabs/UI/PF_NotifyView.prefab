@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 7211678341537860958}
   - component: {fileID: 8658827737609679420}
   - component: {fileID: 2587005749432928730}
-  - component: {fileID: 7852194442737963343}
-  - component: {fileID: 2766157745655831007}
+  - component: {fileID: 8487294707699731008}
   m_Layer: 0
-  m_Name: Popup Notifier UI
+  m_Name: PF_NotifyView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,29 +116,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!95 &7852194442737963343
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5036417651735963403}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f184776740e5e6e4e96842f1e020ee22, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2766157745655831007
+--- !u!114 &8487294707699731008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,12 +125,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5036417651735963403}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f197a164c069fdd46ab804c4345babc3, type: 3}
+  m_Script: {fileID: 11500000, guid: f3349ad0762a47909de571b5d8189683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 2587005749432928730}
-  notifyLabel: {fileID: 2776328419650690760}
-  animator: {fileID: 7852194442737963343}
 --- !u!1 &8510548032727058173
 GameObject:
   m_ObjectHideFlags: 0

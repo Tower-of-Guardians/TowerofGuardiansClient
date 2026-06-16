@@ -11,16 +11,19 @@ namespace Jongmin
         [SerializeField] private DeckDomain deckDomain;
         [SerializeField] private ManualDomain manualDomain;
         [SerializeField] private EffectDomain effectDomain;
+        [SerializeField] private NotifyDomain notifyDomain;
         
         public void Inject()
         {
+            notifyDomain.Construct();
+            
             var dropSystem = new CardDropSystem(
                 handDomain.System, 
                 fieldDomain.AtkSystem, 
                 fieldDomain.DefSystem, 
                 discardDomain.System, 
                 turnManager, 
-                null
+                notifyDomain.System
             );
             
             DIContainer.Register<CardDropSystem>(dropSystem);
