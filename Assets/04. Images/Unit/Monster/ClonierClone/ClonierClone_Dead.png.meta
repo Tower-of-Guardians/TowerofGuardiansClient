@@ -1,64 +1,19 @@
 fileFormatVersion: 2
-guid: 8373f420721534e43806e7bf02946e3d
+guid: c8f557521d2e53644a9535d7037cd665
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8914734419870599619
-    second: Effect_Attack1_0
+      213: -436662020361319593
+    second: ClonierClone_Dead_0
   - first:
-      213: -2168250944748473096
-    second: Effect_Attack1_1
+      213: -3734141770320504469
+    second: ClonierClone_Dead_1
   - first:
-      213: 1259212730382294831
-    second: Effect_Attack1_2
+      213: 3008061636389926827
+    second: ClonierClone_Dead_2
   - first:
-      213: 1739384461547433828
-    second: Effect_Attack1_3
-  - first:
-      213: -5936652100575679006
-    second: Effect_Attack1_4
-  - first:
-      213: 352910251302306623
-    second: Effect_Attack1_5
-  - first:
-      213: 7059241608157312557
-    second: Effect_Attack1_6
-  - first:
-      213: -8626636070895122642
-    second: Effect_Attack1_7
-  - first:
-      213: 4363721625942151106
-    second: Effect_Attack1_8
-  - first:
-      213: -4153860637854272147
-    second: Effect_Attack1_9
-  - first:
-      213: -2735381273122768448
-    second: Effect_Attack1_10
-  - first:
-      213: 5439965682306073839
-    second: Effect_Attack1_11
-  - first:
-      213: -8987606326974405329
-    second: Effect_Attack1_12
-  - first:
-      213: -712979537687780371
-    second: Effect_Attack1_13
-  - first:
-      213: -8436130025523976150
-    second: Effect_Attack1_14
-  - first:
-      213: -5231148743394183925
-    second: Effect_Attack1_15
-  - first:
-      213: 644568226200794768
-    second: Effect_Attack1_16
-  - first:
-      213: -8616264466739375887
-    second: Effect_Attack1_17
-  - first:
-      213: -1529225596660663616
-    second: Effect_Attack1_18
+      213: 8174420709010225715
+    second: ClonierClone_Dead_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -154,7 +109,51 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Effect_Hit1_0
+      name: ClonierClone_Dead_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 288
+        width: 288
+        height: 288
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75b857db43aa0f9f0800000000000000
+      internalID: -436662020361319593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClonierClone_Dead_1
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 288
+        width: 288
+        height: 288
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b69191f18d9ad2cc0800000000000000
+      internalID: -3734141770320504469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClonierClone_Dead_2
       rect:
         serializedVersion: 2
         x: 0
@@ -167,16 +166,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 40ac745489cbfd7449ab71760d7c80c3
-      internalID: 692766168
+      spriteID: ba77083fe18ceb920800000000000000
+      internalID: 3008061636389926827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_Hit1_1
+      name: ClonierClone_Dead_3
       rect:
         serializedVersion: 2
         x: 288
@@ -189,32 +188,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8a9e5a9a9bbef964eafc1df176279a35
-      internalID: -817028912
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Effect_Hit1_2
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d1f18446220455143b05ff02fe2da9c0
-      internalID: -51859245
+      spriteID: 33ab62d2350617170800000000000000
+      internalID: 8174420709010225715
       vertices: []
       indices: 
       edges: []
@@ -223,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 363535a8d76ce734ab33a9bc2453c862
+    spriteID: 7a36259aff1c212418b6790c822280b6
     internalID: 0
     vertices: []
     indices: 
@@ -233,9 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Effect_Hit1_0: 692766168
-      Effect_Hit1_1: -817028912
-      Effect_Hit1_2: -51859245
+      ClonierClone_Dead_0: -436662020361319593
+      ClonierClone_Dead_1: -3734141770320504469
+      ClonierClone_Dead_2: 3008061636389926827
+      ClonierClone_Dead_3: 8174420709010225715
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

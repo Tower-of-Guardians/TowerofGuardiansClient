@@ -15,9 +15,9 @@ public class ResultRewardPresenter : IInitializable
     public void InitUI()
         => _resultRewardUI.Initialize();
 
-    public void OpenUI(int gold, int exp)
+    public void OpenUI(int gold, int exp, bool isLevelUp)
     {
-        _resultRewardUI.UpdateUI(gold, exp, true);
+        _resultRewardUI.UpdateUI(gold, exp, isLevelUp);
         _resultRewardUI.OpenUI();
     }
 
