@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Jongmin;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +13,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private BattleCombatController combatController;
 
     [Space(30f), Header("Effectors")]
-    [SerializeField] private HandCardToThrowEffector m_hand_to_throw_effector;
-    [SerializeField] private AttackCardToThrowEffector m_attack_to_throw_effector;
+    [SerializeField] private EffectDomain effectDomain;
     [SerializeField] private SynergyUI synergyUI;
 
     private bool isInitialized;
@@ -171,11 +171,9 @@ public class BattleManager : MonoBehaviour
             isProcessingAttack = false;
             yield break;
         }
-
+        
         // 카드 버리기 및 전투 UI 비활성화
-        yield return new WaitForSeconds(0.5f);
-        m_hand_to_throw_effector.Execute(); 
-        yield return new WaitForSeconds(1.0f);
+        yield return effectDomain.DiscardHandCards();
 
         // 전투 초기화 및 타겟 선택
         var initResult = combatController.InitializeCombat(setupController);
@@ -246,8 +244,9 @@ public class BattleManager : MonoBehaviour
 
         // 필드 카드 버리기
         yield return new WaitForSeconds(0.5f);
-        m_attack_to_throw_effector.Execute();
-        yield return new WaitForSeconds(1.5f);
+        yield return effectDomain.DiscardFieldCards(FieldType.Attack);
+        yield return effectDomain.DiscardFieldCards(FieldType.Defense);
+        yield return new WaitForSeconds(1f);
 
         // 최종 승리 체크
         if (combatController.CheckVictory(setupController))
