@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 5692314581588031293}
   - component: {fileID: 6570547396185592494}
   - component: {fileID: 7890823130175476279}
+  - component: {fileID: 3522280902697144016}
+  - component: {fileID: 836590661421698260}
   m_Layer: 0
   m_Name: PF_DomainManager
   m_TagString: Untagged
@@ -166,7 +168,7 @@ MonoBehaviour:
   handView: {fileID: 0}
   handSystem: {fileID: 0}
   handEventSystem: {fileID: 0}
-  cardInfoUI: {fileID: 0}
+  cardInfoSystem: {fileID: 0}
   turnManager: {fileID: 0}
 --- !u!114 &6570547396185592494
 MonoBehaviour:
@@ -198,3 +200,38 @@ MonoBehaviour:
   cardInfoSystem: {fileID: 0}
   attributeSystem: {fileID: 0}
   seriesSystem: {fileID: 0}
+--- !u!114 &3522280902697144016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674045155352673939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8ffabd7e4f43118898d7566a033f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryView: {fileID: 0}
+  cardSortView: {fileID: 0}
+  invenTabView: {fileID: 0}
+  inventorySystem: {fileID: 0}
+  cardSortSystem: {fileID: 0}
+  cardInfoDomain: {fileID: 0}
+  cardInvenDomain: {fileID: 0}
+--- !u!114 &836590661421698260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674045155352673939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1129c2c51e7c46b8bec8d41f76ab5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardInvenView: {fileID: 0}
+  cardInvenSystem: {fileID: 0}
+  cardInvenEventSystem: {fileID: 0}
+  cardInfoDomain: {fileID: 0}

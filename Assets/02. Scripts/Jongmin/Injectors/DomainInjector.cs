@@ -13,6 +13,8 @@ namespace Jongmin
         [SerializeField] private EffectDomain effectDomain;
         [SerializeField] private NotifyDomain notifyDomain;
         [SerializeField] private CardInfoDomain cardInfoDomain;
+        [SerializeField] private InventoryDomain inventoryDomain;
+        [SerializeField] private CardInvenDomain cardInvenDomain;
         
         public void Inject()
         {
@@ -34,6 +36,8 @@ namespace Jongmin
             manualDomain.Construct();
             effectDomain.Construct();
             cardInfoDomain.Construct();
+            cardInvenDomain.Construct();
+            inventoryDomain.Construct();
             
             DIContainer.Register<CardDropSystem>(dropSystem);
             DIContainer.Register<HandDomain>(handDomain);
@@ -44,6 +48,8 @@ namespace Jongmin
             DIContainer.Register<EffectDomain>(effectDomain);
             DIContainer.Register<NotifyDomain>(notifyDomain);
             DIContainer.Register<CardInfoDomain>(cardInfoDomain);
+            DIContainer.Register<InventoryDomain>(inventoryDomain);
+            DIContainer.Register<CardInvenDomain>(cardInvenDomain);
         }
     }
 }
