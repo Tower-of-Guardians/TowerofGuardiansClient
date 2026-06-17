@@ -351,22 +351,22 @@ public class BattleManager : MonoBehaviour
 
         ApplyEncounterRewards(totalGold, totalExp);
 
-        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultUISequencer>());
+        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultDomain>());
 
-        var resultUISequencer = DIContainer.Resolve<ResultUISequencer>();
+        var resultDomain = DIContainer.Resolve<ResultDomain>();
         var resultData = new ResultData(totalGold, totalExp, isLevelUp);
-        resultUISequencer.PlaySequence(resultData);
+        resultDomain.Show(resultData);
     }
 
     public IEnumerator HandleDefeat()
     {
         // ResultPresenter가 등록될 때까지 대기
-        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultPresenter>());
+        yield return new WaitUntil(() => DIContainer.IsRegistered<ResultDomain>());
 
         // Result 창 열기
-        var resultPresenter = DIContainer.Resolve<ResultPresenter>();
+        var resultDomain = DIContainer.Resolve<ResultDomain>();
         var resultData = new ResultData(0, 0);
-        resultPresenter.OpenUI(resultData);
+        resultDomain.Show(resultData);
     }
 
     private int CalculateTotalGold()

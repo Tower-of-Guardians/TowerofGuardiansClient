@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 7890823130175476279}
   - component: {fileID: 3522280902697144016}
   - component: {fileID: 836590661421698260}
+  - component: {fileID: 7353947813304814526}
   m_Layer: 0
   m_Name: PF_DomainManager
   m_TagString: Untagged
@@ -235,3 +236,19 @@ MonoBehaviour:
   cardInvenSystem: {fileID: 0}
   cardInvenEventSystem: {fileID: 0}
   cardInfoDomain: {fileID: 0}
+--- !u!114 &7353947813304814526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674045155352673939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b408bdead89a43639a65a45e9f09a586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resultView: {fileID: 0}
+  rewardView: {fileID: 0}
+  gachaView: {fileID: 0}
+  gachaSystem: {fileID: 0}

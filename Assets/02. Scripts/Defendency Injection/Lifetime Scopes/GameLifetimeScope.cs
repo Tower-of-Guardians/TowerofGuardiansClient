@@ -28,7 +28,7 @@ public class GameLifetimeScope : LifetimeScope
         // ConfigureDiscardUI(builder);
         // ConfigureHandUI(builder);
         // ConfigureFieldUI(builder);
-        ConfigureResultUI(builder);
+        // ConfigureResultUI(builder);
         ConfigureCraftmanUI(builder);
         ConfigureMerchantUI(builder);
         ConfigureEventUI(builder);
@@ -270,44 +270,44 @@ public class GameLifetimeScope : LifetimeScope
 
     private void ConfigureResultUI(IContainerBuilder builder)
     {
-        builder.RegisterEntryPoint<ResultPresenter>(Lifetime.Scoped).AsSelf();
-        builder.RegisterComponentInHierarchy<ResultUI>().As<IResultUI>();
-        
-        builder.RegisterEntryPoint<ResultRewardPresenter>(Lifetime.Scoped).AsSelf();
-        builder.RegisterComponentInHierarchy<ResultRewardUI>().As<IResultRewardUI>();
-        
-        builder.RegisterEntryPoint<ResultShopPresenter>(Lifetime.Scoped).AsSelf();
-        builder.RegisterInstance(new CardContainer<IResultCardUI, ResultCardPresenter>());
-        builder.RegisterComponentInHierarchy<ResultCardFactory>();
-        builder.RegisterComponentInHierarchy<ResultShopUI>().As<IResultShopUI>();
-
-        builder.RegisterEntryPoint<ResultDeckInvenPresenter>(Lifetime.Scoped).AsSelf();
-        builder.RegisterInstance<ICardBehavior>(new ReadonlyCardBehavior());
-
-        builder.RegisterComponentInHierarchy<ResultDeckInvenUI>().AsSelf().As<IDeckInvenUI>();
-        builder.Register<IDeckInvenUI>(resolver => resolver.Resolve<ResultDeckInvenUI>(), Lifetime.Scoped)
-               .Keyed(DeckInvenType.Result);
-
-        var resultDeckInvenCardContainer = new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>();
-        builder.RegisterInstance(resultDeckInvenCardContainer);
-        builder.RegisterInstance(resultDeckInvenCardContainer).Keyed(DeckInvenType.Result);
-
-        builder.RegisterComponentInHierarchy<ResultDeckInvenCardFactory>().AsSelf().As<ICardFactory<IDeckInvenCardUI>>();
-        builder.Register<ICardFactory<IDeckInvenCardUI>>(resolver => resolver.Resolve<ResultDeckInvenCardFactory>(), Lifetime.Scoped)
-               .Keyed(DeckInvenType.Result);
-        
-        builder.RegisterComponentInHierarchy<ResultUISequencer>();
-
-        builder.RegisterBuildCallback(resolver =>
-        {
-            var resultPresenter = resolver.Resolve<ResultPresenter>();
-            var resultRewardPresenter = resolver.Resolve<ResultRewardPresenter>();
-            var resultUISequencer = resolver.Resolve<ResultUISequencer>();
-
-            DIContainer.Register<ResultPresenter>(resultPresenter);
-            DIContainer.Register<ResultRewardPresenter>(resultRewardPresenter);
-            DIContainer.Register<ResultUISequencer>(resultUISequencer);
-        });
+        // builder.RegisterEntryPoint<ResultPresenter>(Lifetime.Scoped).AsSelf();
+        // builder.RegisterComponentInHierarchy<ResultUI>().As<IResultUI>();
+        //
+        // builder.RegisterEntryPoint<ResultRewardPresenter>(Lifetime.Scoped).AsSelf();
+        // builder.RegisterComponentInHierarchy<ResultRewardUI>().As<IResultRewardUI>();
+        //
+        // builder.RegisterEntryPoint<ResultShopPresenter>(Lifetime.Scoped).AsSelf();
+        // builder.RegisterInstance(new CardContainer<IResultCardUI, ResultCardPresenter>());
+        // builder.RegisterComponentInHierarchy<ResultCardFactory>();
+        // builder.RegisterComponentInHierarchy<ResultShopUI>().As<IResultShopUI>();
+        //
+        // builder.RegisterEntryPoint<ResultDeckInvenPresenter>(Lifetime.Scoped).AsSelf();
+        // builder.RegisterInstance<ICardBehavior>(new ReadonlyCardBehavior());
+        //
+        // builder.RegisterComponentInHierarchy<ResultDeckInvenUI>().AsSelf().As<IDeckInvenUI>();
+        // builder.Register<IDeckInvenUI>(resolver => resolver.Resolve<ResultDeckInvenUI>(), Lifetime.Scoped)
+        //        .Keyed(DeckInvenType.Result);
+        //
+        // var resultDeckInvenCardContainer = new CardContainer<IDeckInvenCardUI, DeckInvenCardPresenter>();
+        // builder.RegisterInstance(resultDeckInvenCardContainer);
+        // builder.RegisterInstance(resultDeckInvenCardContainer).Keyed(DeckInvenType.Result);
+        //
+        // builder.RegisterComponentInHierarchy<ResultDeckInvenCardFactory>().AsSelf().As<ICardFactory<IDeckInvenCardUI>>();
+        // builder.Register<ICardFactory<IDeckInvenCardUI>>(resolver => resolver.Resolve<ResultDeckInvenCardFactory>(), Lifetime.Scoped)
+        //        .Keyed(DeckInvenType.Result);
+        //
+        // builder.RegisterComponentInHierarchy<ResultUISequencer>();
+        //
+        // builder.RegisterBuildCallback(resolver =>
+        // {
+        //     var resultPresenter = resolver.Resolve<ResultPresenter>();
+        //     var resultRewardPresenter = resolver.Resolve<ResultRewardPresenter>();
+        //     var resultUISequencer = resolver.Resolve<ResultUISequencer>();
+        //
+        //     DIContainer.Register<ResultPresenter>(resultPresenter);
+        //     DIContainer.Register<ResultRewardPresenter>(resultRewardPresenter);
+        //     DIContainer.Register<ResultUISequencer>(resultUISequencer);
+        // });
     }
 
     private void ConfigureCraftmanUI(IContainerBuilder builder)
