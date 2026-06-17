@@ -2643,7 +2643,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6940226415747294780}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.999997
+  m_Size: 0.9503459
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5995,7 +5995,6 @@ RectTransform:
   - {fileID: 162029960595857553}
   - {fileID: 7608887072903895103}
   - {fileID: 4356429789411727858}
-  - {fileID: 6640225566026276284}
   - {fileID: 4527055048163520151}
   m_Father: {fileID: 1060165560721252018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6401,55 +6400,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &5894027133539141568
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6640225566026276284}
-  - component: {fileID: 315611462034727672}
-  m_Layer: 5
-  m_Name: Notifier UI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &6640225566026276284
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5894027133539141568}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8569928629741705008}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &315611462034727672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5894027133539141568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21d6a4555e3045d4ab406ae6a14b776e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noticePrefab: {fileID: 5036417651735963403, guid: 8847dbe405a264e49a876f811ee4ccc4, type: 3}
 --- !u!1 &5988593010168462196
 GameObject:
   m_ObjectHideFlags: 0
@@ -6778,7 +6728,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00002778405}
+  m_AnchoredPosition: {x: 0, y: 0.0009519617}
   m_SizeDelta: {x: 0, y: 560}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2066571974807676899

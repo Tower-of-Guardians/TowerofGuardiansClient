@@ -45,9 +45,9 @@ public class GameLifetimeScope : LifetimeScope
         //builder.RegisterEntryPoint<StatusSystem>(Lifetime.Scoped).AsSelf();
         builder.Register<CardDropSystem>(Lifetime.Singleton);
         
-        builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();
+        //builder.RegisterComponentInHierarchy<NotifierUI>().As<INotifierUI>();
         
-        builder.RegisterComponentInHierarchy<CardInfoUI>();
+        //builder.RegisterComponentInHierarchy<CardInfoUI>();
         
         // builder.RegisterComponentInHierarchy<DrawCardEffector>();
         // builder.RegisterComponentInHierarchy<AttackCardToThrowEffector>();

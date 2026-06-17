@@ -12,6 +12,7 @@ namespace Jongmin
         [SerializeField] private ManualDomain manualDomain;
         [SerializeField] private EffectDomain effectDomain;
         [SerializeField] private NotifyDomain notifyDomain;
+        [SerializeField] private CardInfoDomain cardInfoDomain;
         
         public void Inject()
         {
@@ -26,14 +27,23 @@ namespace Jongmin
                 notifyDomain.System
             );
             
-            DIContainer.Register<CardDropSystem>(dropSystem);
-            
             handDomain.Construct(dropSystem);
             fieldDomain.Construct(dropSystem);
             discardDomain.Construct(dropSystem);
             deckDomain.Construct();
             manualDomain.Construct();
             effectDomain.Construct();
+            cardInfoDomain.Construct();
+            
+            DIContainer.Register<CardDropSystem>(dropSystem);
+            DIContainer.Register<HandDomain>(handDomain);
+            DIContainer.Register<FieldDomain>(fieldDomain);
+            DIContainer.Register<DiscardDomain>(discardDomain);
+            DIContainer.Register<DeckDomain>(deckDomain);
+            DIContainer.Register<ManualDomain>(manualDomain);
+            DIContainer.Register<EffectDomain>(effectDomain);
+            DIContainer.Register<NotifyDomain>(notifyDomain);
+            DIContainer.Register<CardInfoDomain>(cardInfoDomain);
         }
     }
 }

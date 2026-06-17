@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class CardInventoryUI : MonoBehaviour
 {    
     [Header("Card Info UI")]
-    [SerializeField] private CardInfoUI cardInfoUI;
+    //[SerializeField] private CardInfoUI cardInfoUI;
 
     [Header("Card UI")]
     [SerializeField] private GameObject cardInventoryContent;
@@ -20,8 +20,8 @@ public class CardInventoryUI : MonoBehaviour
 
     private void InitializeCardInventoryUI()
     {
-        if (!cardInfoUI)
-            cardInfoUI = FindAnyObjectByType<CardInfoUI>();
+        //if (!cardInfoUI)
+        //    cardInfoUI = FindAnyObjectByType<CardInfoUI>();
     }
 
     // 패널 열기
@@ -148,10 +148,10 @@ public class CardInventoryUI : MonoBehaviour
     // 패널 닫기
     public void ClosePanel()
     {
-        if (cardInfoUI != null)
-        {
-            cardInfoUI.HidePanel();
-        }
+        // if (cardInfoUI != null)
+        // {
+        //     cardInfoUI.HidePanel();
+        // }
 
         ToggleCanvasGroup(false);
     }
@@ -165,14 +165,14 @@ public class CardInventoryUI : MonoBehaviour
         }
 
         // CardInfoUI에 카드 정보 표시 요청
-        if (cardInfoUI != null)
-        {
-            cardInfoUI.ShowCardInfo(cardData);
-        }
-        else
-        {
-            Debug.LogWarning("CardInventoryUI: cardInfoUI가 설정되지 않았습니다.");
-        }
+        // if (cardInfoUI != null)
+        // {
+        //     cardInfoUI.ShowCardInfo(cardData);
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("CardInventoryUI: cardInfoUI가 설정되지 않았습니다.");
+        // }
     }
 
     // 클릭한 카드의 정보를 받아오기
