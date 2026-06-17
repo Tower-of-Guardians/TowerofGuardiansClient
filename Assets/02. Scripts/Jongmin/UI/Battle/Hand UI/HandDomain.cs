@@ -14,7 +14,7 @@ namespace Jongmin
         [SerializeField] private HandEventSystem handEventSystem;
 
         [Space(30f), BigHeader("Outer References")]
-        [SerializeField] private CardInfoUI cardInfoUI;
+        [SerializeField] private CardInfoSystem cardInfoSystem;
         [SerializeField] private TurnManager turnManager;
 
         private CardContainer _cardContainer;
@@ -75,7 +75,7 @@ namespace Jongmin
 
         private void HandleOnPointerClick(CardData cardData)
         {
-            cardInfoUI?.ShowCardInfo(cardData);
+            cardInfoSystem?.OpenView(cardData);
         }
 
         private void HandleOnDragCanceled()

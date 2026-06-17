@@ -10,21 +10,21 @@ public class CardDropSystem
     private readonly ICardDropTarget<DiscardDomain> _discardDropTarget;
 
     private readonly TurnManager _turnManager;
-    private readonly INotifierUI _notifier;
+    private readonly NotifySystem _notifySystem;
 
     public CardDropSystem(ICardDropTarget<HandDomain> handDropTarget,
                           IATKCardDropTarget atkFieldDropTarget,
                           IDEFCardDropTarget defFieldDropTarget,
                           ICardDropTarget<DiscardDomain> discardDropTarget,
                           TurnManager turnManager,
-                          INotifierUI notifier)
+                          NotifySystem notifySystem)
     {
         _handDropTarget = handDropTarget;
         _atkFieldDropTarget = atkFieldDropTarget;
         _defFieldDropTarget = defFieldDropTarget;
         _discardDropTarget = discardDropTarget;
         _turnManager = turnManager;
-        _notifier = notifier;
+        _notifySystem = notifySystem;
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public class CardDropSystem
         
         if(!_turnManager.CanAction)
         {
-            _notifier.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
+            _notifySystem.Notify("<color=red>더 이상 행동할 수 없습니다.</color>");
             return;
         }
 
@@ -109,7 +109,7 @@ public class CardDropSystem
     {
         if(!_turnManager.CanThrow)
         {
-            _notifier.Notify("<color=red>더 이상 버릴 수 없습니다.</color>");
+            _notifySystem.Notify("<color=red>더 이상 버릴 수 없습니다.</color>");
             return;
         }
         

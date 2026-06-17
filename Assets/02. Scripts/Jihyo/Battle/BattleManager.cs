@@ -143,10 +143,10 @@ public class BattleManager : MonoBehaviour
             tooltipPresenter?.CloseUI();
         }
 
-        if (DIContainer.IsRegistered<IAttributeView>())
+        if (DIContainer.IsRegistered<CardInfoDomain>())
         {
-            IAttributeView attributeView = DIContainer.Resolve<IAttributeView>();
-            attributeView?.CloseUI();
+            var cardInfoDomain = DIContainer.Resolve<CardInfoDomain>();
+            cardInfoDomain.System.CloseView();
         }
     }
 

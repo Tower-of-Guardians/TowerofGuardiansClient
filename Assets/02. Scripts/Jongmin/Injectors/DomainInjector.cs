@@ -11,19 +11,23 @@ namespace Jongmin
         [SerializeField] private DeckDomain deckDomain;
         [SerializeField] private ManualDomain manualDomain;
         [SerializeField] private EffectDomain effectDomain;
+        [SerializeField] private NotifyDomain notifyDomain;
+        [SerializeField] private CardInfoDomain cardInfoDomain;
+        [SerializeField] private InventoryDomain inventoryDomain;
+        [SerializeField] private CardInvenDomain cardInvenDomain;
         
         public void Inject()
         {
+            notifyDomain.Construct();
+            
             var dropSystem = new CardDropSystem(
                 handDomain.System, 
                 fieldDomain.AtkSystem, 
                 fieldDomain.DefSystem, 
                 discardDomain.System, 
                 turnManager, 
-                null
+                notifyDomain.System
             );
-            
-            DIContainer.Register<CardDropSystem>(dropSystem);
             
             handDomain.Construct(dropSystem);
             fieldDomain.Construct(dropSystem);
@@ -31,6 +35,21 @@ namespace Jongmin
             deckDomain.Construct();
             manualDomain.Construct();
             effectDomain.Construct();
+            cardInfoDomain.Construct();
+            cardInvenDomain.Construct();
+            inventoryDomain.Construct();
+            
+            DIContainer.Register<CardDropSystem>(dropSystem);
+            DIContainer.Register<HandDomain>(handDomain);
+            DIContainer.Register<FieldDomain>(fieldDomain);
+            DIContainer.Register<DiscardDomain>(discardDomain);
+            DIContainer.Register<DeckDomain>(deckDomain);
+            DIContainer.Register<ManualDomain>(manualDomain);
+            DIContainer.Register<EffectDomain>(effectDomain);
+            DIContainer.Register<NotifyDomain>(notifyDomain);
+            DIContainer.Register<CardInfoDomain>(cardInfoDomain);
+            DIContainer.Register<InventoryDomain>(inventoryDomain);
+            DIContainer.Register<CardInvenDomain>(cardInvenDomain);
         }
     }
 }
